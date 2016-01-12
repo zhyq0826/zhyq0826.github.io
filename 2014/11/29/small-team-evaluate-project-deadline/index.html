@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>小团队如何准确评估项目时间和节点 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。
+那该如何评估以及怎样评估">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="小团队如何准确评估项目时间和节点"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-11-29T07:09:13.000Z">
+  <!-- <a href="/2014/11/29/small-team-evaluate-project-deadline/">11月 29日 2014</a> -->
+  11月 29日 2014
+</time>
+
+  
+    <h1 class="title">小团队如何准确评估项目时间和节点</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术之外/">技术之外</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/团队协作/">团队协作</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。</p>
+<h3 id="那该如何评估以及怎样评估">那该如何评估以及怎样评估</h3><a id="more"></a>
+<p>一个产品需求从提出到落地大致需要经过以下几个阶段(可能根据需求的复杂度略有不同，这里只讨论一般性需求)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#25552;&#20986;&#38656;&#27714;--&#62;&#38656;&#27714;&#35780;&#20272;--&#62;&#24320;&#21457;--&#62;&#27979;&#35797;--&#62;&#19978;&#32447;</span><br></pre></td></tr></table></figure>
+<p>当开发人员面对这么<strong>粗粒度</strong>的节点划分的时候，很难真正想象出项目会遇到什么样的问题，尤其是新人对项目的难度把握不准确，以及对整个团队开发流程不熟悉，非常容易做出不恰当的预估。在此，由于粒度<strong>过粗</strong>，每个阶段在开发人员的印象中都是一个模糊的概念，只有深入到实际开发阶段，可能才会发现每个阶段都没有那么容易，处处是坑，四处碰壁。</p>
+<p>以测试为例。一般来说，开发人员日常开发使用的是一套测试环境，包括系统状态，数据库状态，环境依赖等都与线上环境有细微甚至很大的差别，而这个差别可能只有等到上线前一刻才会被发现。可能一开始预估测试时间并不会把这样的意外因素考虑在内，而这样的问题发生势必会影响项目的正常发布，甚至延期。</p>
+<p>因而，为了弥补这样的不足，把一个需求从<strong>立项</strong>到<strong>上线</strong>的过程进行更<strong>细粒度</strong>的拆分，提前对每个粒度所面临的场景进行多种可能性预测，并制定相应的解决方案，模拟出项目的真实开发流程，类似战场打仗所用到的沙盘。</p>
+<h3 id="一个真实的开发场景">一个真实的开发场景</h3><p>APP中添加聊天通讯功能</p>
+<p>1.<strong>未拆分阶段</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#25552;&#20986;&#38656;&#27714;(&#36890;&#35759;&#21151;&#33021;)----&#62;&#38656;&#27714;&#35780;&#20272;(&#21487;&#20570;)----&#62;&#24320;&#21457;(&#23458;&#25143;&#31471;,&#26381;&#21153;&#31471;,&#32852;&#21512;&#35843;&#35797;)----&#62;&#27979;&#35797;(&#23458;&#25143;&#31471;&#27979;&#35797;,&#26381;&#21153;&#31471;&#27979;&#35797;,&#20135;&#21697;&#27979;&#35797;)----&#62;&#19978;&#32447;</span><br></pre></td></tr></table></figure>
+<p>2.<strong>拆分需求和功能</strong></p>
+<p>在需求提出阶段可以按照需求的重要性进行等级划分(数字越小重要性越大)</p>
+<ul>
+<li>Level one：必须有的，完成度要在95%以上，不能出现影响用户使用的重大bug</li>
+<li>Level two: 能够基本完成，完成度80%以上，允许少量的bug存在</li>
+<li>Level three: 锦上添花的功能，完成最好，也可以放到下一个迭代中</li>
+</ul>
+<p>根据不同的 <em>Level</em> 来进行开发时间预估，重要的 <em>Level</em> 应该给以足够的思考和开发时间</p>
+<p>3.<strong>细化实施阶段的步骤(含测试)</strong></p>
+<p>需求按照等级划分清楚，之后开发人员可以对照相应的等级需求进行需求评估，评估完成之后给出实现方案和时间节点。</p>
+<p>实现方案根据团队条件的不一样会有很大不同，在此不讨论具体细节，时间节点又是根据具体的实现方案来定夺，而一般的方案都包含以下几个步骤</p>
+<ul>
+<li>调研<ul>
+<li>方案1</li>
+<li>方案2</li>
+</ul>
+</li>
+<li>讨论<br>  讨论各个方案确定最终实施方案</li>
+<li>实施<ul>
+<li>基本功能</li>
+<li>UI</li>
+<li>等等</li>
+</ul>
+</li>
+<li>测试<ul>
+<li>本地测试</li>
+<li>服务端测试</li>
+<li>联合测试</li>
+<li>测试环境测试</li>
+<li>正式环境测试</li>
+<li>用户测试</li>
+</ul>
+</li>
+</ul>
+<p>开发人员根据这些步骤一步一步去评估每个步骤可能占用的开发时间，以此来决定完成一项功能的时长</p>
+<p><strong>未完待续</strong></p>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+    <a href="/2014/12/20/one-time-python-memory-leaks/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
+  
+  
+    <a href="/2014/10/28/procrastiatio-of-programer-life/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2014/11/29/small-team-evaluate-project-deadline/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2016 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
+<script src="/js/gallery.js" type="text/javascript"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('h1.title').hover(
+      function() {
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );
+      },
+      function() {
+        $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
