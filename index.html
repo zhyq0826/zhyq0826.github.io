@@ -109,6 +109,92 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2016-05-28T03:27:22.000Z">
+  <!-- <a href="/2016/05/28/python-module-path-find/">5月 28日 2016</a> -->
+  5月 28日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/05/28/python-module-path-find/">python的模块加载和路径查找</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/python/">python</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>深入这个问题之前，我们需要理解几个概念：</p>
+<p><strong>module</strong></p>
+<p><code>模块</code>:一个 <code>py</code>文件或以其他文件形式存在的可被导入的就是一个模块</p>
+<p><strong>package</strong></p>
+<p><code>包</code>:包含有 <code>__init__</code> 文件的文件夹</p>
+<p><strong>relative path</strong></p>
+<p><code>相对路径</code>:相对于某个目录的路径</p>
+<p><strong>absolute path</strong></p>
+<p><code>绝对路径</code>:全路径</p>
+<p><strong>路径查找</strong></p>
+<p>python 解释器查找被引入的包或模块</p>
+<p><strong><code>__file__</code></strong></p>
+<p><a href="https://docs.python.org/2/reference/datamodel.html">python doc explain</a>: <code>__file__</code> is the pathname of the file from which the module was loaded, if it was loaded from a file.</p>
+<p>如果一个模块是从文件加载的，<code>__file__</code> 就是该模块的路径名。</p>
+<h2 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h2><p>1.python 执行一个文件</p>
+<p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2016/05/28/python-module-path-find/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/05/28/python-module-path-find/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2016-01-12T14:01:33.000Z">
   <!-- <a href="/2016/01/12/first-art-for-my-life/">1月 12日 2016</a> -->
   1月 12日 2016
