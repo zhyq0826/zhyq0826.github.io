@@ -138,20 +138,15 @@
     <div class="entry">
       
         <p>深入这个问题之前，我们需要理解几个概念：</p>
-<p><strong>module</strong></p>
-<p><code>模块</code>:一个 <code>py</code>文件或以其他文件形式存在的可被导入的就是一个模块</p>
-<p><strong>package</strong></p>
-<p><code>包</code>:包含有 <code>__init__</code> 文件的文件夹</p>
-<p><strong>relative path</strong></p>
-<p><code>相对路径</code>:相对于某个目录的路径</p>
-<p><strong>absolute path</strong></p>
-<p><code>绝对路径</code>:全路径</p>
-<p><strong>路径查找</strong></p>
-<p>python 解释器查找被引入的包或模块</p>
+<p><strong>module</strong>：模块， 一个 <code>py</code>文件或以其他文件形式存在的可被导入的就是一个模块</p>
+<p><strong>package</strong>：包，包含有 <code>__init__</code> 文件的文件夹</p>
+<p><strong>relative path</strong>：相对路径，相对于某个目录的路径</p>
+<p><strong>absolute path</strong>：绝对路径，全路径</p>
+<p><strong>路径查找</strong>：python 解释器查找被引入的包或模块</p>
 <p><strong><code>__file__</code></strong></p>
 <p><a href="https://docs.python.org/2/reference/datamodel.html">python doc explain</a>: <code>__file__</code> is the pathname of the file from which the module was loaded, if it was loaded from a file.</p>
 <p>如果一个模块是从文件加载的，<code>__file__</code> 就是该模块的路径名。</p>
-<h2 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h2><p>1.python 执行一个文件</p>
+<h3 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h3><p>1.python 执行一个文件</p>
 <p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
       
     </div>
