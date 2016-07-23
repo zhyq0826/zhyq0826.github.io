@@ -63,6 +63,51 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="font-size:18px" href="/2016/07/23/why-did-i-make-turbo/">我为什么创造了 turbo 这个后端的轮子</a>
+	  		<time datetime="2016-07-23T11:05:01.000Z">
+			  	<!-- <a href="/2016/07/23/why-did-i-make-turbo/"></a>  -->
+			  	7月 23 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/python/">python</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <blockquote>
+<p>turbo 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
+</blockquote>
+<h2 id="turbo_诞生的背景">turbo 诞生的背景</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
+<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
+<ul>
+<li>一个抽象的 dal 层(数据抽象)</li>
+<li>数据库连接(db)</li>
+<li>配置(conf)</li>
+<li>工具(utils)</li>
+<li>缓存(cache)</li>
+<li>第三方库(lib)</li>
+</ul>
+<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
+<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/07/23/why-did-i-make-turbo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="font-size:18px" href="/2016/06/18/python-copy-deepcopy/">你真得理解 python 的浅拷贝和深拷贝吗？</a>
 	  		<time datetime="2016-06-18T09:00:28.000Z">
 			  	<!-- <a href="/2016/06/18/python-copy-deepcopy/"></a>  -->

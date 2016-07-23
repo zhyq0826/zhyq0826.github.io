@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>我为什么创造了 turbo 这个后端的轮子 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="turbo 与其说是一个 framework ，不如说是一个后端的解决方案。
+
+turbo 诞生的背景tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。
+原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：
+
+一个抽象的 dal 层(数据抽象)
+数据库连接(db)
+配置(conf)
+工具(utils)
+缓存(cache)
+第三方库(lib)
+
+随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。
+创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="我为什么创造了 turbo 这个后端的轮子"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-07-23T11:05:01.000Z">
+  <!-- <a href="/2016/07/23/why-did-i-make-turbo/">7月 23日 2016</a> -->
+  7月 23日 2016
+</time>
+
+  
+    <h1 class="title">我为什么创造了 turbo 这个后端的轮子</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/python/">python</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>turbo 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
+</blockquote>
+<h2 id="turbo_诞生的背景">turbo 诞生的背景</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
+<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
+<ul>
+<li>一个抽象的 dal 层(数据抽象)</li>
+<li>数据库连接(db)</li>
+<li>配置(conf)</li>
+<li>工具(utils)</li>
+<li>缓存(cache)</li>
+<li>第三方库(lib)</li>
+</ul>
+<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
+<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
+<a id="more"></a>
+<p>在这样的背景之下，影响后端开发效率和开发质量问题主要可以抽象为：</p>
+<ul>
+<li>大项目路由多，不易管理，不易变更</li>
+<li>项目目录分层不够，协同开发困难</li>
+<li>构建没有标准，混乱不堪，可维护性差</li>
+<li>重复性代码可共享性差，不易插拔</li>
+<li>tornado 天生原始，没有 Session、数据库连接、配套的 mongodb ORM、缓存管理、RESTFul等丰富特性辅以提高开发效率。</li>
+</ul>
+<p>turbo 就是为解决这些问题而创建的，因而 turbo 更像是一个解决方案。</p>
+<h2 id="turbo_具有什么特性">turbo 具有什么特性</h2><ul>
+<li>项目构建工具，一键生成项目目录和 app 结构</li>
+<li>Session，提供灵活的接口，可以自定义存储方式</li>
+<li>简单的 mongodb ORM，和 mongoose 相比，非常简单甚至粗糙，但足够用了</li>
+<li>丰富且高度统一的目录划分，项目再大也不怕</li>
+<li>代码可插拔，易移植，易维护</li>
+<li>可以方便实现 RESTFul 风格的 api</li>
+<li>灵活的路由组织结构，非常方便重构和查找</li>
+</ul>
+<h4 id="一键构建">一键构建</h4><p>目录结构一键生成，不再是从旧项目拷贝，结构一致，高度统一，可维护性变强。</p>
+<h4 id="Session">Session</h4><p>自带 Session，存储方式可以自由变更，灵活性强。</p>
+<h4 id="简单的_mongodb_ORM">简单的 mongodb ORM</h4><p>ORM 提供最基本的 collection 结构到代码的映射，表结构清晰明了，增删改均可灵活定义数据一致性检查。</p>
+<h4 id="丰富的目录结构划分">丰富的目录结构划分</h4><p>严格定义了各个目录的结构的作用以及层次，提供了一般大型项目所需的各种目录划分</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">├── README.md</span><br><span class="line">├── app-server <span class="comment"># 业务 server</span></span><br><span class="line">├── config <span class="comment"># 全局配置</span></span><br><span class="line">├── db <span class="comment"># db 连接</span></span><br><span class="line">├── helpers <span class="comment"># 全局业务逻辑</span></span><br><span class="line">├── lib <span class="comment"># 第三方依赖库</span></span><br><span class="line">├── models <span class="comment"># 表结构</span></span><br><span class="line">├── script <span class="comment"># 一次性脚本</span></span><br><span class="line">├── service <span class="comment"># 业务性工具</span></span><br><span class="line">├── store <span class="comment"># 全局状态管理</span></span><br><span class="line">├── task <span class="comment"># 异步任务</span></span><br><span class="line">├── utils <span class="comment"># 非业务性工具</span></span><br></pre></td></tr></table></figure>
+<h4 id="代码可插拔,_易移植">代码可插拔, 易移植</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apps</span><br><span class="line">├── __init__.py</span><br><span class="line">├── app</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── app.py</span><br><span class="line">│   ├── base.py</span><br><span class="line">│   ├── setting.py</span><br><span class="line">├── base.py</span><br><span class="line">├── settings.py</span><br></pre></td></tr></table></figure>
+<p>每个业务 app 都具有一样的结构，配置和业务代码随着业务所需分布在各个不同的层次，抽象程度越高的代码，所在层次越高，比如全局合法性检查可以放置在 <code>apps/base.py</code> 中，越具体的业务所在的层次越低，比如具体的注册登录逻辑可以放置在 <code>apps/app/app.py</code> 中。如果业务发生变更，业务目录 <code>app</code> 可完整移植。</p>
+<p>所有业务 <code>app</code> 都必须在 <code>apps/settings.py</code> 下注册才能生效，上下线 so easy.</p>
+<h4 id="RESTFul_api">RESTFul api</h4><p>http 协议所支持的方法都可以在 turbo 中以大小写的方式区分来实现普通页面 render 和接口 api</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># render </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># api  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GET</span><span class="params">(self)</span>:</span></span><br><span class="line">    self._data = &#123;<span class="string">'username'</span>: <span class="string">'zhyq0826'</span>&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="灵活的路由">灵活的路由</h4><p>路由紧随业务代码，提供了</p>
+<ul>
+<li>register_group_urls</li>
+<li>register_url</li>
+</ul>
+<p>两种方式来实现路由的注册</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">register.register_group_urls(<span class="string">''</span>, [</span><br><span class="line">    (<span class="string">'/'</span>, app.HomeHandler),</span><br><span class="line">    (<span class="string">'/index'</span>, app.HomeHandler, <span class="string">'index'</span>),</span><br><span class="line">    (<span class="string">'/hello'</span>, app.HomeHandler, <span class="string">'home'</span>),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">register.register_url(<span class="string">'/v1/hello'</span>, app.ApiHandler)</span><br></pre></td></tr></table></figure>
+<p>可以十分方便的更改路由规则。</p>
+<h4 id="集成很多实用的功能特性">集成很多实用的功能特性</h4><p>在使用mongodb 和 tornado 的实际开发中遇到了各式各样的问题，因而 turbo 自身在发展过程中集成了很多小功能，非常实用。</p>
+<p>1.可以使用命令行一键生成所有 collection 的索引<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">turbo-admin index &lt;model_name&gt;</span><br></pre></td></tr></table></figure></p>
+<p>2.类似 flux 的状态和事件分发机制，可以非常方便管理和更改全局变量状态，此特性可以用以请求统计，函数调用统计等方面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#user.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.flux <span class="keyword">import</span> Mutation, register, State</span><br><span class="line"></span><br><span class="line">mutation = Mutation(__file__)</span><br><span class="line">state = State(__file__)</span><br><span class="line"></span><br><span class="line"><span class="decorator">@register(mutation)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">increase_rank</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> rank+<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="decorator">@register(mutation)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dec_rank</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> rank-<span class="number">1</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#actions.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.flux <span class="keyword">import</span> Mutation, register, dispatch, register_dispatch</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mutation_types</span><br><span class="line"></span><br><span class="line"><span class="decorator">@register_dispatch('user', mutation_types.INCREASE)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">increase</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrease</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> dispatch(<span class="string">'user'</span>, mutation_types.DECREASE, rank)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="decorator">@register_dispatch('metric', 'inc_qps')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inc_qps</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>3.mongodb 读写调用 hook，利用该 hook ，可以统计 mongodb 读写调用状况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">collection_method_call</span><span class="params">(turbo_connect_ins, name)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">outwrapper</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="decorator">        @functools.wraps(func)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> name <span class="keyword">in</span> turbo_connect_ins._write_operators:</span><br><span class="line">                turbo_connect_ins._model_ins.write_action_call(name, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> name <span class="keyword">in</span> turbo_connect_ins._read_operators:</span><br><span class="line">                turbo_connect_ins._model_ins.read_action_call(name, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> outwrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write_action_call</span><span class="params">(self, name, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        execute when write action occurs, note: in this method write action must be called asynchronously</span><br><span class="line">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read_action_call</span><span class="params">(self, name, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        execute when read action occurs, note: in this method read action must be called asynchronously</span><br><span class="line">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>4.日志可以根据文件所在路径生成 logger 名称，也可以自定义 logger 路径、级别、名称等<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.util <span class="keyword">import</span> getLogger</span><br><span class="line"></span><br><span class="line">logger = getLogger(__file__)</span><br><span class="line"></span><br><span class="line">logger = getLogger(<span class="string">'feed'</span>, log_level=logging.DEBUG, log_path=<span class="string">'/var/log/feed.log'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>5.字符串化 mongodb 数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.util <span class="keyword">import</span> to_str, to_list_str, to_dict_str, json_encode</span><br><span class="line"></span><br><span class="line">data  = json_encode(to_str(db.collection.find()))</span><br></pre></td></tr></table></figure>
+<p>6.快捷的参数提取和转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">_get_params = &#123;</span><br><span class="line">    <span class="string">'need'</span>: [</span><br><span class="line">        (<span class="string">'skip'</span>, int),</span><br><span class="line">        (<span class="string">'limit'</span>, int),</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'option'</span>: [</span><br><span class="line">        (<span class="string">'did'</span>, basestring, <span class="keyword">None</span>)</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可调用 self.parameters 完成参数提取工作，必须的参数不存在或转换错误时，值为 <code>None</code>，可选的参数可以指定默认值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> self.parameters[<span class="string">'skip'</span>] == <span class="number">0</span></span><br><span class="line"><span class="keyword">assert</span> self.parameters[<span class="string">'did'</span>] == <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<h2 id="适时而建的轮子_turbo">适时而建的轮子 turbo</h2><p>turbo 在生产环境中应用了近一年，最大的项目日独立用户过百万，还有十多个大大小小的项目的后端使用了 turbo。turbo 经过了最初的考验。 </p>
+<p>后端的轮子对比前端来说，远不如后者的来的快、来的猛，后端更需要长久的磨练和雕琢，一点一滴都需要经过业务的锤炼和数据的洗礼，才能渐渐成品，成为解决特定问题的利器。而轮子的创造更要把握时机，顺势而发。过早，轮子不够健全，解决问题不够彻底，很难推广使用，甚至有可能成了绊脚石，过晚，很多问题已经导致代码积劳成疾，想要完全治愈，必然代价不菲。</p>
+<p>turbo 正是为了解决 tornado 和 mongodb 类应用在面对代码规模庞大、多人协同所遭遇的种种问题而创造的，它的立足点非常实际，没有炫技，不浮夸，切中要害，直面问题。</p>
+<p>turbo 的实用就是它的华丽所在。</p>
+<ul>
+<li>仓库地址：<a href="https://github.com/wecatch/app-turbo" target="_blank" rel="external">Github</a> </li>
+<li>QQ群交流: 387199856</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2016/06/18/python-copy-deepcopy/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2016/07/23/why-did-i-make-turbo/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2016 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
+<script src="/js/gallery.js" type="text/javascript"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('h1.title').hover(
+      function() {
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );
+      },
+      function() {
+        $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
