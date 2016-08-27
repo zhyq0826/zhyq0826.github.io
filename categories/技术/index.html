@@ -63,6 +63,57 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="font-size:18px" href="/2016/08/27/mongodb-single-table-split/">记一次 mongodb 单表亿级数据的拆分方案</a>
+	  		<time datetime="2016-08-27T13:38:14.000Z">
+			  	<!-- <a href="/2016/08/27/mongodb-single-table-split/"></a>  -->
+			  	8月 27 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/mongodb/">mongodb</a>, <a href="/tags/表拆分/">表拆分</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
+<ul>
+<li>聚合查询变得困难</li>
+<li>拆分的键一旦选定，更改会非常困难</li>
+<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
+</ul>
+<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
+<p>在本次实施的拆分方案中，数据特点是:</p>
+<ul>
+<li>单表过亿</li>
+<li>业务数据是用户对资源的收藏，结构比较单一</li>
+<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
+<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
+</ul>
+<h2 id="如何选择拆分键">如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？">如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<ul>
+<li>用户新增一条数据</li>
+<li>用户删除一条数据</li>
+<li>用户查询数据(有翻页)</li>
+</ul>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/08/27/mongodb-single-table-split/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="font-size:18px" href="/2016/08/20/distributed-lock-with-redis/">如何用 redis 造一把分布式锁</a>
 	  		<time datetime="2016-08-20T04:37:42.000Z">
 			  	<!-- <a href="/2016/08/20/distributed-lock-with-redis/"></a>  -->

@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>记一次 mongodb 单表亿级数据的拆分方案 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：
+
+聚合查询变得困难
+拆分的键一旦选定，更改会非常困难
+拆表的过程要保证线上业务不受影响，操作复杂度高
+
+因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。
+在本次实施的拆分方案中，数据特点是:
+
+单表过亿
+业务数据是用户对资源的收藏，结构比较单一
+只做单向(用户–&amp;gt;数据)查找，不要求反向(数据–&amp;gt;用户)查找
+数据处于实时变更状态(新增、删除、查询等操作并存)
+
+如何选择拆分键本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。
+如何保证拆分的过程中不影响用户的操作？本例中，表中的数据基本上只有如下操作
+
+用户新增一条数据
+用户删除一条数据
+用户查询数据(有翻页)">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="记一次 mongodb 单表亿级数据的拆分方案"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-08-27T13:38:14.000Z">
+  <!-- <a href="/2016/08/27/mongodb-single-table-split/">8月 27日 2016</a> -->
+  8月 27日 2016
+</time>
+
+  
+    <h1 class="title">记一次 mongodb 单表亿级数据的拆分方案</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/mongodb/">mongodb</a>, <a href="/tags/表拆分/">表拆分</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
+<ul>
+<li>聚合查询变得困难</li>
+<li>拆分的键一旦选定，更改会非常困难</li>
+<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
+</ul>
+<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
+<p>在本次实施的拆分方案中，数据特点是:</p>
+<ul>
+<li>单表过亿</li>
+<li>业务数据是用户对资源的收藏，结构比较单一</li>
+<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
+<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
+</ul>
+<h2 id="如何选择拆分键">如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？">如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<ul>
+<li>用户新增一条数据</li>
+<li>用户删除一条数据</li>
+<li>用户查询数据(有翻页)</li>
+</ul>
+<a id="more"></a>
+<p>拆表的基本原理就是对选择的键进行 hash 生成每个键所属的表空间名，也就是说，在任意时刻，任意用户的数据只有以下三种状态</p>
+<p>1.全部在旧表中<br>2.部分在新表，部分在旧表<br>3.全部在新表中</p>
+<p>数据拆分的具体工作是要离线进行的，为了能保证用户数据在这样三种状态之下依然具有像单表中一样的一致性，需要业务层在处理当前用户数据时判断用户是否在迁移中，只有处于迁移状态之下，用户数据才需要特别处理。</p>
+<h3 id="迁移状态如何判断?">迁移状态如何判断?</h3><p>如果当前用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，这里做了特殊处理：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)，且保存为有序集数据。</p>
+<p>所以，如果用户处于迁移状态，则用户的数据一定存在于这个区域，暂且给此区域命名为 <em>on_progress</em>。</p>
+<h3 id="迁移状态下如何保证用户数据的正确性？">迁移状态下如何保证用户数据的正确性？</h3><p>当用户处于迁移状态，用户新增一条数据，则在新表和 <em>on_progress</em> 中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>同时删除该数据。</p>
+<p><strong>这样做的目的是什么?</strong></p>
+<p>处于迁移状态下的用户，<em>on_progress</em> 中保存了其所有数据，可以进行翻页操作，<em>on_progress</em> 中的所有数据会在离线状态下不断写入新表中，迁移完成之后，旧表中的数据将被删除，<em>on_progress</em> 中数据也将被清除，这样用户数据全部进入新表中，后续的所有操作将只在新表上进行。</p>
+<p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新–&gt;旧或由旧–&gt;新的顺序进行，在这个过程中：</p>
+<blockquote>
+<p>用户删除一条数据</p>
+</blockquote>
+<p>1）有可能该条数据已经写入新表中，所以删除操作要在新表中执行。<br>2）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而删除操作也要在 <em>on_progress</em> 中执行。</p>
+<blockquote>
+<p>用户新增一条数据</p>
+</blockquote>
+<p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧–&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。</p>
+<h3 id="on_progress_的选择">on_progress 的选择</h3><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
+<p>迁移完成之后，先删除旧表中的数据，然后再删除 <em>on_progress</em> 中有序集，所以，只要用户处于 redis 中，则此时一定是迁移中或迁移完成，如果在旧表中找到用户数据，则该用户一定还没有开始迁移，否则用户已经迁移成功。</p>
+<p>需要注意的是，选用 redis 可能带来的问题是 redis 宕机会导致迁移中的数据无法回复(redis 未开持久化操作或其他原因导致数据不能恢复)，只要用户在旧表中有数据存在，则用户删除或新增数据的操作一定也要在旧表中执行，再次恢复迁移时，要清除新表数据之后才能正常进行。</p>
+<p><img src="/images/table-split.png" alt="迁移流程图" width="800"></p>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2016/08/20/distributed-lock-with-redis/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2016/08/27/mongodb-single-table-split/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2016 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
+<script src="/js/gallery.js" type="text/javascript"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('h1.title').hover(
+      function() {
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );
+      },
+      function() {
+        $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
