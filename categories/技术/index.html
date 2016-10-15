@@ -63,6 +63,62 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="font-size:18px" href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">mysql 不指定 ip 的连接默认都是 localhost</a>
+	  		<time datetime="2016-10-14T04:48:30.000Z">
+			  	<!-- <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/"></a>  -->
+			  	10月 14 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/mysql/">mysql</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <h2 id="问题场景">问题场景</h2><p>在本地使用 docker 启动了一个 mysql 容器，并把本地的<code>33067</code>端口映射到容器内 mysql 的 <code>3306</code>，我们假设容器的 ip 地址是 <code>172.17.0.2</code>，使用本地的 mysql 客户端尝试连接容器内部的 mysql 服务。</p>
+<p><strong>方法 1</strong></p>
+<p>由于是绑定本地的 33067 端口，所以在连接时指定端口号即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -P33067</span><br></pre></td></tr></table></figure>
+<p>此时 mysql-client 实际上进入了本地的 mysql 服务，使用 <code>status</code> 命令可以查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Connection id:      <span class="number">49</span></span><br><span class="line">Current database:   </span><br><span class="line">Current user:       root@localhost</span><br><span class="line">SSL:            Not <span class="keyword">in</span> use</span><br><span class="line">Current pager:      stdout</span><br><span class="line">Using outfile:      <span class="string">''</span></span><br><span class="line">Using delimiter:    ;</span><br><span class="line">Server version:     <span class="number">5.5</span>.<span class="number">52</span>-<span class="number">0</span>ubuntu0.<span class="number">14.04</span>.<span class="number">1</span> (Ubuntu)</span><br><span class="line">Protocol version:   <span class="number">10</span></span><br><span class="line">Connection:     Localhost via UNIX socket</span><br><span class="line">Server characterset:    latin1</span><br><span class="line">Db     characterset:    latin1</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">UNIX socket:        /var/run/mysqld/mysqld.sock</span><br><span class="line">Uptime:         <span class="number">1</span> hour <span class="number">35</span> min <span class="number">41</span> sec</span><br></pre></td></tr></table></figure>
+<p>connecttion 信息是本地的 unix socket，这样的连接并没有连接到容器内的 mysql。</p>
+<p><strong>方法 2</strong></p>
+<p>尝试指定对应 host 和映射的本地端口，由于映射的是本地端口，所以 host 为 localhost</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -hlocalhost -P33067</span><br></pre></td></tr></table></figure>
+<p>依然连接的是本地的 mysql 服务。</p>
+<p><strong>方法 3</strong></p>
+<p>直接使用容器的的 ip 地址，默认端口是 3306 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -h172.<span class="number">17.0</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<p><strong>方法 4</strong></p>
+<p>使用 127.0.0.1 地址，并指定本地映射的端口 33067 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -h127.<span class="number">0.0</span>.<span class="number">1</span> -P33067</span><br></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<h2 id="分析">分析</h2><p>方法 1 和 方法 2 连接的 host 其实都是 localhost（不指定 host，默认是 localhost），此时不论端口指定什么，mysql-client 都尝试使用 unix socket 的通信方式，也就是本地的 socket ，所以如果要连接指定 ip 的 mysql 服务，必须要指定 ip ，即使该 ip 映射的是 localhost。</p>
+<p>如上的场景由于容器内的 mysql 服务端口映射到本地的特定端口，即使是这种情况，连接依然需要指定本地 ip 127.0.0.1，而不是本地的 hostname localhost，因为一旦使用了 localhost，mysql-client 就尝试使用本地的 unix socket 连接本地的 mysql 服务。</p>
+<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么</p>
+<blockquote>
+<p>Beware that by default, the mysql client tries to connect using a unix socket when you tell it to connect to localhost. So do use 127.0.0.1 and not localhost:<br>$ mysql -h 127.0.0.1 -P 3306 -u root</p>
+</blockquote>
+
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="font-size:18px" href="/2016/08/27/mongodb-single-table-split/">记一次 mongodb 单表亿级数据的拆分方案</a>
 	  		<time datetime="2016-08-27T13:38:14.000Z">
 			  	<!-- <a href="/2016/08/27/mongodb-single-table-split/"></a>  -->

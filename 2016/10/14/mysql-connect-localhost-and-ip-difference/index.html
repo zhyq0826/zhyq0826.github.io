@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql 不指定 ip 的连接默认都是 localhost | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="问题场景在本地使用 docker 启动了一个 mysql 容器，并把本地的33067端口映射到容器内 mysql 的 3306，我们假设容器的 ip 地址是 172.17.0.2，使用本地的 mysql 客户端尝试连接容器内部的 mysql 服务。
+方法 1
+由于是绑定本地的 33067 端口，所以">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="mysql 不指定 ip 的连接默认都是 localhost"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-10-14T04:48:30.000Z">
+  <!-- <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">10月 14日 2016</a> -->
+  10月 14日 2016
+</time>
+
+  
+    <h1 class="title">mysql 不指定 ip 的连接默认都是 localhost</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/mysql/">mysql</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="问题场景">问题场景</h2><p>在本地使用 docker 启动了一个 mysql 容器，并把本地的<code>33067</code>端口映射到容器内 mysql 的 <code>3306</code>，我们假设容器的 ip 地址是 <code>172.17.0.2</code>，使用本地的 mysql 客户端尝试连接容器内部的 mysql 服务。</p>
+<p><strong>方法 1</strong></p>
+<p>由于是绑定本地的 33067 端口，所以在连接时指定端口号即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -P33067</span><br></pre></td></tr></table></figure>
+<p>此时 mysql-client 实际上进入了本地的 mysql 服务，使用 <code>status</code> 命令可以查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Connection id:      <span class="number">49</span></span><br><span class="line">Current database:   </span><br><span class="line">Current user:       root@localhost</span><br><span class="line">SSL:            Not <span class="keyword">in</span> use</span><br><span class="line">Current pager:      stdout</span><br><span class="line">Using outfile:      <span class="string">''</span></span><br><span class="line">Using delimiter:    ;</span><br><span class="line">Server version:     <span class="number">5.5</span>.<span class="number">52</span>-<span class="number">0</span>ubuntu0.<span class="number">14.04</span>.<span class="number">1</span> (Ubuntu)</span><br><span class="line">Protocol version:   <span class="number">10</span></span><br><span class="line">Connection:     Localhost via UNIX socket</span><br><span class="line">Server characterset:    latin1</span><br><span class="line">Db     characterset:    latin1</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">UNIX socket:        /var/run/mysqld/mysqld.sock</span><br><span class="line">Uptime:         <span class="number">1</span> hour <span class="number">35</span> min <span class="number">41</span> sec</span><br></pre></td></tr></table></figure>
+<p>connecttion 信息是本地的 unix socket，这样的连接并没有连接到容器内的 mysql。</p>
+<p><strong>方法 2</strong></p>
+<p>尝试指定对应 host 和映射的本地端口，由于映射的是本地端口，所以 host 为 localhost</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -hlocalhost -P33067</span><br></pre></td></tr></table></figure>
+<p>依然连接的是本地的 mysql 服务。</p>
+<p><strong>方法 3</strong></p>
+<p>直接使用容器的的 ip 地址，默认端口是 3306 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -h172.<span class="number">17.0</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<p><strong>方法 4</strong></p>
+<p>使用 127.0.0.1 地址，并指定本地映射的端口 33067 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -h127.<span class="number">0.0</span>.<span class="number">1</span> -P33067</span><br></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<h2 id="分析">分析</h2><p>方法 1 和 方法 2 连接的 host 其实都是 localhost（不指定 host，默认是 localhost），此时不论端口指定什么，mysql-client 都尝试使用 unix socket 的通信方式，也就是本地的 socket ，所以如果要连接指定 ip 的 mysql 服务，必须要指定 ip ，即使该 ip 映射的是 localhost。</p>
+<p>如上的场景由于容器内的 mysql 服务端口映射到本地的特定端口，即使是这种情况，连接依然需要指定本地 ip 127.0.0.1，而不是本地的 hostname localhost，因为一旦使用了 localhost，mysql-client 就尝试使用本地的 unix socket 连接本地的 mysql 服务。</p>
+<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么</p>
+<blockquote>
+<p>Beware that by default, the mysql client tries to connect using a unix socket when you tell it to connect to localhost. So do use 127.0.0.1 and not localhost:<br>$ mysql -h 127.0.0.1 -P 3306 -u root</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2016/08/27/mongodb-single-table-split/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2016/10/14/mysql-connect-localhost-and-ip-difference/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2016 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
+<script src="/js/gallery.js" type="text/javascript"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('h1.title').hover(
+      function() {
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );
+      },
+      function() {
+        $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
