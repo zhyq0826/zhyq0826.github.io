@@ -9,7 +9,10 @@
   <meta name="description" content="文中 python 皆为 2.x 版本
 
 初学 python 的人基本上都有过如下类似经历:
-UnicodeDecodeError123Traceback (most recent call last):  File &quot;&amp;lt;input&amp;gt;&quot;, line 1, in &amp;lt;module&amp;gt">
+UnicodeDecodeError123Traceback (most recent call last):  File &quot;&amp;lt;input&amp;gt;&quot;, line 1, in &amp;lt;module&amp;gt;UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)
+UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;input&amp;gt;&quot;, line 1, in &amp;lt;module&amp;gt;UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 0-1: ordinal not in range(128)
+这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。
+这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -114,6 +117,7 @@ UnicodeDecodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
 <p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure></p>
 <p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
 <p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
+<a id="more"></a>
 <h1 id="string">string</h1><p>字符串(string)其实就是一段文本序列，是由一个或多个字符组成(character)，字符是文本的最小构成单元，在 python 中可以用以下方式表示字符串:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s1 = <span class="string">'abc'</span></span><br><span class="line">&gt;&gt;&gt; s2 = <span class="string">"abc"</span></span><br><span class="line">&gt;&gt;&gt; s3 = <span class="string">""</span><span class="string">"</span><br><span class="line">  abc</span><br><span class="line">  "</span><span class="string">""</span></span><br><span class="line">&gt;&gt;&gt; s4 = <span class="string">'中文'</span></span><br><span class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> [s1, s2, s3, s4]:</span><br><span class="line">        <span class="built_in">print</span> <span class="built_in">type</span>(i)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br></pre></td></tr></table></figure>
 <p>这些变量在 python shell 中对应输出是:</p>
