@@ -126,7 +126,7 @@
 <p>连接成功，进入容器内部的 mysql 服务。</p>
 <h2 id="分析">分析</h2><p>方法 1 和 方法 2 连接的 host 其实都是 localhost（不指定 host，默认是 localhost），此时不论端口指定什么，mysql-client 都尝试使用 unix socket 的通信方式，也就是本地的 socket ，所以如果要连接指定 ip 的 mysql 服务，必须要指定 ip ，即使该 ip 映射的是 localhost。</p>
 <p>如上的场景由于容器内的 mysql 服务端口映射到本地的特定端口，即使是这种情况，连接依然需要指定本地 ip 127.0.0.1，而不是本地的 hostname localhost，因为一旦使用了 localhost，mysql-client 就尝试使用本地的 unix socket 连接本地的 mysql 服务。</p>
-<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么</p>
+<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么。</p>
 <blockquote>
 <p>Beware that by default, the mysql client tries to connect using a unix socket when you tell it to connect to localhost. So do use 127.0.0.1 and not localhost:<br>$ mysql -h 127.0.0.1 -P 3306 -u root</p>
 </blockquote>
@@ -153,6 +153,8 @@
 
           <div class="clearfix"></div>
           <nav id="pagination">
+  
+    <a href="/2016/11/06/python-string-unicode/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
   
   
     <a href="/2016/08/27/mongodb-single-table-split/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
