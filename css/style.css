@@ -4,7 +4,7 @@
 }
 body {
   background: #fff;
-  color: #3a4145;
+  color: #2c3e50;
   font-family: "Noto Serif", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-size: 16px;
   text-shadow: 0 0 1px transparent;
@@ -265,7 +265,7 @@ article header time {
 }
 article header .title {
   font-weight: bold;
-  font-size: 35px;
+  font-size: 28px;
   margin: 10px 0px;
   color: #258fb8;
   color: #50585d;
@@ -299,7 +299,7 @@ article .entry .video-container {
 article .entry p {
   margin: 20px 0;
   font-size: 16px;
-  line-height: 25px;
+  line-height: 32px;
 }
 article .entry blockquote {
 /*border-top 1px solid color-border*/
@@ -370,6 +370,9 @@ article .entry ul dl,
 article .entry ol dl,
 article .entry dl dl {
   margin-top: 0;
+}
+article .entry li p {
+  margin: 0px !important;
 }
 article .entry h1,
 article .entry h2 {
@@ -672,7 +675,7 @@ article footer .tags {
   color: #777;
 }
 #sidebar .search input:focus {
-  color: #3a4145;
+  color: #2c3e50;
 }
 #sidebar .tag small {
   margin-left: 15px;
