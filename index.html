@@ -109,6 +109,83 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-02-06T16:03:19.000Z">
+  <!-- <a href="/2017/02/07/understand-network-programming/">2月 7日 2017</a> -->
+  2月 7日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/02/07/understand-network-programming/">理解网络编程</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/network/">network</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。</p>
+<p>如何开启两个进程的交流之旅？很简单，像下面这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># process A</span></span><br><span class="line"><span class="comment"># create tcp client</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># enable reuse address port</span></span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># bind socket to the port</span></span><br><span class="line">server_address = (host, port)</span><br><span class="line">s.bind(server_address)</span><br><span class="line">s.listen(backlog)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></span><br><span class="line">    client, address = s.accept()</span><br><span class="line"></span><br><span class="line"><span class="comment"># process B</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server_address = (host, port)</span><br><span class="line"><span class="keyword">print</span> <span class="string">'connect to server &#123;0&#125;'</span>.format(server_address)</span><br><span class="line">s.connect(server_address)</span><br></pre></td></tr></table></figure>
+<p>进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个<strong>新的 socket</strong> 开始和 B 进行对话交流。是的，一个新的 socket。</p>
+<p>那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。</p>
+<p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
+<p><strong>那试试多进程如何？</strong></p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/02/07/understand-network-programming/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2017/02/07/understand-network-programming/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2017/02/07/understand-network-programming/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-02-05T10:02:39.000Z">
   <!-- <a href="/2017/02/05/understand-semantic-ui-grid/">2月 5日 2017</a> -->
   2月 5日 2017
@@ -870,94 +947,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2016/06/04/why-emberjs-is-best-for-cms/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/06/04/why-emberjs-is-best-for-cms/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2016-05-28T03:27:22.000Z">
-  <!-- <a href="/2016/05/28/python-module-path-find/">5月 28日 2016</a> -->
-  5月 28日 2016
-</time>
-
-  
-    <h1 class="title"><a href="/2016/05/28/python-module-path-find/">理解 python 模块加载和路径查找</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li><p><strong>module</strong></p>
-<p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
-</li>
-<li><p><strong>package</strong></p>
-<p>包，包含有 <code>__init__</code> 文件的文件夹</p>
-</li>
-<li><p><strong>relative path</strong></p>
-<p>相对路径，相对于某个目录的路径</p>
-</li>
-<li><p><strong>absolute path</strong></p>
-<p>绝对路径，全路径</p>
-</li>
-<li><p><strong>路径查找</strong></p>
-<p>python 解释器查找被引入的包或模块</p>
-</li>
-</ul>
-<h2 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h2><h4 id="执行一个_python_模块">执行一个 python 模块</h4><p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2016/05/28/python-module-path-find/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/05/28/python-module-path-find/">&nbsp;
               </span>
             </a>
           </div>

@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>理解网络编程 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。
+如何开启两个进程的交流之旅？很简单，像下面这样：
+12345678910111213141516171819# process A# create tcp clients = socket.socket(socket.AF_INET, socket.SOCK_STREAM)# enable reuse address ports.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)# bind socket to the portserver_address = (host, port)s.bind(server_address)s.listen(backlog)while 1:    print &#39;waitting to recevie message from client&#39;    client, address = s.accept()# process Bs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)server_address = (host, port)print &#39;connect to server &amp;#123;0&amp;#125;&#39;.format(server_address)s.connect(server_address)
+进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个新的 socket 开始和 B 进行对话交流。是的，一个新的 socket。
+那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。
+在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。
+那试试多进程如何？">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="理解网络编程"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-02-06T16:03:19.000Z">
+  <!-- <a href="/2017/02/07/understand-network-programming/">2月 7日 2017</a> -->
+  2月 7日 2017
+</time>
+
+  
+    <h1 class="title">理解网络编程</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/network/">network</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。</p>
+<p>如何开启两个进程的交流之旅？很简单，像下面这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># process A</span></span><br><span class="line"><span class="comment"># create tcp client</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># enable reuse address port</span></span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># bind socket to the port</span></span><br><span class="line">server_address = (host, port)</span><br><span class="line">s.bind(server_address)</span><br><span class="line">s.listen(backlog)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></span><br><span class="line">    client, address = s.accept()</span><br><span class="line"></span><br><span class="line"><span class="comment"># process B</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server_address = (host, port)</span><br><span class="line"><span class="keyword">print</span> <span class="string">'connect to server &#123;0&#125;'</span>.format(server_address)</span><br><span class="line">s.connect(server_address)</span><br></pre></td></tr></table></figure>
+<p>进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个<strong>新的 socket</strong> 开始和 B 进行对话交流。是的，一个新的 socket。</p>
+<p>那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。</p>
+<p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
+<p><strong>那试试多进程如何？</strong></p>
+<a id="more"></a>
+<p>是啊，多进程看上去是个好办法，每当 socket 收到一个新的请求，fork 一个进程来处理这个新的请求，原有的进程就不必等待处理工作完成之后再去监听新的连接对话。在 linux 中 fork 出来的进程和父进程拥有同样的上下文信息、内存数据、与进程关联的文件描述符等，不同的是这两个进程完全是在两个不同的虚拟内存段上，相互不干扰， 而 socket 不正是一个文件描述符么？</p>
+<p><strong>多进程 sample</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># process A</span></span><br><span class="line"><span class="comment"># create tcp client</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># enable reuse address port</span></span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># bind socket to the port</span></span><br><span class="line">server_address = (host, port)</span><br><span class="line">s.bind(server_address)</span><br><span class="line">s.listen(backlog)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></span><br><span class="line">    client, address = s.accept()</span><br><span class="line">    pid = os.fork()</span><br><span class="line">    <span class="keyword">if</span> pid:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># process work in child process</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        client.close()</span><br><span class="line">        sys.exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>很简单是不是，处理工作和监听请求现在是分开的，这样进程 A 可以同时处理多个对话了（对我们人类来说几乎可以认为是同时了：）。</p>
+<p>如果某些情况下，需要让<strong>负责监听的进程</strong>和<strong>处理工作的进程</strong>也进行<strong>交流</strong>，那他们是不是也需要再进行 socket 会话呢，事情变得麻烦了是不是。而且还有一点是只要多一个进程处理，计算机就要分配相应的资源对进程进行管理，而且进程的上下文切换是昂贵的，每次切换都需要做数据栈保存、恢复、进行系统调用中断、用户区到内核区相互数据 copy，真的是有很多工作要做。</p>
+<p>还有其他办法么？除了进程可以让计算机同时做很多工作以外，<strong>线程</strong>也是可以的，而且线程是进程内部的子程序，线程之间共享相同的内存区域，他们很容易就可以进行交流，线程之间的切换完全发生在进程内部。</p>
+<p><strong>多线程 sample</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># process A</span></span><br><span class="line"><span class="comment"># create tcp client</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"><span class="comment"># enable reuse address port</span></span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># bind socket to the port</span></span><br><span class="line">server_address = (host, port)</span><br><span class="line">s.bind(server_address)</span><br><span class="line">s.listen(backlog)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></span><br><span class="line">    client, address = s.accept()</span><br><span class="line">    thread = thread.Thread(target=func, args=(client, address))</span><br><span class="line">    thread.start()</span><br></pre></td></tr></table></figure>
+<p>任何模型都不是完美的，线程的问题又是什么？线程的问题在于<strong>数据共享</strong>，控制不同线程对数据的读写是一项有挑战的工作，如果要处理的业务逻辑本身就复杂，尤其是需要额外注意对数据的读写操作。而且不论进程模型或线程模型，都需要面临一个问题：不知道什么时候要去写数据或什么时候要去读数据。因为他们都没有办法确定数据什么时候到达。</p>
+<p>于是 epoll 和 select 诞生了。（待续）</p>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2017/02/05/understand-semantic-ui-grid/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2017/02/07/understand-network-programming/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2017 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
+<script src="/js/gallery.js" type="text/javascript"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    $('h1.title').hover(
+      function() {
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );
+      },
+      function() {
+        $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
