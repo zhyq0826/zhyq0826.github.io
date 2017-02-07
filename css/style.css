@@ -148,7 +148,7 @@ a:hover {
   color: #57a3e8;
 }
 article {
-  margin: 20px 0 40px 0;
+  margin: 20px 0 80px 0;
 }
 article.page {
   padding-left: 20px;
@@ -587,7 +587,7 @@ article footer .tags {
 }
 .archive.category-archive {
   border-bottom: none;
-  margin-bottom: 30px;
+  margin-bottom: 80px;
 }
 .archive .categories {
   display: inline-block;
