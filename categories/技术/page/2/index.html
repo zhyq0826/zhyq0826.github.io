@@ -63,6 +63,49 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="" href="/2016/05/28/python-module-path-find/">理解 python 模块加载和路径查找</a>
+	  		<time datetime="2016-05-28T03:27:22.000Z">
+			  	<!-- <a href="/2016/05/28/python-module-path-find/"></a>  -->
+			  	5月 28 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/python/">python</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <ul>
+<li><p><strong>module</strong><br>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
+</li>
+<li><p><strong>package</strong><br>包，包含有 <code>__init__</code> 文件的文件夹</p>
+</li>
+<li><p><strong>relative path</strong><br>相对路径，相对于某个目录的路径</p>
+</li>
+<li><p><strong>absolute path</strong><br>绝对路径，全路径</p>
+</li>
+<li><p><strong>路径查找</strong><br>python 解释器查找被引入的包或模块</p>
+</li>
+</ul>
+<h2 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h2><h4 id="执行一个_python_模块">执行一个 python 模块</h4><p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="" href="/2014/12/27/python-lib/">python 开发中的第三方库</a>
 	  		<time datetime="2014-12-27T11:53:27.000Z">
 			  	<!-- <a href="/2014/12/27/python-lib/"></a>  -->
