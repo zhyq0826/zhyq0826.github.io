@@ -148,6 +148,14 @@ wiki:In computer science, a lock or mutex (from mutual exclusion) is a synchroni
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    pipe.watch(lock)</span><br><span class="line">    pipe.multi()</span><br><span class="line">    <span class="comment">#TODO transaction with redis command</span></span><br><span class="line">    pipe.delete(lock)</span><br><span class="line">    pipe.unwatch(lock)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="comment">#TODO transaction failes</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment">#TODO transaction success</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
       
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
     </div>
     <footer>
       
