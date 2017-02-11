@@ -272,13 +272,13 @@ article header .title {
   font-size: 28px;
   margin: 10px 0px;
   color: #258fb8;
-  color: #50585d;
+  color: #d35c5c;
 }
 article header .title a {
-  color: #50585d;
+  color: #d35c5c;
 }
 article header .title a:hover {
-  color: #57a3e8;
+  color: #2c3e50;
   text-decoration: none;
 }
 article .entry {
