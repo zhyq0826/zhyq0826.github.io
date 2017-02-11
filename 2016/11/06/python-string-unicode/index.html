@@ -6,7 +6,24 @@
   <title>理解 python UnicodeEncodeError | 三月沙</title>
   <meta name="author" content="三月沙">
   
-  <meta name="description" content="文中 python 皆为 2.x 版本
+  <meta name="description" content="fundamental concepts
+
+字符character 构成文本的最小组成单元
+
+字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成
+
+字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等
+
+字符编码值code point 字符的对应的编码值，一个整数值，不同字符集有不同的规定
+
+编码将字符集中的字符码映射为字节流(byte sequence)的一种具体实现
+
+解码将字节流解析为字符集中的字符
+
+
+
+
+文中 python 皆为 2.x 版本code
 
 初学 python 的人基本上都有过如下类似经历:
 UnicodeDecodeError123Traceback (most recent call last):  File &quot;&amp;lt;input&amp;gt;&quot;, line 1, in &amp;lt;module&amp;gt;UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)
@@ -109,8 +126,24 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
     </header>
     <div class="entry">
       
-        <blockquote>
-<p>文中 python 皆为 2.x 版本</p>
+        <p><strong>fundamental concepts</strong></p>
+<ul>
+<li><p><strong>字符</strong><br>character 构成文本的最小组成单元</p>
+</li>
+<li><p><strong>字节</strong><br>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+</li>
+<li><p><strong>字符集</strong><br>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+</li>
+<li><p><strong>字符编码值</strong><br>code point 字符的对应的编码值，一个整数值，不同字符集有不同的规定</p>
+</li>
+<li><p><strong>编码</strong><br>将字符集中的字符码映射为字节流(byte sequence)的一种具体实现</p>
+</li>
+<li><p><strong>解码</strong><br>将字节流解析为字符集中的字符</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>文中 python 皆为 2.x 版本code</p>
 </blockquote>
 <p>初学 python 的人基本上都有过如下类似经历:</p>
 <p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure></p>

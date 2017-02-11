@@ -158,13 +158,6 @@
 <p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -242,13 +235,6 @@
 <p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
 <p><strong>那试试多进程如何？</strong></p>
       
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
       
     </div>
     <footer>
@@ -337,13 +323,6 @@
 <p>如果需要对一段文本进行固定居中，semantic ui 提供了 <code>text container</code></p>
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -424,13 +403,6 @@
 <h2 id="学习_markdown_语法">学习 markdown 语法</h2><p>markdown 的语法非常简单，对于一般性的写作，只需要记住一些常用的标记即可，markdown 的教程很多，在此推荐 <strong><a href="http://wowubuntu.com/markdown/">http://wowubuntu.com/markdown/</a></strong>。</p>
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -500,8 +472,24 @@
     </header>
     <div class="entry">
       
-        <blockquote>
-<p>文中 python 皆为 2.x 版本</p>
+        <p><strong>fundamental concepts</strong></p>
+<ul>
+<li><p><strong>字符</strong><br>character 构成文本的最小组成单元</p>
+</li>
+<li><p><strong>字节</strong><br>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+</li>
+<li><p><strong>字符集</strong><br>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+</li>
+<li><p><strong>字符编码值</strong><br>code point 字符的对应的编码值，一个整数值，不同字符集有不同的规定</p>
+</li>
+<li><p><strong>编码</strong><br>将字符集中的字符码映射为字节流(byte sequence)的一种具体实现</p>
+</li>
+<li><p><strong>解码</strong><br>将字节流解析为字符集中的字符</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>文中 python 皆为 2.x 版本code</p>
 </blockquote>
 <p>初学 python 的人基本上都有过如下类似经历:</p>
 <p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure></p>
@@ -509,13 +497,6 @@
 <p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
 <p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
       
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
       
     </div>
     <footer>
@@ -614,13 +595,6 @@
 
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -713,13 +687,6 @@
 </ul>
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -803,13 +770,6 @@
 <p>不言而喻，分布式锁就是为了解决分布式环境中对资源的访问限制而诞生的。</p>
 <h2 id="如何设计一把分布式锁">如何设计一把分布式锁</h2>
       
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
       
     </div>
     <footer>
@@ -897,13 +857,6 @@
 <p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要同时维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
       
       
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
     <footer>
       
@@ -980,13 +933,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="prompt">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'b'</span>:[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]&#125;</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>c = copy.copy(l)</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>id(l) == id(c)</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>l[<span class="string">'a'</span>].append(<span class="string">'4'</span>)</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>c[<span class="string">'b'</span>].append(<span class="string">'7'</span>)</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>l</span><br><span class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>c</span><br><span class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 <p>可见浅拷贝产生的新对象中可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
       
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
       
     </div>
     <footer>
