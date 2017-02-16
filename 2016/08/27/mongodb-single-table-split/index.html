@@ -39,9 +39,9 @@
 
   <link href="/favicon.ico" rel="icon">
   <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
   <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
@@ -136,8 +136,8 @@
 <li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
 <li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
 </ul>
-<h2 id="如何选择拆分键">如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
-<h2 id="如何保证拆分的过程中不影响用户的操作？">如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
 <ul>
 <li>用户新增一条数据</li>
 <li>用户删除一条数据</li>
@@ -147,9 +147,9 @@
 <p>拆表的基本原理就是对选择的键进行 hash 生成每个键所属的表空间名，也就是说，在任意时刻，任意用户的数据只有以下三种状态</p>
 <p>1.全部在旧表中<br>2.部分在新表，部分在旧表<br>3.全部在新表中</p>
 <p>数据拆分的具体工作是要离线进行的，为了能保证用户数据在这样三种状态之下依然具有像单表中一样的一致性，需要业务层在处理当前用户数据时判断用户是否在迁移中，只有处于迁移状态之下，用户数据才需要特别处理。</p>
-<h3 id="迁移状态如何判断?">迁移状态如何判断?</h3><p>如果当前用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，这里做了特殊处理：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)，且保存为有序集数据。</p>
+<h3 id="迁移状态如何判断"><a href="#迁移状态如何判断" class="headerlink" title="迁移状态如何判断?"></a>迁移状态如何判断?</h3><p>如果当前用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，这里做了特殊处理：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)，且保存为有序集数据。</p>
 <p>所以，如果用户处于迁移状态，则用户的数据一定存在于这个区域，暂且给此区域命名为 <em>on_progress</em>。</p>
-<h3 id="迁移状态下如何保证用户数据的正确性？">迁移状态下如何保证用户数据的正确性？</h3><p>当用户处于迁移状态，用户新增一条数据，则在新表和 <em>on_progress</em> 中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>同时删除该数据。</p>
+<h3 id="迁移状态下如何保证用户数据的正确性？"><a href="#迁移状态下如何保证用户数据的正确性？" class="headerlink" title="迁移状态下如何保证用户数据的正确性？"></a>迁移状态下如何保证用户数据的正确性？</h3><p>当用户处于迁移状态，用户新增一条数据，则在新表和 <em>on_progress</em> 中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>同时删除该数据。</p>
 <p><strong>这样做的目的是什么?</strong></p>
 <p>处于迁移状态下的用户，<em>on_progress</em> 中保存了其所有数据，可以进行翻页操作，<em>on_progress</em> 中的所有数据会在离线状态下不断写入新表中，迁移完成之后，旧表中的数据将被删除，<em>on_progress</em> 中数据也将被清除，这样用户数据全部进入新表中，后续的所有操作将只在新表上进行。</p>
 <p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新–&gt;旧或由旧–&gt;新的顺序进行，在这个过程中：</p>
@@ -161,7 +161,7 @@
 <p>用户新增一条数据</p>
 </blockquote>
 <p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧–&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。</p>
-<h3 id="on_progress_的选择">on_progress 的选择</h3><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
+<h3 id="on-progress-的选择"><a href="#on-progress-的选择" class="headerlink" title="on_progress 的选择"></a>on_progress 的选择</h3><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
 <p>迁移完成之后，先删除旧表中的数据，然后再删除 <em>on_progress</em> 中有序集，所以，只要用户处于 redis 中，则此时一定是迁移中或迁移完成，如果在旧表中找到用户数据，则该用户一定还没有开始迁移，否则用户已经迁移成功。</p>
 <p>需要注意的是，选用 redis 可能带来的问题是 redis 宕机会导致迁移中的数据无法回复(redis 未开持久化操作或其他原因导致数据不能恢复)，只要用户在旧表中有数据存在，则用户删除或新增数据的操作一定也要在旧表中执行，再次恢复迁移时，要清除新表数据之后才能正常进行。</p>
 <p><img src="/images/table-split.png" alt="迁移流程图" width="800"></p>
@@ -234,9 +234,9 @@ Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="ex
 
 <div class="clearfix"></div></footer>
   
-<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
-<script src="/js/gallery.js" type="text/javascript"></script>
-<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
 
 

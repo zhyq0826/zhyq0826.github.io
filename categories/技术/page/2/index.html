@@ -18,9 +18,9 @@
 
   <link href="/favicon.ico" rel="icon">
   <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
   <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
@@ -63,6 +63,83 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="" href="/2016/06/04/why-emberjs-is-best-for-cms/">为什么选择 emberjs 开发 dashboard 和 CMS 类系统</a>
+	  		<time datetime="2016-06-04T10:35:35.000Z">
+			  	<!-- <a href="/2016/06/04/why-emberjs-is-best-for-cms/"></a>  -->
+			  	6月 4 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/emberjs/">emberjs</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <h2 id="emberjs-是什么"><a href="#emberjs-是什么" class="headerlink" title="emberjs 是什么"></a>emberjs 是什么</h2><p>在开始之前，先看一组 github 数据</p>
+<p><strong>ember.js</strong></p>
+<ul>
+<li>star 16291</li>
+<li>contributors 586</li>
+<li>releases  181</li>
+<li>issues 167 open, 4397 closed</li>
+</ul>
+<p><a href="https://github.com/emberjs/ember.js">https://github.com/emberjs/ember.js</a></p>
+<p><strong>angular.js</strong></p>
+<ul>
+<li>star 49643</li>
+<li>contributors 1476</li>
+<li>releases 169</li>
+<li>issues 817 open, 6992 closed</li>
+</ul>
+<p><a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></p>
+<p><strong>vue.js</strong></p>
+<ul>
+<li>star 19883</li>
+<li>contributors 69</li>
+<li>releases 137</li>
+<li>issues 27 open, 2252 closed</li>
+</ul>
+<p><a href="https://github.com/vuejs/vue">https://github.com/vuejs/vue</a></p>
+<p><strong>react.js</strong></p>
+<ul>
+<li>star 43026</li>
+<li>contributors 713</li>
+<li>releases 46</li>
+<li>issues 480 open, 2843 closed</li>
+</ul>
+<p><a href="https://github.com/facebook/react">https://github.com/facebook/react</a></p>
+<p><strong>riot.js</strong></p>
+<ul>
+<li>star 9565</li>
+<li>contributors 138</li>
+<li>releases 137</li>
+<li>issues 96 open, 1089 closed</li>
+</ul>
+<p><a href="https://github.com/riot/riot">https://github.com/riot/riot</a></p>
+<blockquote>
+<p>注: 统计时间为本文编写之时</p>
+</blockquote>
+<p>emberjs 和其他同类框架一样，至少在 github 的 表现足以证明其流行度是不低的，但各个框架的诞生的场景以及解决的问题又不尽相同。</p>
+<p>emberjs 是基于 jquery 的一个全栈式前端框架，它提供了从路由层-&gt; view 层-&gt;数据和网络交互层的全部解决方案，只用 emberjs 就足以解决前端单页应用遇到的所有复杂问题，而且兼具有不俗的开发效率和开发质量。</p>
+<h4 id="全栈式解决方案"><a href="#全栈式解决方案" class="headerlink" title="全栈式解决方案"></a>全栈式解决方案</h4><p>emberjs 是一个大而全的框架，它几乎囊括了单页应用开发所需要的方方面面: component，model，service，route，temlate<br>，ember-data。借助 emberjs 几乎可以完成任何规模的复杂应用，而不用担心它没有提供足够丰富的特性或者需要求助其他第三方库(不一定可以很好的和框架本身集成)。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/06/04/why-emberjs-is-best-for-cms/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="" href="/2016/05/28/python-module-path-find/">理解 python 模块加载和路径查找</a>
 	  		<time datetime="2016-05-28T03:27:22.000Z">
 			  	<!-- <a href="/2016/05/28/python-module-path-find/"></a>  -->
@@ -91,7 +168,7 @@
 <li><p><strong>路径查找</strong><br>python 解释器查找被引入的包或模块</p>
 </li>
 </ul>
-<h2 id="python_执行时是如何查找包和模块的">python 执行时是如何查找包和模块的</h2><h4 id="执行一个_python_模块">执行一个 python 模块</h4><p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
+<h2 id="python-执行时是如何查找包和模块的"><a href="#python-执行时是如何查找包和模块的" class="headerlink" title="python 执行时是如何查找包和模块的"></a>python 执行时是如何查找包和模块的</h2><h4 id="执行一个-python-模块"><a href="#执行一个-python-模块" class="headerlink" title="执行一个 python 模块"></a>执行一个 python 模块</h4><p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
 		      
 		    </div>
 		    <footer>
@@ -122,7 +199,7 @@
 		 
 		    <div class="entry">
 		      
-		        <h2 id="http">http</h2><p><strong>requests</strong></p>
+		        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><p><strong>requests</strong></p>
 <p>易读易懂的 http libary</p>
 <ul>
 <li><a href="http://docs.python-requests.org/en/latest/index.html">Doc</a></li>
@@ -141,7 +218,7 @@
 <li><a href="http://python-eve.org/">Doc</a></li>
 <li><a href="https://github.com/nicolaiarocci/eve">Github</a></li>
 </ul>
-<h2 id="图形图像">图形图像</h2><p><strong>pgmagick</strong></p>
+<h2 id="图形图像"><a href="#图形图像" class="headerlink" title="图形图像"></a>图形图像</h2><p><strong>pgmagick</strong></p>
 <p>pgmagick 是 GraphicsMagick(Magick++) python 绑定 </p>
 <ul>
 <li><a href="http://pythonhosted.org/pgmagick/">Doc</a></li>
@@ -190,8 +267,8 @@
 <li>全局变量数据太多</li>
 <li>进程加载大量数据，长久持有不释放</li>
 </ul>
-<h3 id="现象">现象</h3><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
-<h3 id="观察分析">观察分析</h3><p>1.确定是否是个别进程的特有现象</p>
+<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
+<h3 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h3><p>1.确定是否是个别进程的特有现象</p>
 <p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
 <p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
 		      
@@ -225,9 +302,9 @@ Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="ex
 
 <div class="clearfix"></div></footer>
   
-<script src="/js/jquery.imagesloaded.min.js" type="text/javascript"></script>
-<script src="/js/gallery.js" type="text/javascript"></script>
-<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
 
 
