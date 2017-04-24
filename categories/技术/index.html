@@ -63,6 +63,58 @@
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
+		  <h1 class="title"><a style="" href="/2017/04/18/ember-and-something-other/">变化中的选择，乱花渐欲迷人眼的前端</a>
+	  		<time datetime="2017-04-18T15:31:20.000Z">
+			  	<!-- <a href="/2017/04/18/ember-and-something-other/"></a>  -->
+			  	4月 18 2017
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/JavaScript/">JavaScript</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p>早在 2012 的时候我就以一个后端程序员的身份开始复制粘贴修修改改前端程序员写的代码，当时最大的感受就是：果然写前端的都是天马行空恣意妄为，那些跳来跳去的调用和 callback 真的就像完全未经设计随意而出的艺术品，没人能猜得透。于是乎，那是对于写 JavaScript 我其实是拒绝的，因为实在给自己找不到一个哪怕不完美的理由去维护那 shit 一样的的代码。</p>
+<p>然而 2013 年上半年，公司没有了前端岗却保留着大量的前端业务，甚至需求比之前更旺盛，迫于形势不得不接管了所有的前端开发。当时的业务已经初具一定规模，非常复杂而且代码量庞大，在原有代码的基础上进行新功能开发和维护是件非常痛苦的事情：</p>
+<ul>
+<li>重复逻辑不能复用，只能复制粘贴</li>
+<li>调用栈跳跃性强，几乎没有任何规律可言，还常常分布在几个源文件中</li>
+<li>html 页面充斥着 ejs 模板，命名毫无规则</li>
+<li>事件绑定的 dom 直接使用元素名称，一旦页面结构发生微妙变化，事件绑定代码就需要更改</li>
+</ul>
+<p>当时我对 JavaScript 的认识还只停留在使用原型进行继承的一种 web 浏览器端语言，虽然那个时候 nodejs 早已经横空出世，backbone 火得不行。但是为了改善我接手前端业务所面临的各种问题，2013 年4月份左右，我开始着手重构公司主要业务的全部前端代码，包括大量 css。</p>
+<h4 id="4年前的技术选型"><a href="#4年前的技术选型" class="headerlink" title="4年前的技术选型"></a><strong>4年前的技术选型</strong></h4><ol>
+<li>gruntjs 是当时当之无愧的构建工具，用来完成所有前端的编译、打包、压缩、发布等</li>
+<li>鉴于移动端对性能(2013年)以及代码本身可维护性要求，舍弃 ejs 模板，改用字符串拼接</li>
+<li>backbone 等 MVC 方案过于复杂，短期内难以掌握，而且不适合公司那种对用户体验要求很高的场景(其实是当时的手机性能普遍不高)，因而不引入任何第三方 framework，自己基于 jquery 手动实现一个极简 framework</li>
+<li>framework 包括</li>
+</ol>
+<ul>
+<li>全局静态敞亮配置，包括 host，google 分析等</li>
+<li>字符拼接的 html 模板</li>
+<li>基于 history push state 和 url 修改的简单路由</li>
+<li>api 请求层，提供请求参数以及响应数据的过滤封装</li>
+<li>统一的命名规则和事件处理，事件命名遵循 github 的使用的规则，使用 <code>js-</code>前缀区分事件 dom 和 普通 dom</li>
+</ul>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2017/04/18/ember-and-something-other/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
 		  <h1 class="title"><a style="" href="/2017/02/16/mongodb-practice-for-four-years-md/">创业这些年使用 mongodb 的实践教训</a>
 	  		<time datetime="2017-02-16T08:49:14.000Z">
 			  	<!-- <a href="/2017/02/16/mongodb-practice-for-four-years-md/"></a>  -->
@@ -478,42 +530,6 @@
 		    <footer>
 		        <div class="alignleft">
 		            <a href="/2016/07/23/why-did-i-make-turbo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		 
-	</article>
-    </div>
-
-    <div class="archive category-archive " >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="" href="/2016/06/18/python-copy-deepcopy/">理解 python 的浅拷贝和深拷贝</a>
-	  		<time datetime="2016-06-18T09:00:28.000Z">
-			  	<!-- <a href="/2016/06/18/python-copy-deepcopy/"></a>  -->
-			  	6月 18 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/python/">python</a> <a href="/tags/对象状态/">对象状态</a>
-			  </div>
-			
-		</header>
-		 
-		    <div class="entry">
-		      
-		        <p>为了让一个对象发生改变时不对原对象产生副作用，此时，需要一份这个对象的拷贝，python 提供了 copy 机制来完成这样的任务，对应的模块是 <a href="https://docs.python.org/2/library/copy.html">copy</a>。</p>
-<h2 id="浅拷贝-shadow-copy"><a href="#浅拷贝-shadow-copy" class="headerlink" title="浅拷贝:shadow copy"></a>浅拷贝:shadow copy</h2><p>在 <code>copy</code> 模块中，有 <code>copy</code> 函数可以完成浅拷贝。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy</div></pre></td></tr></table></figure></p>
-<p>在 python 中，标识一个对象唯一身份的是：对象的<code>id</code>(内存地址)，对象类型，对象值，而浅拷贝就是创建一个具有相同类型，相同值但不同<code>id</code>的新对象。</p>
-<p>对可变对象而言，对象的值一样可能包含有对其他对象的引用，浅拷贝产生的新对象，虽然具有完全不同的<code>id</code>，但是其值若包含可变对象，这些对象和原始对象中的值包含同样的引用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'b'</span>:[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = copy.copy(l)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(l) == id(c)</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="string">'a'</span>].append(<span class="string">'4'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c[<span class="string">'b'</span>].append(<span class="string">'7'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>可见浅拷贝产生的新对象中可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/06/18/python-copy-deepcopy/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
 		        </div>
 	    	</footer>
 		 
