@@ -22,7 +22,7 @@ backbone 等 MVC 方案过于复杂，短期内难以掌握，而且不适合公
 framework 包括
 
 
-全局静态敞亮配置，包括 host，google 分析等
+全局静态变量配置，包括 host，google 分析等
 字符拼接的 html 模板
 基于 history push state 和 url 修改的简单路由
 api 请求层，提供请求参数以及响应数据的过滤封装
@@ -139,7 +139,7 @@ api 请求层，提供请求参数以及响应数据的过滤封装
 <li>framework 包括</li>
 </ol>
 <ul>
-<li>全局静态敞亮配置，包括 host，google 分析等</li>
+<li>全局静态变量配置，包括 host，google 分析等</li>
 <li>字符拼接的 html 模板</li>
 <li>基于 history push state 和 url 修改的简单路由</li>
 <li>api 请求层，提供请求参数以及响应数据的过滤封装</li>
@@ -156,8 +156,14 @@ api 请求层，提供请求参数以及响应数据的过滤封装
 <h4 id="众多-framework-中选中-ember-做后台管理系统-CMS"><a href="#众多-framework-中选中-ember-做后台管理系统-CMS" class="headerlink" title="众多 framework 中选中 ember 做后台管理系统 CMS"></a><strong>众多 framework 中选中 ember 做后台管理系统 CMS</strong></h4><p>2015 年，公司的内容管理系统越来越复杂，由于参与人数多而且杂，且大部分写 CMS 的人并不是很懂 JavaScript，面向 CMS 的需求又变化多端，经常改变，导致页面的功能经常发生更改而且不易追踪，维护性越来越差。</p>
 <p>当时迫切需要一个解决方案来解决 CMS 中的可维护性问题，经过各方面比较权衡最终选择了 <a href="https://emberjs.com" target="_blank" rel="external">emberjs</a>，事实证明这个选择是正确的，参考 <a href="http://sanyuesha.com/2016/06/04/why-emberjs-is-best-for-cms/" target="_blank" rel="external">为什么选择 emberjs 开发 dashboard 和 CMS 类系统</a>。</p>
 <p>emberjs 这 2 年的发展，每次升级都是平滑进行，几乎完全向后兼容，团队几乎可以在第一时间进行升级，享受到新的特性，<a href="https://ember-cli.com" target="_blank" rel="external">ember-cli</a> 工具是当前主流 framework (vuejs,reactjs,angular,riot) 中最易用，最高效的，在各自 framework 生态并不完整的情况下，emberjs 可以非常容易使用任何 jquery 的库，因为其本身是基于 jquery 的，得益于此，CMS 中的几乎所有控件在没有精力开发时都能找到完美的替代品，这又得益于 jquery 这近 10 年的发展。</p>
+<p>经过大半年的实践，团队出品了几个相关的 ember 的组件：</p>
+<ul>
+<li><a href="https://github.com/wecatch/ember-semantic-ui" target="_blank" rel="external">https://github.com/wecatch/ember-semantic-ui</a> 基于 semantic-ui 的组件集</li>
+<li><a href="https://github.com/wecatch/ember-easy-orm" target="_blank" rel="external">https://github.com/wecatch/ember-easy-orm</a> 前端表单、api请求层</li>
+<li><a href="https://github.com/wecatch/ember-cli-simditor" target="_blank" rel="external">https://github.com/wecatch/ember-cli-simditor</a> simditor 编辑器</li>
+</ul>
 <p><strong>在前端爆发式发展的情形之下，选择似乎是比重新发明还要难的事情，虽然选择一种技术方案有很多理由，但仅仅因为概念新颖、思想超前而缺乏现实考量的选择是对团队甚至公司利益的一种损害</strong>。</p>
-<h4 id="大胆实践，生产中投入使用-react、vuejs"><a href="#大胆实践，生产中投入使用-react、vuejs" class="headerlink" title="大胆实践，生产中投入使用 react、vuejs"></a><strong>大胆实践，生产中投入使用 react、vuejs</strong></h4><p>2016 年业务稳定，团队有更多时间和机会进行的技术探索和扩张，短短不到几个月时间迅速实践和使用了 react 和 vuejs ，不但开拓了思路，某些场景之下生产力显著提高。</p>
+<h4 id="大胆实践，生产中投入使用-react、vuejs"><a href="#大胆实践，生产中投入使用-react、vuejs" class="headerlink" title="大胆实践，生产中投入使用 react、vuejs"></a><strong>大胆实践，生产中投入使用 react、vuejs</strong></h4><p>2016 年业务稳定，团队有更多时间和机会进行的技术探索和扩张，短短不到几个月时间迅速实践和使用了 react 和 vuejs ，不但开拓了思路，某些场景之下生产力显著提高，并生产出一套 react ui 组件集 <a href="https://github.com/jerryshew/react-component" target="_blank" rel="external">https://github.com/jerryshew/react-component</a></p>
 <h4 id="变化中的选择"><a href="#变化中的选择" class="headerlink" title="变化中的选择"></a>变化中的选择</h4><p>JavaScript 世界的变化速度迅速而且激进，一个特性完全未普及或者经受了考验，又有新的特性出现，面对这样的变化节奏，团队如何做出选择显得至关重要。</p>
 <p>回顾这几年对前端技术的选择有几个原则是始终坚持的</p>
 <ul>
