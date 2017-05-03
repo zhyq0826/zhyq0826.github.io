@@ -109,6 +109,105 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2016-08-27T13:38:14.000Z">
+  <!-- <a href="/2016/08/27/mongodb-single-table-split/">8月 27日 2016</a> -->
+  8月 27日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/08/27/mongodb-single-table-split/">记一次 mongodb 单表亿级数据的拆分方案</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/技术/">技术</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/mongodb/">mongodb</a> <a href="/tags/表拆分/">表拆分</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
+<ul>
+<li>聚合查询变得困难</li>
+<li>拆分的键一旦选定，更改会非常困难</li>
+<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
+</ul>
+<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
+<p>在本次实施的拆分方案中，数据特点是:</p>
+<ul>
+<li>单表过亿</li>
+<li>业务数据是用户对资源的收藏，结构比较单一</li>
+<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
+<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
+</ul>
+<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<ul>
+<li>用户新增一条数据</li>
+<li>用户删除一条数据</li>
+<li>用户查询数据(有翻页)</li>
+</ul>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/08/27/mongodb-single-table-split/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/08/27/mongodb-single-table-split/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2016-08-20T04:37:42.000Z">
   <!-- <a href="/2016/08/20/distributed-lock-with-redis/">8月 20日 2016</a> -->
   8月 20日 2016
@@ -916,94 +1015,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2014/12/27/python-lib/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/12/27/python-lib/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2014-12-20T06:25:06.000Z">
-  <!-- <a href="/2014/12/20/one-time-python-memory-leaks/">12月 20日 2014</a> -->
-  12月 20日 2014
-</time>
-
-  
-    <h1 class="title"><a href="/2014/12/20/one-time-python-memory-leaks/">记一次python进程内存占用异常的问题</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a> <a href="/tags/内存泄露/">内存泄露</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p><strong>python 内存异常的几种情况</strong></p>
-<ul>
-<li>代码内出现循环引用</li>
-<li>全局变量数据太多</li>
-<li>进程加载大量数据，长久持有不释放</li>
-</ul>
-<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
-<h3 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h3><p>1.确定是否是个别进程的特有现象</p>
-<p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
-<p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2014/12/20/one-time-python-memory-leaks/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2014/12/20/one-time-python-memory-leaks/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/12/20/one-time-python-memory-leaks/">&nbsp;
               </span>
             </a>
           </div>

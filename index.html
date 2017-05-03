@@ -109,6 +109,79 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-05-02T23:34:48.000Z">
+  <!-- <a href="/2017/05/03/first-rule-for-architecture/">5月 3日 2017</a> -->
+  5月 3日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/05/03/first-rule-for-architecture/">无处不在的架构</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/程序人生/">程序人生</a>
+  </div>
+
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>Architecture</strong></p>
+<p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。">https://en.wikipedia.org/wiki/Architecture。</a></p>
+<p>Architecture 意在计划、设计、构建建筑物的过程。</p>
+<p><strong>Software architecture</strong></p>
+<p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture">https://en.wikipedia.org/wiki/Software_architecture</a></p>
+<p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
+<h3 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h3><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
+<p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/05/03/first-rule-for-architecture/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2017/05/03/first-rule-for-architecture/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2017/05/03/first-rule-for-architecture/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-04-27T23:14:18.000Z">
   <!-- <a href="/2017/04/28/all-end-point-programmer/">4月 28日 2017</a> -->
   4月 28日 2017
@@ -865,98 +938,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2016/10/14/mysql-connect-localhost-and-ip-difference/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/10/14/mysql-connect-localhost-and-ip-difference/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2016-08-27T13:38:14.000Z">
-  <!-- <a href="/2016/08/27/mongodb-single-table-split/">8月 27日 2016</a> -->
-  8月 27日 2016
-</time>
-
-  
-    <h1 class="title"><a href="/2016/08/27/mongodb-single-table-split/">记一次 mongodb 单表亿级数据的拆分方案</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/mongodb/">mongodb</a> <a href="/tags/表拆分/">表拆分</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
-<ul>
-<li>聚合查询变得困难</li>
-<li>拆分的键一旦选定，更改会非常困难</li>
-<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
-</ul>
-<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
-<p>在本次实施的拆分方案中，数据特点是:</p>
-<ul>
-<li>单表过亿</li>
-<li>业务数据是用户对资源的收藏，结构比较单一</li>
-<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
-<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
-</ul>
-<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
-<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
-<ul>
-<li>用户新增一条数据</li>
-<li>用户删除一条数据</li>
-<li>用户查询数据(有翻页)</li>
-</ul>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2016/08/27/mongodb-single-table-split/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/08/27/mongodb-single-table-split/">&nbsp;
               </span>
             </a>
           </div>
