@@ -109,6 +109,149 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-05-09T15:27:26.000Z">
+  <!-- <a href="/2017/05/09/a-end-programmer-of-front-end-road/">5月 9日 2017</a> -->
+  5月 9日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/05/09/a-end-programmer-of-front-end-road/">一个后端程序员的前端之路</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/程序人生/">程序人生</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/职场/">职场</a> <a href="/tags/转型/">转型</a> <a href="/tags/技术/">技术</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>一入前端深似海，而我只是在浅海游了几个来回。</p>
+</blockquote>
+<h3 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h3><p>在我还在上大学的时候用 servlet 写 java web 的程序，那个时候想要在网页判断用户的输入提交，发现需要一种叫 JavaScript 的语言，一开始照着 <a href="http://www.w3school.com.cn/" target="_blank" rel="external">w3c</a>  直接用原生 JavaScript 操作 Form，w3c 没有就自己吭哧吭哧 Google 然后继续抄，那个时候天空很蓝，Google 还没退出中国，我每天用 Google Buzz 不亦乐乎。</p>
+<p>当然，那个时候的我对 CSS 也是一窍不通，也才刚刚听过 jQuery。</p>
+<h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><p>无意中看了一本 <a href="https://book.douban.com/subject/3082278/" target="_blank" rel="external">JavaScript DOM高级程序设计</a> 发现 JavaScript 原来没有那么简单，于是寻迹着又看了一本 <a href="https://book.douban.com/subject/3158926/" target="_blank" rel="external">精通CSS与HTML设计模式</a> 又发现 CSS 也没有那么简单。</p>
+<p>乍看书名这两本书对于刚刚入门的新手都显得似乎有些深奥，而事实是这两本书都是讲解原理性的知识，对于系统性了解 JavaScript 和 CSS 有很好的启发。</p>
+<h3 id="入门到放弃"><a href="#入门到放弃" class="headerlink" title="入门到放弃"></a>入门到放弃</h3><p>第一份工作是 java web 的后端程序员，从那时起我就有了一个身份:”后端程序员”。</p>
+<p>后端在岗位界定上是和前端相对应的，后端负责用户看不见的逻辑，前端负责看得见的逻辑，也就是在后端基本没有机会写 JavaScript 和 CSS，当时的部门前端有10多个人，业务全部构建在 <a href="http://prototypejs.org/" target="_blank" rel="external">prototypejs</a> 之上。年少轻狂，工作中不用的，很少会花时间学习，我的前端还没有完全入门就这样逐渐放弃了。</p>
+<h3 id="创业中再次相遇"><a href="#创业中再次相遇" class="headerlink" title="创业中再次相遇"></a>创业中再次相遇</h3><p>移动互联网兴起之时，我也头脑发热觉得自己应该去创把业，于是误打误撞进入了创业公司。</p>
+<p>所谓创业带来机遇、财富、梦想在现实中其实就是人少、钱少、活多，虽然我还是个后端程序员，但是这个界定已经没有那么明显了，偶尔还是会写点HTML。</p>
+<p>和前端协商 API 以及页面模板中要返回什么的样的数据，这是创业时做后端程序员经常要做的。</p>
+<p>起初，前端需要什么样的数据后端就直接给，前端不懂后端的逻辑，后端也看不懂那些复杂的 JavaScript 和 CSS。</p>
+<p>当项目越来越复杂，没有约束的直接输出导致后端业务逻辑不具有了可预见性，约束势在必行，因此也导致了和前端的分歧开始明显。</p>
+<p>分歧是什么？前端希望数据都可以灵活的输出，而后端为了统一严格限制了 API 的职责，此时前端不得不多次调用不同的 API 进行再次组装。这个分歧其实就是 Facebook 出品的 <a href="https://github.com/facebook/graphql" target="_blank" rel="external">graphql</a> 要解决的，而在当时我和前端都是无解的。</p>
+<p>有了这个分歧，我开始关注前端是如何构建和使用后端的数据，换位思考站在前端的角度去想问题。</p>
+<p>空想误国，实干兴邦，由于缺乏实践，我的换位思考流于了形势，毫无进展。</p>
+<p>突然有一天，我还在努力让自己顿悟，前端却离职了，更要命的是原来所有我负责对接的前端业务将有我接管。</p>
+<p>真心不懂，只能学了。</p>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>理想是美好的，现实是复杂的。为了更好的维护前端代码，决定重构。</p>
+<p>重构之路漫长而艰难，仅仅只有一个月的时间，却长的像半载。</p>
+<h4 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h4><p>首先突击学习 JavaScript，基本语法我已经懂了，重构的目标是获得更好的可维护性，代码复用是最起码的要求，熟悉 JavaScript 的继承是非常必要的。</p>
+<p>首选了 <a href="https://book.douban.com/subject/3590768/" target="_blank" rel="external">JavaScript 语言精粹</a> 一书，为了速成只看其中函数和继承的部分，基本对类模式继承和原型继承有了清晰认识，重构就这样开始了。</p>
+<p>重构中遇到了很多 JavaScript 的细节都不是很懂，基本是一边 Google 一边翻书完成，还买了 <a href="https://book.douban.com/subject/10549733/" target="_blank" rel="external">JavaScript 权威指南</a> 做参考。</p>
+<p>项目用的是 jQuery ，其<a href="http://api.jquery.com/" target="_blank" rel="external">官方文档</a>必不可少，为了追求性能对如何写出性能优异的 选择器要了如指掌，Google  关键词 jQuery performance、optimize jQuery selector 会有很多相应的文章</p>
+<ul>
+<li><a href="https://code.tutsplus.com/tutorials/10-ways-to-instantly-increase-your-jquery-performance--net-5551" target="_blank" rel="external">https://code.tutsplus.com/tutorials/10-ways-to-instantly-increase-your-jquery-performance--net-5551</a></li>
+<li><a href="http://www.artzstudio.com/2009/04/jquery-performance-rules/" target="_blank" rel="external">http://www.artzstudio.com/2009/04/jquery-performance-rules/</a></li>
+</ul>
+<h4 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h4><p>为了能保持一致性的 JavaScript 风格，查询和参考了大量规范</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/javascriptguide.xml" target="_blank" rel="external">https://google.github.io/styleguide/javascriptguide.xml</a></li>
+<li><a href="https://github.com/styleguide" target="_blank" rel="external">https://github.com/styleguide</a></li>
+</ul>
+<p>github styleguide 当时还只是 CSS 和 JavaScript 如何书写、交互的介绍，现在演变成 <a href="http://primercss.io/" target="_blank" rel="external">http://primercss.io/</a> 项目。</p>
+<p>github styleguide 给出的一条建议是为每个页面绑定的事件 DOM 取一个唯一的可识别的名字用<code>js-</code> 前缀，这样做的好处是即使 DOM 结构变更了，只要<code>js-</code> 的名字保留，JavaScript 代码不需要更改，在当时大量采用模板生成的 HTML 页面，并且事件绑定都用 jQuery 完成的项目来说，这样的写法为维护性带来了很大提升。</p>
+<p><img src="/images/github-js.jpeg" width="200"></p>
+<h4 id="css"><a href="#css" class="headerlink" title="css"></a>css</h4><p>当 html 页面的数量级近百时，想要 CSS 保持可维护性是非常不容易的事情，而且最大限度的复用不同 CSS 视图是非常考验架构功力的。CSS 绝对需要架构，参考 <a href="http://sanyuesha.com/2017/05/03/first-rule-for-architecture/" target="_blank" rel="external">无处不在的架构</a>。</p>
+<p>Jonathan Snook <a href="https://smacss.com/" target="_blank" rel="external">https://smacss.com/</a> 是当时最重要的参考，这本书为 CSS 的模块化和架构提供了足够的理论依据和实战技巧，网易的 <a href="http://nec.netease.com/" target="_blank" rel="external">http://nec.netease.com/</a> 提供了具有实际意义的 CSS 规范方案，github style guide 也介绍的大量的 css 命名和 html 结构解决方案，因而重构的 CSS 糅合了各家的特点，真正的“兼容并包”啊</p>
+<h4 id="工程"><a href="#工程" class="headerlink" title="工程"></a>工程</h4><p>那个时候 webpack 还没有诞生，gulp 也不见踪影，less 和 gruntjs 是当之无愧的宠儿，前端工程少不了这两项。</p>
+<p>模板自己用字符串拼接，<a href="http://www.embeddedjs.com/" target="_blank" rel="external">ejs</a> 太难用，而且嵌到页面中丑陋无比，当时还有 <a href="http://underscorejs.org/#template" target="_blank" rel="external">underscore</a> ，这玩意和backbone结合起来才是最佳组合。</p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p>经过一次重构的实战，复杂的前端项目已经是老司机上道轻车熟路，从规范制定、技术选型、方案评定都能做到稳抓稳拿。</p>
+<p>格斗技巧都学了，是时候练内力了。</p>
+<p>再读 《JavaScript 语言精粹》，这是本非常薄的册子，对 JavaScript 语言本身基本都能涵盖，虽然 ES 6 出来很多内容看上点过时， <a href="https://book.douban.com/search/Douglas%20Crockford/" target="_blank" rel="external">Douglas Crockford</a> 的分析句句入里。</p>
+<p>深入 JavaScript 运行时细节和有关原型的种种真相推荐 <a href="http://dmitrysoshnikov.com/" target="_blank" rel="external">http://dmitrysoshnikov.com/</a> 的 ECMA-262-3 in detail，这是我读过的最透彻的关于 JavaScript 运行机制和 object 继承机制的解释。</p>
+<p>MDN <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a> 这里包含最新 JavaScript 的概念和原理，文档组织的很好，内容真的做到了深入浅出，级别清晰，不同 level 的需求都能满足。</p>
+<p><a href="https://javascriptweblog.wordpress.com/" target="_blank" rel="external">https://javascriptweblog.wordpress.com/</a>  此兄文章写得也够味，但比较晦涩。</p>
+<p>入门 ES6 看阮一峰的 <a href="https://github.com/ruanyf/es6tutorial" target="_blank" rel="external">https://github.com/ruanyf/es6tutorial</a> 就够了，看完可以立马实战不用想太多，当然现在 vuejs 、react、angular 这么火，<a href="http://babeljs.io/" target="_blank" rel="external">http://babeljs.io/</a> 一出很多人早已经投入 ES6 的怀抱了。</p>
+<p>学 nodejs 。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>工作中已经很少做关于前端的事情，前端发展迅速度令人咋舌，html5 和 CSS3 我是真的不会，人们称我为后端程序员，而我只是一个程序员。</p>
+<p>推荐 wecatch 程序员 <strong>落在深海</strong> <a href="https://github.com/jerryshew" target="_blank" rel="external">https://github.com/jerryshew</a> ，美团任职大前端，而他不仅仅是一个前端。</p>
+<h5 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h5><ul>
+<li>JavaScript DOM高级程序设计 <a href="https://book.douban.com/subject/3082278/" target="_blank" rel="external">https://book.douban.com/subject/3082278/</a></li>
+<li>精通CSS与HTML设计模式  <a href="https://book.douban.com/subject/3158926/" target="_blank" rel="external">https://book.douban.com/subject/3158926/</a></li>
+<li>prototypejs <a href="http://prototypejs.org/" target="_blank" rel="external">http://prototypejs.org/</a></li>
+<li>graphql <a href="https://github.com/facebook/graphql" target="_blank" rel="external">https://github.com/facebook/graphql</a></li>
+<li>JavaScript 权威指南 <a href="https://book.douban.com/subject/10549733/" target="_blank" rel="external">https://book.douban.com/subject/10549733/</a></li>
+<li>ejs <a href="http://www.embeddedjs.com/" target="_blank" rel="external">http://www.embeddedjs.com/</a></li>
+<li>underscore <a href="http://underscorejs.org/#template" target="_blank" rel="external">http://underscorejs.org/#template</a></li>
+<li>ECMA-262-3 in detail  <a href="http://dmitrysoshnikov.com/" target="_blank" rel="external">http://dmitrysoshnikov.com/</a></li>
+<li>MDN <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></li>
+<li><a href="https://javascriptweblog.wordpress.com/" target="_blank" rel="external">https://javascriptweblog.wordpress.com/</a></li>
+<li>es6tutorial <a href="https://github.com/ruanyf/es6tutorial" target="_blank" rel="external">https://github.com/ruanyf/es6tutorial</a></li>
+<li>smacss <a href="https://smacss.com/" target="_blank" rel="external">https://smacss.com/</a></li>
+<li>github style guide <a href="https://github.com/styleguide" target="_blank" rel="external">https://github.com/styleguide</a></li>
+</ul>
+<p>jquery selector optimize</p>
+<ul>
+<li><a href="https://code.tutsplus.com/tutorials/10-ways-to-instantly-increase-your-jquery-performance--net-5551" target="_blank" rel="external">https://code.tutsplus.com/tutorials/10-ways-to-instantly-increase-your-jquery-performance--net-5551</a></li>
+<li><a href="http://www.artzstudio.com/2009/04/jquery-performance-rules/" target="_blank" rel="external">http://www.artzstudio.com/2009/04/jquery-performance-rules/</a></li>
+</ul>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/05/09/a-end-programmer-of-front-end-road/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2017/05/09/a-end-programmer-of-front-end-road/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2017/05/09/a-end-programmer-of-front-end-road/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-05-02T23:34:48.000Z">
   <!-- <a href="/2017/05/03/first-rule-for-architecture/">5月 3日 2017</a> -->
   5月 3日 2017
@@ -841,103 +984,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2016/11/06/python-string-unicode/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/11/06/python-string-unicode/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2016-10-14T04:48:30.000Z">
-  <!-- <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">10月 14日 2016</a> -->
-  10月 14日 2016
-</time>
-
-  
-    <h1 class="title"><a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">mysql 不指定 ip 的连接默认都是 localhost</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><p>在本地使用 docker 启动了一个 mysql 容器，并把本地的<code>33067</code>端口映射到容器内 mysql 的 <code>3306</code>，我们假设容器的 ip 地址是 <code>172.17.0.2</code>，使用本地的 mysql 客户端尝试连接容器内部的 mysql 服务。</p>
-<p><strong>方法 1</strong></p>
-<p>由于是绑定本地的 33067 端口，所以在连接时指定端口号即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -P33067</div></pre></td></tr></table></figure>
-<p>此时 mysql-client 实际上进入了本地的 mysql 服务，使用 <code>status</code> 命令可以查看</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Connection id:      49</div><div class="line">Current database:   </div><div class="line">Current user:       root@localhost</div><div class="line">SSL:            Not <span class="keyword">in</span> use</div><div class="line">Current pager:      stdout</div><div class="line">Using outfile:      <span class="string">''</span></div><div class="line">Using delimiter:    ;</div><div class="line">Server version:     5.5.52-0ubuntu0.14.04.1 (Ubuntu)</div><div class="line">Protocol version:   10</div><div class="line">Connection:     Localhost via UNIX socket</div><div class="line">Server characterset:    latin1</div><div class="line">Db     characterset:    latin1</div><div class="line">Client characterset:    utf8</div><div class="line">Conn.  characterset:    utf8</div><div class="line">UNIX socket:        /var/run/mysqld/mysqld.sock</div><div class="line">Uptime:         1 hour 35 min 41 sec</div></pre></td></tr></table></figure>
-<p>connecttion 信息是本地的 unix socket，这样的连接并没有连接到容器内的 mysql。</p>
-<p><strong>方法 2</strong></p>
-<p>尝试指定对应 host 和映射的本地端口，由于映射的是本地端口，所以 host 为 localhost</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -hlocalhost -P33067</div></pre></td></tr></table></figure>
-<p>依然连接的是本地的 mysql 服务。</p>
-<p><strong>方法 3</strong></p>
-<p>直接使用容器的的 ip 地址，默认端口是 3306 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -h172.17.0.2</div></pre></td></tr></table></figure>
-<p>连接成功，进入容器内部的 mysql 服务。</p>
-<p><strong>方法 4</strong></p>
-<p>使用 127.0.0.1 地址，并指定本地映射的端口 33067 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -h127.0.0.1 -P33067</div></pre></td></tr></table></figure>
-<p>连接成功，进入容器内部的 mysql 服务。</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>方法 1 和 方法 2 连接的 host 其实都是 localhost（不指定 host，默认是 localhost），此时不论端口指定什么，mysql-client 都尝试使用 unix socket 的通信方式，也就是本地的 socket ，所以如果要连接指定 ip 的 mysql 服务，必须要指定 ip ，即使该 ip 映射的是 localhost。</p>
-<p>如上的场景由于容器内的 mysql 服务端口映射到本地的特定端口，即使是这种情况，连接依然需要指定本地 ip 127.0.0.1，而不是本地的 hostname localhost，因为一旦使用了 localhost，mysql-client 就尝试使用本地的 unix socket 连接本地的 mysql 服务。</p>
-<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么。</p>
-<blockquote>
-<p>Beware that by default, the mysql client tries to connect using a unix socket when you tell it to connect to localhost. So do use 127.0.0.1 and not localhost:<br>$ mysql -h 127.0.0.1 -P 3306 -u root</p>
-</blockquote>
-
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2016/10/14/mysql-connect-localhost-and-ip-difference/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/10/14/mysql-connect-localhost-and-ip-difference/">&nbsp;
               </span>
             </a>
           </div>
