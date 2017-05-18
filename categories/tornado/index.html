@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>职场 | 三月沙</title>
+  <title>tornado | 三月沙</title>
   <meta name="author" content="三月沙">
   
   
@@ -57,45 +57,49 @@
   </header>
   <div id="content" class="container">
     
-<h2 class="archive-title tag"><i class="fa fa-tag"></i>职场</h2>
+<h2 class="archive-title category"><i class="fa fa-folder-open"></i>tornado</h2>
 
  
-    <div class="archive" >
+    <div class="archive category-archive " >
 	<article  class="post">
 		<header>
-		  <h1 class="title"><a style=" font-size:18px " href="/2017/05/09/a-end-programmer-of-front-end-road/">一个后端程序员的前端之路</a>
-	  		<time datetime="2017-05-09T15:27:26.000Z">
-			  	<!-- <a href="/2017/05/09/a-end-programmer-of-front-end-road/"></a>  -->
-			  	5月 9 2017
+		  <h1 class="title"><a style="" href="/2017/02/08/tornado-async-style/">tornado 中的异步调用模式</a>
+	  		<time datetime="2017-02-07T23:18:17.000Z">
+			  	<!-- <a href="/2017/02/08/tornado-async-style/"></a>  -->
+			  	2月 8 2017
 			</time>
 		  </h1>
 		  
-			  <div class="categories">
-			  	<i class="fa fa-folder-open"></i>
-			    <a href="/categories/程序人生/">程序人生</a>
-			  </div>
-			
 		</header>
 		 
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style=" font-size:18px " href="/2017/04/28/all-end-point-programmer/">真正的全端是怎样炼成的</a>
-	  		<time datetime="2017-04-27T23:14:18.000Z">
-			  	<!-- <a href="/2017/04/28/all-end-point-programmer/"></a>  -->
-			  	4月 28 2017
-			</time>
-		  </h1>
-		  
-			  <div class="categories">
-			  	<i class="fa fa-folder-open"></i>
-			    <a href="/categories/程序人生/">程序人生</a>
-			  </div>
-			
-		</header>
+		    <div class="entry">
+		      
+		        <p><strong>fundamental concepts</strong></p>
+<ul>
+<li><p><strong>同步</strong><br>调用者等待调用结果的返回</p>
+</li>
+<li><p><strong>异步</strong><br>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
+</li>
+<li><p><strong>阻塞</strong><br>调用方式影响后续指令的执行</p>
+</li>
+<li><p><strong>非阻塞</strong><br>调用方式不影响后续指令的执行</p>
+</li>
+</ul>
+<hr>
+<p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
+<p><a href="https://github.com/tornadoweb/tornado">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
+<blockquote>
+<p><a href="http://www.tornadoweb.org/">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
+</blockquote>
+<p>在 tornado 中异步和非阻塞是通过 ioloop 和 Future 实现的，Future 是借助 python 的协程来实现非阻塞调用。tornado 提供了不同的异步调用形式来适配不同的调用场景，本文的目的就是为了说明不同形式是如何使用的以及它们的差别。</p>
+<p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2017/02/08/tornado-async-style/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
 		 
 	</article>
     </div>

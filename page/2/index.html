@@ -109,6 +109,108 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2016-11-06T12:48:08.000Z">
+  <!-- <a href="/2016/11/06/python-string-unicode/">11月 6日 2016</a> -->
+  11月 6日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/11/06/python-string-unicode/">理解 python UnicodeEncodeError</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/python/">python</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/编码/">编码</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p><strong>fundamental concepts</strong></p>
+<ul>
+<li><p><strong>字符</strong><br>character 构成文本的最小组成单元</p>
+</li>
+<li><p><strong>字节</strong><br>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+</li>
+<li><p><strong>字符集</strong><br>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+</li>
+<li><p><strong>字符编码值</strong><br>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
+</li>
+<li><p><strong>编码</strong><br>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
+</li>
+<li><p><strong>解码</strong><br>将字节流解析为字符集中的字符</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>文中 python 皆为 2.x 版本code</p>
+</blockquote>
+<p>初学 python 的人基本上都有过如下类似经历:</p>
+<p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
+<p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
+<p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
+<p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/11/06/python-string-unicode/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2016/11/06/python-string-unicode/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/11/06/python-string-unicode/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2016-10-14T04:48:30.000Z">
   <!-- <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">10月 14日 2016</a> -->
   10月 14日 2016
@@ -122,15 +224,9 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/mysql/">mysql</a>
   </div>
 
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>
-  </div>
 
 <div class="clear"></div>
       
@@ -226,14 +322,14 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/mongodb/">mongodb</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/mongodb/">mongodb</a> <a href="/tags/表拆分/">表拆分</a>
+    <a href="/tags/表拆分/">表拆分</a>
   </div>
 
 <div class="clear"></div>
@@ -325,14 +421,14 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/redis/">redis</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/redis/">redis</a> <a href="/tags/lock/">lock</a> <a href="/tags/distributed/">distributed</a>
+    <a href="/tags/lock/">lock</a> <a href="/tags/distributed/">distributed</a>
   </div>
 
 <div class="clear"></div>
@@ -416,14 +512,14 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/python/">python</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a> <a href="/tags/turbo/">turbo</a>
+    <a href="/tags/turbo/">turbo</a>
   </div>
 
 <div class="clear"></div>
@@ -509,14 +605,14 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/python/">python</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a> <a href="/tags/对象状态/">对象状态</a>
+    <a href="/tags/对象状态/">对象状态</a>
   </div>
 
 <div class="clear"></div>
@@ -593,14 +689,14 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/JavaScript/">JavaScript</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/JavaScript/">JavaScript</a> <a href="/tags/emberjs/">emberjs</a>
+    <a href="/tags/emberjs/">emberjs</a>
   </div>
 
 <div class="clear"></div>
@@ -718,15 +814,9 @@
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/技术/">技术</a>
+    <a href="/categories/python/">python</a>
   </div>
 
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a>
-  </div>
 
 <div class="clear"></div>
       
@@ -929,86 +1019,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2015/05/12/how-to-respect-programer/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2015/05/12/how-to-respect-programer/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2015-04-25T04:30:06.000Z">
-  <!-- <a href="/2015/04/25/wechat-product-opinion/">4月 25日 2015</a> -->
-  4月 25日 2015
-</time>
-
-  
-    <h1 class="title"><a href="/2015/04/25/wechat-product-opinion/">我的产品记第一记</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/产品记/">产品记</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/微信/">微信</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p><strong>写在开头的话</strong></p>
-<p>虽然我很热衷于创造有意思的东西，本质上还是个程序员，偶尔会文艺一下，喜欢新技术，爱折腾东西。自嘲还算懂点产品，但对产品经理这个职业称呼似乎天生没有好感。现在要做一些只有产品才做的事情，但是如果有人称呼我为产品经理或产品狗，估计我会当即反击回去：你**才是产品狗。</p>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2015/04/25/wechat-product-opinion/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2015/04/25/wechat-product-opinion/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2015/04/25/wechat-product-opinion/">&nbsp;
               </span>
             </a>
           </div>

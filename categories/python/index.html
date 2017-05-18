@@ -1,0 +1,424 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    
+<h2 class="archive-title category"><i class="fa fa-folder-open"></i>python</h2>
+
+ 
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2016/11/06/python-string-unicode/">理解 python UnicodeEncodeError</a>
+	  		<time datetime="2016-11-06T12:48:08.000Z">
+			  	<!-- <a href="/2016/11/06/python-string-unicode/"></a>  -->
+			  	11月 6 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/编码/">编码</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p><strong>fundamental concepts</strong></p>
+<ul>
+<li><p><strong>字符</strong><br>character 构成文本的最小组成单元</p>
+</li>
+<li><p><strong>字节</strong><br>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+</li>
+<li><p><strong>字符集</strong><br>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+</li>
+<li><p><strong>字符编码值</strong><br>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
+</li>
+<li><p><strong>编码</strong><br>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
+</li>
+<li><p><strong>解码</strong><br>将字节流解析为字符集中的字符</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>文中 python 皆为 2.x 版本code</p>
+</blockquote>
+<p>初学 python 的人基本上都有过如下类似经历:</p>
+<p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
+<p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
+<p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
+<p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/11/06/python-string-unicode/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2016/07/23/why-did-i-make-turbo/">我为什么创造了 turbo 这个后端的轮子</a>
+	  		<time datetime="2016-07-23T11:05:01.000Z">
+			  	<!-- <a href="/2016/07/23/why-did-i-make-turbo/"></a>  -->
+			  	7月 23 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/turbo/">turbo</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <blockquote>
+<p><a href="https://github.com/wecatch/app-turbo">turbo</a> 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
+</blockquote>
+<h2 id="turbo-是如何诞生的"><a href="#turbo-是如何诞生的" class="headerlink" title="turbo 是如何诞生的?"></a>turbo 是如何诞生的?</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
+<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
+<ul>
+<li>一个抽象的 dal 层(数据抽象)</li>
+<li>数据库连接(db)</li>
+<li>配置(conf)</li>
+<li>工具(utils)</li>
+<li>缓存(cache)</li>
+<li>第三方库(lib)</li>
+</ul>
+<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
+<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要同时维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/07/23/why-did-i-make-turbo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2016/06/18/python-copy-deepcopy/">理解 python 的浅拷贝和深拷贝</a>
+	  		<time datetime="2016-06-18T09:00:28.000Z">
+			  	<!-- <a href="/2016/06/18/python-copy-deepcopy/"></a>  -->
+			  	6月 18 2016
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/对象状态/">对象状态</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p>为了让一个对象发生改变时不对原对象产生副作用，此时，需要一份这个对象的拷贝，python 提供了 copy 机制来完成这样的任务，对应的模块是 <a href="https://docs.python.org/2/library/copy.html">copy</a>。</p>
+<h2 id="浅拷贝-shadow-copy"><a href="#浅拷贝-shadow-copy" class="headerlink" title="浅拷贝:shadow copy"></a>浅拷贝:shadow copy</h2><p>在 <code>copy</code> 模块中，有 <code>copy</code> 函数可以完成浅拷贝。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy</div></pre></td></tr></table></figure></p>
+<p>在 python 中，标识一个对象唯一身份的是：对象的<code>id</code>(内存地址)，对象类型，对象值，而浅拷贝就是创建一个具有相同类型，相同值但不同<code>id</code>的新对象。</p>
+<p>对可变对象而言，对象的值一样可能包含有对其他对象的引用，浅拷贝产生的新对象，虽然具有完全不同的<code>id</code>，但是其值若包含可变对象，这些对象和原始对象中的值包含同样的引用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'b'</span>:[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = copy.copy(l)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(l) == id(c)</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="string">'a'</span>].append(<span class="string">'4'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c[<span class="string">'b'</span>].append(<span class="string">'7'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>可见浅拷贝产生的新对象中可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/06/18/python-copy-deepcopy/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2016/05/28/python-module-path-find/">理解 python 模块加载和路径查找</a>
+	  		<time datetime="2016-05-28T03:27:22.000Z">
+			  	<!-- <a href="/2016/05/28/python-module-path-find/"></a>  -->
+			  	5月 28 2016
+			</time>
+		  </h1>
+		  
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <ul>
+<li><p><strong>module</strong><br>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
+</li>
+<li><p><strong>package</strong><br>包，包含有 <code>__init__</code> 文件的文件夹</p>
+</li>
+<li><p><strong>relative path</strong><br>相对路径，相对于某个目录的路径</p>
+</li>
+<li><p><strong>absolute path</strong><br>绝对路径，全路径</p>
+</li>
+<li><p><strong>路径查找</strong><br>python 解释器查找被引入的包或模块</p>
+</li>
+</ul>
+<h2 id="python-执行时是如何查找包和模块的"><a href="#python-执行时是如何查找包和模块的" class="headerlink" title="python 执行时是如何查找包和模块的"></a>python 执行时是如何查找包和模块的</h2><h4 id="执行一个-python-模块"><a href="#执行一个-python-模块" class="headerlink" title="执行一个 python 模块"></a>执行一个 python 模块</h4><p>python 执行一个文件，无论执行的方式是绝对路径还是相对路径，解释器都会把文件所在的目录加入到系统查找路径中，也就是 <code>sys.path</code> 这个 <code>list</code> 中，而 <code>sys.path</code> 又是由系统的 python 环境变量决定的。</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2014/12/27/python-lib/">python 开发中的第三方库</a>
+	  		<time datetime="2014-12-27T11:53:27.000Z">
+			  	<!-- <a href="/2014/12/27/python-lib/"></a>  -->
+			  	12月 27 2014
+			</time>
+		  </h1>
+		  
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><p><strong>requests</strong></p>
+<p>易读易懂的 http libary</p>
+<ul>
+<li><a href="http://docs.python-requests.org/en/latest/index.html">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/requests">PyPi</a></li>
+<li><a href="https://github.com/kennethreitz/requests">Github</a></li>
+</ul>
+<p><strong>django-rest-framework</strong></p>
+<p>基于django 用以构建web api</p>
+<ul>
+<li><a href="http://www.django-rest-framework.org/">Doc</a></li>
+<li><a href="https://github.com/tomchristie/django-rest-framework">Github</a></li>
+</ul>
+<p><strong>eve</strong></p>
+<p>基于Flask, mongodb的 REST API framework</p>
+<ul>
+<li><a href="http://python-eve.org/">Doc</a></li>
+<li><a href="https://github.com/nicolaiarocci/eve">Github</a></li>
+</ul>
+<h2 id="图形图像"><a href="#图形图像" class="headerlink" title="图形图像"></a>图形图像</h2><p><strong>pgmagick</strong></p>
+<p>pgmagick 是 GraphicsMagick(Magick++) python 绑定 </p>
+<ul>
+<li><a href="http://pythonhosted.org/pgmagick/">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/pgmagick/">PyPi</a></li>
+<li><a href="https://bitbucket.org/hhatto/pgmagick">Bitbucket</a></li>
+</ul>
+<p><strong>Pillow</strong></p>
+<p>PIL 一个更友好的实现</p>
+<ul>
+<li><a href="http://python-pillow.github.io/">Doc</a></li>
+<li><a href="https://github.com/python-pillow/Pillow">Github</a></li>
+</ul>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2014/12/27/python-lib/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2014/12/20/one-time-python-memory-leaks/">记一次python进程内存占用异常的问题</a>
+	  		<time datetime="2014-12-20T06:25:06.000Z">
+			  	<!-- <a href="/2014/12/20/one-time-python-memory-leaks/"></a>  -->
+			  	12月 20 2014
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/内存泄露/">内存泄露</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p><strong>python 内存异常的几种情况</strong></p>
+<ul>
+<li>代码内出现循环引用</li>
+<li>全局变量数据太多</li>
+<li>进程加载大量数据，长久持有不释放</li>
+</ul>
+<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
+<h3 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h3><p>1.确定是否是个别进程的特有现象</p>
+<p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
+<p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2014/12/20/one-time-python-memory-leaks/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+
+<nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2017 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"singleride"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    // $('h1.title').hover(
+    //   function() {
+    //     $(this).stop().animate(
+    //       {'marginLeft': '10px'}, 200
+    //     );
+    //   },
+    //   function() {
+    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    // });
+
+  });
+
+</script>
+
+</body>
+</html>

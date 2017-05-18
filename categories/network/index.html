@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>产品记 | 三月沙</title>
+  <title>network | 三月沙</title>
   <meta name="author" content="三月沙">
   
   
@@ -57,35 +57,35 @@
   </header>
   <div id="content" class="container">
     
-<h2 class="archive-title category"><i class="fa fa-folder-open"></i>产品记</h2>
+<h2 class="archive-title category"><i class="fa fa-folder-open"></i>network</h2>
 
  
     <div class="archive category-archive " >
 	<article  class="post">
 		<header>
-		  <h1 class="title"><a style="" href="/2015/04/25/wechat-product-opinion/">我的产品记第一记</a>
-	  		<time datetime="2015-04-25T04:30:06.000Z">
-			  	<!-- <a href="/2015/04/25/wechat-product-opinion/"></a>  -->
-			  	4月 25 2015
+		  <h1 class="title"><a style="" href="/2017/02/07/understand-network-programming/">理解网络编程</a>
+	  		<time datetime="2017-02-06T16:03:19.000Z">
+			  	<!-- <a href="/2017/02/07/understand-network-programming/"></a>  -->
+			  	2月 7 2017
 			</time>
 		  </h1>
 		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/微信/">微信</a>
-			  </div>
-			
 		</header>
 		 
 		    <div class="entry">
 		      
-		        <p><strong>写在开头的话</strong></p>
-<p>虽然我很热衷于创造有意思的东西，本质上还是个程序员，偶尔会文艺一下，喜欢新技术，爱折腾东西。自嘲还算懂点产品，但对产品经理这个职业称呼似乎天生没有好感。现在要做一些只有产品才做的事情，但是如果有人称呼我为产品经理或产品狗，估计我会当即反击回去：你**才是产品狗。</p>
+		        <p>人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。</p>
+<p>如何开启两个进程的交流之旅？很简单，像下面这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># process A</span></div><div class="line"><span class="comment"># create tcp client</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line"><span class="comment"># enable reuse address port</span></div><div class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</div><div class="line"><span class="comment"># bind socket to the port</span></div><div class="line">server_address = (host, port)</div><div class="line">s.bind(server_address)</div><div class="line">s.listen(backlog)</div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></div><div class="line">    client, address = s.accept()</div><div class="line"></div><div class="line"><span class="comment"># process B</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line">server_address = (host, port)</div><div class="line"><span class="keyword">print</span> <span class="string">'connect to server &#123;0&#125;'</span>.format(server_address)</div><div class="line">s.connect(server_address)</div></pre></td></tr></table></figure>
+<p>进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个<strong>新的 socket</strong> 开始和 B 进行对话交流。是的，一个新的 socket。</p>
+<p>那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。</p>
+<p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
+<p><strong>那试试多进程如何？</strong></p>
 		      
 		    </div>
 		    <footer>
 		        <div class="alignleft">
-		            <a href="/2015/04/25/wechat-product-opinion/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		            <a href="/2017/02/07/understand-network-programming/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
 		        </div>
 	    	</footer>
 		 
