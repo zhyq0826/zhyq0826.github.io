@@ -134,21 +134,21 @@ html 结构不简洁表达性差
 <p><strong>CSS framework</strong></p>
 <ul>
 <li>bootstrap</li>
-<li>purecss</li>
-<li>semantic-ui</li>
+<li><a href="http://purecss.org/" target="_blank" rel="external">purecss</a></li>
+<li><a href="semantic-ui.com">semantic-ui</a></li>
 <li>foundation</li>
-<li>bulma</li>
+<li><a href="http://bulma.io/" target="_blank" rel="external">bulma</a></li>
 <li>…</li>
 </ul>
 <p><strong>JavaScript framework</strong></p>
 <ul>
-<li>reactjs</li>
-<li>angularjs</li>
-<li>vuejs</li>
-<li>riot</li>
-<li>emberjs</li>
-<li>donejs</li>
-<li>canjs</li>
+<li><a href="https://github.com/reactjs" target="_blank" rel="external">reactjs</a></li>
+<li><a href="https://angular.io/" target="_blank" rel="external">angularjs</a></li>
+<li><a href="https://github.com/vuejs" target="_blank" rel="external">vuejs</a></li>
+<li><a href="https://github.com/riot/riot" target="_blank" rel="external">riot</a></li>
+<li><a href="https://github.com/emberjs" target="_blank" rel="external">emberjs</a></li>
+<li><a href="https://github.com/donejs/donejs" target="_blank" rel="external">donejs</a></li>
+<li><a href="https://github.com/canjs/canjs" target="_blank" rel="external">canjs</a></li>
 <li>…</li>
 </ul>
 <p>可选项变多，如何选择？</p>
@@ -166,13 +166,19 @@ html 结构不简洁表达性差
 <p>semantic-ui 正如其名是个语义化的 css framework，html 结构能恰如其分的表达视图，而且 css 名称语义性非常明确，易学易用，并提供了大量的 ui component，这点与 bootstrap 不同，bootstrap 很多 component 都来自第三方。</p>
 <p>bulma 虽然只是一个 css framework (No JavaScript)，但其简洁、美观、语义化、mobile-first 的特点迅速赢得了很多拥趸，并且提供了常用的站点布局方案，几乎可以一键完成官网等特定网站的布局。</p>
 <p>很多公司 angular 的项目还如火如荼的跑在 angular 1.x 上时，angular 突然宣布 angular2 不兼容 angular 1.x 了，现在 angular 已经出到4，升级就相当于重写了。我亲自见过有团队在仅仅只有一个页面的 application 用 angular 实现：选几种支付方式，然后提交付款，生产环境每日上百万的访问。杀鸡焉用牛刀。</p>
-<p>react 写 ui component 是够爽的，但是 react router 是个什么货谁用谁知道，全栈都用 react 生态的是不是跟着官方一起踩坑才过来。</p>
-<p>vuejs 很简单，入门容易上手快，多人(3人以上)协作 vuejs 项目如何规范，组件数目迅速达到几十上百时 component 如何组织？</p>
+<p>React 写 ui component 是够爽的，但是 react router 是个什么货谁用谁知道，全栈都用 react 生态的是不是跟着官方一起踩坑才过来。</p>
+<p>Vuejs 很简单，入门容易上手快，多人(3人以上)协作 vuejs 项目如何规范，组件数目迅速达到几十上百时 component 如何组织？</p>
 <p>emberjs 又笨又重，很多人都不会喜欢，但是就有估值10亿的公司全线产品都用的是 emberjs，他们哪里来的勇气？</p>
 <p>诚然，每个 framework 都有各自的使用场景，各有优缺点，但是选择之前你真的想好了么？</p>
-<p>那我是如何选的？<strong>看场景，谋定而后动</strong>，这是从坑中学来的，交的都是不菲的学费。</p>
+<p>那我是如何选的？看场景，谋定而后动：</p>
+<ul>
+<li>投入时间做到必要的了解</li>
+<li>评估成本，能力成本，人力成本，时间成本</li>
+<li>快速实践试错</li>
+</ul>
+<p>这是从坑中学来的，交的都是不菲的学费。</p>
 <p>此系列开篇我曾提到过，自己用 jquery 撸了一解决方案一用三年，三年来前端技术日新月异，已经有很多更好的技术方案出现了，为什么不换呢？没有必要。那个方案已经成熟稳定，久经考验，换就意味着有成本：学习成本、重写成本，这样的成本没有必要付出。</p>
-<p>我也曾踩过坑。2014 年左右当时 emberjs 工具和生态都不是很完备，彼时公司的 CMS 已经乱的不可开交了，维护的问题日益凸显，匆忙之中想用 emberjs 全实现一遍，实践中慢慢发现很多问题解决起来比维护现有的还要麻烦，成本更高，遂弃之。到了 2015 年，emberjs 的生态出成，工具链开始逐渐完备，此时我们又决定用 emberjs 重写 CMS，并且打造自己的工具链。用时一个多月，后台功能基本全部完成，可维护性提高了很多，代码结构也比原来更清晰。</p>
+<p>我也曾踩过坑，而且是大坑。2014 年左右当时 emberjs 工具和生态都不是很完备，彼时公司的 CMS 已经乱的不可开交了，维护的问题日益凸显，匆忙之中想用 emberjs 全实现一遍，实践中慢慢发现很多问题解决起来比维护现有的还要麻烦，成本更高，遂弃之。到了 2015 年，emberjs 的生态出成，工具链开始逐渐完备，此时我们又决定用 emberjs 重写 CMS，并且打造自己的工具链。用时一个多月，后台功能基本全部完成，可维护性提高了很多，代码结构也比原来更清晰。</p>
 <p>回顾 2014 年的选择为什么会失败呢？其因有二：</p>
 <ul>
 <li>团队技术实力不够雄厚，无法在可接受的时间成本之下攻破难题</li>
@@ -184,8 +190,8 @@ html 结构不简洁表达性差
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;main class="live-wallpaper"&gt;</div><div class="line">    &lt;section id="photo"&gt;&lt;/section&gt;</div><div class="line">&lt;/main&gt;</div><div class="line">&lt;script&gt;</div><div class="line">    var photo = &#123;&#123;live_wallpaper&#125;&#125;; //后端渲染</div><div class="line">    window.onload = function()&#123;</div><div class="line">        if (photo &amp;&amp; HomeApp) HomeApp.renderLiveWallpaper(photo);//传递全局变量到 component 中</div><div class="line">    &#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
 <p>当然，如果团队人手充足、时间充足，有大把精力可以跟进新技术的发展那就另当别论了。</p>
 <p>在 wecatch 我们更偏爱 CMS 之类的应用 emberjs + semantic-ui，客户端应用 react + redux，偶尔也会用 vuejs，还是看场景。</p>
-<p>riot 这货我挺看好的，如果是一个人写，用这货完全没问题，多人协作要尽早给出规范，因为这货是在太简单了、太随意了。</p>
-<p>typeScript  真的是值得拥有，也许这能成为一个我们用 angular 的理由？</p>
+<p>Riot 这货我挺看好的，如果是一个人写，用这货完全没问题，多人协作要尽早给出规范，因为这货是在太简单了、太随意了。</p>
+<p>TypeScript  真的是值得拥有，也许这能成为一个我们用 angular 的理由？</p>
 <p>I have no idea 😑。</p>
 
       
