@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>css | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    
+<h2 class="archive-title category"><i class="fa fa-folder-open"></i>css</h2>
+
+ 
+    <div class="archive category-archive " >
+	<article  class="post">
+		<header>
+		  <h1 class="title"><a style="" href="/2017/05/25/2017-css-framework/">盘点个人开发中选用的 CSS framework</a>
+	  		<time datetime="2017-05-25T09:50:20.000Z">
+			  	<!-- <a href="/2017/05/25/2017-css-framework/"></a>  -->
+			  	5月 25 2017
+			</time>
+		  </h1>
+		  
+			  <div class="tags">
+			  	<i class="fa fa-tag"></i>
+			    <a href="/tags/bulma/">bulma</a> <a href="/tags/purecss/">purecss</a> <a href="/tags/semantic-ui/">semantic-ui</a> <a href="/tags/tachyons/">tachyons</a>
+			  </div>
+			
+		</header>
+		 
+		    <div class="entry">
+		      
+		        <p>自 bootstrap CSS framework 已经成了开发者必不可少的技术选型了，随着移动端的不断发展和日趋复杂化的 UI 交互模式的需要，适应各种场景的 CSS framework 也层出不穷，在此盘点一下个人日常开发时选择的几种 CSS framework，排名不分先后。</p>
+<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><p><strong>优点</strong></p>
+<p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
+<p><strong>适用场景</strong></p>
+<p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
+<ul>
+<li><a href="https://git-star.com/" target="_blank" rel="external">https://git-star.com/</a></li>
+</ul>
+<h2 id="bulma"><a href="#bulma" class="headerlink" title="bulma"></a><a href="https://github.com/jgthms/bulma/" target="_blank" rel="external">bulma</a></h2><p>龙珠布尔玛的英文名字？好像是。</p>
+<p><strong>优点</strong></p>
+<p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
+<p>提供了一些非常基础的工具化 class，比如 <a href="http://bulma.io/documentation/modifiers/syntax/" target="_blank" rel="external">modifiers</a> 可以直接修改内边距、外边距、边框都常需要改动的地方，非常实用。</p>
+<p>开发者友好。</p>
+<p><strong>适用场景</strong></p>
+<p>官网、活动性页面、大中型项目，缺乏 JavaScript，动态的部分需要自己实现，现在大多数项目都会用第三方 JavaScript framework，bulma 非常容易借助 react、angular、vuejs、emberjs 实现自己的 UI components，这得意于 bulma 本身的组件化和模块化，以及便捷地覆写和修改机制。</p>
+<ul>
+<li><a href="https://github.com/vue-bulma/vue-admin" target="_blank" rel="external">https://github.com/vue-bulma/vue-admin</a> vue bulma</li>
+<li><a href="https://github.com/bokuweb/re-bulma" target="_blank" rel="external">https://github.com/bokuweb/re-bulma</a> react bulma</li>
+</ul>
+<h2 id="tachyons"><a href="#tachyons" class="headerlink" title="tachyons"></a><a href="http://tachyons.io/" target="_blank" rel="external">tachyons</a></h2><p><strong>优点</strong></p>
+<p>无意中发现这货，class 名称非常难看，语义化也差，但是组件能组合出各式各样的 UI 以及布局，非常神奇，有大量现成的已经组合好的 component 供使用。</p>
+<p>无 JavaScript。</p>
+<p><strong>适用场景</strong></p>
+<p>能够够最快速的做成常见网站的样式，class 名称语义化差，开发者不友好。</p>
+<h2 id="semantic-ui"><a href="#semantic-ui" class="headerlink" title="semantic-ui"></a><a href="https://semantic-ui.com/" target="_blank" rel="external">semantic-ui</a></h2><p><strong>优点</strong></p>
+<p>正如其名，semantic 语义化很好，提供了大量常用的组件，能够实现各种组合形成更丰富的组件，而且官方提供了 ember、react 的版本。</p>
+<p>基于 jQuery。</p>
+<p><strong>适用场景</strong></p>
+<p>大中型类 CMS 项目非常适合，提供了大量常用组件，包含 JavaScript，但是其覆盖没有 bulma 容易，学习成本高，一旦理解其常用组件结构，使用非常方便。</p>
+<p>semantic-ui 性能稍差，在性能要求高的场景慎用。</p>
+<p>semantic-ui 引用了 Google fonts，在国内网络环境中最好去掉。</p>
+<ul>
+<li><a href="https://github.com/wecatch/ember-semantic-ui" target="_blank" rel="external">https://github.com/wecatch/ember-semantic-ui</a></li>
+<li><a href="https://github.com/Semantic-Org/Semantic-UI-React" target="_blank" rel="external">https://github.com/Semantic-Org/Semantic-UI-React</a></li>
+<li><a href="https://github.com/Semantic-Org/Semantic-UI-Ember" target="_blank" rel="external">https://github.com/Semantic-Org/Semantic-UI-Ember</a></li>
+</ul>
+
+		      
+		    </div>
+		    <footer>
+		        <div class="alignleft">
+		            <a href="/2017/05/25/2017-css-framework/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+		        </div>
+	    	</footer>
+		 
+	</article>
+    </div>
+
+
+<nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2017 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    // $('h1.title').hover(
+    //   function() {
+    //     $(this).stop().animate(
+    //       {'marginLeft': '10px'}, 200
+    //     );
+    //   },
+    //   function() {
+    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    // });
+
+  });
+
+</script>
+
+</body>
+</html>

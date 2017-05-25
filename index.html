@@ -109,6 +109,107 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-05-25T09:50:20.000Z">
+  <!-- <a href="/2017/05/25/2017-css-framework/">5月 25日 2017</a> -->
+  5月 25日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/05/25/2017-css-framework/">盘点个人开发中选用的 CSS framework</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/css/">css</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/bulma/">bulma</a> <a href="/tags/purecss/">purecss</a> <a href="/tags/semantic-ui/">semantic-ui</a> <a href="/tags/tachyons/">tachyons</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>自 bootstrap CSS framework 已经成了开发者必不可少的技术选型了，随着移动端的不断发展和日趋复杂化的 UI 交互模式的需要，适应各种场景的 CSS framework 也层出不穷，在此盘点一下个人日常开发时选择的几种 CSS framework，排名不分先后。</p>
+<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><p><strong>优点</strong></p>
+<p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
+<p><strong>适用场景</strong></p>
+<p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
+<ul>
+<li><a href="https://git-star.com/" target="_blank" rel="external">https://git-star.com/</a></li>
+</ul>
+<h2 id="bulma"><a href="#bulma" class="headerlink" title="bulma"></a><a href="https://github.com/jgthms/bulma/" target="_blank" rel="external">bulma</a></h2><p>龙珠布尔玛的英文名字？好像是。</p>
+<p><strong>优点</strong></p>
+<p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
+<p>提供了一些非常基础的工具化 class，比如 <a href="http://bulma.io/documentation/modifiers/syntax/" target="_blank" rel="external">modifiers</a> 可以直接修改内边距、外边距、边框都常需要改动的地方，非常实用。</p>
+<p>开发者友好。</p>
+<p><strong>适用场景</strong></p>
+<p>官网、活动性页面、大中型项目，缺乏 JavaScript，动态的部分需要自己实现，现在大多数项目都会用第三方 JavaScript framework，bulma 非常容易借助 react、angular、vuejs、emberjs 实现自己的 UI components，这得意于 bulma 本身的组件化和模块化，以及便捷地覆写和修改机制。</p>
+<ul>
+<li><a href="https://github.com/vue-bulma/vue-admin" target="_blank" rel="external">https://github.com/vue-bulma/vue-admin</a> vue bulma</li>
+<li><a href="https://github.com/bokuweb/re-bulma" target="_blank" rel="external">https://github.com/bokuweb/re-bulma</a> react bulma</li>
+</ul>
+<h2 id="tachyons"><a href="#tachyons" class="headerlink" title="tachyons"></a><a href="http://tachyons.io/" target="_blank" rel="external">tachyons</a></h2><p><strong>优点</strong></p>
+<p>无意中发现这货，class 名称非常难看，语义化也差，但是组件能组合出各式各样的 UI 以及布局，非常神奇，有大量现成的已经组合好的 component 供使用。</p>
+<p>无 JavaScript。</p>
+<p><strong>适用场景</strong></p>
+<p>能够够最快速的做成常见网站的样式，class 名称语义化差，开发者不友好。</p>
+<h2 id="semantic-ui"><a href="#semantic-ui" class="headerlink" title="semantic-ui"></a><a href="https://semantic-ui.com/" target="_blank" rel="external">semantic-ui</a></h2><p><strong>优点</strong></p>
+<p>正如其名，semantic 语义化很好，提供了大量常用的组件，能够实现各种组合形成更丰富的组件，而且官方提供了 ember、react 的版本。</p>
+<p>基于 jQuery。</p>
+<p><strong>适用场景</strong></p>
+<p>大中型类 CMS 项目非常适合，提供了大量常用组件，包含 JavaScript，但是其覆盖没有 bulma 容易，学习成本高，一旦理解其常用组件结构，使用非常方便。</p>
+<p>semantic-ui 性能稍差，在性能要求高的场景慎用。</p>
+<p>semantic-ui 引用了 Google fonts，在国内网络环境中最好去掉。</p>
+<ul>
+<li><a href="https://github.com/wecatch/ember-semantic-ui" target="_blank" rel="external">https://github.com/wecatch/ember-semantic-ui</a></li>
+<li><a href="https://github.com/Semantic-Org/Semantic-UI-React" target="_blank" rel="external">https://github.com/Semantic-Org/Semantic-UI-React</a></li>
+<li><a href="https://github.com/Semantic-Org/Semantic-UI-Ember" target="_blank" rel="external">https://github.com/Semantic-Org/Semantic-UI-Ember</a></li>
+</ul>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/05/25/2017-css-framework/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-05-25T03:09:06.000Z">
   <!-- <a href="/2017/05/25/sqlalchemy-model-id-zero/">5月 25日 2017</a> -->
   5月 25日 2017
@@ -766,86 +867,6 @@
       
         <div class="alignleft">
             <a href="/2017/02/07/understand-network-programming/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-02-05T10:02:39.000Z">
-  <!-- <a href="/2017/02/05/understand-semantic-ui-grid/">2月 5日 2017</a> -->
-  2月 5日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/02/05/understand-semantic-ui-grid/">理解 semantic-ui grid 的使用</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/semantic-ui/">semantic-ui</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/grid/">grid</a> <a href="/tags/布局/">布局</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p><a href="http://semantic-ui.com">semantic-ui</a> 是一套类似于 bootstrap 的 ui framework，相比 bootstrap 有如下优点：</p>
-<ul>
-<li>组件采用语义化的组织方式，容易理解，容易记忆</li>
-<li>组件库非常丰富，几乎不需要引入第三方的组件，统一性强</li>
-<li>由于采用语义化的方式命名，所有组件都有自己的命名空间，相互不受干扰，侵入性弱，对自定义 css 干扰小，bootstrap 则改写了很多元素的默认样式，复写困难</li>
-<li>自定义容易，semantic ui 的源码中各个组件相互独立，依赖清晰，自定义方便</li>
-</ul>
-<h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><ul>
-<li><strong>container</strong><br>A fixed width container 具有固定宽度的容器</li>
-<li><strong>grid</strong><br>网格</li>
-<li><strong>column</strong><br>网格的列</li>
-<li><strong>row</strong><br>网格的行</li>
-</ul>
-<h2 id="固定宽度居中布局"><a href="#固定宽度居中布局" class="headerlink" title="固定宽度居中布局"></a>固定宽度居中布局</h2><p>semantic ui 提供容器 container 来快速实现固定宽度居中，使用 <code>container</code> 不需要任何 <code>grid</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ui container"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c"</span>&gt;</span></div><div class="line">        content</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>如果需要对一段文本进行固定居中，semantic ui 提供了 <code>text container</code></p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/02/05/understand-semantic-ui-grid/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         
