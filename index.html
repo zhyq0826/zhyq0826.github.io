@@ -109,6 +109,95 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-05-25T03:09:06.000Z">
+  <!-- <a href="/2017/05/25/sqlalchemy-model-id-zero/">5月 25日 2017</a> -->
+  5月 25日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/05/25/sqlalchemy-model-id-zero/">如果 SQLAlchemy model id 等于 0</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/SQLAlchemy/">SQLAlchemy</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/python/">python</a> <a href="/tags/mysql/">mysql</a> <a href="/tags/主键/">主键</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>SQLAlchemy 使用 session 生成新的数据根据主键的不同大致有以下几种情况，其中主键是 0 最为特殊。</p>
+<p>测试环境</p>
+<ul>
+<li>SQLAlchemy  1.0.9</li>
+<li>mysql 5.6.27</li>
+<li>pythonn 2.7</li>
+</ul>
+<p><strong>不指定主键</strong></p>
+<p>新创建 <a href="http://www.sqlalchemy.org/">SQLAlchemy</a> ORM model instance 不指定主键，默认是 None</p>
+<p>Model</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></div><div class="line">    __tablename__ = <span class="string">'tag'</span></div><div class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>) <span class="comment"># 主键自增</span></div><div class="line">    name = Column(VARCHAR(<span class="number">255</span>), nullable=<span class="keyword">False</span>)</div><div class="line">    group_id = Column(Integer)</div></pre></td></tr></table></figure>
+<p>提交之后生成对应的主键</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># None</span></div><div class="line">session.add(t)</div><div class="line">session.commit()</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># 1</span></div></pre></td></tr></table></figure>
+<p><strong>指定一个已经存在的主键</strong></p>
+<p>指定一个已经存在的主键 id，SQLAlchemy 并不会校验该数据是否经在 db table 中有了对应的 row，直接执行 insert 语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.id = <span class="number">1</span></div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line">session.add(t)</div><div class="line">session.commit() <span class="comment">#提交触发异常</span></div><div class="line"><span class="keyword">print</span> t.id</div></pre></td></tr></table></figure>
+<p>执行报 Duplicate entry for primary 异常，id = 1 的 row 已经存在。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqlalchemy.exc.IntegrityError: (pymysql.err.IntegrityError) (1062, u<span class="string">"Duplicate entry '1' for key 'PRIMARY'"</span>) [SQL: u<span class="string">'INSERT INTO tag (id, name, group_id) VALUES (%(id)s, %(name)s, %(group_id)s)'</span>] [parameters: &#123;<span class="string">'group_id'</span>: 3, <span class="string">'id'</span>: 1, <span class="string">'name'</span>: <span class="string">'i'</span>&#125;]</div></pre></td></tr></table></figure>
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/05/25/sqlalchemy-model-id-zero/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://zhyq0826.github.io/2017/05/25/sqlalchemy-model-id-zero/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2017/05/25/sqlalchemy-model-id-zero/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-05-17T23:53:11.000Z">
   <!-- <a href="/2017/05/18/a-end-programmer-of-front-end-road-2/">5月 18日 2017</a> -->
   5月 18日 2017
@@ -826,86 +915,6 @@
           <div class="alignright"> 
             <a href="http://zhyq0826.github.io/2017/02/05/understand-semantic-ui-grid/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2017/02/05/understand-semantic-ui-grid/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2016-11-17T16:13:23.000Z">
-  <!-- <a href="/2016/11/18/use-makrdown-to-format-wxmp/">11月 18日 2016</a> -->
-  11月 18日 2016
-</time>
-
-  
-    <h1 class="title"><a href="/2016/11/18/use-makrdown-to-format-wxmp/">用 markdown 自定义排版公众号文章</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/markdown/">markdown</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/微信公众号/">微信公众号</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>可能吧的阿禅的之前写了一篇文章介绍了他是如何排版公众号文章的：思路就是用 markdown 写作，然后使用专门的工具导出为 html 文件，最后把自定义的样式应用到导出的文件，复制粘贴最终的内容到微信公众号。</p>
-<p>在这篇文章中，我将一步步说明如何把阿禅的思路应用到时间中。</p>
-<h2 id="选择一款舒适的-markdown-写作工具"><a href="#选择一款舒适的-markdown-写作工具" class="headerlink" title="选择一款舒适的 markdown 写作工具"></a>选择一款舒适的 markdown 写作工具</h2><p>markdown 的写作工具有很多，这里我只介绍两款 mac 下的软件，非常好用，而且免费开源</p>
-<ul>
-<li><a href="http://www.typora.io/">Typora</a> </li>
-<li><a href="https://github.com/MacDownApp/macdown">macdown</a> </li>
-</ul>
-<p>这两款 markdown 编辑器都支持所见即所得写作方式，支持多种主题、支持导出各种格式的文件。</p>
-<h2 id="学习-markdown-语法"><a href="#学习-markdown-语法" class="headerlink" title="学习 markdown 语法"></a>学习 markdown 语法</h2><p>markdown 的语法非常简单，对于一般性的写作，只需要记住一些常用的标记即可，markdown 的教程很多，在此推荐 <strong><a href="http://wowubuntu.com/markdown/">http://wowubuntu.com/markdown/</a></strong>。</p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2016/11/18/use-makrdown-to-format-wxmp/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://zhyq0826.github.io/2016/11/18/use-makrdown-to-format-wxmp/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2016/11/18/use-makrdown-to-format-wxmp/">&nbsp;
               </span>
             </a>
           </div>
