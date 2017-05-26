@@ -109,6 +109,113 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-05-25T23:13:40.000Z">
+  <!-- <a href="/2017/05/26/a-end-programmer-of-front-end-road-3/">5月 26日 2017</a> -->
+  5月 26日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/05/26/a-end-programmer-of-front-end-road-3/">一个后端程序员的前端之路协作篇</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>此篇将是该系列的终章。</p>
+</blockquote>
+<p>也许软件开发中最难的部分并不是软件开发本身，而是沟通和协作，前端和设计师、产品经理和程序员、前端和后端、老板和产品经理、测试和程序员，想要高质量的实现需求，沟通最多的往往都是程序员。程序员木讷不爱说话？这里一定有误会。</p>
+<p>今天我们一起来扯扯后端和前端协作的淡。</p>
+<h3 id="套路"><a href="#套路" class="headerlink" title="套路"></a>套路</h3><p>现实中，很多公司都会按照职能的不同把程序员划分成前端、后端、客户端等不同角色，后端负责实现数据业务逻辑，提供 api 供前端和客户端调用，前端和客户端通过 api 调用实现 ui 的数据交互。</p>
+<p>为什么要按这样的套路分？</p>
+<ol>
+<li>一个人很难做到前端、后端都懂，而且水准达到专业级别。</li>
+<li>基于第一点，大多数公司招人不会要求你既懂前端又懂后端</li>
+<li>基于第二点，大多数公司的团队中程序员的岗都只负责一端</li>
+<li>基于第三点，协作不可避免了，因为前端不懂后端，后端不懂前端</li>
+</ol>
+<p>协作带来的问题是什么？</p>
+<ol>
+<li><p>沟通成本上升</p>
+<p>这世界上还有比两个人扯来扯去都不知道对方在扯什么更浪费生命的东西么，我想没有了。和一个认知不在同一领域甚至是不在同一水平的人沟通就会带来这样的问题，鸡同鸭讲，但是大家好像都乐意，因为开个会之后…很快就到下班时间了。</p>
+</li>
+<li><p>谁该妥协</p>
+<p>数据是该放到后端组织还是前端组织，这样的问题在前后端协作中真的是不胜枚举了。有时候数据就是应该前端组织，但是前端不干，有时候数据就是应该后端组织，但是后端不干，有时候数据放到前后端都可以，但是前后端都不干。怎么办？打一架吧，我经常这样说。</p>
+</li>
+<li><p>步调难以一致，任务切换频繁</p>
+<p>有些很诡异的问题，是需要前后端通力合作的，后端要控制输出，前端要控制展示。前端做好了，可能要等等后端，前端不能干等，于是前端的 CPU 发生一次任务切换，后端做好了通知前端，前端的 CPU 再把刚才 resume 的任务 rewake，把任务状态从内存（大脑）中恢复过来。任务的切换都是需要花费时间的，而且占用计算资源。 这种事，前后端反过来也一样。</p>
+</li>
+<li><p>其实还有很多…</p>
+</li>
+</ol>
+<p>既然这个套路很有问题，为什么很多团队还是要用这个套路。原因也许很多，最重要一点通晓前后端的人才难觅。</p>
+<p>成长最需要什么？认知的改变，认知改变带来思维的转变，思维转变带来行动的改变，无论是个人还是团队，改变这个套路的现状很难，并不表示没有改变的可能，团队的改变必然会带来利益的牺牲，甚至短暂的效率下降，个人改变会带来强烈的阵痛，但是一切都是暂时的。</p>
+<h3 id="老司机带你上路，改变并不难"><a href="#老司机带你上路，改变并不难" class="headerlink" title="老司机带你上路，改变并不难"></a>老司机带你上路，改变并不难</h3><p>之所以你只是个前端或者后端，那是因为你身边肯定有一个后端或前端，跟着老司机学习和自学相比就像是1000 万的学区和 200 万学区对比，老司机可以带着你轻松跨过很多坑，少走很多弯路。</p>
+<h4 id="Learn-by-doing"><a href="#Learn-by-doing" class="headerlink" title="Learn by doing"></a>Learn by doing</h4><p>边学边做，既然是工作一般没有很多时间让你去学一个完全新的东西，这样边做边学，边学边做。</p>
+<ol>
+<li><p>从小项目开始</p>
+<p>小项目能够很快完成并且能得到及时反馈，可以有效降低新手受挫的可能性，即使完不成让更专业的同学救火也完全来得及。</p>
+</li>
+<li><p>从没有复杂 UI 交互的项目开始</p>
+<p>后端学前端最怕的是写 CSS 和 动态特效，如果可以完全借助 framework 来实现各种功能能够迅速降低入门的门槛。</p>
+</li>
+<li><p>从内部项目开始</p>
+<p>内部项目对性能、体验、bug 率都有一定程度的容忍度，因而只要能有人把好关，新手完全可以大胆实践，不怕犯错。</p>
+</li>
+</ol>
+<h3 id="二者都学，到什么程度为止"><a href="#二者都学，到什么程度为止" class="headerlink" title="二者都学，到什么程度为止"></a>二者都学，到什么程度为止</h3><p>任何一项技能，唯有深入持续的研究学习才有大成，既学前端又学后端对于大部分人来说都很难做到样样精通，此时一定要有所偏重，依据自己的兴趣、专业程度、职业发展前景来衡量和选择。如果你的后端专业水准能做到完美，那前端的水平达到 7 成足以，不需要完全懂 html5，各种 CSS3 特效，大部分时候可能你都不需要会这些技能就能解决问题，即使真的需要，那就找更专业的同学。</p>
+<h3 id="二者都学，这不就是全栈么"><a href="#二者都学，这不就是全栈么" class="headerlink" title="二者都学，这不就是全栈么"></a>二者都学，这不就是全栈么</h3><p>一直以来我都认为全栈是个伪概念，几乎没有人能真正做到全栈都精通，太难了。会点皮毛也敢说是全栈，说明还涉世未深，没碰到过高手。</p>
+<p>程序员，无论前端也好，后端也罢，技多不压身，不仅提高了自己的产出，扩大自己的技术视野，而且以后不论在什么样的团队，只要有前后端协作的地方，那些前后都懂的人明显具有天然的优势，因为他痛过，所以能懂。</p>
+<blockquote>
+<p>我的理想是大家前端后端，我中有你，你中有我，其乐融融。至于让后端懂前端，前端懂后端真的能带来什么好处么，试试你就知道了。</p>
+</blockquote>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/05/26/a-end-programmer-of-front-end-road-3/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-05-25T09:50:20.000Z">
   <!-- <a href="/2017/05/25/2017-css-framework/">5月 25日 2017</a> -->
   5月 25日 2017
@@ -802,71 +909,6 @@
       
         <div class="alignleft">
             <a href="/2017/02/08/tornado-async-style/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-02-06T16:03:19.000Z">
-  <!-- <a href="/2017/02/07/understand-network-programming/">2月 7日 2017</a> -->
-  2月 7日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/02/07/understand-network-programming/">理解网络编程</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/network/">network</a>
-  </div>
-
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。</p>
-<p>如何开启两个进程的交流之旅？很简单，像下面这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># process A</span></div><div class="line"><span class="comment"># create tcp client</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line"><span class="comment"># enable reuse address port</span></div><div class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</div><div class="line"><span class="comment"># bind socket to the port</span></div><div class="line">server_address = (host, port)</div><div class="line">s.bind(server_address)</div><div class="line">s.listen(backlog)</div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></div><div class="line">    client, address = s.accept()</div><div class="line"></div><div class="line"><span class="comment"># process B</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line">server_address = (host, port)</div><div class="line"><span class="keyword">print</span> <span class="string">'connect to server &#123;0&#125;'</span>.format(server_address)</div><div class="line">s.connect(server_address)</div></pre></td></tr></table></figure>
-<p>进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个<strong>新的 socket</strong> 开始和 B 进行对话交流。是的，一个新的 socket。</p>
-<p>那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。</p>
-<p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
-<p><strong>那试试多进程如何？</strong></p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/02/07/understand-network-programming/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         
