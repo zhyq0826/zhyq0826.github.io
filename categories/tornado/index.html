@@ -87,9 +87,9 @@
 </ul>
 <hr>
 <p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
-<p><a href="https://github.com/tornadoweb/tornado">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
+<p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="external">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
 <blockquote>
-<p><a href="http://www.tornadoweb.org/">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
+<p><a href="http://www.tornadoweb.org/" target="_blank" rel="external">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/" target="_blank" rel="external">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling" target="_blank" rel="external">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="external">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
 </blockquote>
 <p>在 tornado 中异步和非阻塞是通过 ioloop 和 Future 实现的，Future 是借助 python 的协程来实现非阻塞调用。tornado 提供了不同的异步调用形式来适配不同的调用场景，本文的目的就是为了说明不同形式是如何使用的以及它们的差别。</p>
 <p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
