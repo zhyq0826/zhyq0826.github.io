@@ -105,13 +105,13 @@
     <div class="entry">
       
         <p>创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。</p>
-<h3 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h3><a id="more"></a>
+<h2 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h2><a id="more"></a>
 <p>一个产品需求从提出到落地大致需要经过以下几个阶段(可能根据需求的复杂度略有不同，这里只讨论一般性需求)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">提出需求--&gt;需求评估--&gt;开发--&gt;测试--&gt;上线</div></pre></td></tr></table></figure>
 <p>当开发人员面对这么<strong>粗粒度</strong>的节点划分的时候，很难真正想象出项目会遇到什么样的问题，尤其是新人对项目的难度把握不准确，以及对整个团队开发流程不熟悉，非常容易做出不恰当的预估。在此，由于粒度<strong>过粗</strong>，每个阶段在开发人员的印象中都是一个模糊的概念，只有深入到实际开发阶段，可能才会发现每个阶段都没有那么容易，处处是坑，四处碰壁。</p>
 <p>以测试为例。一般来说，开发人员日常开发使用的是一套测试环境，包括系统状态，数据库状态，环境依赖等都与线上环境有细微甚至很大的差别，而这个差别可能只有等到上线前一刻才会被发现。可能一开始预估测试时间并不会把这样的意外因素考虑在内，而这样的问题发生势必会影响项目的正常发布，甚至延期。</p>
 <p>因而，为了弥补这样的不足，把一个需求从<strong>立项</strong>到<strong>上线</strong>的过程进行更<strong>细粒度</strong>的拆分，提前对每个粒度所面临的场景进行多种可能性预测，并制定相应的解决方案，模拟出项目的真实开发流程，类似战场打仗所用到的沙盘。</p>
-<h3 id="一个真实的开发场景"><a href="#一个真实的开发场景" class="headerlink" title="一个真实的开发场景"></a>一个真实的开发场景</h3><p>APP中添加聊天通讯功能</p>
+<h2 id="一个真实的开发场景"><a href="#一个真实的开发场景" class="headerlink" title="一个真实的开发场景"></a>一个真实的开发场景</h2><p>APP中添加聊天通讯功能</p>
 <p>1.<strong>未拆分阶段</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">提出需求(通讯功能)----&gt;需求评估(可做)----&gt;开发(客户端,服务端,联合调试)----&gt;测试(客户端测试,服务端测试,产品测试)----&gt;上线</div></pre></td></tr></table></figure>
 <p>2.<strong>拆分需求和功能</strong></p>
@@ -200,19 +200,30 @@
   <!-- <h1 class="title">留言</h1> -->
 
   
-<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-<script>
-var cloudTieConfig = {
-  url: document.location.href, 
-  sourceId: "",
-  productKey: "ee733fd472354633ac5f7a8891b26ccb",
-  target: "cloud-tie-wrapper"
-};
-var yunManualLoad = true;
-Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-</script>
-</section>
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+  
+ </section>
 
 
 

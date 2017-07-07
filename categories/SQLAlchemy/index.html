@@ -76,25 +76,16 @@
 		      
 		        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3,4])).delete(synchronize_session=&apos;evaluate&apos;)</div></pre></td></tr></table></figure>
 <p>sqlalchemy 利用 session 执行 delete 时有一个 synchronize_session 参数用来说明 session 删除对象时需要执行的策略，共三个选项：</p>
-<ol>
-<li><strong>False</strong></li>
-</ol>
-<blockquote>
+<h2 id="False"><a href="#False" class="headerlink" title="False"></a><strong>False</strong></h2><blockquote>
 <p> don’t synchronize the session. This option is the most efficient and is reliable once the session is expired, which typically occurs after a commit(), or explicitly using expire_all(). Before the expiration, objects may still remain in the session which were in fact deleted which can lead to confusing results if they are accessed via get() or already loaded collections.</p>
 </blockquote>
 <p>不同步 session，如果被删除的 objects 已经在 session 中存在，在 session commit 或者 expire_all 之前，这些被删除的对象都存在 session 中。</p>
 <p>不同步可能会导致获取被删除 objects 时出错。</p>
-<ol>
-<li><strong>fetch</strong></li>
-</ol>
-<blockquote>
+<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><strong>fetch</strong></h2><blockquote>
 <p>performs a select query before the delete to find objects that are matched by the delete query and need to be removed from the session. Matched objects are removed from the session.</p>
 </blockquote>
 <p>删除之前从 db 中匹配被删除的对象并保存在 session 中，然后再从 session 中删除，这样做是为了让 session 的对象管理 identity_map 得知被删除的对象究竟是哪些以便更新引用关系。</p>
-<ol>
-<li><strong>evaluate</strong></li>
-</ol>
-<blockquote>
+<h2 id="evaluate"><a href="#evaluate" class="headerlink" title="evaluate"></a><strong>evaluate</strong></h2><blockquote>
 <p> Evaluate the query’s criteria in Python straight on the objects in the session. If evaluation of the criteria isn’t implemented, an error is raised.<br>The ‘evaluate’ strategy performs a scan of all matching objects within the Session; if the contents of the Session are expired, such as via a proceeding Session.commit() call, this will result in SELECT queries emitted for every matching object.</p>
 </blockquote>
 <p>默认值。根据当前的 query criteria 扫描 session 中的 objects，如果不能正确执行则抛出错误，这句话也可以理解为，如果 session 中原本就没有这些被删除的 objects，扫描当然不会发生匹配，相当于匹配未正确执行。</p>

@@ -110,20 +110,20 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
     </header>
     <div class="entry">
       
-        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>Architecture</strong></p>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>Architecture</strong></p>
 <p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
 <p>Architecture 意在计划、设计、构建建筑物的过程。</p>
 <p><strong>Software architecture</strong></p>
 <p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
 <p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
-<h3 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h3><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
+<h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
 <p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
 <a id="more"></a>
-<h3 id="哪些地方需要架构"><a href="#哪些地方需要架构" class="headerlink" title="哪些地方需要架构"></a>哪些地方需要架构</h3><p>不只有那些 high level 层面的东西才需要架构，在软件的整个生命周期中，架构几乎都有体现。</p>
+<h2 id="哪些地方需要架构"><a href="#哪些地方需要架构" class="headerlink" title="哪些地方需要架构"></a>哪些地方需要架构</h2><p>不只有那些 high level 层面的东西才需要架构，在软件的整个生命周期中，架构几乎都有体现。</p>
 <p>需求的提取和抽象，application 的部署，project package 的组织和命名，甚至到 module 、class 、function、variable 的组织命名都需要架构。</p>
 <p>可以说只要是需要做决定的地方，都需要架构。换句话说，每个程序员都是架构师，差别只在于做出的选择好坏有别，差异巨大。</p>
 <p>这些差异来自于做选择的能力，用更准确的概念描述就是<strong>权衡的能力</strong>，英文是 <strong>tradeoff</strong>。</p>
-<h3 id="什么是-tradeoff"><a href="#什么是-tradeoff" class="headerlink" title="什么是 tradeoff"></a>什么是 tradeoff</h3><p>trade 交易，off 牺牲，tradeoff 就指用牺牲什么来达到某种交易，有取有舍，取舍中做出选择。</p>
+<h2 id="什么是-tradeoff"><a href="#什么是-tradeoff" class="headerlink" title="什么是 tradeoff"></a>什么是 tradeoff</h2><p>trade 交易，off 牺牲，tradeoff 就指用牺牲什么来达到某种交易，有取有舍，取舍中做出选择。</p>
 <p><strong>tradeoff 需要我们知道事物的不同方面</strong></p>
 <p>任何时候我们做 tradeoff 之前都需要了解我们所面对的事务，这是 tradeoff 的前提。</p>
 <p>举个例子，要做一个电商系统，在 mysql、mongodb、postgresql 做出选择就需要知道每个 database 的特性(简单列举，仅做说明)：</p>
@@ -144,7 +144,7 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
 <p>mysql 在 1000 的并发、1 万的并发、10 万的并发下需要什么样的集群规模？</p>
 <p>每个问题背后都需要我们做出非常细致的研究和测试，得出详细数据指标，这些指标才是真正支持我们做选择的可靠依据。</p>
 <p>了解了 tradeoff 的重要性，那我们如何培养这种选择的能力？</p>
-<h3 id="选择能力的培养"><a href="#选择能力的培养" class="headerlink" title="选择能力的培养"></a>选择能力的培养</h3><p><strong>丰富的知识储备是前提</strong></p>
+<h2 id="选择能力的培养"><a href="#选择能力的培养" class="headerlink" title="选择能力的培养"></a>选择能力的培养</h2><p><strong>丰富的知识储备是前提</strong></p>
 <p>世界上有很多知识是我们自己都不知道自己不知道，这就是现实。</p>
 <p>为什么我们没有做出好的选择，因为我们根本不知道还有那些选择，而且我们竟然<strong>自己也不知道自己不知道</strong>，为此甚至还沾沾自喜以为自己做出了好选择。</p>
 <p>这也是为什么面对同样的选择，不同的人会有完全不同的反应。因为彼此的知识储备根本不在一个层面，理解程度当然高低不同。</p>
@@ -196,7 +196,7 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
 </tbody>
 </table>
 <p>from <a href="https://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/" target="_blank" rel="external">https://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/</a></p>
-<h3 id="无处不在的架构"><a href="#无处不在的架构" class="headerlink" title="无处不在的架构"></a>无处不在的架构</h3><p>架构反应的是 program 的设计过程，考虑的是 program 的未来，何时何地开始 program 的架构？</p>
+<h2 id="无处不在的架构"><a href="#无处不在的架构" class="headerlink" title="无处不在的架构"></a>无处不在的架构</h2><p>架构反应的是 program 的设计过程，考虑的是 program 的未来，何时何地开始 program 的架构？</p>
 <p>从开始给 program 起名字就应该考虑架构，好的名字是 program 核心含义的直接表达，react、jquery、docker 无一例外都有非常响亮且有意义的名字。</p>
 <p>function 的设计、class 的命名、package 的引用关系都是架构的体现，所谓见微知著，这些代码的细节最直接影响着一个 program 的质量。</p>
 <p>架构是一种思维模式的体现，是程序员面对代码的意志表达，从今天做出的选择或写的代码开始你的架构之路吧，架构无处不在。</p>
@@ -250,19 +250,30 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
   <!-- <h1 class="title">留言</h1> -->
 
   
-<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-<script>
-var cloudTieConfig = {
-  url: document.location.href, 
-  sourceId: "",
-  productKey: "ee733fd472354633ac5f7a8891b26ccb",
-  target: "cloud-tie-wrapper"
-};
-var yunManualLoad = true;
-Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-</script>
-</section>
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+  
+ </section>
 
 
 

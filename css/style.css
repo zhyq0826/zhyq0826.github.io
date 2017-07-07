@@ -22,15 +22,16 @@ h5,
 h6 {
   font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: bold;
+  margin: 20px 0;
 }
 h1 {
-  font-size: 1.8em;
+  font-size: 2em;
 }
 h2 {
-  font-size: 1.5em;
+  font-size: 1.6em;
 }
 h3 {
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 .fa {
   display: inline;
@@ -286,24 +287,19 @@ article .entry {
   line-height: 1.6;
   font-size: 16px;
 }
-article .entry p,
 article .entry blockquote,
 article .entry ul,
 article .entry ol,
 article .entry dl,
 article .entry table,
 article .entry iframe,
-article .entry h3,
-article .entry h4,
-article .entry h5,
-article .entry h6,
 article .entry .video-container {
   margin-top: 15px;
 }
 article .entry p {
-  margin: 20px 0;
+  margin-top: 29px;
   font-size: 16px;
-  line-height: 32px;
+  line-height: 1.5em;
 }
 article .entry blockquote {
 /*border-top 1px solid color-border*/

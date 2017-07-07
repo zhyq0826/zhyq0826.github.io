@@ -80,15 +80,15 @@
 		    <div class="entry">
 		      
 		        <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
-<h4 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h4><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
+<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
 <blockquote>
 <p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
 </blockquote>
-<h4 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h4><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
+<h2 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h2><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
 <blockquote>
 <p>任何时候部署mongodb 都应该尽早设置用户、口令以及相关权限。</p>
 </blockquote>
-<h4 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h4><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
+<h2 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h2><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
 <blockquote>
 <p>升级版本不能跨度太大，mongodb 官方也推荐生产环境升级要渐进式的而不是跨越式的，每次升级<strong>一定要备份数据</strong>。</p>
 </blockquote>

@@ -147,9 +147,9 @@
 <p>拆表的基本原理就是对选择的键进行 hash 生成每个键所属的表空间名，也就是说，在任意时刻，任意用户的数据只有以下三种状态</p>
 <p>1.全部在旧表中<br>2.部分在新表，部分在旧表<br>3.全部在新表中</p>
 <p>数据拆分的具体工作是要离线进行的，为了能保证用户数据在这样三种状态之下依然具有像单表中一样的一致性，需要业务层在处理当前用户数据时判断用户是否在迁移中，只有处于迁移状态之下，用户数据才需要特别处理。</p>
-<h3 id="迁移状态如何判断"><a href="#迁移状态如何判断" class="headerlink" title="迁移状态如何判断?"></a>迁移状态如何判断?</h3><p>当用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，我们做了如下决定：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)且保存为有序集数据。</p>
+<h2 id="迁移状态如何判断"><a href="#迁移状态如何判断" class="headerlink" title="迁移状态如何判断?"></a>迁移状态如何判断?</h2><p>当用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，我们做了如下决定：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)且保存为有序集数据。</p>
 <p>如果用户处于迁移状态，则用户的数据一定存在于这个区域，暂且给此区域命名为 <em>on_progress</em>。</p>
-<h3 id="迁移状态下如何保证用户数据的正确性？"><a href="#迁移状态下如何保证用户数据的正确性？" class="headerlink" title="迁移状态下如何保证用户数据的正确性？"></a>迁移状态下如何保证用户数据的正确性？</h3><p>当用户处于迁移状态，用户新增一条数据，则在新表、<em>on_progress</em> 、旧表中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>、旧表中同时删除该数据。</p>
+<h2 id="迁移状态下如何保证用户数据的正确性？"><a href="#迁移状态下如何保证用户数据的正确性？" class="headerlink" title="迁移状态下如何保证用户数据的正确性？"></a>迁移状态下如何保证用户数据的正确性？</h2><p>当用户处于迁移状态，用户新增一条数据，则在新表、<em>on_progress</em> 、旧表中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>、旧表中同时删除该数据。</p>
 <p><strong>这样做的目的是什么?</strong></p>
 <p>处于迁移状态下的用户，<em>on_progress</em> 中保存了其所有数据，可以进行翻页操作，<em>on_progress</em> 中的所有数据会在离线状态下不断写入新表中，迁移完成之后，旧表中的数据将被删除，<em>on_progress</em> 中数据也将被清除，这样用户数据全部进入新表中，后续的所有操作将只在新表上进行。</p>
 <p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新–&gt;旧或由旧–&gt;新的顺序进行，在这个过程中：</p>
@@ -161,7 +161,7 @@
 <p>用户新增一条数据</p>
 </blockquote>
 <p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧–&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。<br>3）如果发生意外导致 <em>on_progress</em> 不可用，为维护数据的一致性，新增操作也需要在旧表中进行。</p>
-<h3 id="on-progress-的选择"><a href="#on-progress-的选择" class="headerlink" title="on_progress 的选择"></a>on_progress 的选择</h3><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
+<h2 id="on-progress-的选择"><a href="#on-progress-的选择" class="headerlink" title="on_progress 的选择"></a>on_progress 的选择</h2><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
 <p>迁移完成之后，先删除旧表中的数据，然后再删除 <em>on_progress</em> 中有序集。</p>
 <p><strong>判断用户迁移状态</strong></p>
 <p>1.只要用户处于 redis 中，则此时一定是迁移中或迁移完成<br>2.只在旧表中找到用户数据，则该用户一定还没有开始迁移<br>3.只在新表中找到用户数据，用户已经迁移成功</p>
@@ -217,19 +217,30 @@
   <!-- <h1 class="title">留言</h1> -->
 
   
-<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-<script>
-var cloudTieConfig = {
-  url: document.location.href, 
-  sourceId: "",
-  productKey: "ee733fd472354633ac5f7a8891b26ccb",
-  target: "cloud-tie-wrapper"
-};
-var yunManualLoad = true;
-Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-</script>
-</section>
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+  
+ </section>
 
 
 

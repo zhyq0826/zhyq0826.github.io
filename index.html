@@ -142,11 +142,11 @@
 <p>不同语言在处理这种异步场景的方式是截然不同的，常见的处理策略有：消息共享（异步任务队列）、多线程多进程、event（linux signals，nodejs event loop）、协程 coroutine（返回 Future、Promise 代表程序执行的未来状态），其中 coroutine 是应用最广泛的，这也是今天此篇的主题。</p>
 <p>什么是 coroutine？简单来说就是一段可以在特定时刻自由被 suspend、execute、kill 的 program。程序对 coroutine 的控制就像操作系统对 process 的控制，但是代价要低廉的多。这也是很多语言都支持用 coroutine 的方式进行异步操作的一个重要原因，其中就包括 Golang、Python、JavaScript(ES6)、Erlang 等。</p>
 <p><strong>Talk is cheap, show me your code.</strong> 在此我们用一个非常简单的 web chat demo app 来一起表一表 Golang、Python、Nodejs 中的异步。</p>
-<h3 id="Chat-demo-app-的简单描述"><a href="#Chat-demo-app-的简单描述" class="headerlink" title="Chat demo app 的简单描述"></a>Chat demo app 的简单描述</h3><p>Demo 只是为了说明 coroutine 在不同语言是如何应用的，因而场景非常简单：一个内容输入框，任意 client 发送的消息都能在其他 client 显示。 </p>
+<h2 id="Chat-demo-app-的简单描述"><a href="#Chat-demo-app-的简单描述" class="headerlink" title="Chat demo app 的简单描述"></a>Chat demo app 的简单描述</h2><p>Demo 只是为了说明 coroutine 在不同语言是如何应用的，因而场景非常简单：一个内容输入框，任意 client 发送的消息都能在其他 client 显示。 </p>
 <p><img src="/images/chat-gif.gif" alt=""></p>
 <p><strong>项目地址</strong></p>
 <p><a href="https://github.com/zhyq0826/chat-app-tutorial" target="_blank" rel="external">https://github.com/zhyq0826/chat-app-tutorial</a></p>
-<h3 id="Chat-demo-app-的工作原理"><a href="#Chat-demo-app-的工作原理" class="headerlink" title="Chat demo app 的工作原理"></a>Chat demo app 的工作原理</h3><p>两个主要的 API：</p>
+<h2 id="Chat-demo-app-的工作原理"><a href="#Chat-demo-app-的工作原理" class="headerlink" title="Chat demo app 的工作原理"></a>Chat demo app 的工作原理</h2><p>两个主要的 API：</p>
 <ol>
 <li><code>/a/message/new</code> 用于消息发送，在此称之为 message-new</li>
 <li><code>/a/message/updates</code> 用于消息接受，在此称之为 message-update</li>
@@ -154,21 +154,21 @@
 <p>Client 通过 message-update 从 server 端获取最新的消息，如果没有新消息，当次 request 就被挂起，等待新消息的发送，当有新消息来临，获取最新消息之后，断开 connection，一定间隔之后重新请求 server 继续获取新的消息，并重复之前的过程。</p>
 <p>由于 message-update 从 server 获取消息的时候有可能需要较长时间的等待，server 会一直持有 client 的连接不释放，因而要求来自 message-update client 的请求不能阻塞 server 处理其他请求，并且 message-update 在没有消息到达时需要一直挂起。</p>
 <p><strong>Server 处理 message-update 的过程就是一个异步的过程</strong>。</p>
-<h3 id="Python-的实现"><a href="#Python-的实现" class="headerlink" title="Python 的实现"></a>Python 的实现</h3><p>Python 中用 yield 来实现 coroutine，但是想要在 web 中实现 coroutine 是需要特别处理，在此我们用了 tornado 这个支持 asynchronous network 的 web framework 来实现 message-update 的处理。</p>
+<h2 id="Python-的实现"><a href="#Python-的实现" class="headerlink" title="Python 的实现"></a>Python 的实现</h2><p>Python 中用 yield 来实现 coroutine，但是想要在 web 中实现 coroutine 是需要特别处理，在此我们用了 tornado 这个支持 asynchronous network 的 web framework 来实现 message-update 的处理。</p>
 <p>Tornado 中一个 Future 代表的是未来的一个结果，在一次异步请求过程中，yield 会解析 Future，如果 Future 未完成，请求就会继续等待。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@gen.coroutine   #1</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></div><div class="line">    cursor = self.get_argument(<span class="string">"cursor"</span>, <span class="keyword">None</span>)</div><div class="line">    <span class="comment"># Save the future returned by wait_for_messages so we can cancel</span></div><div class="line">    <span class="comment"># it in wait_for_messages</span></div><div class="line">    self.future = GLOBAL_MESSAGE_BUFFER.wait_for_messages(cursor=cursor)</div><div class="line">    messages = <span class="keyword">yield</span> self.future <span class="comment">#2</span></div><div class="line">    <span class="keyword">if</span> self.request.connection.stream.closed():</div><div class="line">        <span class="keyword">return</span></div><div class="line">    self.write(dict(messages=messages))</div></pre></td></tr></table></figure>
 <p><code>#1</code> 出通过 tornado 特有的 gen.coroutine 让当前请求支持 coroutine，<code>#2</code> 是当前请求等待的未来的执行结果，每个 message-update client 都通过 GLOBAL_MESSAGE_BUFFER.wait_for_messages 的调用生成一个 future，然后加入消息等待的列表，只要 future 未解析完成，请求会一直挂起，tornado 就是通过 yield 和 future 的配合来完成一次异步请求的。</p>
 <p>理解 yield 是如何等待 future 完成的过程其实就是理解 Python generator 如何解析的过程，细节我们有机会再表。</p>
-<h3 id="Golang-的实现"><a href="#Golang-的实现" class="headerlink" title="Golang 的实现"></a>Golang 的实现</h3><p>Golang 天生就在语言层面支持了 coroutine <code>go func()</code> 就可以开启 coroutine 的执行，是不是很简单，是不是很刺激，比起 tornado 必须特别处理要赏心悦目的多，而且 go 自带的 <code>net/http</code> 包实现的 http 请求又天生支持 coroutine，完全不需要类似 tornado 这种第三方 library 来支持了（此处为 Python 2 ）。Golang 比 Python 更牛逼的地方在于支持 coroutine 之间使用 channel 进行通信，是不是更刺激。</p>
+<h2 id="Golang-的实现"><a href="#Golang-的实现" class="headerlink" title="Golang 的实现"></a>Golang 的实现</h2><p>Golang 天生就在语言层面支持了 coroutine <code>go func()</code> 就可以开启 coroutine 的执行，是不是很简单，是不是很刺激，比起 tornado 必须特别处理要赏心悦目的多，而且 go 自带的 <code>net/http</code> 包实现的 http 请求又天生支持 coroutine，完全不需要类似 tornado 这种第三方 library 来支持了（此处为 Python 2 ）。Golang 比 Python 更牛逼的地方在于支持 coroutine 之间使用 channel 进行通信，是不是更刺激。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">MessageUpdatesHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</div><div class="line">	client := Client&#123;id: uuid.NewV4().String(), c: <span class="built_in">make</span>(<span class="keyword">chan</span> []<span class="keyword">byte</span>)&#125; #<span class="number">1</span></div><div class="line">	messageBuffer.NewWaiter(&amp;client) #<span class="number">2</span></div><div class="line">	msg := &lt;-client.c <span class="comment">//挂起请求等待消息来临 #3</span></div><div class="line">	w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)</div><div class="line">	w.Write(msg)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><code>#1</code> 为每个 client 生成 一个唯一的身份和 channel，然后 client 加入消息 <code>#2</code> 等待列表等候消息的来临，<code>#3</code> 就是挂起请求的关键点：等待 channel 的消息。Channel 的通信默认就是阻塞的，即当前 message-update 这个 coroutine 会被 <code>#3</code> 的等待而挂起不会执行，也就达到了 client 连接不能断的要求。</p>
-<h3 id="Nodejs-的实现"><a href="#Nodejs-的实现" class="headerlink" title="Nodejs 的实现"></a>Nodejs 的实现</h3><p>Nodejs 天生异步，通过 callback 来完成异步通知的接收和执行。为了演示方便我们用了 express ，在 express 中如果一个请求不主动调用 <code>res.end</code> 或 <code>res.send</code>、<code>res.json</code> 请求就不会结束。在 nodejs 中请求如何才能知道消息到达了，需要 response？Python 我们用了 <strong>Future</strong>，Golang 用了 <strong>channel</strong>，Nodejs 实现也绝不仅仅只有一种，在此我们用了<strong>事件</strong>和 <strong>Promise</strong>。</p>
+<h2 id="Nodejs-的实现"><a href="#Nodejs-的实现" class="headerlink" title="Nodejs 的实现"></a>Nodejs 的实现</h2><p>Nodejs 天生异步，通过 callback 来完成异步通知的接收和执行。为了演示方便我们用了 express ，在 express 中如果一个请求不主动调用 <code>res.end</code> 或 <code>res.send</code>、<code>res.json</code> 请求就不会结束。在 nodejs 中请求如何才能知道消息到达了，需要 response？Python 我们用了 <strong>Future</strong>，Golang 用了 <strong>channel</strong>，Nodejs 实现也绝不仅仅只有一种，在此我们用了<strong>事件</strong>和 <strong>Promise</strong>。</p>
 <p>Promise 类似 Future，代表的是一次未来的执行，并且在执行完成之后通过 resolve 和 reject 来完成执行结果的通知，then 或 catch 中获取执行结果。通过 Promise 能有效解决 nodejs 中回调嵌套以及异步执行错误无法外抛的问题。</p>
 <p>Promise 作为一种规范，nodejs 中有多种第三方库都做了实现，在此我们用了 bluebird 这个 library。</p>
 <p>事件是 nodejs 中常用的编程模型，熟悉 JavaScript 的同学应该很了解了，不细表。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">app.post('/a/message/updates', function(req, res)&#123;</div><div class="line">    var p = new Promise(function(resolve, reject)&#123;</div><div class="line">        messageBuffer.messageEmitter.on("newMessage", function(data)&#123;  #1</div><div class="line">            resolve(data); #2</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line">    var client = makeClient(uuidv4(), p);</div><div class="line">    messageBuffer.newWaiter(client);</div><div class="line">    p.then(function(data)&#123;  #3</div><div class="line">        res.set('Content-Type', 'application/json');</div><div class="line">        res.json(&#123;'messages': data&#125;);</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>每个 message-update client  都会生成一个 Promise，并且 Promise 在消息来临事件 newMessage <code>#1</code> 触发以后执行 Promise 的 resolve <code>#2</code> 来告知当前 client 消息来临。</p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>三种语言实现异步的策略是不尽相同的，其中 Golang 的最容易理解也最容易实现，这完全得意于 go 天生对 coroutine 的支持以及强大的 channel 通信。文中 Python 的实现是基于 Python 2，在 Python 3 中 coroutine 的使用有了很大的改善，但是相比 Golang 还是美中不足。Nodejs 作为天生的异步后端 JavaScript，想要完全使用 Promise 来发挥其优势还是需要很多技巧来让整个调用栈都完美支持，不过 ES6 中的 yield，ES7 中的 await/async 对异步的操作都有了很大改善，他们的处理方式神似 Python（据说 ES6 草案的实现就是一群 Python 程序员）。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>三种语言实现异步的策略是不尽相同的，其中 Golang 的最容易理解也最容易实现，这完全得意于 go 天生对 coroutine 的支持以及强大的 channel 通信。文中 Python 的实现是基于 Python 2，在 Python 3 中 coroutine 的使用有了很大的改善，但是相比 Golang 还是美中不足。Nodejs 作为天生的异步后端 JavaScript，想要完全使用 Promise 来发挥其优势还是需要很多技巧来让整个调用栈都完美支持，不过 ES6 中的 yield，ES7 中的 await/async 对异步的操作都有了很大改善，他们的处理方式神似 Python（据说 ES6 草案的实现就是一群 Python 程序员）。</p>
 <blockquote>
 <p>Python 的例子改自 tornado <a href="https://github.com/tornadoweb/tornado/tree/master/demos/chat" target="_blank" rel="external">https://github.com/tornadoweb/tornado/tree/master/demos/chat</a></p>
 <p>chat-app 地址 <a href="https://github.com/zhyq0826/chat-app-tutorial" target="_blank" rel="external">https://github.com/zhyq0826/chat-app-tutorial</a></p>
@@ -236,26 +236,26 @@
     <div class="entry">
       
         <p>golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。</p>
-<h3 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h3><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU" target="_blank" rel="external">Play</a> </p>
+<h2 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h2><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU" target="_blank" rel="external">Play</a> </p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="literal">nil</span>==<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>code-1 输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox318449491/main.go:8: invalid operation: nil == nil (operator == not defined on nil)</div></pre></td></tr></table></figure>
 <p>这点和 python 等动态语言是不同的，在 python 中，两个 None 值永远相等。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == <span class="keyword">None</span></div><div class="line"><span class="keyword">True</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
 <p>从 go 的输出结果不难看出，<code>==</code> 对于 nil 来说是一种未定义的操作。</p>
-<h3 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h3><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs" target="_blank" rel="external">Play</a></p>
+<h2 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h2><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs" target="_blank" rel="external">Play</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Printf(<span class="string">"%T"</span>, <span class="literal">nil</span>) </div><div class="line">	<span class="built_in">print</span>(<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>code-2 输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox379579345/main.go:9: use of untyped nil</div></pre></td></tr></table></figure>
 <p>print 的输出时未指定类型的，因而无法输出</p>
-<h3 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h3><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi" target="_blank" rel="external">Play</a></p>
+<h2 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h2><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi" target="_blank" rel="external">Play</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>m 和 ptr 的 address 都是 0x0</p>
-<h3 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h3><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5" target="_blank" rel="external">Play</a></p>
+<h2 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h2><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5" target="_blank" rel="external">Play</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(m == ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>code-4 输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox618627491/main.go:10: invalid operation: m == ptr (mismatched types map[int]string and *int)</div></pre></td></tr></table></figure>
-<h3 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h3><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR" target="_blank" rel="external">Play</a></p>
+<h2 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h2><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR" target="_blank" rel="external">Play</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> sl []<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> f <span class="function"><span class="keyword">func</span><span class="params">()</span></span></div><div class="line">	<span class="title">var</span> <span class="title">i</span> <span class="title">interface</span>&#123;&#125;</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, ptr)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, c)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, sl)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, f)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>code-5 输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">map[int]string(nil)</div><div class="line">(*int)(nil)</div><div class="line">(chan int)(nil)</div><div class="line">[]int(nil)</div><div class="line">(func())(nil)</div><div class="line">&lt;nil&gt;</div></pre></td></tr></table></figure>
@@ -324,25 +324,16 @@
       
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3,4])).delete(synchronize_session=&apos;evaluate&apos;)</div></pre></td></tr></table></figure>
 <p>sqlalchemy 利用 session 执行 delete 时有一个 synchronize_session 参数用来说明 session 删除对象时需要执行的策略，共三个选项：</p>
-<ol>
-<li><strong>False</strong></li>
-</ol>
-<blockquote>
+<h2 id="False"><a href="#False" class="headerlink" title="False"></a><strong>False</strong></h2><blockquote>
 <p> don’t synchronize the session. This option is the most efficient and is reliable once the session is expired, which typically occurs after a commit(), or explicitly using expire_all(). Before the expiration, objects may still remain in the session which were in fact deleted which can lead to confusing results if they are accessed via get() or already loaded collections.</p>
 </blockquote>
 <p>不同步 session，如果被删除的 objects 已经在 session 中存在，在 session commit 或者 expire_all 之前，这些被删除的对象都存在 session 中。</p>
 <p>不同步可能会导致获取被删除 objects 时出错。</p>
-<ol>
-<li><strong>fetch</strong></li>
-</ol>
-<blockquote>
+<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><strong>fetch</strong></h2><blockquote>
 <p>performs a select query before the delete to find objects that are matched by the delete query and need to be removed from the session. Matched objects are removed from the session.</p>
 </blockquote>
 <p>删除之前从 db 中匹配被删除的对象并保存在 session 中，然后再从 session 中删除，这样做是为了让 session 的对象管理 identity_map 得知被删除的对象究竟是哪些以便更新引用关系。</p>
-<ol>
-<li><strong>evaluate</strong></li>
-</ol>
-<blockquote>
+<h2 id="evaluate"><a href="#evaluate" class="headerlink" title="evaluate"></a><strong>evaluate</strong></h2><blockquote>
 <p> Evaluate the query’s criteria in Python straight on the objects in the session. If evaluation of the criteria isn’t implemented, an error is raised.<br>The ‘evaluate’ strategy performs a scan of all matching objects within the Session; if the contents of the Session are expired, such as via a proceeding Session.commit() call, this will result in SELECT queries emitted for every matching object.</p>
 </blockquote>
 <p>默认值。根据当前的 query criteria 扫描 session 中的 objects，如果不能正确执行则抛出错误，这句话也可以理解为，如果 session 中原本就没有这些被删除的 objects，扫描当然不会发生匹配，相当于匹配未正确执行。</p>
@@ -572,13 +563,13 @@
     </header>
     <div class="entry">
       
-        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>Architecture</strong></p>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>Architecture</strong></p>
 <p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
 <p>Architecture 意在计划、设计、构建建筑物的过程。</p>
 <p><strong>Software architecture</strong></p>
 <p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
 <p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
-<h3 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h3><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
+<h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
 <p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
       
       
@@ -645,15 +636,15 @@
     <div class="entry">
       
         <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
-<h4 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h4><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
+<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
 <blockquote>
 <p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
 </blockquote>
-<h4 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h4><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
+<h2 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h2><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
 <blockquote>
 <p>任何时候部署mongodb 都应该尽早设置用户、口令以及相关权限。</p>
 </blockquote>
-<h4 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h4><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
+<h2 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h2><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
 <blockquote>
 <p>升级版本不能跨度太大，mongodb 官方也推荐生产环境升级要渐进式的而不是跨越式的，每次升级<strong>一定要备份数据</strong>。</p>
 </blockquote>
@@ -770,71 +761,6 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2017-02-06T16:03:19.000Z">
-  <!-- <a href="/2017/02/07/understand-network-programming/">2月 7日 2017</a> -->
-  2月 7日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/02/07/understand-network-programming/">理解网络编程</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/network/">network</a>
-  </div>
-
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>人因为需要交流和沟通，才有了语言。计算机需要交流和沟通，才有了协议。人的交流促成了社交网络，计算机的交流促成了计算机网络，而计算机交流的本质其实是进程的交流（不同计算机上的进程通过 socket 相互通信），socket 提供了进程交流的通道，借助于协议，不同进程说的话才能被另一个进程理解。</p>
-<p>如何开启两个进程的交流之旅？很简单，像下面这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># process A</span></div><div class="line"><span class="comment"># create tcp client</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line"><span class="comment"># enable reuse address port</span></div><div class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</div><div class="line"><span class="comment"># bind socket to the port</span></div><div class="line">server_address = (host, port)</div><div class="line">s.bind(server_address)</div><div class="line">s.listen(backlog)</div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'waitting to recevie message from client'</span></div><div class="line">    client, address = s.accept()</div><div class="line"></div><div class="line"><span class="comment"># process B</span></div><div class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</div><div class="line">server_address = (host, port)</div><div class="line"><span class="keyword">print</span> <span class="string">'connect to server &#123;0&#125;'</span>.format(server_address)</div><div class="line">s.connect(server_address)</div></pre></td></tr></table></figure>
-<p>进程 A 负责监听一个 host 和 一个 port，进程 B 负责向这个 host 和 port 发起请求，A 得到 B 的请求之后，创建一个<strong>新的 socket</strong> 开始和 B 进行对话交流。是的，一个新的 socket。</p>
-<p>那 socket 究竟是什么？简单来说 socket 是一个由 (server host, server port, client host, clint port , protocol) 组成的唯一 pair。</p>
-<p>在这个简单的模型中，server 进程通过监听端口与外界进程交流的过程是阻塞的，而且一次只能处理一个进程的对话，处理完之后才能去处理下一个。为什么是这样的？因为只有一个进程再工作，他既需要监听新的对话，又需要处理已经建立连接的对话。显然这样的模型是低效的，而计算机代表的可是生产力工具。</p>
-<p><strong>那试试多进程如何？</strong></p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/02/07/understand-network-programming/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
       <time datetime="2017-02-05T10:02:39.000Z">
   <!-- <a href="/2017/02/05/understand-semantic-ui-grid/">2月 5日 2017</a> -->
   2月 5日 2017
@@ -886,6 +812,79 @@
       
         <div class="alignleft">
             <a href="/2017/02/05/understand-semantic-ui-grid/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-11-17T16:13:23.000Z">
+  <!-- <a href="/2016/11/18/use-makrdown-to-format-wxmp/">11月 18日 2016</a> -->
+  11月 18日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/11/18/use-makrdown-to-format-wxmp/">用 markdown 自定义排版公众号文章</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/markdown/">markdown</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/微信公众号/">微信公众号</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>可能吧的阿禅的之前写了一篇文章介绍了他是如何排版公众号文章的：思路就是用 markdown 写作，然后使用专门的工具导出为 html 文件，最后把自定义的样式应用到导出的文件，复制粘贴最终的内容到微信公众号。</p>
+<p>在这篇文章中，我将一步步说明如何把阿禅的思路应用到时间中。</p>
+<h2 id="选择一款舒适的-markdown-写作工具"><a href="#选择一款舒适的-markdown-写作工具" class="headerlink" title="选择一款舒适的 markdown 写作工具"></a>选择一款舒适的 markdown 写作工具</h2><p>markdown 的写作工具有很多，这里我只介绍两款 mac 下的软件，非常好用，而且免费开源</p>
+<ul>
+<li><a href="http://www.typora.io/" target="_blank" rel="external">Typora</a> </li>
+<li><a href="https://github.com/MacDownApp/macdown" target="_blank" rel="external">macdown</a> </li>
+</ul>
+<p>这两款 markdown 编辑器都支持所见即所得写作方式，支持多种主题、支持导出各种格式的文件。</p>
+<h2 id="学习-markdown-语法"><a href="#学习-markdown-语法" class="headerlink" title="学习 markdown 语法"></a>学习 markdown 语法</h2><p>markdown 的语法非常简单，对于一般性的写作，只需要记住一些常用的标记即可，markdown 的教程很多，在此推荐 <strong><a href="http://wowubuntu.com/markdown/" target="_blank" rel="external">http://wowubuntu.com/markdown/</a></strong>。</p>
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/11/18/use-makrdown-to-format-wxmp/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         
