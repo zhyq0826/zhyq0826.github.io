@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8">
   
-  <title>记一次python进程内存占用异常的问题 | 三月沙</title>
+  <title>python 内存泄漏排查与分析 | 三月沙</title>
   <meta name="author" content="三月沙">
   
   <meta name="description" content="python 内存异常的几种情况
-
 代码内出现循环引用
 全局变量数据太多
 进程加载大量数据，长久持有不释放
@@ -20,7 +19,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="记一次python进程内存占用异常的问题"/>
+  <meta property="og:title" content="python 内存泄漏排查与分析"/>
   <meta property="og:site_name" content="三月沙"/>
 
   
@@ -90,7 +89,7 @@
 </time>
 
   
-    <h1 class="title">记一次python进程内存占用异常的问题</h1>
+    <h1 class="title">python 内存泄漏排查与分析</h1>
   
 
 
@@ -104,7 +103,7 @@
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/内存泄露/">内存泄露</a>
+    <a href="/tags/内存泄露/">内存泄露</a> <a href="/tags/memory-link/">memory link</a>
   </div>
 
 <div class="clear"></div>
@@ -112,8 +111,7 @@
     </header>
     <div class="entry">
       
-        <p><strong>python 内存异常的几种情况</strong></p>
-<ul>
+        <h2 id="python-内存异常的几种情况"><a href="#python-内存异常的几种情况" class="headerlink" title="python 内存异常的几种情况"></a>python 内存异常的几种情况</h2><ul>
 <li>代码内出现循环引用</li>
 <li>全局变量数据太多</li>
 <li>进程加载大量数据，长久持有不释放</li>

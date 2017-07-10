@@ -405,16 +405,13 @@
     <div class="entry">
       
         <p>自 bootstrap CSS framework 已经成了开发者必不可少的技术选型了，随着移动端的不断发展和日趋复杂化的 UI 交互模式的需要，适应各种场景的 CSS framework 也层出不穷，在此盘点一下个人日常开发时选择的几种 CSS framework，排名不分先后。</p>
-<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><p><strong>优点</strong></p>
-<p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
-<p><strong>适用场景</strong></p>
-<p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
+<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
 <ul>
 <li><a href="https://git-star.com/" target="_blank" rel="external">https://git-star.com/</a></li>
 </ul>
 <h2 id="bulma"><a href="#bulma" class="headerlink" title="bulma"></a><a href="https://github.com/jgthms/bulma/" target="_blank" rel="external">bulma</a></h2><p>龙珠布尔玛的英文名字？好像是。</p>
-<p><strong>优点</strong></p>
-<p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
 <p>提供了一些非常基础的工具化 class，比如 <a href="http://bulma.io/documentation/modifiers/syntax/" target="_blank" rel="external">modifiers</a> 可以直接修改内边距、外边距、边框都常需要改动的地方，非常实用。</p>
 <p>开发者友好。</p>
       
@@ -488,14 +485,12 @@
 <li>mysql 5.6.27</li>
 <li>pythonn 2.7</li>
 </ul>
-<p><strong>不指定主键</strong></p>
-<p>新创建 <a href="http://www.sqlalchemy.org/" target="_blank" rel="external">SQLAlchemy</a> ORM model instance 不指定主键，默认是 None</p>
+<h2 id="不指定主键"><a href="#不指定主键" class="headerlink" title="不指定主键"></a>不指定主键</h2><p>新创建 <a href="http://www.sqlalchemy.org/" target="_blank" rel="external">SQLAlchemy</a> ORM model instance 不指定主键，默认是 None</p>
 <p>Model</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></div><div class="line">    __tablename__ = <span class="string">'tag'</span></div><div class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>) <span class="comment"># 主键自增</span></div><div class="line">    name = Column(VARCHAR(<span class="number">255</span>), nullable=<span class="keyword">False</span>)</div><div class="line">    group_id = Column(Integer)</div></pre></td></tr></table></figure>
 <p>提交之后生成对应的主键</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># None</span></div><div class="line">session.add(t)</div><div class="line">session.commit()</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># 1</span></div></pre></td></tr></table></figure>
-<p><strong>指定一个已经存在的主键</strong></p>
-<p>指定一个已经存在的主键 id，SQLAlchemy 并不会校验该数据是否经在 db table 中有了对应的 row，直接执行 insert 语句</p>
+<h2 id="指定一个已经存在的主键"><a href="#指定一个已经存在的主键" class="headerlink" title="指定一个已经存在的主键"></a>指定一个已经存在的主键</h2><p>指定一个已经存在的主键 id，SQLAlchemy 并不会校验该数据是否经在 db table 中有了对应的 row，直接执行 insert 语句</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.id = <span class="number">1</span></div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line">session.add(t)</div><div class="line">session.commit() <span class="comment">#提交触发异常</span></div><div class="line"><span class="keyword">print</span> t.id</div></pre></td></tr></table></figure>
 <p>执行报 Duplicate entry for primary 异常，id = 1 的 row 已经存在。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqlalchemy.exc.IntegrityError: (pymysql.err.IntegrityError) (1062, u<span class="string">"Duplicate entry '1' for key 'PRIMARY'"</span>) [SQL: u<span class="string">'INSERT INTO tag (id, name, group_id) VALUES (%(id)s, %(name)s, %(group_id)s)'</span>] [parameters: &#123;<span class="string">'group_id'</span>: 3, <span class="string">'id'</span>: 1, <span class="string">'name'</span>: <span class="string">'i'</span>&#125;]</div></pre></td></tr></table></figure>
@@ -563,11 +558,9 @@
     </header>
     <div class="entry">
       
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>Architecture</strong></p>
-<p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
 <p>Architecture 意在计划、设计、构建建筑物的过程。</p>
-<p><strong>Software architecture</strong></p>
-<p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
+<h3 id="Software-architecture"><a href="#Software-architecture" class="headerlink" title="Software architecture"></a>Software architecture</h3><p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
 <p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
 <h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
 <p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
@@ -613,7 +606,7 @@
 </time>
 
   
-    <h1 class="title"><a href="/2017/02/16/mongodb-practice-for-four-years-md/">创业这些年使用 mongodb 的实践教训</a></h1>
+    <h1 class="title"><a href="/2017/02/16/mongodb-practice-for-four-years-md/">创业三年，使用 mongodb 的实践教训</a></h1>
   
 
 
@@ -706,17 +699,10 @@
     </header>
     <div class="entry">
       
-        <p><strong>fundamental concepts</strong></p>
-<ul>
-<li><p><strong>同步</strong><br>调用者等待调用结果的返回</p>
-</li>
-<li><p><strong>异步</strong><br>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
-</li>
-<li><p><strong>阻塞</strong><br>调用方式影响后续指令的执行</p>
-</li>
-<li><p><strong>非阻塞</strong><br>调用方式不影响后续指令的执行</p>
-</li>
-</ul>
+        <h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>调用者等待调用结果的返回</p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>调用方式影响后续指令的执行</p>
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><p>调用方式不影响后续指令的执行</p>
 <hr>
 <p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
 <p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="external">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>

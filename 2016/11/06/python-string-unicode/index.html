@@ -3,24 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>理解 python UnicodeEncodeError | 三月沙</title>
+  <title>python 编码错误 | 三月沙</title>
   <meta name="author" content="三月沙">
   
-  <meta name="description" content="fundamental concepts
+  <meta name="description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案
 
-字符character 构成文本的最小组成单元
-
+基础概念字符character 构成文本的最小组成单元
 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成
-
 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等
-
 字符编码值不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值
-
 编码将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现
-
 解码将字节流解析为字符集中的字符
-
-
 
 
 文中 python 皆为 2.x 版本code
@@ -34,7 +27,7 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="理解 python UnicodeEncodeError"/>
+  <meta property="og:title" content="python 编码错误"/>
   <meta property="og:site_name" content="三月沙"/>
 
   
@@ -104,7 +97,7 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
 </time>
 
   
-    <h1 class="title">理解 python UnicodeEncodeError</h1>
+    <h1 class="title">python 编码错误</h1>
   
 
 
@@ -126,21 +119,15 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
     </header>
     <div class="entry">
       
-        <p><strong>fundamental concepts</strong></p>
-<ul>
-<li><p><strong>字符</strong><br>character 构成文本的最小组成单元</p>
-</li>
-<li><p><strong>字节</strong><br>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
-</li>
-<li><p><strong>字符集</strong><br>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
-</li>
-<li><p><strong>字符编码值</strong><br>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
-</li>
-<li><p><strong>编码</strong><br>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
-</li>
-<li><p><strong>解码</strong><br>将字节流解析为字符集中的字符</p>
-</li>
-</ul>
+        <blockquote>
+<p>Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案</p>
+</blockquote>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h3><p>character 构成文本的最小组成单元</p>
+<h3 id="字节"><a href="#字节" class="headerlink" title="字节"></a>字节</h3><p>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+<h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+<h3 id="字符编码值"><a href="#字符编码值" class="headerlink" title="字符编码值"></a>字符编码值</h3><p>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
+<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
+<h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>将字节流解析为字符集中的字符</p>
 <hr>
 <blockquote>
 <p>文中 python 皆为 2.x 版本code</p>
@@ -151,17 +138,17 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
 <p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
 <p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
 <a id="more"></a>
-<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p>字符串(string)其实就是一段文本序列，是由一个或多个字符组成(character)，字符是文本的最小构成单元，在 python 中可以用以下方式表示字符串:</p>
+<h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p>字符串(string)其实就是一段<strong>文本序列</strong>，是由一个或多个字符组成(character)，<strong>字符是文本的最小构成单元</strong>，在 python 中可以用以下方式表示字符串:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s1 = <span class="string">'abc'</span></div><div class="line">&gt;&gt;&gt; s2 = <span class="string">"abc"</span></div><div class="line">&gt;&gt;&gt; s3 = <span class="string">""</span><span class="string">"</span></div><div class="line">  abc</div><div class="line">  "<span class="string">""</span></div><div class="line">&gt;&gt;&gt; s4 = <span class="string">'中文'</span></div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> [s1, s2, s3, s4]:</div><div class="line">        <span class="built_in">print</span> <span class="built_in">type</span>(i)</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div></pre></td></tr></table></figure>
 <p>这些变量在 python shell 中对应输出是:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">s1 --&gt; <span class="string">'abc'</span></div><div class="line">s2 --&gt; <span class="string">'abc'</span></div><div class="line">s3 --&gt; <span class="string">'\nabc\n'</span></div><div class="line">s4 --&gt; <span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></div></pre></td></tr></table></figure>
-<p>s4 的输出和其它变量明显不同，字面上是一个 16 进制序列，但是 s4 和其它字符串一样，在 python 内部都是用同样方式进行存储的: 字节流(byte stream)，即字节序列。</p>
-<p>字节是计算机内部最小的可寻址的存储单位(对大部分计算机而言)，一个字节是由 8 bit 组成，也就是对应 8 个二进制位。其实可以更进一步解释说，python 不仅用字节的方式存储着变量中的字符串文本，python 文件中的所有信息在计算机内部都是用一个个字节表示的，计算机是用这样的方式存储文本数据的。</p>
+<p>s4 的输出和其它变量明显不同，字面上是一个 16 进制序列，但是 s4 和其它字符串一样，在 python 内部都是用同样方式进行存储的: <strong>字节流(byte stream)，即字节序列</strong>。</p>
+<p><strong>字节是计算机内部最小的可寻址的存储单位</strong>(对大部分计算机而言)，一个字节是由 8 bit 组成，也就是对应 8 个二进制位。其实可以更进一步解释说，python 不仅用字节的方式存储着变量中的字符串文本，python 文件中的所有信息在计算机内部都是用一个个字节表示的，<strong>计算机是用这样的方式存储文本数据的</strong>。</p>
 <h2 id="字符串用字节如何表示？"><a href="#字符串用字节如何表示？" class="headerlink" title="字符串用字节如何表示？"></a>字符串用字节如何表示？</h2><p>答案就是<strong>编码</strong>。计算机是只能识别 0 或 1 这样的二进制信息，而不是 a 或 b 这样对人类有意义的字符，为了让机器能读懂这些字符，人类就发明字符到二进制的映射关系，然后按照这个映射规则进行相应地编码。<a href="https://en.wikipedia.org/wiki/ascii" target="_blank" rel="external">ascii</a> 就是这样背景下诞生的一种编码规则。<strong>ascii 也是 python 2.x 默认使用的编码规则。</strong></p>
-<p>ascii 规定了常用的字符到计算机是如何映射的，编码范围是 0~127 共 128 个字符。简单来说它就是一本字典，规定了不同字符的对应的编码值(code point，一个整数值)，这样一来计算机就能用二进制表示了。比如字符 a 的编码是 97，对应的二进制是 1100001，<strong>一个字节</strong>就足够存储这些信息。字符串 “abc” 最终存储就是 <code>[97] [98] [99]</code> 三个字节。python 默认情况下就是使用这个规则对字符进行编码，对字节进行解码(反编码)。</p>
+<p>ascii 规定了常用的字符到计算机是如何映射的，编码范围是 0~127 共 128 个字符。<strong>简单来说它就是一本字典，规定了不同字符的对应的编码值(code point，一个整数值)，这样一来计算机就能用二进制表示了</strong>。比如字符 a 的编码是 97，对应的二进制是 1100001，<strong>一个字节</strong>就足够存储这些信息。字符串 “abc” 最终存储就是 <code>[97] [98] [99]</code> 三个字节。python 默认情况下就是使用这个规则对字符进行编码，对字节进行解码(反编码)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>ord(<span class="string">'a'</span>)</div><div class="line"><span class="number">97</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">97</span>)</div><div class="line"><span class="string">'a'</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
 <p>由于 ascii 的编码范围非常有限，对超过 ascii 范围之外的字符，python 是如何处理的？很简单，抛错误出来，这就是 <code>UnicodeEncodeError</code> 和 <code>UnicodeDecodeError</code> 的来源。那 python 会在什么时候抛出这样的错误，也就是说 python 进行编码和解码的操作发生在何时？</p>
-<h1 id="unicode-对象"><a href="#unicode-对象" class="headerlink" title="unicode 对象"></a>unicode 对象</h1><p>unicode 对象和 string 一样，是 python 中的一种字符对象(python 中一切皆对象，string 也是)。先不要去想 unicode 字符集、unicode 编码或者 utf-8 这些概念，在此特意加了<code>对象</code>就是为了和后面提到的 unicode 字符集进行区分。这里说的 unicode 就是 python 中的 unicode 对象，构造函数是 <code>unicode()</code>。</p>
+<h2 id="unicode-对象"><a href="#unicode-对象" class="headerlink" title="unicode 对象"></a>unicode 对象</h2><p>unicode 对象和 string 一样，是 python 中的一种<strong>字符对象</strong>(python 中一切皆对象，string 也是)。先不要去想 unicode 字符集、unicode 编码或者 utf-8 这些概念，在此特意加了<code>对象</code> 就是为了和后面提到的 unicode 字符集进行区分。这里说的 unicode 就是 python 中的 unicode 对象，构造函数是 <code>unicode()</code>。</p>
 <p>在 python 中创造 unicode 对象也很简单:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = unicode(<span class="string">'abc'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = <span class="string">u'abc'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s3 = U<span class="string">'abc'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s4 = <span class="string">u'中文'</span></div></pre></td></tr></table></figure>
 <p>这些变量在 python shell 中对应输出是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">s1 --&gt; u<span class="string">'abc'</span></div><div class="line">s2 --&gt; u<span class="string">'abc'</span></div><div class="line">s3 --&gt; u<span class="string">'abc'</span></div><div class="line">s4 --&gt; u<span class="string">'\u4e2d\u6587'</span></div></pre></td></tr></table></figure></p>
@@ -173,13 +160,13 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
 </ul>
 <p>虽然 unicode 字符集表达能力强，又能够统一字符编码规则，但是它并没有规定这些字符在计算机中是如何表示的。它和 ascii 不同，很多字符(编码值大于 255 )没有办法用一个字节就搞定。怎样做到高效快捷地存储这些编码值？于是就有了 unicode 字符集的编码规则的实现：utf-8、utf-16等。</p>
 <p>到这里可以简单理清 ascii、unicode 字符集、utf-8等的关系了：ascii 和 unicode 字符集都是一种编码集，由字符和字符对应的整数值(code point)组成，ascii 在计算机内部用一个字节存储，utf-8 是 unicode 字符集存储的具体实现，因为 unicode 字符集没有办法简简单单用一个字节搞定。</p>
-<p>回到 s4 对应的输出，这个输出就是 unicode 字符集对应的编码值(code point)的 16 进制表示。</p>
-<p>unicode 对象是用来表示 unicode 字符集中的字符，这些字符(实际是那个编码值，一个整数) 在 python 中又是如何存储的？有了前文的分析，也许可以猜到，python 依然是通过编码然后用字节的方式存储，但是这里的编码就不能是 ascii 了，而是对应 unicode 字符集的编码规则: utf-8、utf-16等。</p>
+<p>回到 s4 对应的输出，这个输出就是 <strong>unicode 字符集对应的编码值(code point)的 16 进制表示</strong>。</p>
+<p>unicode 对象是用来表示 unicode 字符集中的字符，这些字符(实际是那个编码值，一个整数) 在 python 中又是如何存储的？有了前文的分析，也许可以猜到，python 依然是通过<strong>编码然后用字节的方式</strong>存储，但是这里的编码就不能是 ascii 了，而是对应 unicode 字符集的编码规则: utf-8、utf-16等。</p>
 <h2 id="unicode-对象的编码"><a href="#unicode-对象的编码" class="headerlink" title="unicode 对象的编码"></a>unicode 对象的编码</h2><p>unicode 对象想要正确的存储就必须指定相应的编码规则，这里我们只讨论使用最广泛的 utf-8 实现。</p>
 <p>在 python 中对 unicode 对象编码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s=<span class="string">u'中文'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s.encode(<span class="string">'utf-8'</span>))</div><div class="line">&lt;type <span class="string">'str'</span>&gt;</div></pre></td></tr></table></figure>
-<p>编码之后输出的是个 string 并以字节序列的方式进行存储。有了编码就会有解码，python 正是在这种编码、解码的过程使用了错误的编码规则而发生了 <code>UnicodeEncodeError</code> 和 <code>UnicodeDecodeError</code> 错误，因为它默认使用 ascii 来完成转换。</p>
-<h1 id="string-和-unicode-对象的转换"><a href="#string-和-unicode-对象的转换" class="headerlink" title="string 和 unicode 对象的转换"></a>string 和 unicode 对象的转换</h1><p>unicode 对象可以用 utf-8 编码为 string，同理，string 也可以用 utf-8 解码为 unicode 对象</p>
+<p>编码之后输出的是个 string 并以字节序列的方式进行存储。有了编码就会有解码，python 正是在这种编码、解码的过程使用了错误的编码规则而发生了 <code>UnicodeEncodeError</code> 和 <code>UnicodeDecodeError</code> 错误，因为<strong>它默认使用 ascii 来完成转换</strong>。</p>
+<h2 id="string-和-unicode-对象的转换"><a href="#string-和-unicode-对象的转换" class="headerlink" title="string 和 unicode 对象的转换"></a>string 和 unicode 对象的转换</h2><p>unicode 对象可以用 utf-8 编码为 string，同理，string 也可以用 utf-8 解码为 unicode 对象</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>u=<span class="string">u'中文'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = u.encode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s</div><div class="line"><span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</div><div class="line">&lt;type <span class="string">'str'</span>&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s.decode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="string">u'\u4e2d\u6587'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s.decode(<span class="string">'utf-8'</span>))</div><div class="line">&lt;type <span class="string">'unicode'</span>&gt;</div></pre></td></tr></table></figure>
 <p>错误的编码规则就会导致那两个常见的异常</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; u.encode('ascii')</div><div class="line">Traceback (most recent call last):</div><div class="line">  File "&lt;input&gt;", line 1, in &lt;module&gt;</div><div class="line">UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; s.decode('ascii')</div><div class="line">Traceback (most recent call last):</div><div class="line">  File "&lt;input&gt;", line 1, in &lt;module&gt;</div><div class="line">UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)</div></pre></td></tr></table></figure>
@@ -195,11 +182,11 @@ UnicodeEncodeError123Traceback (most recent call last):  File &quot;&amp;lt;inpu
 <p>5.输出到文件</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; f = open('text.txt','w')</div><div class="line">&gt;&gt;&gt; f.write(u)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File "&lt;input&gt;", line 1, in &lt;module&gt;</div><div class="line">UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
 <hr>
-<p>1，2，3 的例子中，python 自动用 ascii 把 string 解码为 unicode 对象然后再进行相应操作，所以都是 <code>decode</code> 错误， 4 和 5 python 自动用 ascii 把 unicode 对象编码为字符串然后输出，所以都是 <code>encode</code> 错误。</p>
+<p>1，2，3 的例子中，python 自动用 <strong>ascii 把 string 解码为 unicode</strong> 对象然后再进行相应操作，所以都是 <code>decode</code> 错误， 4 和 5 python 自动用 ascii 把 unicode 对象编码为字符串然后输出，所以都是 <code>encode</code> 错误。</p>
 <p>只要涉及到 unicode 对象和 string 的转换以及 unicode 对象输出、输入的地方可能都会触发 python 自动进行解码/编码，比如写入数据库、写入到文件、读取 socket 等等。</p>
 <p>到此，这两个异常产生的真正原因了基本已经清楚了: unicode 对象需要<strong>编码</strong>为相应的 string(字符串)才可以存储、传输、打印，字符串需要<strong>解码</strong>为对应的 unicode 对象才能完成 unicode 对象的各种操作，<code>len</code>、<code>find</code> 等。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">string.decode('utf-8') --&gt; unicode</div><div class="line">unicode.encode('utf-8') --&gt; string</div></pre></td></tr></table></figure>
-<h1 id="如何避免这些的错误"><a href="#如何避免这些的错误" class="headerlink" title="如何避免这些的错误"></a>如何避免这些的错误</h1><p>1.理解编码或解码的转换方向</p>
+<h2 id="如何避免这些的错误"><a href="#如何避免这些的错误" class="headerlink" title="如何避免这些的错误"></a>如何避免这些的错误</h2><p>1.理解编码或解码的转换方向</p>
 <p>无论何时发生编码错误，首先要理解编码方向，然后再针对性解决。</p>
 <p>2.设置默认编码为 utf-8</p>
 <p>在文件头写入 </p>

@@ -74,17 +74,10 @@
 		 <!-- 
 		    <div class="entry">
 		      
-		        <p><strong>fundamental concepts</strong></p>
-<ul>
-<li><p><strong>同步</strong><br>调用者等待调用结果的返回</p>
-</li>
-<li><p><strong>异步</strong><br>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
-</li>
-<li><p><strong>阻塞</strong><br>调用方式影响后续指令的执行</p>
-</li>
-<li><p><strong>非阻塞</strong><br>调用方式不影响后续指令的执行</p>
-</li>
-</ul>
+		        <h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>调用者等待调用结果的返回</p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>调用方式影响后续指令的执行</p>
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><p>调用方式不影响后续指令的执行</p>
 <hr>
 <p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
 <p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="external">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>

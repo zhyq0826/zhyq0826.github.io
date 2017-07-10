@@ -6,11 +6,9 @@
   <title>无处不在的架构 | 三月沙</title>
   <meta name="author" content="三月沙">
   
-  <meta name="description" content="概念Architecture
-Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki https://en.wikipedia.org/wiki/Architecture。
+  <meta name="description" content="概念ArchitectureArchitecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki https://en.wikipedia.org/wiki/Architecture。
 Architecture 意在计划、设计、构建建筑物的过程。
-Software architecture
-Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki https://en.wikipedia.org/wiki/Software_architecture
+Software architectureSoftware architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki https://en.wikipedia.org/wiki/Software_architecture
 software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。
 软件架构关注什么Software architecture is about making fundamental structural choices which are costly to change once implemented.
 wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。">
@@ -110,11 +108,9 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
     </header>
     <div class="entry">
       
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>Architecture</strong></p>
-<p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
+        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
 <p>Architecture 意在计划、设计、构建建筑物的过程。</p>
-<p><strong>Software architecture</strong></p>
-<p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
+<h3 id="Software-architecture"><a href="#Software-architecture" class="headerlink" title="Software architecture"></a>Software architecture</h3><p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
 <p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
 <h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
 <p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
@@ -124,8 +120,7 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
 <p>可以说只要是需要做决定的地方，都需要架构。换句话说，每个程序员都是架构师，差别只在于做出的选择好坏有别，差异巨大。</p>
 <p>这些差异来自于做选择的能力，用更准确的概念描述就是<strong>权衡的能力</strong>，英文是 <strong>tradeoff</strong>。</p>
 <h2 id="什么是-tradeoff"><a href="#什么是-tradeoff" class="headerlink" title="什么是 tradeoff"></a>什么是 tradeoff</h2><p>trade 交易，off 牺牲，tradeoff 就指用牺牲什么来达到某种交易，有取有舍，取舍中做出选择。</p>
-<p><strong>tradeoff 需要我们知道事物的不同方面</strong></p>
-<p>任何时候我们做 tradeoff 之前都需要了解我们所面对的事务，这是 tradeoff 的前提。</p>
+<h3 id="tradeoff-需要我们知道事物的不同方面"><a href="#tradeoff-需要我们知道事物的不同方面" class="headerlink" title="tradeoff 需要我们知道事物的不同方面"></a>tradeoff 需要我们知道事物的不同方面</h3><p>任何时候我们做 tradeoff 之前都需要了解我们所面对的事务，这是 tradeoff 的前提。</p>
 <p>举个例子，要做一个电商系统，在 mysql、mongodb、postgresql 做出选择就需要知道每个 database 的特性(简单列举，仅做说明)：</p>
 <ul>
 <li>mysql 支持事务、分布式部署，典型的关系型数据库</li>
@@ -137,20 +132,17 @@ wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架
 <p>选择 mysql 是因为它支持事务，强一致性，市场占有率高，这是其<strong>利</strong>。</p>
 <p>当规模达到一定程度之后，mysql 在扩展、性能等方面就没有其他一些 nosql 数据库做得好，这是其<strong>弊</strong>。</p>
 <p>现实的情况是，很多人根本不会有机会感受到 mysql 的弊。</p>
-<p><strong>tradeoff 需要我们能够量化事务的利弊</strong></p>
-<p>量化就是要有数据支撑我们的选择，了解了不同事务的不同方面仅仅只能帮助我们做出粗略的选择，尽快删选掉那些不合格的选项，想要进一步判断选择的正确与否就需要我们对选择的事物进行全方位的衡量和量化。</p>
+<h3 id="tradeoff-需要我们能够量化事务的利弊"><a href="#tradeoff-需要我们能够量化事务的利弊" class="headerlink" title="tradeoff 需要我们能够量化事务的利弊"></a>tradeoff 需要我们能够量化事务的利弊</h3><p>量化就是要有数据支撑我们的选择，了解了不同事务的不同方面仅仅只能帮助我们做出粗略的选择，尽快删选掉那些不合格的选项，想要进一步判断选择的正确与否就需要我们对选择的事物进行全方位的衡量和量化。</p>
 <p>mysql 在特定 linux 版本、特定磁盘的 QPS 能达到多少？</p>
 <p>数据规模不同时，mysql 的读写每秒分别都是多少？</p>
 <p>mysql 在 1000 的并发、1 万的并发、10 万的并发下需要什么样的集群规模？</p>
 <p>每个问题背后都需要我们做出非常细致的研究和测试，得出详细数据指标，这些指标才是真正支持我们做选择的可靠依据。</p>
 <p>了解了 tradeoff 的重要性，那我们如何培养这种选择的能力？</p>
-<h2 id="选择能力的培养"><a href="#选择能力的培养" class="headerlink" title="选择能力的培养"></a>选择能力的培养</h2><p><strong>丰富的知识储备是前提</strong></p>
-<p>世界上有很多知识是我们自己都不知道自己不知道，这就是现实。</p>
+<h2 id="选择能力的培养"><a href="#选择能力的培养" class="headerlink" title="选择能力的培养"></a>选择能力的培养</h2><h3 id="丰富的知识储备是前提"><a href="#丰富的知识储备是前提" class="headerlink" title="丰富的知识储备是前提"></a>丰富的知识储备是前提</h3><p>世界上有很多知识是我们自己都不知道自己不知道，这就是现实。</p>
 <p>为什么我们没有做出好的选择，因为我们根本不知道还有那些选择，而且我们竟然<strong>自己也不知道自己不知道</strong>，为此甚至还沾沾自喜以为自己做出了好选择。</p>
 <p>这也是为什么面对同样的选择，不同的人会有完全不同的反应。因为彼此的知识储备根本不在一个层面，理解程度当然高低不同。</p>
 <p>如果根本不知道 postgresql，又如何谈得上对它的选择。</p>
-<p><strong>靠事实说话的理工科思维</strong></p>
-<p>理工科思维讲究有没有道理，有没有说服力。这个道理不是建立在想当然的感觉、权威、道德等缺乏可靠事实的标准之上。</p>
+<h3 id="靠事实说话的理工科思维"><a href="#靠事实说话的理工科思维" class="headerlink" title="靠事实说话的理工科思维"></a>靠事实说话的理工科思维</h3><p>理工科思维讲究有没有道理，有没有说服力。这个道理不是建立在想当然的感觉、权威、道德等缺乏可靠事实的标准之上。</p>
 <p>实验、测量、分析、数据这些带有强烈理工科思维的词汇是体现依靠事实说话的有力证明。</p>
 <p>以理工科的方式对选择的利弊进行量化分析，列依据，摆事实，如何选择将一目了然。</p>
 <table>

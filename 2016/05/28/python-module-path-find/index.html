@@ -3,19 +3,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>理解 python 模块加载和路径查找 | 三月沙</title>
+  <title>python 模块查找和加载 | 三月沙</title>
   <meta name="author" content="三月沙">
   
-  <meta name="description" content="基础概念module
-模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块
-package
-包，包含有 __init__ 文件的文件夹
-relative path
-相对路径，相对于某个目录的路径
-absolute path
-绝对路径，全路径
-路径查找
-python 解释器查找被引入的包或模块
+  <meta name="description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块
+package包，包含有 __init__ 文件的文件夹
+relative path相对路径，相对于某个目录的路径
+absolute path绝对路径，全路径
+路径查找python 解释器查找被引入的包或模块
 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。
 code-1
 12345678910#test.pyimport osimport sysprint sys.path[0]# executepython test.pypython /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test.py
@@ -25,7 +20,7 @@ Python 解释器查找包的顺序是什么">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="理解 python 模块加载和路径查找"/>
+  <meta property="og:title" content="python 模块查找和加载"/>
   <meta property="og:site_name" content="三月沙"/>
 
   
@@ -95,7 +90,7 @@ Python 解释器查找包的顺序是什么">
 </time>
 
   
-    <h1 class="title">理解 python 模块加载和路径查找</h1>
+    <h1 class="title">python 模块查找和加载</h1>
   
 
 
@@ -106,21 +101,22 @@ Python 解释器查找包的顺序是什么">
   </div>
 
 
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/module/">module</a> <a href="/tags/path/">path</a>
+  </div>
+
 <div class="clear"></div>
       
     </header>
     <div class="entry">
       
-        <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p><strong>module</strong></p>
-<p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
-<p><strong>package</strong></p>
-<p>包，包含有 <code>__init__</code> 文件的文件夹</p>
-<p><strong>relative path</strong></p>
-<p>相对路径，相对于某个目录的路径</p>
-<p><strong>absolute path</strong></p>
-<p>绝对路径，全路径</p>
-<p><strong>路径查找</strong></p>
-<p>python 解释器查找被引入的包或模块</p>
+        <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
+<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>包，包含有 <code>__init__</code> 文件的文件夹</p>
+<h3 id="relative-path"><a href="#relative-path" class="headerlink" title="relative path"></a>relative path</h3><p>相对路径，相对于某个目录的路径</p>
+<h3 id="absolute-path"><a href="#absolute-path" class="headerlink" title="absolute path"></a>absolute path</h3><p>绝对路径，全路径</p>
+<h3 id="路径查找"><a href="#路径查找" class="headerlink" title="路径查找"></a>路径查找</h3><p>python 解释器查找被引入的包或模块</p>
 <h2 id="Python-解释器是如何查找包和模块的"><a href="#Python-解释器是如何查找包和模块的" class="headerlink" title="Python 解释器是如何查找包和模块的"></a>Python 解释器是如何查找包和模块的</h2><p>Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。</p>
 <p><strong>code-1</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#test.py</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"></div><div class="line"><span class="keyword">print</span> sys.path[<span class="number">0</span>]</div><div class="line"></div><div class="line"><span class="comment"># execute</span></div><div class="line">python test.py</div><div class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test.py</div></pre></td></tr></table></figure>
