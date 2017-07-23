@@ -109,6 +109,117 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-02-05T10:02:39.000Z">
+  <!-- <a href="/2017/02/05/understand-semantic-ui-grid/">2月 5日 2017</a> -->
+  2月 5日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/02/05/understand-semantic-ui-grid/">理解 semantic-ui grid 的使用</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/semantic-ui/">semantic-ui</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/grid/">grid</a> <a href="/tags/布局/">布局</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://semantic-ui.com" target="_blank" rel="external">semantic-ui</a> 是一套类似于 bootstrap 的 ui framework，相比 bootstrap 有如下优点：</p>
+<ul>
+<li>组件采用语义化的组织方式，容易理解，容易记忆</li>
+<li>组件库非常丰富，几乎不需要引入第三方的组件，统一性强</li>
+<li>由于采用语义化的方式命名，所有组件都有自己的命名空间，相互不受干扰，侵入性弱，对自定义 css 干扰小，bootstrap 则改写了很多元素的默认样式，复写困难</li>
+<li>自定义容易，semantic ui 的源码中各个组件相互独立，依赖清晰，自定义方便</li>
+</ul>
+<h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><ul>
+<li><strong>container</strong><br>A fixed width container 具有固定宽度的容器</li>
+<li><strong>grid</strong><br>网格</li>
+<li><strong>column</strong><br>网格的列</li>
+<li><strong>row</strong><br>网格的行</li>
+</ul>
+<h2 id="固定宽度居中布局"><a href="#固定宽度居中布局" class="headerlink" title="固定宽度居中布局"></a>固定宽度居中布局</h2><p>semantic ui 提供容器 container 来快速实现固定宽度居中，使用 <code>container</code> 不需要任何 <code>grid</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ui container"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c"</span>&gt;</span></div><div class="line">        content</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>如果需要对一段文本进行固定居中，semantic ui 提供了 <code>text container</code></p>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/02/05/understand-semantic-ui-grid/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2016-11-17T16:13:23.000Z">
   <!-- <a href="/2016/11/18/use-makrdown-to-format-wxmp/">11月 18日 2016</a> -->
   11月 18日 2016
@@ -1062,104 +1173,6 @@
       
         <div class="alignleft">
             <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2016-01-12T14:01:33.000Z">
-  <!-- <a href="/2016/01/12/first-art-for-my-life/">1月 12日 2016</a> -->
-  1月 12日 2016
-</time>
-
-  
-    <h1 class="title"><a href="/2016/01/12/first-art-for-my-life/">程序人生的第一件艺术品</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/程序人生/">程序人生</a>
-  </div>
-
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <blockquote>
-<p>没有一点儿疯狂，生活就不值地过，同样，没有一件自己的艺术品，程序人生就是不完整的</p>
-</blockquote>
-<p>我不是一个善于总结的人，因为看着自己的过去，就如同对着镜子不断检视自己犯得错误，数落那曾经的幼稚和愚蠢，徒增懊恼。</p>
-<p>但是掺杂程序的人生却必须不断地审视，重构，一旦对bug恣意放纵，不管不问，这样的人生必将坎坷不断，难以运转。</p>
-<p>所以这算是一篇象征性的总结，对某一段程序人生的重构和梳理，为的是让自己不至于看得不明不白，将来别人接管时，也能一目了然，这是对程序人自己起码的要求，也是对别的程序人起码的尊重。</p>
-<blockquote>
-<p>我原以为可以用代码写诗，但是敲出来的只是烦躁和不安</p>
-</blockquote>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2016/01/12/first-art-for-my-life/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         
