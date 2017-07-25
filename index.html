@@ -151,6 +151,8 @@
 <p>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</p>
 <p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
 <p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
+<h2 id="文中代码"><a href="#文中代码" class="headerlink" title="文中代码"></a>文中代码</h2><p><a href="https://gist.github.com/zhyq0826/f2f8f9e61a87543e068af936ed170e53/archive/7867a9bd10aecb16897d07c6aebb04d6a74da5df.zip" target="_blank" rel="external">下载代码</a></p>
+<script src="//gist.github.com/f2f8f9e61a87543e068af936ed170e53.js?file=make_and_new.go"></script>
 
       
       
