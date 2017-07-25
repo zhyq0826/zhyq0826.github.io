@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>go make 和 new 的区别 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。
+
+new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。
+123456789p1 := n">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="go make 和 new 的区别"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-07-25T22:12:23.000Z">
+  <!-- <a href="/2017/07/26/go-make-and-new/">7月 26日 2017</a> -->
+  7月 26日 2017
+</time>
+
+  
+    <h1 class="title">go make 和 new 的区别</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。</p>
+</blockquote>
+<h2 id="new-T-返回的是-T-的指针"><a href="#new-T-返回的是-T-的指针" class="headerlink" title="new(T) 返回的是 T 的指针"></a>new(T) 返回的是 T 的指针</h2><p>new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">p1 := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line">fmt.Printf(<span class="string">"p1 --&gt; %#v \n "</span>, p1) <span class="comment">//(*int)(0xc42000e250) </span></div><div class="line">fmt.Printf(<span class="string">"p1 point to --&gt; %#v \n "</span>, *p1) <span class="comment">//0</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> p2 *<span class="keyword">int</span></div><div class="line">i := <span class="number">0</span></div><div class="line">p2 = &amp;i</div><div class="line">fmt.Printf(<span class="string">"p2 --&gt; %#v \n "</span>, p2) <span class="comment">//(*int)(0xc42000e278) </span></div><div class="line">fmt.Printf(<span class="string">"p2 point to --&gt; %#v \n "</span>, *p2) <span class="comment">//0</span></div></pre></td></tr></table></figure>
+<p>上面的代码是等价的，new(int) 将分配的空间初始化为 int 的零值，也就是 0，并返回 int 的指针，这和直接声明指针并初始化的效果是相同的。</p>
+<h2 id="make-只能用于-slice-map-channel"><a href="#make-只能用于-slice-map-channel" class="headerlink" title="make 只能用于 slice,map,channel"></a>make 只能用于 slice,map,channel</h2><p>make 只能用于 slice，map，channel 三种类型，make(T, args) 返回的是初始化之后的 T 类型的值，这个新值并不是 T 类型的零值，也不是指针 *T，是经过初始化之后的 T 的引用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div><div class="line"><span class="keyword">if</span> s1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s1 is nil --&gt; %#v \n "</span>, s1) <span class="comment">// []int(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line"><span class="keyword">if</span> s2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is nil --&gt; %#v \n "</span>, s2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is not nill --&gt; %#v \n "</span>, s2)<span class="comment">// []int&#123;0, 0, 0&#125;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>slice 的零值是 nil，使用 make 之后 slice 是一个初始化的 slice，即 slice 的长度、容量、底层指向的 array 都被 make 完成初始化，此时 slice 内容被类型 int 的零值填充，形式是 [0 0 0]，map 和 channel 也是类似的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> m1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m1 is nil --&gt; %#v \n "</span>, m1) <span class="comment">//map[int]string(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;&#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> c1 <span class="keyword">chan</span> <span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> c1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c1 is nil --&gt; %#v \n "</span>, c1) <span class="comment">//(chan string)(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)<span class="comment">//(chan string)(0xc420016120)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="make-T-args-返回的是-T-的-引用"><a href="#make-T-args-返回的是-T-的-引用" class="headerlink" title="make(T, args) 返回的是 T 的 引用"></a>make(T, args) 返回的是 T 的 引用</h2><p>如果不特殊声明，go 的函数默认都是按值穿参，即通过函数传递的参数是值的副本，在函数内部对值修改不影响值的本身，但是 make(T, args) 返回的值通过函数传递参数之后可以直接修改，即 map，slice，channel 通过函数穿参之后在函数内部修改将影响函数外部的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifySlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    s[<span class="number">0</span>] = <span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;0, 0, 0&#125;</span></div><div class="line">modifySlice(s2)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;1, 0, 0&#125;</span></div></pre></td></tr></table></figure>
+<p>这说明 make(T, args) 返回的是引用类型，在函数内部可以直接更改原始值，对 map 和 channel 也是如此。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m[<span class="number">0</span>] = <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    c &lt;- <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2) </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">//map[int]string&#123;&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">modifyMap(m2)</div><div class="line">fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">// map[int]string&#123;0:"string"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">go</span> modifyChan(c2)</div><div class="line">fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v "</span>, &lt;-c2) <span class="comment">//"string"</span></div></pre></td></tr></table></figure>
+<h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure>
+<p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。</p>
+<p>foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 *Foo。</p>
+<p>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</p>
+<p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
+<p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
+
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2017/07/23/go-defer/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2017 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    // $('h1.title').hover(
+    //   function() {
+    //     $(this).stop().animate(
+    //       {'marginLeft': '10px'}, 200
+    //     );
+    //   },
+    //   function() {
+    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    // });
+
+  });
+
+</script>
+
+</body>
+</html>
