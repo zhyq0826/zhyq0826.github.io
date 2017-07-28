@@ -109,6 +109,123 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-07-27T11:57:17.000Z">
+  <!-- <a href="/2017/07/27/go-type/">7月 27日 2017</a> -->
+  7月 27日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/07/27/go-type/">go 类型系统</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/type/">type</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type，int，string，function，pointer，interface，map，struct 等等。</p>
+<p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel 等。</p>
+<p>Type 可以是带名称和不带名称的，称之为 named type 和 unnamed type。</p>
+<p><strong>Named Types</strong> 就是通过 type 关键字为一个已有的 type 起个别名，像这样 <code>type NewType ExistingType</code> NewType 就是名字。</p>
+<p><strong>Pre-declared types</strong> 也是 <strong>named types</strong>。</p>
+<p><strong>Unamed types</strong> 是一个 literal type，也就是没有名字，只有 type 本身，像这样 <code>[6]int</code> 没有名字。</p>
+<p>每一个类型都有自己的 <strong>Underlying type</strong> ，如果 T 是 pre-declared type 或者 type literal，它们对应的 underlying type 就是自身 T，否则 T 的 underlying type 是 T 定义时引用的类型的 underlying type。</p>
+<h2 id="underlying-type"><a href="#underlying-type" class="headerlink" title="underlying type"></a>underlying type</h2><p><strong>如果两个 type 都是 named type ，彼此之间不能相互赋值</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> NewString <span class="keyword">string</span></div><div class="line"><span class="keyword">var</span> my <span class="keyword">string</span> =<span class="string">"a"</span></div><div class="line"><span class="keyword">var</span> you NewString = my <span class="comment">//cannot use my (type string) as type NewString in assignment</span></div></pre></td></tr></table></figure>
+<p>虽然它们的 underlying type 都是 string，但 string 类型的 my 不能赋值给 NewString 类型的 you。</p>
+<p><strong>如果两个 type 其中一个是 unamed type，彼此之间可以相互赋值</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">type</span> Ptr *<span class="keyword">int</span></div><div class="line"><span class="keyword">type</span> Map <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">type</span> MapMap Map</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p *<span class="keyword">int</span></div><div class="line">    <span class="keyword">var</span> mm Map</div><div class="line">    <span class="keyword">var</span> mmm MapMap</div><div class="line">    <span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mm</div><div class="line">    <span class="keyword">var</span> m2 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mmm</div><div class="line">    <span class="keyword">var</span> ptr Ptr = p</div><div class="line">    <span class="built_in">print</span>(ptr)</div><div class="line">    <span class="built_in">print</span>(m1)</div><div class="line">    <span class="built_in">print</span>(m2)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>为什么有这样的区分？</p>
+<p>如果为一个类型起了名字，说明你想要做区分，所以两个 named types 即使 underlying name 相同也是不能相互赋值的。</p>
+<p>详见<a href="https://groups.google.com/forum/#!topic/golang-nuts/4Db2z2dEhfc" target="_blank" rel="external">Google Group Topic</a></p>
+<h2 id="Named-type-和-Unamed-type"><a href="#Named-type-和-Unamed-type" class="headerlink" title="Named type 和 Unamed type"></a>Named type 和 Unamed type</h2><p>当 named types 被作为一个 function 的 receiver 时，它就拥有了自己的方法，unamed types 则不能，这是它们的重要区别。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> NewMap <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(nm NewMap)</span> <span class="title">add</span><span class="params">(key <span class="keyword">int</span>, value <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    nm[key] = value</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p NewMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line">    p.add(<span class="number">10</span>, <span class="string">"a"</span>)</div><div class="line">    fmt.Println(p) <span class="comment">//map[10:a]</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有个一例外是是 pre-declare types 不能拥有自己的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n <span class="keyword">int</span>)</span> <span class="title">name</span><span class="params">()</span></span>&#123;   </div><div class="line">    <span class="built_in">print</span>(n)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> n <span class="keyword">int</span></div><div class="line">    n.name()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译器会抛出 <strong>cannot define new methods on non-local type int</strong> 错误，不能对包之外的 type 定义方法，解决这个问题就是对 pre-declared types 重新定义别名。</p>
+<h2 id="type-的属性继承一：直接继承"><a href="#type-的属性继承一：直接继承" class="headerlink" title="type 的属性继承一：直接继承"></a>type 的属性继承一：直接继承</h2><p>Named type 不会从它的 underlying type 或 引用 type 继承 method，但是会继承 field</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student Person</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    <span class="keyword">var</span> s Student</div><div class="line">    s.name = <span class="string">"jone"</span></div><div class="line">    fmt.Println(s.name)</div><div class="line">    <span class="comment">// s.Speak()</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Named type Student 不会继承来自 Person Speak 的方法，打开注释执行报错 <strong>s.Speak undefined (type Student has no field or method Speak)</strong>，但是 Person 的 filed name 可以被 Student 继承。</p>
+<h2 id="type-的属性继承二：type-embedding"><a href="#type-的属性继承二：type-embedding" class="headerlink" title="type 的属性继承二：type embedding"></a>type 的属性继承二：type embedding</h2><p>如果一个 type T‘ 被嵌入另一个 type T 作为它的 filed，T’ 的所有 field 和 method 都可以在 T 中使用，这种方法称之为 type embedding。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">    &quot;fmt&quot;</div><div class="line">)</div><div class="line"></div><div class="line">type I interface &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line">type Person struct &#123;</div><div class="line">    name string</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Speak() &#123;</div><div class="line">    fmt.Println(&quot;I am a person&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Talk() &#123;</div><div class="line">    fmt.Println(&quot;I am talking&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">type People struct &#123;</div><div class="line">    Person</div><div class="line">&#125;</div><div class="line"></div><div class="line">func main()&#123;</div><div class="line">    var people People</div><div class="line">    people.name = &quot;people&quot;</div><div class="line">    people.Speak()</div><div class="line">    people.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="type-转换"><a href="#type-转换" class="headerlink" title="type 转换"></a>type 转换</h2><p>Type 之间是可以相互转换的，但要遵循一定的转换规则，详细请看官方规范 <a href="https://golang.org/ref/spec#Conversions。" target="_blank" rel="external">https://golang.org/ref/spec#Conversions。</a></p>
+<h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><p>文中部分代码</p>
+<script src="//gist.github.com/7a0ed26a6700488073e629ba28a14397.js?file=go-type-inherit.go"></script>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/07/27/go-type/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-07-25T22:12:23.000Z">
   <!-- <a href="/2017/07/26/go-make-and-new/">7月 26日 2017</a> -->
   7月 26日 2017
@@ -125,6 +242,12 @@
     <a href="/categories/golang/">golang</a>
   </div>
 
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/make/">make</a> <a href="/tags/new/">new</a>
+  </div>
 
 <div class="clear"></div>
       
@@ -151,8 +274,10 @@
 <p>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</p>
 <p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
 <p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
-<h2 id="文中代码"><a href="#文中代码" class="headerlink" title="文中代码"></a>文中代码</h2><p><a href="https://gist.github.com/zhyq0826/f2f8f9e61a87543e068af936ed170e53/archive/7867a9bd10aecb16897d07c6aebb04d6a74da5df.zip" target="_blank" rel="external">下载代码</a></p>
-<script src="//gist.github.com/f2f8f9e61a87543e068af936ed170e53.js?file=make_and_new.go"></script>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
+<blockquote>
+<p>阅读原文查看和下载文中所有代码</p>
+</blockquote>
 
       
       
@@ -364,20 +489,18 @@
     <div class="entry">
       
         <p>go 的入门书籍教程非常多，这里只介绍几个具有代表性的，足够初学者入门参考。</p>
-<h2 id="go-官方-tour"><a href="#go-官方-tour" class="headerlink" title="go 官方 tour"></a>go 官方 tour</h2><p><a href="https://tour.golang.org/welcome/1" target="_blank" rel="external">https://tour.golang.org/welcome/1</a>   </p>
-<h2 id="An-Introduction-to-Programming-in-Go"><a href="#An-Introduction-to-Programming-in-Go" class="headerlink" title="An Introduction to Programming in Go"></a>An Introduction to Programming in Go</h2><p><a href="https://www.golang-book.com/books/intro" target="_blank" rel="external">https://www.golang-book.com/books/intro</a></p>
-<p>英文书，但是写的通俗易懂，入门非常合适</p>
-<h2 id="The-Little-Go-Book"><a href="#The-Little-Go-Book" class="headerlink" title="The Little Go Book"></a>The Little Go Book</h2><p><a href="http://openmymind.net/The-Little-Go-Book/" target="_blank" rel="external">http://openmymind.net/The-Little-Go-Book/</a></p>
-<p>英文书，入门读物</p>
-<h2 id="Learning-Go"><a href="#Learning-Go" class="headerlink" title="Learning Go"></a>Learning Go</h2><p><a href="https://www.miek.nl/go/" target="_blank" rel="external">https://www.miek.nl/go/</a></p>
-<p>每章附有习题可以练习</p>
-<h2 id="Go-入门指南"><a href="#Go-入门指南" class="headerlink" title="Go 入门指南"></a>Go 入门指南</h2><p><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN" target="_blank" rel="external">https://github.com/Unknwon/the-way-to-go_ZH_CN</a></p>
-<h2 id="build-web-application-with-golang"><a href="#build-web-application-with-golang" class="headerlink" title="build-web-application-with-golang"></a>build-web-application-with-golang</h2><p>Beego 作者写的，中文，除了 go 语言基础也涉及 Go web 编程。</p>
-<p><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="external">https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md</a></p>
-<h2 id="大量-web-示例"><a href="#大量-web-示例" class="headerlink" title="大量 web 示例"></a>大量 web 示例</h2><p><a href="https://gowebexamples.github.io/" target="_blank" rel="external">https://gowebexamples.github.io/</a></p>
-<h2 id="大量-go-基础示例"><a href="#大量-go-基础示例" class="headerlink" title="大量 go 基础示例"></a>大量 go 基础示例</h2><p><a href="https://gobyexample.com/" target="_blank" rel="external">https://gobyexample.com/</a></p>
-<h2 id="完整教程的项目练习"><a href="#完整教程的项目练习" class="headerlink" title="完整教程的项目练习"></a>完整教程的项目练习</h2><p><a href="https://github.com/tuvttran/project-based-learning#go" target="_blank" rel="external">https://github.com/tuvttran/project-based-learning#go</a></p>
-<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><ul>
+<h1 id="官方教程"><a href="#官方教程" class="headerlink" title="官方教程"></a>官方教程</h1><h2 id="Language-Specification"><a href="#Language-Specification" class="headerlink" title="Language Specification"></a><a href="https://golang.org/ref/spec" target="_blank" rel="external">Language Specification</a></h2><p>go 的语法说明以及语言的组织结构，包含大量的细节解释和说明，值得通读一遍</p>
+<h2 id="A-Tour-of-Go"><a href="#A-Tour-of-Go" class="headerlink" title="A Tour of Go"></a><a href="https://tour.golang.org/" target="_blank" rel="external">A Tour of Go</a></h2><p>go 官方在线的教程，可执行代码，对 go 语言的执行和抒写有直观的演示，首次学习 go 的练习之地</p>
+<h2 id="Go-wiki"><a href="#Go-wiki" class="headerlink" title="Go wiki"></a><a href="https://github.com/golang/go/wiki" target="_blank" rel="external">Go wiki</a></h2><p>包含大量第三方的文章和书籍来对某个特定主题的原理进行深入的解释和演示</p>
+<h2 id="Blog"><a href="#Blog" class="headerlink" title="Blog"></a><a href="https://golang.org/blog/" target="_blank" rel="external">Blog</a></h2><p>对某些特定主题进行说明和演示，以及语言自身的特性说明</p>
+<h1 id="入门-Book"><a href="#入门-Book" class="headerlink" title="入门 Book"></a>入门 Book</h1><h2 id="An-Introduction-to-Programming-in-Go"><a href="#An-Introduction-to-Programming-in-Go" class="headerlink" title="An Introduction to Programming in Go"></a><a href="https://www.golang-book.com/books/intro" target="_blank" rel="external">An Introduction to Programming in Go</a></h2><p>英文书，但是写的通俗易懂，入门非常合适</p>
+<h2 id="The-Little-Go-Book"><a href="#The-Little-Go-Book" class="headerlink" title="The Little Go Book"></a><a href="http://openmymind.net/The-Little-Go-Book/" target="_blank" rel="external">The Little Go Book</a></h2><p>英文书，入门读物，有深度有细节</p>
+<h2 id="Learning-Go"><a href="#Learning-Go" class="headerlink" title="Learning Go"></a><a href="https://www.miek.nl/go/" target="_blank" rel="external">Learning Go</a></h2><p>有一定的原理性讲解，每章附有习题可以练习</p>
+<h2 id="Go-入门指南"><a href="#Go-入门指南" class="headerlink" title="Go 入门指南"></a><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN" target="_blank" rel="external">Go 入门指南</a></h2><h2 id="build-web-application-with-golang"><a href="#build-web-application-with-golang" class="headerlink" title="build-web-application-with-golang"></a><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="external">build-web-application-with-golang</a></h2><p>Beego 作者写的，中文，除了 go 语言基础也涉及 Go web 编程。</p>
+<h1 id="实例练习"><a href="#实例练习" class="headerlink" title="实例练习"></a>实例练习</h1><h2 id="https-gowebexamples-github-io"><a href="#https-gowebexamples-github-io" class="headerlink" title="https://gowebexamples.github.io/"></a><a href="https://gowebexamples.github.io/" target="_blank" rel="external">https://gowebexamples.github.io/</a></h2><p>大量 web 示例</p>
+<h2 id="https-gobyexample-com"><a href="#https-gobyexample-com" class="headerlink" title="https://gobyexample.com/"></a><a href="https://gobyexample.com/" target="_blank" rel="external">https://gobyexample.com/</a></h2><p>大量 go 基础示例</p>
+<h1 id="项目练习"><a href="#项目练习" class="headerlink" title="项目练习"></a>项目练习</h1><h2 id="project-based-learning"><a href="#project-based-learning" class="headerlink" title="project-based-learning"></a><a href="https://github.com/tuvttran/project-based-learning#go" target="_blank" rel="external">project-based-learning</a></h2><p>包含完整教程的小项目练习</p>
+<h1 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h1><ul>
 <li><a href="https://github.com/dariubs/GoBooks" target="_blank" rel="external">https://github.com/dariubs/GoBooks</a> go 书籍</li>
 <li><a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">https://golang.org/doc/effective_go.html</a> 官方 effective go</li>
 <li><a href="https://github.com/golang/go/wiki/Learn" target="_blank" rel="external">https://github.com/golang/go/wiki/Learn</a> 官方 learn wiki</li>
@@ -723,6 +846,12 @@
   </div>
 
 
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/nil/">nil</a>
+  </div>
+
 <div class="clear"></div>
       
     </header>
@@ -1066,100 +1195,6 @@
       
         <div class="alignleft">
             <a href="/2017/05/25/sqlalchemy-model-id-zero/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-05-02T23:34:48.000Z">
-  <!-- <a href="/2017/05/03/first-rule-for-architecture/">5月 3日 2017</a> -->
-  5月 3日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/05/03/first-rule-for-architecture/">无处不在的架构</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/程序人生/">程序人生</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/架构/">架构</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
-<p>Architecture 意在计划、设计、构建建筑物的过程。</p>
-<h3 id="Software-architecture"><a href="#Software-architecture" class="headerlink" title="Software architecture"></a>Software architecture</h3><p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
-<p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
-<h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
-<p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/05/03/first-rule-for-architecture/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         

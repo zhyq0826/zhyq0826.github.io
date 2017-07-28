@@ -95,6 +95,12 @@ new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将
   </div>
 
 
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/make/">make</a> <a href="/tags/new/">new</a>
+  </div>
+
 <div class="clear"></div>
       
     </header>
@@ -120,8 +126,10 @@ new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将
 <p>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</p>
 <p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
 <p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
-<h2 id="文中代码"><a href="#文中代码" class="headerlink" title="文中代码"></a>文中代码</h2><p><a href="https://gist.github.com/zhyq0826/f2f8f9e61a87543e068af936ed170e53/archive/7867a9bd10aecb16897d07c6aebb04d6a74da5df.zip" target="_blank" rel="external">下载代码</a></p>
-<script src="//gist.github.com/f2f8f9e61a87543e068af936ed170e53.js?file=make_and_new.go"></script>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
+<blockquote>
+<p>阅读原文查看和下载文中所有代码</p>
+</blockquote>
 
       
       
@@ -153,6 +161,8 @@ new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将
 
           <div class="clearfix"></div>
           <nav id="pagination">
+  
+    <a href="/2017/07/27/go-type/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
   
   
     <a href="/2017/07/23/go-defer/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
