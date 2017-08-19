@@ -109,13 +109,487 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2017-08-17T05:26:18.000Z">
+  <!-- <a href="/2017/08/17/go-o-o/">8月 17日 2017</a> -->
+  8月 17日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/08/17/go-o-o/">go 中的面向对象</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/面向对象/">面向对象</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>Go 不是基于 class 的语言，但是 Go 提供了强大的类型系统来实现 OO（Object Oriented），关于如何正确使用 OO 的争论网上已经非常多了，在此我们秉承 Go 提供的面向对象机制来实现不同的例子和使用模式，借此了解 Go 中的 OO。</p>
+<h2 id="使用-embed-type-实现继承"><a href="#使用-embed-type-实现继承" class="headerlink" title="使用 embed type 实现继承"></a>使用 embed type 实现继承</h2><p>Go 中的嵌入类型 <code>embed type</code> 本质上是一种 composition，Go 不像其它 OO 语言那样提供基于类的继承，那些继承体现的是 <code>is-a</code> 关系，但是 Go 不是。</p>
+<p>Go 通过 embed type，可以实现 method 和 field 的复用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">sayName</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</div><div class="line">    Person</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    p := Person&#123;name: <span class="string">"C"</span>&#125;</div><div class="line">    p.sayName() <span class="comment">// #1 C</span></div><div class="line"></div><div class="line">    s1 := Student&#123;name: <span class="string">"Java"</span>&#125;</div><div class="line">    s1.sayName() <span class="comment">// #2 此行输出空字符串</span></div><div class="line"></div><div class="line">    s2 := Student&#123;name: <span class="string">"Java"</span>, Person: Person&#123;name: <span class="string">"VB"</span>&#125;&#125;</div><div class="line">    s2.sayName()         <span class="comment">// #3 VB</span></div><div class="line">    fmt.Println(s2.name) <span class="comment">// #4 Java</span></div><div class="line">    fmt.Println(s2.Person.name) <span class="comment">//#5 VB</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Person</code> 是 <code>Student</code> 的 embed type，因而 Student 可以直接使用 Person 的 field 和 method，需要注意的是：</p>
+<p>1.Student 中的同名属性可以遮蔽 embed type 的属性，<code>#4</code> 的输出<br>2.Student 虽然可以直接调用 embed type 的 method，但是 method 的 receiver 仍然是 embed type，所以 <code>#2</code> 输出为空。<br>3.直接通过 embed type 继承，embed type 无法获取被嵌入类型的属性，原因由 2 导致。</p>
+<h2 id="类型组合的强大魔力"><a href="#类型组合的强大魔力" class="headerlink" title="类型组合的强大魔力"></a>类型组合的强大魔力</h2><p>Go 支持任意类型的 embed type，当然也包括 interface type，通过组合就可以实现多种不同行为的任意组合，这也是 Go 倡导<strong>以更小的单元实现你的代码功能，然后组合它们</strong>的理念。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// student 行为</span></div><div class="line"><span class="keyword">type</span> StudentTalk <span class="keyword">interface</span> &#123;</div><div class="line">    talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// teacher 行为</span></div><div class="line"><span class="keyword">type</span> TeacherTalk <span class="keyword">interface</span> &#123;</div><div class="line">    say()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先定义两个 interface 用来表示不同的行为。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// people 行为</span></div><div class="line"><span class="keyword">type</span> PeopleTalk <span class="keyword">interface</span> &#123;</div><div class="line">    StudentTalk</div><div class="line">    TeacherTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过 embed type 把定义的两个 interface 组合为新的 interface <code>PeopleTalk</code>，此时 PeopleTalk 继承了两个 interface 的 method 集合，也就是 PeopleTalk 拥有了 StudentTalk 和 TeacherTalk 的 method 合集。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    TeacherTalk</div><div class="line">    StudentTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Person 也内嵌了 TeacherTalk 和 StudentTalk，对 Person 来说既可以理解成<strong>继承了两个 interface 的 method 集合</strong>，也可以理解是 Person <strong>拥有两个可以 filed</strong>，它们的分别可以被赋值为实现了它们的 struct 的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Student)</span> <span class="title">talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"student talk"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Teacher <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Teacher)</span> <span class="title">say</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"teacher say"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Struct Student 和 Teacher 分别实现了 StudentTalk 和 TeacherTalk。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meet</span><span class="params">(p PeopleTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;people meet&lt;===="</span>)</div><div class="line">    meetTeacher(p)</div><div class="line">    meetStudent(p)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetTeacher</span><span class="params">(ps TeacherTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;teacher meet&lt;===="</span>)</div><div class="line">    ps.say()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetStudent</span><span class="params">(ps StudentTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;student meet&lt;===="</span>)</div><div class="line">    ps.talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    t := Teacher&#123;&#125;</div><div class="line">    s := Student&#123;&#125;</div><div class="line">    <span class="comment">// Person 实现了 PeopleTalk 方法，通过 Teacher 和 Student 实例</span></div><div class="line">    p := Person&#123;TeacherTalk: &amp;t, StudentTalk: &amp;s&#125;</div><div class="line">    meet(p)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这段 Go 代码展示了 interface 组合带来的魔力，meet function 的参数是 PeopleTalk，而 Person 的实例 p 由于通过实例 t 和 s 实现了 PeopleTalk 的 method，也就是说 p 可以直接通过 meet 函数传递，<strong>meet 的参数 PeopleTalk</strong>，而且实现了 PeopleTalk 必然实现了 StudentTalk 和 TeacherTalk，因为 PeopleTalk 是由它们组合而成的，进而可以在 meet 函数中可以直接调用 meetTeacher 和 meetStudent，它们各自的参数分别是 TeacherTalk 和 StudentTalk。</p>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/08/17/go-o-o/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-08-10T04:50:50.000Z">
+  <!-- <a href="/2017/08/10/go-no-reference-type/">8月 10日 2017</a> -->
+  8月 10日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/08/10/go-no-reference-type/">严格来说 go 没有引用类型</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/引用类型/">引用类型</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="什么是引用类型"><a href="#什么是引用类型" class="headerlink" title="什么是引用类型"></a>什么是引用类型</h2><p>简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。</p>
+<p><strong>code-1</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>dd = dict()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(c)</div><div class="line"><span class="number">4476836672</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(dd)</div><div class="line"><span class="number">4476836672</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p><code>code-1</code> 中的 Python 代码显示 c 和 dd 两个变量的内存地址都是一样的。</p>
+<h2 id="Immutable-type-不是引用类型"><a href="#Immutable-type-不是引用类型" class="headerlink" title="Immutable type 不是引用类型"></a>Immutable type 不是引用类型</h2><p>Int，string，bool 这些 immutable 类型不会有引用类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> a, b, c = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></div><div class="line">    fmt.Println(&amp;a) <span class="comment">//0xc420072188</span></div><div class="line">    fmt.Println(&amp;b) <span class="comment">//0xc4200721b0</span></div><div class="line">    fmt.Println(&amp;c) <span class="comment">//0xc4200721b8</span></div><div class="line">    d := a</div><div class="line">    fmt.Println(&amp;d) <span class="comment">//0xc4200721d0</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> s = <span class="string">"a"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">    s += <span class="string">"b"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>变量 a 赋值给 d ，d 和 a 的地址不同，字符串 s 二次赋值之后地址没有改变，在 immutable type 中不存在两个变量内存地址是一样的。</p>
+<h2 id="Map-可以在函数内部改变，但是-map-不是引用类型"><a href="#Map-可以在函数内部改变，但是-map-不是引用类型" class="headerlink" title="Map 可以在函数内部改变，但是 map 不是引用类型"></a>Map 可以在函数内部改变，但是 map 不是引用类型</h2><p>Go 中函数传参是按值传递，在函数内部无法改变函数外部的值，但是 map 可以，是不是 map 是引用类型。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;</div><div class="line">        <span class="number">0</span>: <span class="string">"0"</span>,</div><div class="line">        <span class="number">1</span>: <span class="string">"1"</span>,</div><div class="line">    &#125;</div><div class="line">    mm := m</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm) <span class="comment">//0xc42002a030</span></div><div class="line">    fmt.Println(m) <span class="comment">// map[0:0 1:1]</span></div><div class="line">    fmt.Println(mm) <span class="comment">//map[1:1 0:0]</span></div><div class="line">    changeMap(m)</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm)<span class="comment">//0xc42002a030</span></div><div class="line">    fmt.Println(m) <span class="comment">//map[2:2 0:0 1:1]</span></div><div class="line">    fmt.Println(mm) <span class="comment">//map[0:0 1:1 2:2]</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeMap</span><span class="params">(mmm <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    mmm[<span class="number">2</span>] = <span class="string">"2"</span></div><div class="line">    fmt.Printf(<span class="string">"changeMap func %p\n"</span>, mmm) <span class="comment">//changeMap func 0xc420014150</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以明确看到 main 中的 mm 和 m 地址完全不同，调用函数 changeMap 之后，它们的值都发生了改变，在函数 changeMap 内部，参数 mmm 的地址和 m 以及 mm 都不同，证实 map 并不是引用传参。</p>
+<p>再一个例子。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">    makeMap(m)</div><div class="line">    fmt.Println(m == <span class="literal">nil</span>) <span class="comment">//true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果是引用传参 main 函数中的输出不应该是 true。</p>
+<h2 id="Channel-也是按值传参"><a href="#Channel-也是按值传参" class="headerlink" title="Channel 也是按值传参"></a>Channel 也是按值传参</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;c1) <span class="comment">//0xc42002a038</span></div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">        changeChan(c1)</div><div class="line">    &#125;()</div><div class="line"></div><div class="line">    fmt.Println(&lt;-c1)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"changeChan %p\n"</span>, &amp;c) <span class="comment">//0xc42002a040</span></div><div class="line">    c &lt;- <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>例子中的 channel 在函数内发生了值传递，但是函数内部和外部的 channel 地址不同。</p>
+<h2 id="Map-不是引用类型，为什么可以在函数内部改变"><a href="#Map-不是引用类型，为什么可以在函数内部改变" class="headerlink" title="Map 不是引用类型，为什么可以在函数内部改变"></a>Map 不是引用类型，为什么可以在函数内部改变</h2><p>Go 源代码中显示 <a href="https://golang.org/src/runtime/hashmap.go" target="_blank" rel="external">https://golang.org/src/runtime/hashmap.go</a> map 底层是一个指向 hmap 的指针，这就可以解释即使函数传参是按值传递，由于传递的是指针的拷贝，指针指向的底层 hmap 并没有改变，所以可以在函数内部改变 map 。</p>
+<blockquote>
+<p>Go 中没有引用类型</p>
+</blockquote>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/08/10/go-no-reference-type/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-08-03T14:17:33.000Z">
+  <!-- <a href="/2017/08/03/go-channel/">8月 3日 2017</a> -->
+  8月 3日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/08/03/go-channel/">go channel 的基础特性</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/channel/">channel</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>此篇介绍 go channel</p>
+</blockquote>
+<h2 id="什么是-goroutine"><a href="#什么是-goroutine" class="headerlink" title="什么是 goroutine"></a>什么是 goroutine</h2><blockquote>
+<p>They’re called goroutines because the existing terms — threads, coroutines, processes, and so on — convey inaccurate connotations. A goroutine has a simple model: it is a function executing in parallel with other goroutines in the same address space. It is lightweight, costing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.</p>
+</blockquote>
+<p>正如官方所言，goroutine 是一个轻量级的执行单元，相比线程开销更小，完全由 Go 语言负责调度，是 Go 支持并发的核心。开启一个 goroutine 非常简单:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">go</span> fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">	time.Sleep(<span class="number">1</span>) <span class="comment">//1</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> <code>#1</code> 的代码是必须的，这是为了让新开启的 goroutine 有机会得到执行，开启一个 goroutine 之后，后续的代码会继续执行，在上面的例子中后续代码执行完毕程序就终止了，而开启的 goroutine 可能还没开始执行。</p>
+<p>如果尝试去掉 <code>#1</code> 处的代码，程序也可能会正常运行，这是因为恰巧开启的 goroutine 只是简单的执行了一次输出，如果 goroutine 中耗时稍长就会导致只能看到主一句 <code>main function message</code> 。 </p>
+<p>换句话话说，这里的 <code>time.sleep</code> 提供的是一种调度机制，这也是 Go 中 channel 存在的目的：负责消息传递和调度。</p>
+<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><p>Channel 是 Go 中为 goroutine 提供的一种通信机制，channel 是有类型的，而且是有方向的，可以把 channel 类比成 unix 中的 pipe。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">i := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)<span class="comment">//int 类型</span></div><div class="line">s := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)<span class="comment">//字符串类型</span></div><div class="line">r := <span class="built_in">make</span>(&lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)<span class="comment">//只读</span></div><div class="line">w := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- []<span class="keyword">int</span>)<span class="comment">//只写</span></div></pre></td></tr></table></figure>
+<p>Channel 最重要的作用就是传递消息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">		c &lt;- <span class="number">1</span> <span class="comment">//1</span></div><div class="line">	&#125;()</div><div class="line">	&lt;-c <span class="comment">//2</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>例子中声明了一个 int 类型的 channel，在 goroutine 中在代码 <code>#1</code> 处向 channel 发送了数据 <code>1</code> ，在 main 中 <code>#2</code> 处等待数据的接收，如果 c 中没有数据，代码的执行将发生阻塞，直到 c 中数据接收完毕。这是 channel 最简单的用法之一：同步 ，这种类型的 channel 没有设置容量，称之为 <strong>unbuffered channel</strong>。</p>
+<h2 id="unbuffered-channel-和-buffered-channel"><a href="#unbuffered-channel-和-buffered-channel" class="headerlink" title="unbuffered channel 和 buffered channel"></a>unbuffered channel 和 buffered channel</h2><p>Channel 可以设置容量，表示 channel 允许接收的消息个数，默认的 channel 容量是 0 称为 <strong>unbuffered channel</strong> ，对 unbuffered channel 执行 <strong>读</strong> 操作 value := &lt;-ch 会一直阻塞直到有数据可接收，执行 <strong>写</strong> 操作 ch &lt;- value 也会一直阻塞直到有 goroutine 对 channel 开始执行接收，正因为如此在同一个 goroutine 中使用 unbuffered channel 会造成 deadlock。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	c &lt;- <span class="number">1</span></div><div class="line">	&lt;-c</div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行报 <code>fatal error: all goroutines are asleep - deadlock!</code> ，读和写相互等待对方从而导致死锁发生。</p>
+<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-16+at+10.10.54+AM.png" alt="来自 www.goinggo.net"></p>
+<p>如果 channel 的容量不是 0，此类 channel 称之为 <strong>buffered channel</strong> ，buffered channel 在消息写入个数 <strong>未达到容量的上限之前不会阻塞</strong> ，一旦写入消息个数超过上限，下次输入将会阻塞，直到 channel 有位置可以再写入。</p>
+<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-17+at+8.38.15+AM.png" alt="来自 www.goinggo.net"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子会输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">reading <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">reading <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>根据上文对 buffered channel 的解释，这个例子中 channel <code>c</code> 的容量是 3，在写入消息个数不超过 3 时不会阻塞，输出应该是：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">0</span></div><div class="line">reading <span class="number">1</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>问题在哪里？问题其实是在 <code>fmt.Println</code> ，一次输出就导致 goroutine 的执行发生了切换(相当于发生了 IO 阻塞)，因而即使 c 没有发生阻塞 goroutine 也会让出执行，一起来验证一下这个问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		&lt;-c</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里创建了一个 slice 用来保存 c 进行写入和读取时的执行顺序，num 是用来标识执行顺序的，在没有加入 Println 之前，最终 s 是 [inner=&gt;1 inner=&gt;2 inner=&gt;3 inner=&gt;4 outer=&gt;5 outer=&gt;6 outer=&gt;7 outer=&gt;8] ，输出结果表明 c 达到容量上线之后才会发生阻塞。</p>
+<p>相反有输出语句的版本结果则不同：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>[outer=&gt;1 inner=&gt;2 outer=&gt;3 inner=&gt;4 inner=&gt;5 inner=&gt;6 outer=&gt;7 outer=&gt;8] 输出结果能表明两个 goroutine 是交替执行，也就是说 IO 的调用 Println 导致 goroutine 的让出了执行。</p>
+<h2 id="读取多个-channel-的消息"><a href="#读取多个-channel-的消息" class="headerlink" title="读取多个 channel 的消息"></a>读取多个 channel 的消息</h2><p>Go 提供了 select 语句来处理多个 channel 的消息读取。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line">	c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c1 &lt;- <span class="string">"from 1"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c2 &lt;- <span class="string">"from 2"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			<span class="keyword">select</span> &#123;</div><div class="line">			<span class="keyword">case</span> msg1 := &lt;-c1:</div><div class="line">				fmt.Println(msg1)</div><div class="line">			<span class="keyword">case</span> msg2 := &lt;-c2:</div><div class="line">				fmt.Println(msg2)</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">var</span> input <span class="keyword">string</span></div><div class="line">	fmt.Scanln(&amp;input)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>select 语句可以从多个可读的 channel 中随机选取一个执行，注意是 <strong>随机选取。</strong> </p>
+<h2 id="Channel-关闭之后"><a href="#Channel-关闭之后" class="headerlink" title="Channel 关闭之后"></a>Channel 关闭之后</h2><p>Channel 可以被关闭 <code>close</code> ，<strong>channel 关闭之后仍然可以读取</strong>，如果 channel 关闭之前有值写入，关闭之后将依次读取 channel 中的消息，读完完毕之后再次读取将会返回 channel 的类型的 zero value：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出 1 2 3 0 0 0 ，0 是 int channel c 的 zero value。</p>
+<p><strong>被关闭的 channel 可以进行 range 迭代</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> c &#123;</div><div class="line">		fmt.Println(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>未被关闭的 channel 则不行，如果没有被关闭，range 在输出完 channel 中的消息之后将会阻塞一直等待，从而发生死锁。</p>
+<h2 id="判断-channel-的关闭"><a href="#判断-channel-的关闭" class="headerlink" title="判断 channel 的关闭"></a>判断 channel 的关闭</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value, ok &lt;- c</div></pre></td></tr></table></figure>
+<p>用来判断 channel 是否关闭，如果 channel 是关闭状态，ok 是 false，value 是 channel 的 zero value，否则 ok 是 true 表示 channel 未关闭，value 表示 channel 中的值。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.miek.nl/go" target="_blank" rel="external">https://www.miek.nl/go</a></li>
+<li><a href="http://guzalexander.com/2013/12/06/golang-channels-tutorial.html" target="_blank" rel="external">http://guzalexander.com/2013/12/06/golang-channels-tutorial.html</a></li>
+</ul>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/08/03/go-channel/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-07-30T14:02:22.000Z">
+  <!-- <a href="/2017/07/30/go-new-programmer-best-practice/">7月 30日 2017</a> -->
+  7月 30日 2017
+</time>
+
+  
+    <h1 class="title"><a href="/2017/07/30/go-new-programmer-best-practice/">新手 go 程序员的最佳实践</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/最佳实践/">最佳实践</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。</p>
+</blockquote>
+<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 <a href="https://golang.org/doc/code.html" target="_blank" rel="external">How to Write Go Code</a>。</p>
+<p>Go 提供了非常优秀的工具来保证代码的风格和质量，比如：gofmt，godoc，goimports，学会使用它们。</p>
+<p>对于新手来说不要着急一开始就想要完整的 Go 程序，你应该认真熟悉 Go 的基本语义和特性，认真读完 官方的 <a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">Effictive Go</a></p>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>不要害怕犯错，对于一门新的语言，大家都是平等，即使是用 Go 写过一到两年程序的人也会犯一些低级的错误。</p>
+<p>要学会顺势而为，学会用 Go 的方式去写 Go 的程序，比如要遵循 Go conventions，不要像 C 一样在 Go 中总是使用指针。</p>
+<p>新手都应该看看这篇文章 <a href="http://talks.golang.org/2012/splash.article，它有助于你了解" target="_blank" rel="external">http://talks.golang.org/2012/splash.article，它有助于你了解</a> Go 是如何诞生的，它的哲学理念是什么。</p>
+<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>新手不要一开始就过渡关注 goroutine，channel 这些涉及并发的概念，你有可能滥用 channel 而不知道节制，毕竟 Go 在很多方面都表现的非常节制。</p>
+<p>理解 interface，了解它的潜力，学会用组合和 interface 创建健壮的 Go 代码， 它是 Go 最富有天赋的能力之一。</p>
+<p>如果你之前使用的其它 object-oriented 语言，暂时忘掉那些关于 OO 的特性和思维，虽然 Go 支持 OO，但 Go 不是基于类的语言，不支持类的继承。</p>
+<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>Go 是强类型语言，意味着实现非常复杂的系统 API 时有可能会像 Java 或 C++ 一样使用大量的预定义类型，使代码变得脆弱丑陋，这并不是真正的 Go。Go 的 interface 和闭包特性允许我们写出更优雅更通用的实现。</p>
+<p>学会高效的使用闭包，为此可以学习一些函数式编程语言的理论，或者学学 Ruby，可以看看 The Well-Grounded Rubyist 这本书，然后尝试在 Go 编程中尝试使用这些知识。</p>
+<p>学会测试 Go 程序，学会使用 Go 相关的测试工具 unit testing，beachmarking testing，利用测试不断纠正和提高 Go 程序的质量，可以看看这个 <a href="http://github.com/feyeleanor/GoSpeed。" target="_blank" rel="external">http://github.com/feyeleanor/GoSpeed。</a></p>
+<h1 id="5"><a href="#5" class="headerlink" title="5"></a>5</h1><p>不要强迫你把过去其它语言的经验带入 Go，每个语言都是不同的，如果你是第一次接触 Go，让自己用一个全新的视角去看待它，也就是你需要尝试从语言的创作者以及社区的角度去理解它。</p>
+<p>一开始使用 Go，尽量避免使用 third party library，可能它们能简化你正在做的事情，但从长远角度来看，它们也妨碍了你对这么语言的理解。</p>
+<p>从标准库中学习如何写出更好的 Go 代码，比如你可以从 <code>net/http</code> package 中学习如何使用 concurrency，也可以去看看  Rob Pike 关于 concurrency 的视频。</p>
+<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>尝试使用 composition 而不是 inheritance，基于 OO 的 inheritance 的思维方式会妨碍你写出优雅的 Go 代码。</p>
+<p>拥抱 interface。</p>
+<p>并不是所有的都是 object。</p>
+<blockquote>
+<p>A language that doesn’t affect the way you think about programming, is not worth knowing. — Alan Perlis</p>
+</blockquote>
+<p>如果一门语言没有影响你对编程的思考，这么语言就不值得学习。</p>
+<h1 id="7"><a href="#7" class="headerlink" title="7"></a>7</h1><ul>
+<li>保持函数短小，变量名不要太长</li>
+<li>不要像写其它语言一样写 Go，Go 不是 Java，不是 Python，不是 Ruby。</li>
+<li>花点时间搞懂 named and unnamed types。</li>
+<li>学会构建完整的 Go project，并且发布它们。</li>
+<li>Interface 很重要，你应该学会使用它们，很多你遇到的问题都可以用 interface 解决。</li>
+<li>学习阅读源码是学习 Go 的一种极佳的方式。</li>
+<li>保持简洁，简洁是 Go 的一个重要特性之一，避免过度工程化。</li>
+<li>以更小的单元实现你的代码功能，然后组合它们。</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这时间上有很多朴素的道理，很多人都知道，但是这些道理并没有给知道的人带来什么改变，比如勤奋不一定能成功，还是很多人很勤奋，有了好运气也不一定能成功，还是很多人天天盼望走狗屎运，前者太勤奋了，没有时间思考，后者不知道勤奋，总是抱有幻想。</p>
+<p>学习语言也是一样，不要着急实践，要先想一想，看一看，看完之后不能太懒，还要动手练一练。</p>
+
+      
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2017/07/30/go-new-programmer-best-practice/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2017-07-27T11:57:17.000Z">
   <!-- <a href="/2017/07/27/go-type/">7月 27日 2017</a> -->
   7月 27日 2017
 </time>
 
   
-    <h1 class="title"><a href="/2017/07/27/go-type/">go 类型系统</a></h1>
+    <h1 class="title"><a href="/2017/07/27/go-type/">理解 go 类型系统</a></h1>
   
 
 
@@ -137,8 +611,9 @@
     </header>
     <div class="entry">
       
-        <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type，int，string，function，pointer，interface，map，struct 等等。</p>
-<p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel 等。</p>
+        <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。</p>
+<p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel，func，interface 等被称之为 <strong>composite types</strong>。</p>
+<p><strong>Composite types</strong> 由 <strong>pre-declared types</strong> 组成的复杂数据类型，常常由 type literal 构成。 </p>
 <p>Type 可以是带名称和不带名称的，称之为 named type 和 unnamed type。</p>
 <p><strong>Named Types</strong> 就是通过 type 关键字为一个已有的 type 起个别名，像这样 <code>type NewType ExistingType</code> NewType 就是名字。</p>
 <p><strong>Pre-declared types</strong> 也是 <strong>named types</strong>。</p>
@@ -149,7 +624,7 @@
 <p>虽然它们的 underlying type 都是 string，但 string 类型的 my 不能赋值给 NewString 类型的 you。</p>
 <p><strong>如果两个 type 其中一个是 unamed type，彼此之间可以相互赋值</strong></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">type</span> Ptr *<span class="keyword">int</span></div><div class="line"><span class="keyword">type</span> Map <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">type</span> MapMap Map</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p *<span class="keyword">int</span></div><div class="line">    <span class="keyword">var</span> mm Map</div><div class="line">    <span class="keyword">var</span> mmm MapMap</div><div class="line">    <span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mm</div><div class="line">    <span class="keyword">var</span> m2 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mmm</div><div class="line">    <span class="keyword">var</span> ptr Ptr = p</div><div class="line">    <span class="built_in">print</span>(ptr)</div><div class="line">    <span class="built_in">print</span>(m1)</div><div class="line">    <span class="built_in">print</span>(m2)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>为什么有这样的区分？</p>
+<p><strong>为什么有这样的区分?</strong></p>
 <p>如果为一个类型起了名字，说明你想要做区分，所以两个 named types 即使 underlying name 相同也是不能相互赋值的。</p>
 <p>详见<a href="https://groups.google.com/forum/#!topic/golang-nuts/4Db2z2dEhfc" target="_blank" rel="external">Google Group Topic</a></p>
 <h2 id="Named-type-和-Unamed-type"><a href="#Named-type-和-Unamed-type" class="headerlink" title="Named type 和 Unamed type"></a>Named type 和 Unamed type</h2><p>当 named types 被作为一个 function 的 receiver 时，它就拥有了自己的方法，unamed types 则不能，这是它们的重要区别。</p>
@@ -157,9 +632,16 @@
 <p>有个一例外是是 pre-declare types 不能拥有自己的方法。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n <span class="keyword">int</span>)</span> <span class="title">name</span><span class="params">()</span></span>&#123;   </div><div class="line">    <span class="built_in">print</span>(n)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> n <span class="keyword">int</span></div><div class="line">    n.name()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>编译器会抛出 <strong>cannot define new methods on non-local type int</strong> 错误，不能对包之外的 type 定义方法，解决这个问题就是对 pre-declared types 重新定义别名。</p>
-<h2 id="type-的属性继承一：直接继承"><a href="#type-的属性继承一：直接继承" class="headerlink" title="type 的属性继承一：直接继承"></a>type 的属性继承一：直接继承</h2><p>Named type 不会从它的 underlying type 或 引用 type 继承 method，但是会继承 field</p>
+<h2 id="type-的属性继承一：直接继承"><a href="#type-的属性继承一：直接继承" class="headerlink" title="type 的属性继承一：直接继承"></a>type 的属性继承一：直接继承</h2><p>Declared named type 不会从它的 underlying type 或 existing type 继承 method，但是会继承 field。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student Person</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    <span class="keyword">var</span> s Student</div><div class="line">    s.name = <span class="string">"jone"</span></div><div class="line">    fmt.Println(s.name)</div><div class="line">    <span class="comment">// s.Speak()</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Named type Student 不会继承来自 Person Speak 的方法，打开注释执行报错 <strong>s.Speak undefined (type Student has no field or method Speak)</strong>，但是 Person 的 filed name 可以被 Student 继承。</p>
+<blockquote>
+<p>The declared type does not inherit any methods bound to the existing type, but the method set of an interface type or of elements of a composite type remains unchanged:</p>
+</blockquote>
+<p>But declared named type 例外的情况之一：<strong>如果 existing type 是 interface，它的 method set 会被继承</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// existing type 是 I，I 是个接口，可以直接继承 I 的方法，II 等同于 I</span></div><div class="line"><span class="keyword">type</span> II I</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am talking"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    p.Talk()</div><div class="line">    <span class="keyword">var</span> i I</div><div class="line">    i = &amp;p</div><div class="line">    i.Talk()</div><div class="line">    <span class="keyword">var</span> ii II</div><div class="line">    ii = &amp;p</div><div class="line">    ii.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>II</code> 继承了 <code>I</code> 的 method，所以 Person 也实现了 II。</p>
+<p>例外情况之二：如果 existing type 是 composite type，此情形根据官方所述没有看的很懂，希望有遇到之人可以交流一下。</p>
 <h2 id="type-的属性继承二：type-embedding"><a href="#type-的属性继承二：type-embedding" class="headerlink" title="type 的属性继承二：type embedding"></a>type 的属性继承二：type embedding</h2><p>如果一个 type T‘ 被嵌入另一个 type T 作为它的 filed，T’ 的所有 field 和 method 都可以在 T 中使用，这种方法称之为 type embedding。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">    &quot;fmt&quot;</div><div class="line">)</div><div class="line"></div><div class="line">type I interface &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line">type Person struct &#123;</div><div class="line">    name string</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Speak() &#123;</div><div class="line">    fmt.Println(&quot;I am a person&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Talk() &#123;</div><div class="line">    fmt.Println(&quot;I am talking&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">type People struct &#123;</div><div class="line">    Person</div><div class="line">&#125;</div><div class="line"></div><div class="line">func main()&#123;</div><div class="line">    var people People</div><div class="line">    people.name = &quot;people&quot;</div><div class="line">    people.Speak()</div><div class="line">    people.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="type-转换"><a href="#type-转换" class="headerlink" title="type 转换"></a>type 转换</h2><p>Type 之间是可以相互转换的，但要遵循一定的转换规则，详细请看官方规范 <a href="https://golang.org/ref/spec#Conversions。" target="_blank" rel="external">https://golang.org/ref/spec#Conversions。</a></p>
@@ -268,16 +750,13 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifySlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    s[<span class="number">0</span>] = <span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;0, 0, 0&#125;</span></div><div class="line">modifySlice(s2)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;1, 0, 0&#125;</span></div></pre></td></tr></table></figure>
 <p>这说明 make(T, args) 返回的是引用类型，在函数内部可以直接更改原始值，对 map 和 channel 也是如此。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m[<span class="number">0</span>] = <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    c &lt;- <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2) </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">//map[int]string&#123;&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">modifyMap(m2)</div><div class="line">fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">// map[int]string&#123;0:"string"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">go</span> modifyChan(c2)</div><div class="line">fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v "</span>, &lt;-c2) <span class="comment">//"string"</span></div></pre></td></tr></table></figure>
-<h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure>
+<h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><p>以下代码演示了 <strong>struct 初始化的过程</strong>，可以说明不使用 new 一样可以完成 struct 的初始化工作。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//声明初始化</span></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line"><span class="comment">//struct literal 初始化</span></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line"><span class="comment">//指针初始化</span></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line"><span class="comment">//new 初始化</span></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="comment">//声明指针并用 new 初始化</span></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure></p>
 <p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。</p>
 <p>foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 *Foo。</p>
-<p>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</p>
+<p><strong>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</strong></p>
 <p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
 <p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
-<blockquote>
-<p>阅读原文查看和下载文中所有代码</p>
-</blockquote>
 
       
       
@@ -721,7 +1200,7 @@
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a> <a href="/tags/go/">go</a> <a href="/tags/node/">node</a>
+    <a href="/tags/golang/">golang</a> <a href="/tags/python/">python</a> <a href="/tags/node/">node</a>
   </div>
 
 <div class="clear"></div>
@@ -776,425 +1255,6 @@
       
         <div class="alignleft">
             <a href="/2017/06/24/chat-app-with-go-python-node/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-06-11T12:01:41.000Z">
-  <!-- <a href="/2017/06/11/go-nil/">6月 11日 2017</a> -->
-  6月 11日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/06/11/go-nil/">如何理解 golang nil</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/golang/">golang</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/nil/">nil</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。</p>
-<h2 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h2><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU" target="_blank" rel="external">Play</a> </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="literal">nil</span>==<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-1 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox318449491/main.go:8: invalid operation: nil == nil (operator == not defined on nil)</div></pre></td></tr></table></figure>
-<p>这点和 python 等动态语言是不同的，在 python 中，两个 None 值永远相等。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == <span class="keyword">None</span></div><div class="line"><span class="keyword">True</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>从 go 的输出结果不难看出，<code>==</code> 对于 nil 来说是一种未定义的操作。</p>
-<h2 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h2><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Printf(<span class="string">"%T"</span>, <span class="literal">nil</span>) </div><div class="line">	<span class="built_in">print</span>(<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-2 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox379579345/main.go:9: use of untyped nil</div></pre></td></tr></table></figure>
-<p>print 的输出时未指定类型的，因而无法输出</p>
-<h2 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h2><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>m 和 ptr 的 address 都是 0x0</p>
-<h2 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h2><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(m == ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-4 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox618627491/main.go:10: invalid operation: m == ptr (mismatched types map[int]string and *int)</div></pre></td></tr></table></figure>
-<h2 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h2><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> sl []<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> f <span class="function"><span class="keyword">func</span><span class="params">()</span></span></div><div class="line">	<span class="title">var</span> <span class="title">i</span> <span class="title">interface</span>&#123;&#125;</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, ptr)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, c)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, sl)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, f)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-5 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">map[int]string(nil)</div><div class="line">(*int)(nil)</div><div class="line">(chan int)(nil)</div><div class="line">[]int(nil)</div><div class="line">(func())(nil)</div><div class="line">&lt;nil&gt;</div></pre></td></tr></table></figure>
-<p><a href="https://golang.org/ref/spec#The_zero_value" target="_blank" rel="external">zero value</a> 是 go 中变量在声明之后但是未初始化被赋予的该类型的一个默认值。</p>
-<blockquote>
-<p>正确理解 nil 是正确理解 go 中类型的重要一环，因而 nil 的任何细节在遇到之后都不要错过，要做到相应的记录。</p>
-</blockquote>
-
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/06/11/go-nil/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-06-07T03:38:37.000Z">
-  <!-- <a href="/2017/06/07/sqlalchemy-delete-synchronize-session/">6月 7日 2017</a> -->
-  6月 7日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/06/07/sqlalchemy-delete-synchronize-session/">sqlalchemy session 执行 delete 时 synchronize_session 策略</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/SQLAlchemy/">SQLAlchemy</a>
-  </div>
-
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3,4])).delete(synchronize_session=&apos;evaluate&apos;)</div></pre></td></tr></table></figure>
-<p>sqlalchemy 利用 session 执行 delete 时有一个 synchronize_session 参数用来说明 session 删除对象时需要执行的策略，共三个选项：</p>
-<h2 id="False"><a href="#False" class="headerlink" title="False"></a><strong>False</strong></h2><blockquote>
-<p> don’t synchronize the session. This option is the most efficient and is reliable once the session is expired, which typically occurs after a commit(), or explicitly using expire_all(). Before the expiration, objects may still remain in the session which were in fact deleted which can lead to confusing results if they are accessed via get() or already loaded collections.</p>
-</blockquote>
-<p>不同步 session，如果被删除的 objects 已经在 session 中存在，在 session commit 或者 expire_all 之前，这些被删除的对象都存在 session 中。</p>
-<p>不同步可能会导致获取被删除 objects 时出错。</p>
-<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><strong>fetch</strong></h2><blockquote>
-<p>performs a select query before the delete to find objects that are matched by the delete query and need to be removed from the session. Matched objects are removed from the session.</p>
-</blockquote>
-<p>删除之前从 db 中匹配被删除的对象并保存在 session 中，然后再从 session 中删除，这样做是为了让 session 的对象管理 identity_map 得知被删除的对象究竟是哪些以便更新引用关系。</p>
-<h2 id="evaluate"><a href="#evaluate" class="headerlink" title="evaluate"></a><strong>evaluate</strong></h2><blockquote>
-<p> Evaluate the query’s criteria in Python straight on the objects in the session. If evaluation of the criteria isn’t implemented, an error is raised.<br>The ‘evaluate’ strategy performs a scan of all matching objects within the Session; if the contents of the Session are expired, such as via a proceeding Session.commit() call, this will result in SELECT queries emitted for every matching object.</p>
-</blockquote>
-<p>默认值。根据当前的 query criteria 扫描 session 中的 objects，如果不能正确执行则抛出错误，这句话也可以理解为，如果 session 中原本就没有这些被删除的 objects，扫描当然不会发生匹配，相当于匹配未正确执行。</p>
-<p>注意这里报错只会在特定 query criteria 时报错，比如 <code>in</code> 操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3])).delete()</div><div class="line"></div><div class="line">sqlalchemy.exc.InvalidRequestError: Could not evaluate current criteria in Python. Specify &apos;fetch&apos; or False for the synchronize_session parameter.</div></pre></td></tr></table></figure>
-
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/06/07/sqlalchemy-delete-synchronize-session/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-05-25T09:50:20.000Z">
-  <!-- <a href="/2017/05/25/2017-css-framework/">5月 25日 2017</a> -->
-  5月 25日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/05/25/2017-css-framework/">开发中常用的 CSS framework（2015年至今）</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/css/">css</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/bulma/">bulma</a> <a href="/tags/purecss/">purecss</a> <a href="/tags/semantic-ui/">semantic-ui</a> <a href="/tags/tachyons/">tachyons</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>自 bootstrap CSS framework 已经成了开发者必不可少的技术选型了，随着移动端的不断发展和日趋复杂化的 UI 交互模式的需要，适应各种场景的 CSS framework 也层出不穷，在此盘点一下个人日常开发时选择的几种 CSS framework，排名不分先后。</p>
-<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
-<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
-<ul>
-<li><a href="https://git-star.com/" target="_blank" rel="external">https://git-star.com/</a></li>
-</ul>
-<h2 id="bulma"><a href="#bulma" class="headerlink" title="bulma"></a><a href="https://github.com/jgthms/bulma/" target="_blank" rel="external">bulma</a></h2><p>龙珠布尔玛的英文名字？好像是。</p>
-<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
-<p>提供了一些非常基础的工具化 class，比如 <a href="http://bulma.io/documentation/modifiers/syntax/" target="_blank" rel="external">modifiers</a> 可以直接修改内边距、外边距、边框都常需要改动的地方，非常实用。</p>
-<p>开发者友好。</p>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/05/25/2017-css-framework/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2017-05-25T03:09:06.000Z">
-  <!-- <a href="/2017/05/25/sqlalchemy-model-id-zero/">5月 25日 2017</a> -->
-  5月 25日 2017
-</time>
-
-  
-    <h1 class="title"><a href="/2017/05/25/sqlalchemy-model-id-zero/">如果 SQLAlchemy model 自增主键等于 0</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/SQLAlchemy/">SQLAlchemy</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/python/">python</a> <a href="/tags/mysql/">mysql</a> <a href="/tags/主键/">主键</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>SQLAlchemy 使用 session 生成新的数据根据主键的不同大致有以下几种情况，其中主键是 0 最为特殊。</p>
-<p>测试环境</p>
-<ul>
-<li>SQLAlchemy  1.0.9</li>
-<li>mysql 5.6.27</li>
-<li>pythonn 2.7</li>
-</ul>
-<h2 id="不指定主键"><a href="#不指定主键" class="headerlink" title="不指定主键"></a>不指定主键</h2><p>新创建 <a href="http://www.sqlalchemy.org/" target="_blank" rel="external">SQLAlchemy</a> ORM model instance 不指定主键，默认是 None</p>
-<p>Model</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></div><div class="line">    __tablename__ = <span class="string">'tag'</span></div><div class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>) <span class="comment"># 主键自增</span></div><div class="line">    name = Column(VARCHAR(<span class="number">255</span>), nullable=<span class="keyword">False</span>)</div><div class="line">    group_id = Column(Integer)</div></pre></td></tr></table></figure>
-<p>提交之后生成对应的主键</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># None</span></div><div class="line">session.add(t)</div><div class="line">session.commit()</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># 1</span></div></pre></td></tr></table></figure>
-<h2 id="指定一个已经存在的主键"><a href="#指定一个已经存在的主键" class="headerlink" title="指定一个已经存在的主键"></a>指定一个已经存在的主键</h2><p>指定一个已经存在的主键 id，SQLAlchemy 并不会校验该数据是否经在 db table 中有了对应的 row，直接执行 insert 语句</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.id = <span class="number">1</span></div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line">session.add(t)</div><div class="line">session.commit() <span class="comment">#提交触发异常</span></div><div class="line"><span class="keyword">print</span> t.id</div></pre></td></tr></table></figure>
-<p>执行报 Duplicate entry for primary 异常，id = 1 的 row 已经存在。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqlalchemy.exc.IntegrityError: (pymysql.err.IntegrityError) (1062, u<span class="string">"Duplicate entry '1' for key 'PRIMARY'"</span>) [SQL: u<span class="string">'INSERT INTO tag (id, name, group_id) VALUES (%(id)s, %(name)s, %(group_id)s)'</span>] [parameters: &#123;<span class="string">'group_id'</span>: 3, <span class="string">'id'</span>: 1, <span class="string">'name'</span>: <span class="string">'i'</span>&#125;]</div></pre></td></tr></table></figure>
-      
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2017/05/25/sqlalchemy-model-id-zero/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         

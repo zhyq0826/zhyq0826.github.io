@@ -3,29 +3,13 @@
 <head>
   <meta charset="utf-8">
   
-  <title>非常有用的 python 第三方库 | 三月沙</title>
+  <title>第 4 页 | 三月沙</title>
   <meta name="author" content="三月沙">
-  
-  <meta name="description" content="httprequests易读易懂的 http libary
-
-Doc
-PyPi
-Github
-
-django-rest-framework基于django 用以构建web api
-
-Doc
-Github
-
-eve基于Flask, mongodb的 REST API framework
-
-Doc
-Gi">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="非常有用的 python 第三方库"/>
+  
   <meta property="og:site_name" content="三月沙"/>
 
   
@@ -72,7 +56,43 @@ Gi">
 </nav>
   </header>
   <div id="content" class="container">
-    <article class="post">
+    <div id="cover">
+	<div id="profile" alt="http://ww1.sinaimg.cn/large/6cea169fjw1edgyzma1xcj21kw16ohba.jpg">
+		<a href="/">
+			<div class="logo">
+				<img src="/logo.jpg" alt="Profile Picture">
+			</div>
+			<div id="title">三月沙</div>
+		</a>
+
+		
+		 <ul class="my-socials">
+  
+  <li>
+  	<a href="https://github.com/zhyq0826" class="github" target="_blank">
+  		<i class="fa fa-github"></i>
+  	</a>
+  </li>
+  
+  <li>
+  	<a href="http://weibo.com/lowtone" class="weibo" target="_blank">
+  		<i class="fa fa-weibo"></i>
+  	</a>
+  </li>
+  
+ 
+ <li>
+   	<a href="mailto:zhyq0826@126.com" class="email" target="_blank" title="Email Me">
+  		<i class="fa fa-envelope"></i>
+  	</a>
+ </li>
+ 
+</ul>
+	</div>
+</div>
+
+
+  <article class="post">
   
     <div class="gallery">
   <div class="photoset">
@@ -95,7 +115,7 @@ Gi">
 </time>
 
   
-    <h1 class="title">非常有用的 python 第三方库</h1>
+    <h1 class="title"><a href="/2014/12/27/python-lib/">非常有用的 python 第三方库</a></h1>
   
 
 
@@ -238,32 +258,11 @@ Gi">
     </div>
     <footer>
       
-          
-<!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <span class="jiathis_txt">分享到：</span>
-  <a class="jiathis_button_weixin">微信</a>
-  <a class="jiathis_button_tsina">新浪微博</a>
-  <a class="jiathis_button_renren">人人网</a>
-  <a class="jiathis_button_qzone">QQ空间</a>
-  <a class="jiathis_button_douban">豆瓣</a>
-  <a class="jiathis_button_pocket">Pocket</a>
-  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
-          <div class="clearfix"></div>
-          <nav id="pagination">
-  
-    <a href="/2015/04/25/wechat-product-opinion/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
-  
-  
-    <a href="/2014/12/20/one-time-python-memory-leaks/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
-  
-  <div class="clearfix"></div>
-</nav>
+        <div class="alignleft">
+            <a href="/2014/12/27/python-lib/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
       
       <div class="clearfix"></div>
     </footer>
@@ -296,6 +295,321 @@ Gi">
   </div>
  </section>
 
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-12-20T06:25:06.000Z">
+  <!-- <a href="/2014/12/20/one-time-python-memory-leaks/">12月 20日 2014</a> -->
+  12月 20日 2014
+</time>
+
+  
+    <h1 class="title"><a href="/2014/12/20/one-time-python-memory-leaks/">python 内存泄漏排查与分析</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/python/">python</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/内存泄露/">内存泄露</a> <a href="/tags/memory-link/">memory link</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="python-内存异常的几种情况"><a href="#python-内存异常的几种情况" class="headerlink" title="python 内存异常的几种情况"></a>python 内存异常的几种情况</h2><ul>
+<li>代码内出现循环引用</li>
+<li>全局变量数据太多</li>
+<li>进程加载大量数据，长久持有不释放</li>
+</ul>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado" target="_blank" rel="external">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
+<h2 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h2><p>1.确定是否是个别进程的特有现象</p>
+<p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
+<p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/12/20/one-time-python-memory-leaks/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-11-29T07:09:13.000Z">
+  <!-- <a href="/2014/11/29/small-team-evaluate-project-deadline/">11月 29日 2014</a> -->
+  11月 29日 2014
+</time>
+
+  
+    <h1 class="title"><a href="/2014/11/29/small-team-evaluate-project-deadline/">小团队如何准确评估项目时间和节点</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/程序人生/">程序人生</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/团队协作/">团队协作</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。</p>
+<h2 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h2>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/11/29/small-team-evaluate-project-deadline/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-10-28T11:07:13.000Z">
+  <!-- <a href="/2014/10/28/procrastiatio-of-programer-life/">10月 28日 2014</a> -->
+  10月 28日 2014
+</time>
+
+  
+    <h1 class="title"><a href="/2014/10/28/procrastiatio-of-programer-life/">拖延症的程序人生</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/程序人生/">程序人生</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/拖延症/">拖延症</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>这个博客是由<a href="http://hexo.io" target="_blank" rel="external">hexo</a>搭起来的，在这之前我还看了</p>
+<ul>
+<li><a href="https://github.com/getpelican/pelican" target="_blank" rel="external">pelican</a></li>
+<li><a href="https://ghost.org" target="_blank" rel="external">ghost</a></li>
+<li><a href="https://github.com/mojombo/jekyll" target="_blank" rel="external">jekyll</a></li>
+<li><a href="https://github.com/imathis/octopress" target="_blank" rel="external">octopress</a></li>
+</ul>
+<p>上手了pelican和jekyll，最终懒得没能把博客跑起来。转眼间过去好几个月了，一直琢磨着要写点东西，关于代码的，关于这些年的生活的，以及关于未来的。迟迟然，最终还是花了点时间用hexo把这个写作的平台搭起来了，申请了域名叫<a href="http://sanyuesha.com" target="_blank" rel="external">三月沙</a>, 我用了很多年的id。  </p>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/10/28/procrastiatio-of-programer-life/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/3/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>上一页</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
+<script src="/js/jquery.anystretch.min.js"></script>
 
     <div class="clearfix"></div>
   </div>

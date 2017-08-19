@@ -109,6 +109,447 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2016-10-14T04:48:30.000Z">
+  <!-- <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">10月 14日 2016</a> -->
+  10月 14日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/">mysql 不指定 ip 的连接默认都是 localhost</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/mysql/">mysql</a>
+  </div>
+
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><p>在本地使用 docker 启动了一个 mysql 容器，并把本地的<code>33067</code>端口映射到容器内 mysql 的 <code>3306</code>，我们假设容器的 ip 地址是 <code>172.17.0.2</code>，使用本地的 mysql 客户端尝试连接容器内部的 mysql 服务。</p>
+<h3 id="方法-1"><a href="#方法-1" class="headerlink" title="方法 1"></a>方法 1</h3><p>由于是绑定本地的 33067 端口，所以在连接时指定端口号即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -P33067</div></pre></td></tr></table></figure>
+<p>此时 mysql-client 实际上进入了本地的 mysql 服务，使用 <code>status</code> 命令可以查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Connection id:      49</div><div class="line">Current database:   </div><div class="line">Current user:       root@localhost</div><div class="line">SSL:            Not <span class="keyword">in</span> use</div><div class="line">Current pager:      stdout</div><div class="line">Using outfile:      <span class="string">''</span></div><div class="line">Using delimiter:    ;</div><div class="line">Server version:     5.5.52-0ubuntu0.14.04.1 (Ubuntu)</div><div class="line">Protocol version:   10</div><div class="line">Connection:     Localhost via UNIX socket</div><div class="line">Server characterset:    latin1</div><div class="line">Db     characterset:    latin1</div><div class="line">Client characterset:    utf8</div><div class="line">Conn.  characterset:    utf8</div><div class="line">UNIX socket:        /var/run/mysqld/mysqld.sock</div><div class="line">Uptime:         1 hour 35 min 41 sec</div></pre></td></tr></table></figure>
+<p>connecttion 信息是本地的 unix socket，这样的连接并没有连接到容器内的 mysql。</p>
+<h3 id="方法-2"><a href="#方法-2" class="headerlink" title="方法 2"></a>方法 2</h3><p>尝试指定对应 host 和映射的本地端口，由于映射的是本地端口，所以 host 为 localhost</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -hlocalhost -P33067</div></pre></td></tr></table></figure>
+<p>依然连接的是本地的 mysql 服务。</p>
+<h3 id="方法-3"><a href="#方法-3" class="headerlink" title="方法 3"></a>方法 3</h3><p>直接使用容器的的 ip 地址，默认端口是 3306 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -h172.17.0.2</div></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<h3 id="方法-4"><a href="#方法-4" class="headerlink" title="方法 4"></a>方法 4</h3><p>使用 127.0.0.1 地址，并指定本地映射的端口 33067 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -h127.0.0.1 -P33067</div></pre></td></tr></table></figure>
+<p>连接成功，进入容器内部的 mysql 服务。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>方法 1 和 方法 2 连接的 host 其实都是 localhost（不指定 host，默认是 localhost），此时不论端口指定什么，mysql-client 都尝试使用 unix socket 的通信方式，也就是本地的 socket ，所以如果要连接指定 ip 的 mysql 服务，必须要指定 ip ，即使该 ip 映射的是 localhost。</p>
+<p>如上的场景由于容器内的 mysql 服务端口映射到本地的特定端口，即使是这种情况，连接依然需要指定本地 ip 127.0.0.1，而不是本地的 hostname localhost，因为一旦使用了 localhost，mysql-client 就尝试使用本地的 unix socket 连接本地的 mysql 服务。</p>
+<p>因而可以得知，mysql 不指定 ip 的连接默认都是 localhost，尝试连接的是本地 mysql 服务，无论端口是什么。</p>
+<blockquote>
+<p>Beware that by default, the mysql client tries to connect using a unix socket when you tell it to connect to localhost. So do use 127.0.0.1 and not localhost:<br>$ mysql -h 127.0.0.1 -P 3306 -u root</p>
+</blockquote>
+
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-08-27T13:38:14.000Z">
+  <!-- <a href="/2016/08/27/mongodb-single-table-split/">8月 27日 2016</a> -->
+  8月 27日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/08/27/mongodb-single-table-split/">mongodb 单表亿级数据的拆分方案</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/mongodb/">mongodb</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/表拆分/">表拆分</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
+<ul>
+<li>聚合查询变得困难</li>
+<li>拆分的键一旦选定，更改会非常困难</li>
+<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
+</ul>
+<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
+<p>在本次实施的拆分方案中，数据特点是:</p>
+<ul>
+<li>单表过亿</li>
+<li>业务数据是用户对资源的收藏，结构比较单一</li>
+<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
+<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
+</ul>
+<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<ul>
+<li>用户新增一条数据</li>
+<li>用户删除一条数据</li>
+<li>用户查询数据(有翻页)</li>
+</ul>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/08/27/mongodb-single-table-split/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-08-20T04:37:42.000Z">
+  <!-- <a href="/2016/08/20/distributed-lock-with-redis/">8月 20日 2016</a> -->
+  8月 20日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/08/20/distributed-lock-with-redis/">如何用 redis 造一把分布式锁</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/redis/">redis</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/lock/">lock</a> <a href="/tags/distributed/">distributed</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Lock_(computer_science" target="_blank" rel="external">wiki</a>:In computer science, a lock or mutex (from mutual exclusion) is a synchronization mechanism for enforcing limits on access to a resource in an environment where there are many threads of execution. A lock is designed to enforce a mutual exclusion concurrency control policy.<br>在计算机科学中，锁或互斥量是一种同步机制，用于在多线程执行环境中，强行限制对资源访问。锁常被用于同步并发控制。</p>
+</blockquote>
+<p>简单来讲，锁是用来控制多线程执行对资源的并发访问的。比如当一个资源只允许在任意时刻只有一个执行线程对其进行写操作，那当其他线程要访问资源时，就必须要检查该该资源上是否存在<code>写操作锁</code>，如果存在，必须要等待锁的释放并获得锁之后才能对资源进行访问。</p>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><p>悲观锁假设在一个完整事务发生的过程中，总是会有其他线程会更改所操作的资源，因此线程总是对资源加锁之后才会对其做更改。</p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><p>乐观锁假设在一个完整事务发生的过程中，不一定会有其他线程会更改资源，一旦发现资源被更改，则停止当前事务回滚所有操作。</p>
+<h3 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h3><p>常见的锁有多线程锁、数据库事务中的行级锁、表级锁等，这些锁的特点都是发生在单一系统环境中，如果需要在不同的进程、不同机器和系统等分布式环境中控制对资源的访问，这时候我们需要一把分布式锁。</p>
+<p>不言而喻，分布式锁就是为了解决分布式环境中对资源的访问限制而诞生的。</p>
+<h2 id="如何设计一把分布式锁"><a href="#如何设计一把分布式锁" class="headerlink" title="如何设计一把分布式锁"></a>如何设计一把分布式锁</h2>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/08/20/distributed-lock-with-redis/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2016-07-23T11:05:01.000Z">
+  <!-- <a href="/2016/07/23/why-did-i-make-turbo/">7月 23日 2016</a> -->
+  7月 23日 2016
+</time>
+
+  
+    <h1 class="title"><a href="/2016/07/23/why-did-i-make-turbo/">python 轮子 turbo 的诞生记</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/python/">python</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/turbo/">turbo</a> <a href="/tags/backend/">backend</a> <a href="/tags/wheel/">wheel</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p><a href="https://github.com/wecatch/app-turbo" target="_blank" rel="external">turbo</a> 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
+</blockquote>
+<h2 id="turbo-是如何诞生的"><a href="#turbo-是如何诞生的" class="headerlink" title="turbo 是如何诞生的?"></a>turbo 是如何诞生的?</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
+<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
+<ul>
+<li>一个抽象的 dal 层(数据抽象)</li>
+<li>数据库连接(db)</li>
+<li>配置(conf)</li>
+<li>工具(utils)</li>
+<li>缓存(cache)</li>
+<li>第三方库(lib)</li>
+</ul>
+<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
+<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要同时维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2016/07/23/why-did-i-make-turbo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2016-06-18T09:00:28.000Z">
   <!-- <a href="/2016/06/18/python-copy-deepcopy/">6月 18日 2016</a> -->
   6月 18日 2016
@@ -734,517 +1175,13 @@
  </section>
 
 
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2014-12-27T11:53:27.000Z">
-  <!-- <a href="/2014/12/27/python-lib/">12月 27日 2014</a> -->
-  12月 27日 2014
-</time>
-
-  
-    <h1 class="title"><a href="/2014/12/27/python-lib/">非常有用的 python 第三方库</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/python/">python</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/lib/">lib</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><h3 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h3><p>易读易懂的 http libary</p>
-<ul>
-<li><a href="http://docs.python-requests.org/en/latest/index.html" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/requests" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/kennethreitz/requests" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="django-rest-framework"><a href="#django-rest-framework" class="headerlink" title="django-rest-framework"></a>django-rest-framework</h3><p>基于django 用以构建web api</p>
-<ul>
-<li><a href="http://www.django-rest-framework.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/tomchristie/django-rest-framework" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="eve"><a href="#eve" class="headerlink" title="eve"></a>eve</h3><p>基于Flask, mongodb的 REST API framework</p>
-<ul>
-<li><a href="http://python-eve.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/nicolaiarocci/eve" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="图形图像"><a href="#图形图像" class="headerlink" title="图形图像"></a>图形图像</h2><h3 id="pgmagick"><a href="#pgmagick" class="headerlink" title="pgmagick"></a>pgmagick</h3><p>pgmagick 是 GraphicsMagick(Magick++) python 绑定 </p>
-<ul>
-<li><a href="http://pythonhosted.org/pgmagick/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/pgmagick/" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://bitbucket.org/hhatto/pgmagick" target="_blank" rel="external">Bitbucket</a></li>
-</ul>
-<h3 id="Pillow"><a href="#Pillow" class="headerlink" title="Pillow"></a>Pillow</h3><p>PIL 一个更友好的实现</p>
-<ul>
-<li><a href="http://python-pillow.github.io/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/python-pillow/Pillow" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="分布式-amp-异步队列"><a href="#分布式-amp-异步队列" class="headerlink" title="分布式&amp;异步队列"></a>分布式&amp;异步队列</h2><h3 id="celery"><a href="#celery" class="headerlink" title="celery"></a>celery</h3><p>celery 是基于分布式消息的异步任务队列</p>
-<ul>
-<li><a href="http://www.celeryproject.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/celery/celery" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="rq"><a href="#rq" class="headerlink" title="rq"></a>rq</h3><p>非常简单的基于进程的异步队列</p>
-<ul>
-<li><a href="http://python-rq.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/nvie/rq" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="html-amp-xml-解析"><a href="#html-amp-xml-解析" class="headerlink" title="html&amp;xml 解析"></a>html&amp;xml 解析</h2><h3 id="lxml"><a href="#lxml" class="headerlink" title="lxml"></a>lxml</h3><p>lxml 是特性最丰富，最容易使用的xml解析库</p>
-<ul>
-<li><a href="http://lxml.de/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/lxml" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/lxml/lxml/" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="beautifulsoup4"><a href="#beautifulsoup4" class="headerlink" title="beautifulsoup4"></a>beautifulsoup4</h3><p>解析xml和html，用来提取xml和html中的数据</p>
-<ul>
-<li><a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://pypi.python.org/pypi/beautifulsoup4" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://code.launchpad.net/beautifulsoup" target="_blank" rel="external">Code</a></li>
-</ul>
-<h3 id="pyquery"><a href="#pyquery" class="headerlink" title="pyquery"></a>pyquery</h3><p>类似jquery一样解析xml和html</p>
-<ul>
-<li><a href="http://pyquery.readthedocs.org/en/latest/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/gawel/pyquery" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ul>
-<li>nose</li>
-<li>pytest</li>
-<li>webtest</li>
-</ul>
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
-<li>jinji2</li>
-</ul>
-<h2 id="web-framework"><a href="#web-framework" class="headerlink" title="web framework"></a>web framework</h2><ul>
-<li>flask</li>
-<li>tornado</li>
-<li>pyramid <a href="https://trypyramid.com/" target="_blank" rel="external">https://trypyramid.com/</a></li>
-</ul>
-<h2 id="风格和规范"><a href="#风格和规范" class="headerlink" title="风格和规范"></a>风格和规范</h2><h3 id="autopep8"><a href="#autopep8" class="headerlink" title="autopep8"></a>autopep8</h3><ul>
-<li><a href="https://pypi.python.org/pypi/autopep8/" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/hhatto/autopep8" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="pep8"><a href="#pep8" class="headerlink" title="pep8"></a>pep8</h3><ul>
-<li><a href="https://github.com/jcrocholl/pep8" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><h3 id="mkdocs"><a href="#mkdocs" class="headerlink" title="mkdocs"></a>mkdocs</h3><p>python 项目文档生成工具</p>
-<ul>
-<li><a href="http://www.mkdocs.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/tomchristie/mkdocs" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="Pygments"><a href="#Pygments" class="headerlink" title="Pygments"></a>Pygments</h3><p>python 实现的代码高亮库，支持300多种语言</p>
-<ul>
-<li><a href="http://pygments.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/Pygments" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://bitbucket.org/birkenfeld/pygments-main" target="_blank" rel="external">Bitbucket</a></li>
-</ul>
-<h2 id="命令行和linux工具"><a href="#命令行和linux工具" class="headerlink" title="命令行和linux工具"></a>命令行和linux工具</h2><h3 id="psutil"><a href="#psutil" class="headerlink" title="psutil*"></a>psutil*</h3><p>在运行的python进程中获取进程和操作系统信息(CPU, memory, disks, network)，支持多个平台</p>
-<ul>
-<li><a href="http://pythonhosted.org/psutil/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://pypi.python.org/pypi/psutil" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/giampaolo/psutil/" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="paramiko"><a href="#paramiko" class="headerlink" title="paramiko"></a>paramiko</h3><p>python 实现的ssh2 协议库</p>
-<ul>
-<li><a href="https://github.com/paramiko/paramiko" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="colorama"><a href="#colorama" class="headerlink" title="colorama"></a>colorama</h3><p>shell 中输出颜色</p>
-<ul>
-<li><a href="https://pypi.python.org/pypi/colorama" target="_blank" rel="external">pip</a></li>
-<li><a href="https://github.com/tartley/colorama" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="加密和安全"><a href="#加密和安全" class="headerlink" title="加密和安全"></a>加密和安全</h2><h3 id="Passlib"><a href="#Passlib" class="headerlink" title="Passlib"></a>Passlib</h3><p>提供各种加密算法，夸平台，支持超过30种常用的加密算法</p>
-<ul>
-<li><a href="https://pythonhosted.org/passlib/index.html" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/passlib" target="_blank" rel="external">PyPi</a></li>
-<li><a href="http://code.google.com/p/passlib/source" target="_blank" rel="external">Code</a></li>
-</ul>
-
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2014/12/27/python-lib/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2014-12-20T06:25:06.000Z">
-  <!-- <a href="/2014/12/20/one-time-python-memory-leaks/">12月 20日 2014</a> -->
-  12月 20日 2014
-</time>
-
-  
-    <h1 class="title"><a href="/2014/12/20/one-time-python-memory-leaks/">python 内存泄漏排查与分析</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/python/">python</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/内存泄露/">内存泄露</a> <a href="/tags/memory-link/">memory link</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <h2 id="python-内存异常的几种情况"><a href="#python-内存异常的几种情况" class="headerlink" title="python 内存异常的几种情况"></a>python 内存异常的几种情况</h2><ul>
-<li>代码内出现循环引用</li>
-<li>全局变量数据太多</li>
-<li>进程加载大量数据，长久持有不释放</li>
-</ul>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado" target="_blank" rel="external">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
-<h2 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h2><p>1.确定是否是个别进程的特有现象</p>
-<p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
-<p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2014/12/20/one-time-python-memory-leaks/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2014-11-29T07:09:13.000Z">
-  <!-- <a href="/2014/11/29/small-team-evaluate-project-deadline/">11月 29日 2014</a> -->
-  11月 29日 2014
-</time>
-
-  
-    <h1 class="title"><a href="/2014/11/29/small-team-evaluate-project-deadline/">小团队如何准确评估项目时间和节点</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/程序人生/">程序人生</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/团队协作/">团队协作</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。</p>
-<h2 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h2>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2014/11/29/small-team-evaluate-project-deadline/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2014-10-28T11:07:13.000Z">
-  <!-- <a href="/2014/10/28/procrastiatio-of-programer-life/">10月 28日 2014</a> -->
-  10月 28日 2014
-</time>
-
-  
-    <h1 class="title"><a href="/2014/10/28/procrastiatio-of-programer-life/">拖延症的程序人生</a></h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/程序人生/">程序人生</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/拖延症/">拖延症</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <p>这个博客是由<a href="http://hexo.io" target="_blank" rel="external">hexo</a>搭起来的，在这之前我还看了</p>
-<ul>
-<li><a href="https://github.com/getpelican/pelican" target="_blank" rel="external">pelican</a></li>
-<li><a href="https://ghost.org" target="_blank" rel="external">ghost</a></li>
-<li><a href="https://github.com/mojombo/jekyll" target="_blank" rel="external">jekyll</a></li>
-<li><a href="https://github.com/imathis/octopress" target="_blank" rel="external">octopress</a></li>
-</ul>
-<p>上手了pelican和jekyll，最终懒得没能把博客跑起来。转眼间过去好几个月了，一直琢磨着要写点东西，关于代码的，关于这些年的生活的，以及关于未来的。迟迟然，最终还是花了点时间用hexo把这个写作的平台搭起来了，申请了域名叫<a href="http://sanyuesha.com" target="_blank" rel="external">三月沙</a>, 我用了很多年的id。  </p>
-      
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2014/10/28/procrastiatio-of-programer-life/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
 
 <nav id="pagination">
   
     <a href="/page/2/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>上一页</a>
   
+  
+    <a href="/page/4/" class="alignright next">下一页<i class="fa fa-long-arrow-right"></i></a>
   
   <div class="clearfix"></div>
 </nav>

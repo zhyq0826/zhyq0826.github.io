@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>go 中的面向对象 | 三月沙</title>
+  <meta name="author" content="三月沙">
+  
+  <meta name="description" content="Go 不是基于 class 的语言，但是 Go 提供了强大的类型系统来实现 OO（Object Oriented），关于如何正确使用 OO 的争论网上已经非常多了，在此我们秉承 Go 提供的面向对象机制来实现不同的例子和使用模式，借此了解 Go 中的 OO。
+使用 embed type 实现继承Go">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="go 中的面向对象"/>
+  <meta property="og:site_name" content="三月沙"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-56212296-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/categories">Categories</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2017-08-17T05:26:18.000Z">
+  <!-- <a href="/2017/08/17/go-o-o/">8月 17日 2017</a> -->
+  8月 17日 2017
+</time>
+
+  
+    <h1 class="title">go 中的面向对象</h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/golang/">golang</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/面向对象/">面向对象</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>Go 不是基于 class 的语言，但是 Go 提供了强大的类型系统来实现 OO（Object Oriented），关于如何正确使用 OO 的争论网上已经非常多了，在此我们秉承 Go 提供的面向对象机制来实现不同的例子和使用模式，借此了解 Go 中的 OO。</p>
+<h2 id="使用-embed-type-实现继承"><a href="#使用-embed-type-实现继承" class="headerlink" title="使用 embed type 实现继承"></a>使用 embed type 实现继承</h2><p>Go 中的嵌入类型 <code>embed type</code> 本质上是一种 composition，Go 不像其它 OO 语言那样提供基于类的继承，那些继承体现的是 <code>is-a</code> 关系，但是 Go 不是。</p>
+<p>Go 通过 embed type，可以实现 method 和 field 的复用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">sayName</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</div><div class="line">    Person</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    p := Person&#123;name: <span class="string">"C"</span>&#125;</div><div class="line">    p.sayName() <span class="comment">// #1 C</span></div><div class="line"></div><div class="line">    s1 := Student&#123;name: <span class="string">"Java"</span>&#125;</div><div class="line">    s1.sayName() <span class="comment">// #2 此行输出空字符串</span></div><div class="line"></div><div class="line">    s2 := Student&#123;name: <span class="string">"Java"</span>, Person: Person&#123;name: <span class="string">"VB"</span>&#125;&#125;</div><div class="line">    s2.sayName()         <span class="comment">// #3 VB</span></div><div class="line">    fmt.Println(s2.name) <span class="comment">// #4 Java</span></div><div class="line">    fmt.Println(s2.Person.name) <span class="comment">//#5 VB</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Person</code> 是 <code>Student</code> 的 embed type，因而 Student 可以直接使用 Person 的 field 和 method，需要注意的是：</p>
+<p>1.Student 中的同名属性可以遮蔽 embed type 的属性，<code>#4</code> 的输出<br>2.Student 虽然可以直接调用 embed type 的 method，但是 method 的 receiver 仍然是 embed type，所以 <code>#2</code> 输出为空。<br>3.直接通过 embed type 继承，embed type 无法获取被嵌入类型的属性，原因由 2 导致。</p>
+<h2 id="类型组合的强大魔力"><a href="#类型组合的强大魔力" class="headerlink" title="类型组合的强大魔力"></a>类型组合的强大魔力</h2><p>Go 支持任意类型的 embed type，当然也包括 interface type，通过组合就可以实现多种不同行为的任意组合，这也是 Go 倡导<strong>以更小的单元实现你的代码功能，然后组合它们</strong>的理念。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// student 行为</span></div><div class="line"><span class="keyword">type</span> StudentTalk <span class="keyword">interface</span> &#123;</div><div class="line">    talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// teacher 行为</span></div><div class="line"><span class="keyword">type</span> TeacherTalk <span class="keyword">interface</span> &#123;</div><div class="line">    say()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先定义两个 interface 用来表示不同的行为。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// people 行为</span></div><div class="line"><span class="keyword">type</span> PeopleTalk <span class="keyword">interface</span> &#123;</div><div class="line">    StudentTalk</div><div class="line">    TeacherTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过 embed type 把定义的两个 interface 组合为新的 interface <code>PeopleTalk</code>，此时 PeopleTalk 继承了两个 interface 的 method 集合，也就是 PeopleTalk 拥有了 StudentTalk 和 TeacherTalk 的 method 合集。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    TeacherTalk</div><div class="line">    StudentTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Person 也内嵌了 TeacherTalk 和 StudentTalk，对 Person 来说既可以理解成<strong>继承了两个 interface 的 method 集合</strong>，也可以理解是 Person <strong>拥有两个可以 filed</strong>，它们的分别可以被赋值为实现了它们的 struct 的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Student)</span> <span class="title">talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"student talk"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Teacher <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Teacher)</span> <span class="title">say</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"teacher say"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Struct Student 和 Teacher 分别实现了 StudentTalk 和 TeacherTalk。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meet</span><span class="params">(p PeopleTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;people meet&lt;===="</span>)</div><div class="line">    meetTeacher(p)</div><div class="line">    meetStudent(p)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetTeacher</span><span class="params">(ps TeacherTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;teacher meet&lt;===="</span>)</div><div class="line">    ps.say()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetStudent</span><span class="params">(ps StudentTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;student meet&lt;===="</span>)</div><div class="line">    ps.talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    t := Teacher&#123;&#125;</div><div class="line">    s := Student&#123;&#125;</div><div class="line">    <span class="comment">// Person 实现了 PeopleTalk 方法，通过 Teacher 和 Student 实例</span></div><div class="line">    p := Person&#123;TeacherTalk: &amp;t, StudentTalk: &amp;s&#125;</div><div class="line">    meet(p)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这段 Go 代码展示了 interface 组合带来的魔力，meet function 的参数是 PeopleTalk，而 Person 的实例 p 由于通过实例 t 和 s 实现了 PeopleTalk 的 method，也就是说 p 可以直接通过 meet 函数传递，<strong>meet 的参数 PeopleTalk</strong>，而且实现了 PeopleTalk 必然实现了 StudentTalk 和 TeacherTalk，因为 PeopleTalk 是由它们组合而成的，进而可以在 meet 函数中可以直接调用 meetTeacher 和 meetStudent，它们各自的参数分别是 TeacherTalk 和 StudentTalk。</p>
+
+      
+      
+      <p style="text-align: center;" >
+        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
+          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
+        </a>
+      </p>
+      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2017/08/10/go-no-reference-type/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+  <div id="disqus_thread">
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+ </section>
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2017 三月沙
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+
+<script type="text/javascript">
+
+  $(function(){
+
+    // $('h1.title').hover(
+    //   function() {
+    //     $(this).stop().animate(
+    //       {'marginLeft': '10px'}, 200
+    //     );
+    //   },
+    //   function() {
+    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
+
+    // });
+
+  });
+
+</script>
+
+</body>
+</html>
