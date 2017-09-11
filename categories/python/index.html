@@ -1,487 +1,748 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
-  <meta charset="utf-8">
-  
-  <title>python | 三月沙</title>
-  <meta name="author" content="三月沙">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  <meta property="og:site_name" content="三月沙"/>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
 
   
-    <meta property="og:image" content="undefined"/>
+  
+  
   
 
-  <link href="/favicon.ico" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/style.css">
-  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-56212296-1']);
-  _gaq.push(['_trackPageview']);
+    
+    
+  
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="三月沙">
+<meta property="og:url" content="http://zhyq0826.github.io/categories/python/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三月沙">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
 </script>
+
+
+
+  <link rel="canonical" href="http://zhyq0826.github.io/categories/python/"/>
+
+
+
+
+
+  <title>分类: python | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
 
 </head>
 
-<body>
-  <header id="header" class='normal_mode'>
-    <nav id="main-nav">
-  <ul class='container'>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/categories">Categories</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-  </header>
-  <div id="content" class="container">
-    
-<h2 class="archive-title category"><i class="fa fa-folder-open"></i>python</h2>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
- 
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2016/11/06/python-string-unicode/">python 编码错误的本质和解决方案</a>
-	  		<time datetime="2016-11-06T12:48:08.000Z">
-			  	<!-- <a href="/2016/11/06/python-string-unicode/"></a>  -->
-			  	11月 6 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/编码/">编码</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <blockquote>
-<p>Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案</p>
-</blockquote>
-<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h3><p>character 构成文本的最小组成单元</p>
-<h3 id="字节"><a href="#字节" class="headerlink" title="字节"></a>字节</h3><p>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
-<h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
-<h3 id="字符编码值"><a href="#字符编码值" class="headerlink" title="字符编码值"></a>字符编码值</h3><p>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
-<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
-<h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>将字节流解析为字符集中的字符</p>
-<hr>
-<blockquote>
-<p>文中 python 皆为 2.x 版本code</p>
-</blockquote>
-<p>初学 python 的人基本上都有过如下类似经历:</p>
-<p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
-<p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
-<p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
-<p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/11/06/python-string-unicode/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2016/07/23/why-did-i-make-turbo/">python 轮子 turbo 的诞生记</a>
-	  		<time datetime="2016-07-23T11:05:01.000Z">
-			  	<!-- <a href="/2016/07/23/why-did-i-make-turbo/"></a>  -->
-			  	7月 23 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/turbo/">turbo</a> <a href="/tags/backend/">backend</a> <a href="/tags/wheel/">wheel</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <blockquote>
-<p><a href="https://github.com/wecatch/app-turbo" target="_blank" rel="external">turbo</a> 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
-</blockquote>
-<h2 id="turbo-是如何诞生的"><a href="#turbo-是如何诞生的" class="headerlink" title="turbo 是如何诞生的?"></a>turbo 是如何诞生的?</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
-<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
-<ul>
-<li>一个抽象的 dal 层(数据抽象)</li>
-<li>数据库连接(db)</li>
-<li>配置(conf)</li>
-<li>工具(utils)</li>
-<li>缓存(cache)</li>
-<li>第三方库(lib)</li>
-</ul>
-<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
-<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要同时维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/07/23/why-did-i-make-turbo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2016/06/18/python-copy-deepcopy/">如何理解 python 浅拷贝和深拷贝</a>
-	  		<time datetime="2016-06-18T09:00:28.000Z">
-			  	<!-- <a href="/2016/06/18/python-copy-deepcopy/"></a>  -->
-			  	6月 18 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/copy/">copy</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <p>为了让一个对象发生改变时不对原对象产生副作用，此时，需要一份这个对象的拷贝，python 提供了 copy 机制来完成这样的任务，对应的模块是 <a href="https://docs.python.org/2/library/copy.html" target="_blank" rel="external">copy</a>。</p>
-<h2 id="浅拷贝-shadow-copy"><a href="#浅拷贝-shadow-copy" class="headerlink" title="浅拷贝:shadow copy"></a>浅拷贝:shadow copy</h2><p>在 <code>copy</code> 模块中，有 <code>copy</code> 函数可以完成浅拷贝。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy</div></pre></td></tr></table></figure></p>
-<p>在 python 中，标识一个对象唯一身份的是：对象的<code>id</code>(内存地址)，对象类型，对象值，而浅拷贝就是创建一个具有相同类型，相同值但不同<code>id</code>的新对象。</p>
-<p>对可变对象而言，对象的值一样可能包含有对其他对象的引用，浅拷贝产生的新对象，虽然具有完全不同的<code>id</code>，但是其值若包含可变对象，这些对象和原始对象中的值包含同样的引用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'b'</span>:[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = copy.copy(l)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(l) == id(c)</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="string">'a'</span>].append(<span class="string">'4'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c[<span class="string">'b'</span>].append(<span class="string">'7'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>可见浅拷贝产生的新对象中可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/06/18/python-copy-deepcopy/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2016/05/28/python-module-path-find/">如何理解 python 的模块查找原理与方式</a>
-	  		<time datetime="2016-05-28T03:27:22.000Z">
-			  	<!-- <a href="/2016/05/28/python-module-path-find/"></a>  -->
-			  	5月 28 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/module/">module</a> <a href="/tags/path/">path</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
-<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>包，包含有 <code>__init__</code> 文件的文件夹</p>
-<h3 id="relative-path"><a href="#relative-path" class="headerlink" title="relative path"></a>relative path</h3><p>相对路径，相对于某个目录的路径</p>
-<h3 id="absolute-path"><a href="#absolute-path" class="headerlink" title="absolute path"></a>absolute path</h3><p>绝对路径，全路径</p>
-<h3 id="路径查找"><a href="#路径查找" class="headerlink" title="路径查找"></a>路径查找</h3><p>python 解释器查找被引入的包或模块</p>
-<h2 id="Python-解释器是如何查找包和模块的"><a href="#Python-解释器是如何查找包和模块的" class="headerlink" title="Python 解释器是如何查找包和模块的"></a>Python 解释器是如何查找包和模块的</h2><p>Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。</p>
-<p><strong>code-1</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#test.py</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"></div><div class="line"><span class="keyword">print</span> sys.path[<span class="number">0</span>]</div><div class="line"></div><div class="line"><span class="comment"># execute</span></div><div class="line">python test.py</div><div class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test.py</div></pre></td></tr></table></figure>
-<p>执行表明相对路径和绝对路径都输出相同的结果，而且无论哪种执行方式，test.py 所在的文件夹都会被加入 sys.path 的首位，也就是索引为0的位置。</p>
-<h2 id="Python-解释器查找包的顺序是什么"><a href="#Python-解释器查找包的顺序是什么" class="headerlink" title="Python 解释器查找包的顺序是什么"></a>Python 解释器查找包的顺序是什么</h2>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/05/28/python-module-path-find/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2014/12/27/python-lib/">非常有用的 python 第三方库</a>
-	  		<time datetime="2014-12-27T11:53:27.000Z">
-			  	<!-- <a href="/2014/12/27/python-lib/"></a>  -->
-			  	12月 27 2014
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/lib/">lib</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><h3 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h3><p>易读易懂的 http libary</p>
-<ul>
-<li><a href="http://docs.python-requests.org/en/latest/index.html" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/requests" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/kennethreitz/requests" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="django-rest-framework"><a href="#django-rest-framework" class="headerlink" title="django-rest-framework"></a>django-rest-framework</h3><p>基于django 用以构建web api</p>
-<ul>
-<li><a href="http://www.django-rest-framework.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/tomchristie/django-rest-framework" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="eve"><a href="#eve" class="headerlink" title="eve"></a>eve</h3><p>基于Flask, mongodb的 REST API framework</p>
-<ul>
-<li><a href="http://python-eve.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/nicolaiarocci/eve" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="图形图像"><a href="#图形图像" class="headerlink" title="图形图像"></a>图形图像</h2><h3 id="pgmagick"><a href="#pgmagick" class="headerlink" title="pgmagick"></a>pgmagick</h3><p>pgmagick 是 GraphicsMagick(Magick++) python 绑定 </p>
-<ul>
-<li><a href="http://pythonhosted.org/pgmagick/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/pgmagick/" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://bitbucket.org/hhatto/pgmagick" target="_blank" rel="external">Bitbucket</a></li>
-</ul>
-<h3 id="Pillow"><a href="#Pillow" class="headerlink" title="Pillow"></a>Pillow</h3><p>PIL 一个更友好的实现</p>
-<ul>
-<li><a href="http://python-pillow.github.io/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/python-pillow/Pillow" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="分布式-amp-异步队列"><a href="#分布式-amp-异步队列" class="headerlink" title="分布式&amp;异步队列"></a>分布式&amp;异步队列</h2><h3 id="celery"><a href="#celery" class="headerlink" title="celery"></a>celery</h3><p>celery 是基于分布式消息的异步任务队列</p>
-<ul>
-<li><a href="http://www.celeryproject.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/celery/celery" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="rq"><a href="#rq" class="headerlink" title="rq"></a>rq</h3><p>非常简单的基于进程的异步队列</p>
-<ul>
-<li><a href="http://python-rq.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/nvie/rq" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="html-amp-xml-解析"><a href="#html-amp-xml-解析" class="headerlink" title="html&amp;xml 解析"></a>html&amp;xml 解析</h2><h3 id="lxml"><a href="#lxml" class="headerlink" title="lxml"></a>lxml</h3><p>lxml 是特性最丰富，最容易使用的xml解析库</p>
-<ul>
-<li><a href="http://lxml.de/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/lxml" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/lxml/lxml/" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="beautifulsoup4"><a href="#beautifulsoup4" class="headerlink" title="beautifulsoup4"></a>beautifulsoup4</h3><p>解析xml和html，用来提取xml和html中的数据</p>
-<ul>
-<li><a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://pypi.python.org/pypi/beautifulsoup4" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://code.launchpad.net/beautifulsoup" target="_blank" rel="external">Code</a></li>
-</ul>
-<h3 id="pyquery"><a href="#pyquery" class="headerlink" title="pyquery"></a>pyquery</h3><p>类似jquery一样解析xml和html</p>
-<ul>
-<li><a href="http://pyquery.readthedocs.org/en/latest/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/gawel/pyquery" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ul>
-<li>nose</li>
-<li>pytest</li>
-<li>webtest</li>
-</ul>
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
-<li>jinji2</li>
-</ul>
-<h2 id="web-framework"><a href="#web-framework" class="headerlink" title="web framework"></a>web framework</h2><ul>
-<li>flask</li>
-<li>tornado</li>
-<li>pyramid <a href="https://trypyramid.com/" target="_blank" rel="external">https://trypyramid.com/</a></li>
-</ul>
-<h2 id="风格和规范"><a href="#风格和规范" class="headerlink" title="风格和规范"></a>风格和规范</h2><h3 id="autopep8"><a href="#autopep8" class="headerlink" title="autopep8"></a>autopep8</h3><ul>
-<li><a href="https://pypi.python.org/pypi/autopep8/" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/hhatto/autopep8" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="pep8"><a href="#pep8" class="headerlink" title="pep8"></a>pep8</h3><ul>
-<li><a href="https://github.com/jcrocholl/pep8" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><h3 id="mkdocs"><a href="#mkdocs" class="headerlink" title="mkdocs"></a>mkdocs</h3><p>python 项目文档生成工具</p>
-<ul>
-<li><a href="http://www.mkdocs.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://github.com/tomchristie/mkdocs" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="Pygments"><a href="#Pygments" class="headerlink" title="Pygments"></a>Pygments</h3><p>python 实现的代码高亮库，支持300多种语言</p>
-<ul>
-<li><a href="http://pygments.org/" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/Pygments" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://bitbucket.org/birkenfeld/pygments-main" target="_blank" rel="external">Bitbucket</a></li>
-</ul>
-<h2 id="命令行和linux工具"><a href="#命令行和linux工具" class="headerlink" title="命令行和linux工具"></a>命令行和linux工具</h2><h3 id="psutil"><a href="#psutil" class="headerlink" title="psutil*"></a>psutil*</h3><p>在运行的python进程中获取进程和操作系统信息(CPU, memory, disks, network)，支持多个平台</p>
-<ul>
-<li><a href="http://pythonhosted.org/psutil/" target="_blank" rel="external">Doc</a></li>
-<li><a href="https://pypi.python.org/pypi/psutil" target="_blank" rel="external">PyPi</a></li>
-<li><a href="https://github.com/giampaolo/psutil/" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="paramiko"><a href="#paramiko" class="headerlink" title="paramiko"></a>paramiko</h3><p>python 实现的ssh2 协议库</p>
-<ul>
-<li><a href="https://github.com/paramiko/paramiko" target="_blank" rel="external">Github</a></li>
-</ul>
-<h3 id="colorama"><a href="#colorama" class="headerlink" title="colorama"></a>colorama</h3><p>shell 中输出颜色</p>
-<ul>
-<li><a href="https://pypi.python.org/pypi/colorama" target="_blank" rel="external">pip</a></li>
-<li><a href="https://github.com/tartley/colorama" target="_blank" rel="external">Github</a></li>
-</ul>
-<h2 id="加密和安全"><a href="#加密和安全" class="headerlink" title="加密和安全"></a>加密和安全</h2><h3 id="Passlib"><a href="#Passlib" class="headerlink" title="Passlib"></a>Passlib</h3><p>提供各种加密算法，夸平台，支持超过30种常用的加密算法</p>
-<ul>
-<li><a href="https://pythonhosted.org/passlib/index.html" target="_blank" rel="external">Doc</a></li>
-<li><a href="http://pypi.python.org/pypi/passlib" target="_blank" rel="external">PyPi</a></li>
-<li><a href="http://code.google.com/p/passlib/source" target="_blank" rel="external">Code</a></li>
-</ul>
-<h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><h3 id="sqlacodegen"><a href="#sqlacodegen" class="headerlink" title="sqlacodegen"></a>sqlacodegen</h3><p>根据不同的数据库生成 sqlalchemy model</p>
-<p><a href="https://github.com/agronholm/sqlacodegen" target="_blank" rel="external">https://github.com/agronholm/sqlacodegen</a></p>
-
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2014/12/27/python-lib/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2014/12/20/one-time-python-memory-leaks/">python 内存泄漏排查与分析</a>
-	  		<time datetime="2014-12-20T06:25:06.000Z">
-			  	<!-- <a href="/2014/12/20/one-time-python-memory-leaks/"></a>  -->
-			  	12月 20 2014
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/内存泄露/">内存泄露</a> <a href="/tags/memory-link/">memory link</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <h2 id="python-内存异常的几种情况"><a href="#python-内存异常的几种情况" class="headerlink" title="python 内存异常的几种情况"></a>python 内存异常的几种情况</h2><ul>
-<li>代码内出现循环引用</li>
-<li>全局变量数据太多</li>
-<li>进程加载大量数据，长久持有不释放</li>
-</ul>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado" target="_blank" rel="external">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
-<h2 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h2><p>1.确定是否是个别进程的特有现象</p>
-<p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
-<p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2014/12/20/one-time-python-memory-leaks/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-
-<nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    
+  
 
-    <div class="clearfix"></div>
+  <div class="container sidebar-position-left ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <footer id="footer" class="inner"><div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
   
-  &copy; 2017 三月沙
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  
+  
+  
+  <div class="post-block category">
+
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>python<small>分类</small>
+        </h1>
+      </div>
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2016/11/06/python-string-unicode/" itemprop="url">
+              
+                <span itemprop="name">python 编码错误的本质和解决方案</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-11-06T20:48:08+08:00"
+              content="Nov 6 2016" >
+          11-06
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2016/07/23/why-did-i-make-turbo/" itemprop="url">
+              
+                <span itemprop="name">python 轮子 turbo 的诞生记</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-07-23T19:05:01+08:00"
+              content="Jul 23 2016" >
+          07-23
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2016/06/18/python-copy-deepcopy/" itemprop="url">
+              
+                <span itemprop="name">如何理解 python 浅拷贝和深拷贝</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-06-18T17:00:28+08:00"
+              content="Jun 18 2016" >
+          06-18
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2016/05/28/python-module-path-find/" itemprop="url">
+              
+                <span itemprop="name">如何理解 python 的模块查找原理与方式</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-05-28T11:27:22+08:00"
+              content="May 28 2016" >
+          05-28
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2014/12/27/python-lib/" itemprop="url">
+              
+                <span itemprop="name">非常有用的 python 第三方库</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2014-12-27T19:53:27+08:00"
+              content="Dec 27 2014" >
+          12-27
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2014/12/20/one-time-python-memory-leaks/" itemprop="url">
+              
+                <span itemprop="name">python 内存泄漏排查与分析</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2014-12-20T14:25:06+08:00"
+              content="Dec 20 2014" >
+          12-20
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+    </div>
+
+  </div>
+  
+  
+  
+
+  
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="三月沙" />
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
   
 </div>
-Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
 
-<div class="clearfix"></div></footer>
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
   
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-
-
-
-    <script type="text/javascript">
-        (function(){
-
-            $(window).scroll(function(){
-
-                var scrollTop = $(window).scrollTop();
-                if ( scrollTop >200 ){
-                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
-                } else{
-                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
-                }
-
-            });
-
-        })();
-    </script>
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox({
-      'titlePosition': 'inside'
-    });
-  })(jQuery);
-  </script>
-
-
-
 
 <script type="text/javascript">
-
-  $(function(){
-
-    // $('h1.title').hover(
-    //   function() {
-    //     $(this).stop().animate(
-    //       {'marginLeft': '10px'}, 200
-    //     );
-    //   },
-    //   function() {
-    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
-
-    // });
-
-  });
-
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sanyuesha.disqus.com/count.js" async></script>
+    
+
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>

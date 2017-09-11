@@ -1,234 +1,636 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
-  <meta charset="utf-8">
-  
-  <title>mongodb | 三月沙</title>
-  <meta name="author" content="三月沙">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  <meta property="og:site_name" content="三月沙"/>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
 
   
-    <meta property="og:image" content="undefined"/>
+  
+  
   
 
-  <link href="/favicon.ico" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/style.css">
-  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-56212296-1']);
-  _gaq.push(['_trackPageview']);
+    
+    
+  
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="三月沙">
+<meta property="og:url" content="http://zhyq0826.github.io/categories/mongodb/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三月沙">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
 </script>
+
+
+
+  <link rel="canonical" href="http://zhyq0826.github.io/categories/mongodb/"/>
+
+
+
+
+
+  <title>分类: mongodb | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
 
 </head>
 
-<body>
-  <header id="header" class='normal_mode'>
-    <nav id="main-nav">
-  <ul class='container'>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/categories">Categories</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-  </header>
-  <div id="content" class="container">
-    
-<h2 class="archive-title category"><i class="fa fa-folder-open"></i>mongodb</h2>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
- 
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2017/02/16/mongodb-practice-for-four-years-md/">创业三年，使用 mongodb 的实践教训</a>
-	  		<time datetime="2017-02-16T08:49:14.000Z">
-			  	<!-- <a href="/2017/02/16/mongodb-practice-for-four-years-md/"></a>  -->
-			  	2月 16 2017
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/创业/">创业</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
-<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
-<blockquote>
-<p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
-</blockquote>
-<h2 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h2><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
-<blockquote>
-<p>任何时候部署mongodb 都应该尽早设置用户、口令以及相关权限。</p>
-</blockquote>
-<h2 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h2><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
-<blockquote>
-<p>升级版本不能跨度太大，mongodb 官方也推荐生产环境升级要渐进式的而不是跨越式的，每次升级<strong>一定要备份数据</strong>。</p>
-</blockquote>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2017/02/16/mongodb-practice-for-four-years-md/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-    <div class="archive" >
-	<article  class="post">
-		<header>
-		  <h1 class="title"><a style="font-size: 18px" href="/2016/08/27/mongodb-single-table-split/">mongodb 单表亿级数据的拆分方案</a>
-	  		<time datetime="2016-08-27T13:38:14.000Z">
-			  	<!-- <a href="/2016/08/27/mongodb-single-table-split/"></a>  -->
-			  	8月 27 2016
-			</time>
-		  </h1>
-		  
-			  <div class="tags">
-			  	<i class="fa fa-tag"></i>
-			    <a href="/tags/表拆分/">表拆分</a>
-			  </div>
-			
-		</header>
-		 <!-- 
-		    <div class="entry">
-		      
-		        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
-<ul>
-<li>聚合查询变得困难</li>
-<li>拆分的键一旦选定，更改会非常困难</li>
-<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
-</ul>
-<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
-<p>在本次实施的拆分方案中，数据特点是:</p>
-<ul>
-<li>单表过亿</li>
-<li>业务数据是用户对资源的收藏，结构比较单一</li>
-<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
-<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
-</ul>
-<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
-<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
-<ul>
-<li>用户新增一条数据</li>
-<li>用户删除一条数据</li>
-<li>用户查询数据(有翻页)</li>
-</ul>
-		      
-		    </div>
-		    <footer>
-		        <div class="alignleft">
-		            <a href="/2016/08/27/mongodb-single-table-split/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-		        </div>
-	    	</footer>
-		  -->
-	</article>
-    </div>
-
-
-<nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    
+  
 
-    <div class="clearfix"></div>
+  <div class="container sidebar-position-left ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <footer id="footer" class="inner"><div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
   
-  &copy; 2017 三月沙
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  
+  
+  
+  <div class="post-block category">
+
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>mongodb<small>分类</small>
+        </h1>
+      </div>
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/02/16/mongodb-practice-for-four-years-md/" itemprop="url">
+              
+                <span itemprop="name">创业三年，使用 mongodb 的实践教训</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-02-16T16:49:14+08:00"
+              content="Feb 16 2017" >
+          02-16
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2016/08/27/mongodb-single-table-split/" itemprop="url">
+              
+                <span itemprop="name">mongodb 单表亿级数据的拆分方案</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2016-08-27T21:38:14+08:00"
+              content="Aug 27 2016" >
+          08-27
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+    </div>
+
+  </div>
+  
+  
+  
+
+  
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="三月沙" />
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
   
 </div>
-Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
 
-<div class="clearfix"></div></footer>
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
   
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-
-
-
-    <script type="text/javascript">
-        (function(){
-
-            $(window).scroll(function(){
-
-                var scrollTop = $(window).scrollTop();
-                if ( scrollTop >200 ){
-                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
-                } else{
-                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
-                }
-
-            });
-
-        })();
-    </script>
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox({
-      'titlePosition': 'inside'
-    });
-  })(jQuery);
-  </script>
-
-
-
 
 <script type="text/javascript">
-
-  $(function(){
-
-    // $('h1.title').hover(
-    //   function() {
-    //     $(this).stop().animate(
-    //       {'marginLeft': '10px'}, 200
-    //     );
-    //   },
-    //   function() {
-    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
-
-    // });
-
-  });
-
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sanyuesha.disqus.com/count.js" async></script>
+    
+
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>

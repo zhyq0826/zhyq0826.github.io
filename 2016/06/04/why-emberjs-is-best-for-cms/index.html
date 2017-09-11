@@ -1,153 +1,391 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
-  <meta charset="utf-8">
-  
-  <title>为什么选择 emberjs 开发 dashboard 和 CMS 类系统 | 三月沙</title>
-  <meta name="author" content="三月沙">
-  
-  <meta name="description" content="在开始之前，先看一组 github 数据
-ember.js
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
 
-star 16291
-contributors 586
-releases  181
-issues 167 open, 4397 closed
 
-https://github.com/emberjs/ember.js
-angular.js
 
-star 49643
-contributors 1476
-releases 169
-issues 817 open, 6992 closed
 
-https://github.com/angular/angular.js
-vue.js
 
-star 19883
-contributors 69
-releases 137
-issues 27 open, 2252 closed
 
-https://github.com/vuejs/vue
-react.js
 
-star 43026
-contributors 713
-releases 46
-issues 480 open, 2843 closed
 
-https://github.com/facebook/react
-riot.js
 
-star 9565
-contributors 138
-releases 137
-issues 96 open, 1089 closed
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-https://github.com/riot/riot
 
-注: 统计时间为本文编写之时
 
-emberjs 和其他同类框架一样，至少在 github 的 表现足以证明其流行度是不低的，但各个框架的诞生的场景以及解决的问题又不尽相同。
-emberjs 是基于 jquery 的一个全栈式前端框架，它提供了从路由层-&amp;gt; view 层-&amp;gt;数据和网络交互层的全部解决方案，只用 emberjs 就足以解决前端单页应用遇到的所有复杂问题，而且兼具有不俗的开发效率和开发质量。
-emberjs 的特性全栈式解决方案emberjs 是一个大而全的框架，它几乎囊括了单页应用开发所需要的方方面面: component，model，service，route，temlate，ember-data。借助 emberjs 几乎可以完成任何规模的复杂应用，而不用担心它没有提供足够丰富的特性或者需要求助其他第三方库(不一定可以很好的和框架本身集成)。">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="为什么选择 emberjs 开发 dashboard 和 CMS 类系统"/>
-  <meta property="og:site_name" content="三月沙"/>
+
+
+
+
+
+
+
+
+
+
+
 
   
-    <meta property="og:image" content="undefined"/>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
   
 
-  <link href="/favicon.ico" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="三月沙" type="application/atom+xml">
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/style.css">
-  <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-56212296-1']);
-  _gaq.push(['_trackPageview']);
+    
+    
+  
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="emberjs," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在开始之前，先看一组 github 数据 ember.js  star 16291 contributors 586 releases  181 issues 167 open, 4397 closed  https://github.com/emberjs/ember.js angular.js  star 49643 contributors 1476 releases 169 issues">
+<meta name="keywords" content="emberjs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么选择 emberjs 开发 dashboard 和 CMS 类系统">
+<meta property="og:url" content="http://zhyq0826.github.io/2016/06/04/why-emberjs-is-best-for-cms/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="在开始之前，先看一组 github 数据 ember.js  star 16291 contributors 586 releases  181 issues 167 open, 4397 closed  https://github.com/emberjs/ember.js angular.js  star 49643 contributors 1476 releases 169 issues">
+<meta property="og:updated_time" content="2017-07-07T01:47:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么选择 emberjs 开发 dashboard 和 CMS 类系统">
+<meta name="twitter:description" content="在开始之前，先看一组 github 数据 ember.js  star 16291 contributors 586 releases  181 issues 167 open, 4397 closed  https://github.com/emberjs/ember.js angular.js  star 49643 contributors 1476 releases 169 issues">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
 </script>
+
+
+
+  <link rel="canonical" href="http://zhyq0826.github.io/2016/06/04/why-emberjs-is-best-for-cms/"/>
+
+
+
+
+
+  <title>为什么选择 emberjs 开发 dashboard 和 CMS 类系统 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
 
 </head>
 
-<body>
-  <header id="header" class='normal_mode'>
-    <nav id="main-nav">
-  <ul class='container'>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/categories">Categories</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-  </header>
-  <div id="content" class="container">
-    <article class="post">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
   
-    <div class="gallery">
-  <div class="photoset">
+  
     
-      <img src="">
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
     
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
   </div>
 </div>
+
+<nav class="site-nav">
   
-  <div class="post-content">
-    <header>
+
+  
+    <ul id="menu" class="menu">
       
-      <time datetime="2016-06-04T10:35:35.000Z">
-  <!-- <a href="/2016/06/04/why-emberjs-is-best-for-cms/">6月 4日 2016</a> -->
-  6月 4日 2016
-</time>
-
-  
-    <h1 class="title">为什么选择 emberjs 开发 dashboard 和 CMS 类系统</h1>
-  
-
-
-  
-  <div class="categories">
-  	<i class="fa fa-folder-open"></i>
-    <a href="/categories/JavaScript/">JavaScript</a>
-  </div>
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/emberjs/">emberjs</a>
-  </div>
-
-<div class="clear"></div>
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
       
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
     </header>
-    <div class="entry">
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhyq0826.github.io/2016/06/04/why-emberjs-is-best-for-cms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为什么选择 emberjs 开发 dashboard 和 CMS 类系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-04T18:35:35+08:00">
+                Jun 4 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/06/04/why-emberjs-is-best-for-cms/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/06/04/why-emberjs-is-best-for-cms/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <p>在开始之前，先看一组 github 数据</p>
 <p><strong>ember.js</strong></p>
@@ -292,144 +530,439 @@ emberjs 的特性全栈式解决方案emberjs 是一个大而全的框架，它�
 </ul>
 
       
-      
-      <p style="text-align: center;" >
-        <a href="http://sanyuesha.com/images/qrcode_for_gh_c28573fbafaa_344.jpg" title="" class="fancybox" rel="gallery0">
-          <img src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" width="200">
-        </a>
-      </p>
-      <p style="text-align: center;" >关注 wecatch 公众号, 获取最新文章信息</p>
-      
     </div>
-    <footer>
-      
-          
-<!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <span class="jiathis_txt">分享到：</span>
-  <a class="jiathis_button_weixin">微信</a>
-  <a class="jiathis_button_tsina">新浪微博</a>
-  <a class="jiathis_button_renren">人人网</a>
-  <a class="jiathis_button_qzone">QQ空间</a>
-  <a class="jiathis_button_douban">豆瓣</a>
-  <a class="jiathis_button_pocket">Pocket</a>
-  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
-<!-- JiaThis Button END -->
+    
+    
+    
 
-          <div class="clearfix"></div>
-          <nav id="pagination">
-  
-    <a href="/2016/06/18/python-copy-deepcopy/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
-  
-  
-    <a href="/2016/05/28/python-module-path-find/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
-  
-  <div class="clearfix"></div>
-</nav>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
       
-      <div class="clearfix"></div>
+        <div class="post-tags">
+          
+            <a href="/tags/emberjs/" rel="tag"># emberjs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/28/python-module-path-find/" rel="next" title="如何理解 python 的模块查找原理与方式">
+                <i class="fa fa-chevron-left"></i> 如何理解 python 的模块查找原理与方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/18/python-copy-deepcopy/" rel="prev" title="如何理解 python 浅拷贝和深拷贝">
+                如何理解 python 浅拷贝和深拷贝 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
     </footer>
   </div>
-</article>
-
-<section id="comment">
-  <!-- <h1 class="title">留言</h1> -->
-  <div id="disqus_thread">
-    <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://sanyuesha-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-    </script>
-    <noscript>
-        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-    </noscript>
-  </div>
- </section>
-
-
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><div>
   
-  &copy; 2017 三月沙
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="三月沙" />
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#emberjs-的特性"><span class="nav-number">1.</span> <span class="nav-text">emberjs 的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全栈式解决方案"><span class="nav-number">1.1.</span> <span class="nav-text">全栈式解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于-jquery"><span class="nav-number">1.2.</span> <span class="nav-text">基于 jquery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#良好的兼容性"><span class="nav-number">1.3.</span> <span class="nav-text">良好的兼容性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约定优于配置"><span class="nav-number">1.4.</span> <span class="nav-text">约定优于配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据的双向绑定"><span class="nav-number">1.5.</span> <span class="nav-text">数据的双向绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的字符串模板"><span class="nav-number">1.6.</span> <span class="nav-text">传统的字符串模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完备的构建工具和构建流程"><span class="nav-number">1.7.</span> <span class="nav-text">完备的构建工具和构建流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渐进式的向下兼容"><span class="nav-number">1.8.</span> <span class="nav-text">渐进式的向下兼容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emberjs-究竟适合什么样的场景"><span class="nav-number">2.</span> <span class="nav-text">emberjs 究竟适合什么样的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emberjs-的问题"><span class="nav-number">3.</span> <span class="nav-text">emberjs 的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择合适的才是最好的"><span class="nav-number">4.</span> <span class="nav-text">选择合适的才是最好的</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
   
 </div>
-Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="external">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>
 
-<div class="clearfix"></div></footer>
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
   
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="//cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-
-
-
-    <script type="text/javascript">
-        (function(){
-
-            $(window).scroll(function(){
-
-                var scrollTop = $(window).scrollTop();
-                if ( scrollTop >200 ){
-                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
-                } else{
-                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
-                }
-
-            });
-
-        })();
-    </script>
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox({
-      'titlePosition': 'inside'
-    });
-  })(jQuery);
-  </script>
-
-
-
 
 <script type="text/javascript">
-
-  $(function(){
-
-    // $('h1.title').hover(
-    //   function() {
-    //     $(this).stop().animate(
-    //       {'marginLeft': '10px'}, 200
-    //     );
-    //   },
-    //   function() {
-    //     $(this).stop().animate({'marginLeft': '0px'}, 200);
-
-    // });
-
-  });
-
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sanyuesha.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://zhyq0826.github.io/2016/06/04/why-emberjs-is-best-for-cms/';
+          this.page.identifier = '2016/06/04/why-emberjs-is-best-for-cms/';
+          this.page.title = '为什么选择 emberjs 开发 dashboard 和 CMS 类系统';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>
