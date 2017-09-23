@@ -99,15 +99,15 @@
 <meta name="keywords" content="表拆分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongodb 单表亿级数据的拆分方案">
-<meta property="og:url" content="http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/index.html">
+<meta property="og:url" content="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
-<meta property="og:image" content="http://zhyq0826.github.io/images/table-split.png">
+<meta property="og:image" content="http://sanyuesha.com/images/table-split.png">
 <meta property="og:updated_time" content="2017-07-10T13:30:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongodb 单表亿级数据的拆分方案">
 <meta name="twitter:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
-<meta name="twitter:image" content="http://zhyq0826.github.io/images/table-split.png">
+<meta name="twitter:image" content="http://sanyuesha.com/images/table-split.png">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/"/>
 
 
 
@@ -289,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
@@ -597,7 +597,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -619,7 +619,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -819,7 +819,7 @@ var jiathis_config={
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://zhyq0826.github.io/2016/08/27/mongodb-single-table-split/';
+          this.page.url = 'http://sanyuesha.com/2016/08/27/mongodb-single-table-split/';
           this.page.identifier = '2016/08/27/mongodb-single-table-split/';
           this.page.title = 'mongodb 单表亿级数据的拆分方案';
         };
