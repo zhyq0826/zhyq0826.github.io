@@ -88,7 +88,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -269,6 +269,756 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/03/go-channel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/03/go-channel/" itemprop="url">go channel 的基础特性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T22:17:33+08:00">
+                Aug 3 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/03/go-channel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/03/go-channel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>此篇介绍 go channel</p>
+</blockquote>
+<h2 id="什么是-goroutine"><a href="#什么是-goroutine" class="headerlink" title="什么是 goroutine"></a>什么是 goroutine</h2><blockquote>
+<p>They’re called goroutines because the existing terms — threads, coroutines, processes, and so on — convey inaccurate connotations. A goroutine has a simple model: it is a function executing in parallel with other goroutines in the same address space. It is lightweight, costing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.</p>
+</blockquote>
+<p>正如官方所言，goroutine 是一个轻量级的执行单元，相比线程开销更小，完全由 Go 语言负责调度，是 Go 支持并发的核心。开启一个 goroutine 非常简单:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">go</span> fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">	time.Sleep(<span class="number">1</span>) <span class="comment">//1</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> <code>#1</code> 的代码是必须的，这是为了让新开启的 goroutine 有机会得到执行，开启一个 goroutine 之后，后续的代码会继续执行，在上面的例子中后续代码执行完毕程序就终止了，而开启的 goroutine 可能还没开始执行。</p>
+<p>如果尝试去掉 <code>#1</code> 处的代码，程序也可能会正常运行，这是因为恰巧开启的 goroutine 只是简单的执行了一次输出，如果 goroutine 中耗时稍长就会导致只能看到主一句 <code>main function message</code> 。 </p>
+<p>换句话话说，这里的 <code>time.sleep</code> 提供的是一种调度机制，这也是 Go 中 channel 存在的目的：负责消息传递和调度。</p>
+<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><p>Channel 是 Go 中为 goroutine 提供的一种通信机制，channel 是有类型的，而且是有方向的，可以把 channel 类比成 unix 中的 pipe。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">i := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)<span class="comment">//int 类型</span></div><div class="line">s := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)<span class="comment">//字符串类型</span></div><div class="line">r := <span class="built_in">make</span>(&lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)<span class="comment">//只读</span></div><div class="line">w := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- []<span class="keyword">int</span>)<span class="comment">//只写</span></div></pre></td></tr></table></figure>
+<p>Channel 最重要的作用就是传递消息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">		c &lt;- <span class="number">1</span> <span class="comment">//1</span></div><div class="line">	&#125;()</div><div class="line">	&lt;-c <span class="comment">//2</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>例子中声明了一个 int 类型的 channel，在 goroutine 中在代码 <code>#1</code> 处向 channel 发送了数据 <code>1</code> ，在 main 中 <code>#2</code> 处等待数据的接收，如果 c 中没有数据，代码的执行将发生阻塞，直到 c 中数据接收完毕。这是 channel 最简单的用法之一：同步 ，这种类型的 channel 没有设置容量，称之为 <strong>unbuffered channel</strong>。</p>
+<h2 id="unbuffered-channel-和-buffered-channel"><a href="#unbuffered-channel-和-buffered-channel" class="headerlink" title="unbuffered channel 和 buffered channel"></a>unbuffered channel 和 buffered channel</h2><p>Channel 可以设置容量，表示 channel 允许接收的消息个数，默认的 channel 容量是 0 称为 <strong>unbuffered channel</strong> ，对 unbuffered channel 执行 <strong>读</strong> 操作 value := &lt;-ch 会一直阻塞直到有数据可接收，执行 <strong>写</strong> 操作 ch &lt;- value 也会一直阻塞直到有 goroutine 对 channel 开始执行接收，正因为如此在同一个 goroutine 中使用 unbuffered channel 会造成 deadlock。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	c &lt;- <span class="number">1</span></div><div class="line">	&lt;-c</div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行报 <code>fatal error: all goroutines are asleep - deadlock!</code> ，读和写相互等待对方从而导致死锁发生。</p>
+<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-16+at+10.10.54+AM.png" alt="来自 www.goinggo.net"></p>
+<p>如果 channel 的容量不是 0，此类 channel 称之为 <strong>buffered channel</strong> ，buffered channel 在消息写入个数 <strong>未达到容量的上限之前不会阻塞</strong> ，一旦写入消息个数超过上限，下次输入将会阻塞，直到 channel 有位置可以再写入。</p>
+<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-17+at+8.38.15+AM.png" alt="来自 www.goinggo.net"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子会输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">reading <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">reading <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>根据上文对 buffered channel 的解释，这个例子中 channel <code>c</code> 的容量是 3，在写入消息个数不超过 3 时不会阻塞，输出应该是：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">0</span></div><div class="line">reading <span class="number">1</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>问题在哪里？问题其实是在 <code>fmt.Println</code> ，一次输出就导致 goroutine 的执行发生了切换(相当于发生了 IO 阻塞)，因而即使 c 没有发生阻塞 goroutine 也会让出执行，一起来验证一下这个问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		&lt;-c</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里创建了一个 slice 用来保存 c 进行写入和读取时的执行顺序，num 是用来标识执行顺序的，在没有加入 Println 之前，最终 s 是 [inner=&gt;1 inner=&gt;2 inner=&gt;3 inner=&gt;4 outer=&gt;5 outer=&gt;6 outer=&gt;7 outer=&gt;8] ，输出结果表明 c 达到容量上线之后才会发生阻塞。</p>
+<p>相反有输出语句的版本结果则不同：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>[outer=&gt;1 inner=&gt;2 outer=&gt;3 inner=&gt;4 inner=&gt;5 inner=&gt;6 outer=&gt;7 outer=&gt;8] 输出结果能表明两个 goroutine 是交替执行，也就是说 IO 的调用 Println 导致 goroutine 的让出了执行。</p>
+<h2 id="读取多个-channel-的消息"><a href="#读取多个-channel-的消息" class="headerlink" title="读取多个 channel 的消息"></a>读取多个 channel 的消息</h2><p>Go 提供了 select 语句来处理多个 channel 的消息读取。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line">	c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c1 &lt;- <span class="string">"from 1"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c2 &lt;- <span class="string">"from 2"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			<span class="keyword">select</span> &#123;</div><div class="line">			<span class="keyword">case</span> msg1 := &lt;-c1:</div><div class="line">				fmt.Println(msg1)</div><div class="line">			<span class="keyword">case</span> msg2 := &lt;-c2:</div><div class="line">				fmt.Println(msg2)</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">var</span> input <span class="keyword">string</span></div><div class="line">	fmt.Scanln(&amp;input)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>select 语句可以从多个可读的 channel 中随机选取一个执行，注意是 <strong>随机选取。</strong> </p>
+<h2 id="Channel-关闭之后"><a href="#Channel-关闭之后" class="headerlink" title="Channel 关闭之后"></a>Channel 关闭之后</h2><p>Channel 可以被关闭 <code>close</code> ，<strong>channel 关闭之后仍然可以读取</strong>，如果 channel 关闭之前有值写入，关闭之后将依次读取 channel 中的消息，读完完毕之后再次读取将会返回 channel 的类型的 zero value：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出 1 2 3 0 0 0 ，0 是 int channel c 的 zero value。</p>
+<p><strong>被关闭的 channel 可以进行 range 迭代</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> c &#123;</div><div class="line">		fmt.Println(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>未被关闭的 channel 则不行，如果没有被关闭，range 在输出完 channel 中的消息之后将会阻塞一直等待，从而发生死锁。</p>
+<h2 id="判断-channel-的关闭"><a href="#判断-channel-的关闭" class="headerlink" title="判断 channel 的关闭"></a>判断 channel 的关闭</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value, ok &lt;- c</div></pre></td></tr></table></figure>
+<p>用来判断 channel 是否关闭，如果 channel 是关闭状态，ok 是 false，value 是 channel 的 zero value，否则 ok 是 true 表示 channel 未关闭，value 表示 channel 中的值。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.miek.nl/go" target="_blank" rel="external">https://www.miek.nl/go</a></li>
+<li><a href="http://guzalexander.com/2013/12/06/golang-channels-tutorial.html" target="_blank" rel="external">http://guzalexander.com/2013/12/06/golang-channels-tutorial.html</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/30/go-new-programmer-best-practice/" itemprop="url">新手 go 程序员的最佳实践</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T22:02:22+08:00">
+                Jul 30 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/30/go-new-programmer-best-practice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/30/go-new-programmer-best-practice/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。</p>
+</blockquote>
+<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 <a href="https://golang.org/doc/code.html" target="_blank" rel="external">How to Write Go Code</a>。</p>
+<p>Go 提供了非常优秀的工具来保证代码的风格和质量，比如：gofmt，godoc，goimports，学会使用它们。</p>
+<p>对于新手来说不要着急一开始就想要完整的 Go 程序，你应该认真熟悉 Go 的基本语义和特性，认真读完 官方的 <a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">Effictive Go</a></p>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>不要害怕犯错，对于一门新的语言，大家都是平等，即使是用 Go 写过一到两年程序的人也会犯一些低级的错误。</p>
+<p>要学会顺势而为，学会用 Go 的方式去写 Go 的程序，比如要遵循 Go conventions，不要像 C 一样在 Go 中总是使用指针。</p>
+<p>新手都应该看看这篇文章 <a href="http://talks.golang.org/2012/splash.article，它有助于你了解" target="_blank" rel="external">http://talks.golang.org/2012/splash.article，它有助于你了解</a> Go 是如何诞生的，它的哲学理念是什么。</p>
+<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>新手不要一开始就过渡关注 goroutine，channel 这些涉及并发的概念，你有可能滥用 channel 而不知道节制，毕竟 Go 在很多方面都表现的非常节制。</p>
+<p>理解 interface，了解它的潜力，学会用组合和 interface 创建健壮的 Go 代码， 它是 Go 最富有天赋的能力之一。</p>
+<p>如果你之前使用的其它 object-oriented 语言，暂时忘掉那些关于 OO 的特性和思维，虽然 Go 支持 OO，但 Go 不是基于类的语言，不支持类的继承。</p>
+<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>Go 是强类型语言，意味着实现非常复杂的系统 API 时有可能会像 Java 或 C++ 一样使用大量的预定义类型，使代码变得脆弱丑陋，这并不是真正的 Go。Go 的 interface 和闭包特性允许我们写出更优雅更通用的实现。</p>
+<p>学会高效的使用闭包，为此可以学习一些函数式编程语言的理论，或者学学 Ruby，可以看看 The Well-Grounded Rubyist 这本书，然后尝试在 Go 编程中尝试使用这些知识。</p>
+<p>学会测试 Go 程序，学会使用 Go 相关的测试工具 unit testing，beachmarking testing，利用测试不断纠正和提高 Go 程序的质量，可以看看这个 <a href="http://github.com/feyeleanor/GoSpeed。" target="_blank" rel="external">http://github.com/feyeleanor/GoSpeed。</a></p>
+<h1 id="5"><a href="#5" class="headerlink" title="5"></a>5</h1><p>不要强迫你把过去其它语言的经验带入 Go，每个语言都是不同的，如果你是第一次接触 Go，让自己用一个全新的视角去看待它，也就是你需要尝试从语言的创作者以及社区的角度去理解它。</p>
+<p>一开始使用 Go，尽量避免使用 third party library，可能它们能简化你正在做的事情，但从长远角度来看，它们也妨碍了你对这么语言的理解。</p>
+<p>从标准库中学习如何写出更好的 Go 代码，比如你可以从 <code>net/http</code> package 中学习如何使用 concurrency，也可以去看看  Rob Pike 关于 concurrency 的视频。</p>
+<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>尝试使用 composition 而不是 inheritance，基于 OO 的 inheritance 的思维方式会妨碍你写出优雅的 Go 代码。</p>
+<p>拥抱 interface。</p>
+<p>并不是所有的都是 object。</p>
+<blockquote>
+<p>A language that doesn’t affect the way you think about programming, is not worth knowing. — Alan Perlis</p>
+</blockquote>
+<p>如果一门语言没有影响你对编程的思考，这么语言就不值得学习。</p>
+<h1 id="7"><a href="#7" class="headerlink" title="7"></a>7</h1><ul>
+<li>保持函数短小，变量名不要太长</li>
+<li>不要像写其它语言一样写 Go，Go 不是 Java，不是 Python，不是 Ruby。</li>
+<li>花点时间搞懂 named and unnamed types。</li>
+<li>学会构建完整的 Go project，并且发布它们。</li>
+<li>Interface 很重要，你应该学会使用它们，很多你遇到的问题都可以用 interface 解决。</li>
+<li>学习阅读源码是学习 Go 的一种极佳的方式。</li>
+<li>保持简洁，简洁是 Go 的一个重要特性之一，避免过度工程化。</li>
+<li>以更小的单元实现你的代码功能，然后组合它们。</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这时间上有很多朴素的道理，很多人都知道，但是这些道理并没有给知道的人带来什么改变，比如勤奋不一定能成功，还是很多人很勤奋，有了好运气也不一定能成功，还是很多人天天盼望走狗屎运，前者太勤奋了，没有时间思考，后者不知道勤奋，总是抱有幻想。</p>
+<p>学习语言也是一样，不要着急实践，要先想一想，看一看，看完之后不能太懒，还要动手练一练。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/27/go-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/27/go-type/" itemprop="url">理解 go 类型系统</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T19:57:17+08:00">
+                Jul 27 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/27/go-type/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/27/go-type/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。</p>
+<p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel，func，interface 等被称之为 <strong>composite types</strong>。</p>
+<p><strong>Composite types</strong> 由 <strong>pre-declared types</strong> 组成的复杂数据类型，常常由 type literal 构成。 </p>
+<p>Type 可以是带名称和不带名称的，称之为 named type 和 unnamed type。</p>
+<p><strong>Named Types</strong> 就是通过 type 关键字为一个已有的 type 起个别名，像这样 <code>type NewType ExistingType</code> NewType 就是名字。</p>
+<p><strong>Pre-declared types</strong> 也是 <strong>named types</strong>。</p>
+<p><strong>Unamed types</strong> 是一个 literal type，也就是没有名字，只有 type 本身，像这样 <code>[6]int</code> 没有名字。</p>
+<p>每一个类型都有自己的 <strong>Underlying type</strong> ，如果 T 是 pre-declared type 或者 type literal，它们对应的 underlying type 就是自身 T，否则 T 的 underlying type 是 T 定义时引用的类型的 underlying type。</p>
+<h2 id="underlying-type"><a href="#underlying-type" class="headerlink" title="underlying type"></a>underlying type</h2><p><strong>如果两个 type 都是 named type ，彼此之间不能相互赋值</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> NewString <span class="keyword">string</span></div><div class="line"><span class="keyword">var</span> my <span class="keyword">string</span> =<span class="string">"a"</span></div><div class="line"><span class="keyword">var</span> you NewString = my <span class="comment">//cannot use my (type string) as type NewString in assignment</span></div></pre></td></tr></table></figure>
+<p>虽然它们的 underlying type 都是 string，但 string 类型的 my 不能赋值给 NewString 类型的 you。</p>
+<p><strong>如果两个 type 其中一个是 unamed type，彼此之间可以相互赋值</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">type</span> Ptr *<span class="keyword">int</span></div><div class="line"><span class="keyword">type</span> Map <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">type</span> MapMap Map</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p *<span class="keyword">int</span></div><div class="line">    <span class="keyword">var</span> mm Map</div><div class="line">    <span class="keyword">var</span> mmm MapMap</div><div class="line">    <span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mm</div><div class="line">    <span class="keyword">var</span> m2 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mmm</div><div class="line">    <span class="keyword">var</span> ptr Ptr = p</div><div class="line">    <span class="built_in">print</span>(ptr)</div><div class="line">    <span class="built_in">print</span>(m1)</div><div class="line">    <span class="built_in">print</span>(m2)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>为什么有这样的区分?</strong></p>
+<p>如果为一个类型起了名字，说明你想要做区分，所以两个 named types 即使 underlying name 相同也是不能相互赋值的。</p>
+<p>详见<a href="https://groups.google.com/forum/#!topic/golang-nuts/4Db2z2dEhfc" target="_blank" rel="external">Google Group Topic</a></p>
+<h2 id="Named-type-和-Unamed-type"><a href="#Named-type-和-Unamed-type" class="headerlink" title="Named type 和 Unamed type"></a>Named type 和 Unamed type</h2><p>当 named types 被作为一个 function 的 receiver 时，它就拥有了自己的方法，unamed types 则不能，这是它们的重要区别。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> NewMap <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(nm NewMap)</span> <span class="title">add</span><span class="params">(key <span class="keyword">int</span>, value <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    nm[key] = value</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p NewMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line">    p.add(<span class="number">10</span>, <span class="string">"a"</span>)</div><div class="line">    fmt.Println(p) <span class="comment">//map[10:a]</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有个一例外是是 pre-declare types 不能拥有自己的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n <span class="keyword">int</span>)</span> <span class="title">name</span><span class="params">()</span></span>&#123;   </div><div class="line">    <span class="built_in">print</span>(n)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> n <span class="keyword">int</span></div><div class="line">    n.name()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译器会抛出 <strong>cannot define new methods on non-local type int</strong> 错误，不能对包之外的 type 定义方法，解决这个问题就是对 pre-declared types 重新定义别名。</p>
+<h2 id="type-的属性继承一：直接继承"><a href="#type-的属性继承一：直接继承" class="headerlink" title="type 的属性继承一：直接继承"></a>type 的属性继承一：直接继承</h2><p>Declared named type 不会从它的 underlying type 或 existing type 继承 method，但是会继承 field。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student Person</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    <span class="keyword">var</span> s Student</div><div class="line">    s.name = <span class="string">"jone"</span></div><div class="line">    fmt.Println(s.name)</div><div class="line">    <span class="comment">// s.Speak()</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Named type Student 不会继承来自 Person Speak 的方法，打开注释执行报错 <strong>s.Speak undefined (type Student has no field or method Speak)</strong>，但是 Person 的 filed name 可以被 Student 继承。</p>
+<blockquote>
+<p>The declared type does not inherit any methods bound to the existing type, but the method set of an interface type or of elements of a composite type remains unchanged:</p>
+</blockquote>
+<p>But declared named type 例外的情况之一：<strong>如果 existing type 是 interface，它的 method set 会被继承</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// existing type 是 I，I 是个接口，可以直接继承 I 的方法，II 等同于 I</span></div><div class="line"><span class="keyword">type</span> II I</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am talking"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    p.Talk()</div><div class="line">    <span class="keyword">var</span> i I</div><div class="line">    i = &amp;p</div><div class="line">    i.Talk()</div><div class="line">    <span class="keyword">var</span> ii II</div><div class="line">    ii = &amp;p</div><div class="line">    ii.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>II</code> 继承了 <code>I</code> 的 method，所以 Person 也实现了 II。</p>
+<p>例外情况之二：如果 existing type 是 composite type，此情形根据官方所述没有看的很懂，希望有遇到之人可以交流一下。</p>
+<h2 id="type-的属性继承二：type-embedding"><a href="#type-的属性继承二：type-embedding" class="headerlink" title="type 的属性继承二：type embedding"></a>type 的属性继承二：type embedding</h2><p>如果一个 type T‘ 被嵌入另一个 type T 作为它的 filed，T’ 的所有 field 和 method 都可以在 T 中使用，这种方法称之为 type embedding。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">    &quot;fmt&quot;</div><div class="line">)</div><div class="line"></div><div class="line">type I interface &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line">type Person struct &#123;</div><div class="line">    name string</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Speak() &#123;</div><div class="line">    fmt.Println(&quot;I am a person&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Talk() &#123;</div><div class="line">    fmt.Println(&quot;I am talking&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">type People struct &#123;</div><div class="line">    Person</div><div class="line">&#125;</div><div class="line"></div><div class="line">func main()&#123;</div><div class="line">    var people People</div><div class="line">    people.name = &quot;people&quot;</div><div class="line">    people.Speak()</div><div class="line">    people.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="type-转换"><a href="#type-转换" class="headerlink" title="type 转换"></a>type 转换</h2><p>Type 之间是可以相互转换的，但要遵循一定的转换规则，详细请看官方规范 <a href="https://golang.org/ref/spec#Conversions。" target="_blank" rel="external">https://golang.org/ref/spec#Conversions。</a></p>
+<h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><p>文中部分代码</p>
+<script src="//gist.github.com/7a0ed26a6700488073e629ba28a14397.js?file=go-type-inherit.go"></script>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/26/go-make-and-new/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/26/go-make-and-new/" itemprop="url">go make 和 new 的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T06:12:23+08:00">
+                Jul 26 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/26/go-make-and-new/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/26/go-make-and-new/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。</p>
+</blockquote>
+<h2 id="new-T-返回的是-T-的指针"><a href="#new-T-返回的是-T-的指针" class="headerlink" title="new(T) 返回的是 T 的指针"></a>new(T) 返回的是 T 的指针</h2><p>new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">p1 := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line">fmt.Printf(<span class="string">"p1 --&gt; %#v \n "</span>, p1) <span class="comment">//(*int)(0xc42000e250) </span></div><div class="line">fmt.Printf(<span class="string">"p1 point to --&gt; %#v \n "</span>, *p1) <span class="comment">//0</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> p2 *<span class="keyword">int</span></div><div class="line">i := <span class="number">0</span></div><div class="line">p2 = &amp;i</div><div class="line">fmt.Printf(<span class="string">"p2 --&gt; %#v \n "</span>, p2) <span class="comment">//(*int)(0xc42000e278) </span></div><div class="line">fmt.Printf(<span class="string">"p2 point to --&gt; %#v \n "</span>, *p2) <span class="comment">//0</span></div></pre></td></tr></table></figure>
+<p>上面的代码是等价的，new(int) 将分配的空间初始化为 int 的零值，也就是 0，并返回 int 的指针，这和直接声明指针并初始化的效果是相同的。</p>
+<h2 id="make-只能用于-slice-map-channel"><a href="#make-只能用于-slice-map-channel" class="headerlink" title="make 只能用于 slice,map,channel"></a>make 只能用于 slice,map,channel</h2><p>make 只能用于 slice，map，channel 三种类型，make(T, args) 返回的是初始化之后的 T 类型的值，这个新值并不是 T 类型的零值，也不是指针 *T，是经过初始化之后的 T 的引用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div><div class="line"><span class="keyword">if</span> s1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s1 is nil --&gt; %#v \n "</span>, s1) <span class="comment">// []int(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line"><span class="keyword">if</span> s2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is nil --&gt; %#v \n "</span>, s2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is not nill --&gt; %#v \n "</span>, s2)<span class="comment">// []int&#123;0, 0, 0&#125;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>slice 的零值是 nil，使用 make 之后 slice 是一个初始化的 slice，即 slice 的长度、容量、底层指向的 array 都被 make 完成初始化，此时 slice 内容被类型 int 的零值填充，形式是 [0 0 0]，map 和 channel 也是类似的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> m1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m1 is nil --&gt; %#v \n "</span>, m1) <span class="comment">//map[int]string(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;&#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> c1 <span class="keyword">chan</span> <span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> c1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c1 is nil --&gt; %#v \n "</span>, c1) <span class="comment">//(chan string)(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)<span class="comment">//(chan string)(0xc420016120)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="make-T-args-返回的是-T-的-引用"><a href="#make-T-args-返回的是-T-的-引用" class="headerlink" title="make(T, args) 返回的是 T 的 引用"></a>make(T, args) 返回的是 T 的 引用</h2><p>如果不特殊声明，go 的函数默认都是按值穿参，即通过函数传递的参数是值的副本，在函数内部对值修改不影响值的本身，但是 make(T, args) 返回的值通过函数传递参数之后可以直接修改，即 map，slice，channel 通过函数穿参之后在函数内部修改将影响函数外部的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifySlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    s[<span class="number">0</span>] = <span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;0, 0, 0&#125;</span></div><div class="line">modifySlice(s2)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;1, 0, 0&#125;</span></div></pre></td></tr></table></figure>
+<p>这说明 make(T, args) 返回的是引用类型，在函数内部可以直接更改原始值，对 map 和 channel 也是如此。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m[<span class="number">0</span>] = <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    c &lt;- <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2) </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">//map[int]string&#123;&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">modifyMap(m2)</div><div class="line">fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">// map[int]string&#123;0:"string"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">go</span> modifyChan(c2)</div><div class="line">fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v "</span>, &lt;-c2) <span class="comment">//"string"</span></div></pre></td></tr></table></figure>
+<h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><p>以下代码演示了 <strong>struct 初始化的过程</strong>，可以说明不使用 new 一样可以完成 struct 的初始化工作。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//声明初始化</span></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line"><span class="comment">//struct literal 初始化</span></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line"><span class="comment">//指针初始化</span></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line"><span class="comment">//new 初始化</span></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="comment">//声明指针并用 new 初始化</span></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure></p>
+<p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。</p>
+<p>foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 *Foo。</p>
+<p><strong>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</strong></p>
+<p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
+<p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1361,680 +2111,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/05/25/2017-css-framework/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/25/2017-css-framework/" itemprop="url">开发中常用的 CSS framework（2015年至今）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-25T17:50:20+08:00">
-                May 25 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/css/" itemprop="url" rel="index">
-                    <span itemprop="name">css</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/25/2017-css-framework/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/05/25/2017-css-framework/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>自 bootstrap CSS framework 已经成了开发者必不可少的技术选型了，随着移动端的不断发展和日趋复杂化的 UI 交互模式的需要，适应各种场景的 CSS framework 也层出不穷，在此盘点一下个人日常开发时选择的几种 CSS framework，排名不分先后。</p>
-<h2 id="purecss"><a href="#purecss" class="headerlink" title="purecss"></a><a href="https://purecss.io/" target="_blank" rel="external">purecss</a></h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>简单实用响应式，提供了 grid 布局、form、menu、 button、table 几种常用组件，无 JavaScript。</p>
-<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>页面所需组件比较少，适用于只需要比较简单的 form 以及很基础的交互，中大型项目不适合，缺 JavaScript，需要借助第三方 JavaScript 或者自己实现，开发效率差。</p>
-<ul>
-<li><a href="https://git-star.com/" target="_blank" rel="external">https://git-star.com/</a></li>
-</ul>
-<h2 id="bulma"><a href="#bulma" class="headerlink" title="bulma"></a><a href="https://github.com/jgthms/bulma/" target="_blank" rel="external">bulma</a></h2><p>龙珠布尔玛的英文名字？好像是。</p>
-<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>mobile first、语义化、模块化、html 结构简洁明确，提供了大量基础性组件，甚至是一般做官方网站使用的 banner、hexo 都有，可以快速构建官网等非常常用的网站样式。</p>
-<p>提供了一些非常基础的工具化 class，比如 <a href="http://bulma.io/documentation/modifiers/syntax/" target="_blank" rel="external">modifiers</a> 可以直接修改内边距、外边距、边框都常需要改动的地方，非常实用。</p>
-<p>开发者友好。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/25/2017-css-framework/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/05/25/sqlalchemy-model-id-zero/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/25/sqlalchemy-model-id-zero/" itemprop="url">如果 SQLAlchemy model 自增主键等于 0</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-25T11:09:06+08:00">
-                May 25 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SQLAlchemy/" itemprop="url" rel="index">
-                    <span itemprop="name">SQLAlchemy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/25/sqlalchemy-model-id-zero/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/05/25/sqlalchemy-model-id-zero/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SQLAlchemy 使用 session 生成新的数据根据主键的不同大致有以下几种情况，其中主键是 0 最为特殊。</p>
-<p>测试环境</p>
-<ul>
-<li>SQLAlchemy  1.0.9</li>
-<li>mysql 5.6.27</li>
-<li>pythonn 2.7</li>
-</ul>
-<h2 id="不指定主键"><a href="#不指定主键" class="headerlink" title="不指定主键"></a>不指定主键</h2><p>新创建 <a href="http://www.sqlalchemy.org/" target="_blank" rel="external">SQLAlchemy</a> ORM model instance 不指定主键，默认是 None</p>
-<p>Model</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></div><div class="line">    __tablename__ = <span class="string">'tag'</span></div><div class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>) <span class="comment"># 主键自增</span></div><div class="line">    name = Column(VARCHAR(<span class="number">255</span>), nullable=<span class="keyword">False</span>)</div><div class="line">    group_id = Column(Integer)</div></pre></td></tr></table></figure>
-<p>提交之后生成对应的主键</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># None</span></div><div class="line">session.add(t)</div><div class="line">session.commit()</div><div class="line"><span class="keyword">print</span> t.id <span class="comment"># 1</span></div></pre></td></tr></table></figure>
-<h2 id="指定一个已经存在的主键"><a href="#指定一个已经存在的主键" class="headerlink" title="指定一个已经存在的主键"></a>指定一个已经存在的主键</h2><p>指定一个已经存在的主键 id，SQLAlchemy 并不会校验该数据是否经在 db table 中有了对应的 row，直接执行 insert 语句</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">session = DBSession()</div><div class="line">t = Tag()</div><div class="line">t.id = <span class="number">1</span></div><div class="line">t.name = random.choice(<span class="string">'abcdefgjoiuytreqzxcvbnml'</span>)</div><div class="line">t.group_id = random.choice([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</div><div class="line">session.add(t)</div><div class="line">session.commit() <span class="comment">#提交触发异常</span></div><div class="line"><span class="keyword">print</span> t.id</div></pre></td></tr></table></figure>
-<p>执行报 Duplicate entry for primary 异常，id = 1 的 row 已经存在。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqlalchemy.exc.IntegrityError: (pymysql.err.IntegrityError) (1062, u<span class="string">"Duplicate entry '1' for key 'PRIMARY'"</span>) [SQL: u<span class="string">'INSERT INTO tag (id, name, group_id) VALUES (%(id)s, %(name)s, %(group_id)s)'</span>] [parameters: &#123;<span class="string">'group_id'</span>: 3, <span class="string">'id'</span>: 1, <span class="string">'name'</span>: <span class="string">'i'</span>&#125;]</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/25/sqlalchemy-model-id-zero/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/05/03/first-rule-for-architecture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/03/first-rule-for-architecture/" itemprop="url">无处不在的架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-03T07:34:48+08:00">
-                May 3 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/程序人生/" itemprop="url" rel="index">
-                    <span itemprop="name">程序人生</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/03/first-rule-for-architecture/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/05/03/first-rule-for-architecture/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>Architecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki <a href="https://en.wikipedia.org/wiki/Architecture。" target="_blank" rel="external">https://en.wikipedia.org/wiki/Architecture。</a></p>
-<p>Architecture 意在计划、设计、构建建筑物的过程。</p>
-<h3 id="Software-architecture"><a href="#Software-architecture" class="headerlink" title="Software architecture"></a>Software architecture</h3><p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
-<p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
-<h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
-<p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/03/first-rule-for-architecture/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/16/mongodb-practice-for-four-years-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/16/mongodb-practice-for-four-years-md/" itemprop="url">创业三年，使用 mongodb 的实践教训</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-16T16:49:14+08:00">
-                Feb 16 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mongodb/" itemprop="url" rel="index">
-                    <span itemprop="name">mongodb</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/16/mongodb-practice-for-four-years-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/02/16/mongodb-practice-for-four-years-md/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
-<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
-<blockquote>
-<p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
-</blockquote>
-<h2 id="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"><a href="#对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门" class="headerlink" title="对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门"></a>对开发者使用门槛降低的同时，也是在对躲在暗处的人敞开了大门</h2><p>mongodb 非常容易安装和使用，无需任何权限设置即可开箱即用，而且默认mongodb 的端口是可以从公网访问的，仅仅这样的设计就已经造成了无数的安全问题，详见<a href="http://coolshell.cn/articles/17607.html" target="_blank" rel="external">mongodb 赎金门事件</a>。虽然数据库没有强制要是有口令和用户来管理权限，但是开发者的安全意识不能松懈。</p>
-<blockquote>
-<p>任何时候部署mongodb 都应该尽早设置用户、口令以及相关权限。</p>
-</blockquote>
-<h2 id="升级要趁早"><a href="#升级要趁早" class="headerlink" title="升级要趁早"></a>升级要趁早</h2><p>mongodb 版本的迭代比较稳定，每年会有一到两次版本发布，每次新发布都会带来不少性能改进和优化，也有少量 api 的变动，变化相对较大的是 mongodb 的驱动。为了尽可能早地享受版本升级代来的好处，要制定一套对线上环境进行新版测试、安装、兼容过渡的方案。</p>
-<blockquote>
-<p>升级版本不能跨度太大，mongodb 官方也推荐生产环境升级要渐进式的而不是跨越式的，每次升级<strong>一定要备份数据</strong>。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/02/16/mongodb-practice-for-four-years-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2083,7 +2164,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2094,7 +2175,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2105,7 +2186,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2279,7 +2360,7 @@
   
 
     
-      <script id="dsq-count-scr" src="https://sanyuesha.disqus.com/count.js" async></script>
+      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script>
     
 
     
