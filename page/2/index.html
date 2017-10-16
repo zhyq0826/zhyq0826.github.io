@@ -283,6 +283,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/10/go-no-reference-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/go-no-reference-type/" itemprop="url">严格来说 go 没有引用类型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T12:50:50+08:00">
+                Aug 10 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/10/go-no-reference-type/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/10/go-no-reference-type/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="什么是引用类型"><a href="#什么是引用类型" class="headerlink" title="什么是引用类型"></a>什么是引用类型</h2><p>简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。</p>
+<p><strong>code-1</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>dd = dict()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(c)</div><div class="line"><span class="number">4476836672</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(dd)</div><div class="line"><span class="number">4476836672</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p><code>code-1</code> 中的 Python 代码显示 c 和 dd 两个变量的内存地址都是一样的。</p>
+<h2 id="Immutable-type-不是引用类型"><a href="#Immutable-type-不是引用类型" class="headerlink" title="Immutable type 不是引用类型"></a>Immutable type 不是引用类型</h2><p>Int，string，bool 这些 immutable 类型不会有引用类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> a, b, c = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></div><div class="line">    fmt.Println(&amp;a) <span class="comment">//0xc420072188</span></div><div class="line">    fmt.Println(&amp;b) <span class="comment">//0xc4200721b0</span></div><div class="line">    fmt.Println(&amp;c) <span class="comment">//0xc4200721b8</span></div><div class="line">    d := a</div><div class="line">    fmt.Println(&amp;d) <span class="comment">//0xc4200721d0</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> s = <span class="string">"a"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">    s += <span class="string">"b"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>变量 a 赋值给 d ，d 和 a 的地址不同，字符串 s 二次赋值之后地址没有改变，在 immutable type 中不存在两个变量内存地址是一样的。</p>
+<h2 id="Map-可以在函数内部改变，但是-map-不是引用类型"><a href="#Map-可以在函数内部改变，但是-map-不是引用类型" class="headerlink" title="Map 可以在函数内部改变，但是 map 不是引用类型"></a>Map 可以在函数内部改变，但是 map 不是引用类型</h2><p>Go 中函数传参是按值传递，在函数内部无法改变函数外部的值，但是 map 可以，是不是 map 是引用类型。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;</div><div class="line">        <span class="number">0</span>: <span class="string">"0"</span>,</div><div class="line">        <span class="number">1</span>: <span class="string">"1"</span>,</div><div class="line">    &#125;</div><div class="line">    mm := m</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm) <span class="comment">//0xc42002a030</span></div><div class="line">    fmt.Println(m) <span class="comment">// map[0:0 1:1]</span></div><div class="line">    fmt.Println(mm) <span class="comment">//map[1:1 0:0]</span></div><div class="line">    changeMap(m)</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm)<span class="comment">//0xc42002a030</span></div><div class="line">    fmt.Println(m) <span class="comment">//map[2:2 0:0 1:1]</span></div><div class="line">    fmt.Println(mm) <span class="comment">//map[0:0 1:1 2:2]</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeMap</span><span class="params">(mmm <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    mmm[<span class="number">2</span>] = <span class="string">"2"</span></div><div class="line">    fmt.Printf(<span class="string">"changeMap func %p\n"</span>, mmm) <span class="comment">//changeMap func 0xc420014150</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以明确看到 main 中的 mm 和 m 地址完全不同，调用函数 changeMap 之后，它们的值都发生了改变，在函数 changeMap 内部，参数 mmm 的地址和 m 以及 mm 都不同，证实 map 并不是引用传参。</p>
+<p>再一个例子。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">    makeMap(m)</div><div class="line">    fmt.Println(m == <span class="literal">nil</span>) <span class="comment">//true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果是引用传参 main 函数中的输出不应该是 true。</p>
+<h2 id="Channel-也是按值传参"><a href="#Channel-也是按值传参" class="headerlink" title="Channel 也是按值传参"></a>Channel 也是按值传参</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;c1) <span class="comment">//0xc42002a038</span></div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">        changeChan(c1)</div><div class="line">    &#125;()</div><div class="line"></div><div class="line">    fmt.Println(&lt;-c1)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"changeChan %p\n"</span>, &amp;c) <span class="comment">//0xc42002a040</span></div><div class="line">    c &lt;- <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>例子中的 channel 在函数内发生了值传递，但是函数内部和外部的 channel 地址不同。</p>
+<h2 id="Map-不是引用类型，为什么可以在函数内部改变"><a href="#Map-不是引用类型，为什么可以在函数内部改变" class="headerlink" title="Map 不是引用类型，为什么可以在函数内部改变"></a>Map 不是引用类型，为什么可以在函数内部改变</h2><p>Go 源代码中显示 <a href="https://golang.org/src/runtime/hashmap.go" target="_blank" rel="external">https://golang.org/src/runtime/hashmap.go</a> map 底层是一个指向 hmap 的指针，这就可以解释即使函数传参是按值传递，由于传递的是指针的拷贝，指针指向的底层 hmap 并没有改变，所以可以在函数内部改变 map 。</p>
+<blockquote>
+<p>Go 中没有引用类型</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/03/go-channel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1942,175 +2110,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/06/07/sqlalchemy-delete-synchronize-session/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/07/sqlalchemy-delete-synchronize-session/" itemprop="url">sqlalchemy session 执行 delete 时 synchronize_session 策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T11:38:37+08:00">
-                Jun 7 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SQLAlchemy/" itemprop="url" rel="index">
-                    <span itemprop="name">SQLAlchemy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/07/sqlalchemy-delete-synchronize-session/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/07/sqlalchemy-delete-synchronize-session/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3,4])).delete(synchronize_session=&apos;evaluate&apos;)</div></pre></td></tr></table></figure>
-<p>sqlalchemy 利用 session 执行 delete 时有一个 synchronize_session 参数用来说明 session 删除对象时需要执行的策略，共三个选项：</p>
-<h2 id="False"><a href="#False" class="headerlink" title="False"></a><strong>False</strong></h2><blockquote>
-<p> don’t synchronize the session. This option is the most efficient and is reliable once the session is expired, which typically occurs after a commit(), or explicitly using expire_all(). Before the expiration, objects may still remain in the session which were in fact deleted which can lead to confusing results if they are accessed via get() or already loaded collections.</p>
-</blockquote>
-<p>不同步 session，如果被删除的 objects 已经在 session 中存在，在 session commit 或者 expire_all 之前，这些被删除的对象都存在 session 中。</p>
-<p>不同步可能会导致获取被删除 objects 时出错。</p>
-<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><strong>fetch</strong></h2><blockquote>
-<p>performs a select query before the delete to find objects that are matched by the delete query and need to be removed from the session. Matched objects are removed from the session.</p>
-</blockquote>
-<p>删除之前从 db 中匹配被删除的对象并保存在 session 中，然后再从 session 中删除，这样做是为了让 session 的对象管理 identity_map 得知被删除的对象究竟是哪些以便更新引用关系。</p>
-<h2 id="evaluate"><a href="#evaluate" class="headerlink" title="evaluate"></a><strong>evaluate</strong></h2><blockquote>
-<p> Evaluate the query’s criteria in Python straight on the objects in the session. If evaluation of the criteria isn’t implemented, an error is raised.<br>The ‘evaluate’ strategy performs a scan of all matching objects within the Session; if the contents of the Session are expired, such as via a proceeding Session.commit() call, this will result in SELECT queries emitted for every matching object.</p>
-</blockquote>
-<p>默认值。根据当前的 query criteria 扫描 session 中的 objects，如果不能正确执行则抛出错误，这句话也可以理解为，如果 session 中原本就没有这些被删除的 objects，扫描当然不会发生匹配，相当于匹配未正确执行。</p>
-<p>注意这里报错只会在特定 query criteria 时报错，比如 <code>in</code> 操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3])).delete()</div><div class="line"></div><div class="line">sqlalchemy.exc.InvalidRequestError: Could not evaluate current criteria in Python. Specify &apos;fetch&apos; or False for the synchronize_session parameter.</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2164,7 +2163,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
