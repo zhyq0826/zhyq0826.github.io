@@ -283,6 +283,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/18/go-interface-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/go-interface-3/" itemprop="url">Go interface 详解 (三) ：interface 的值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T12:53:54+08:00">
+                Oct 18 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/18/go-interface-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/18/go-interface-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
+</blockquote>
+<h1 id="Interface-value-的赋值"><a href="#Interface-value-的赋值" class="headerlink" title="Interface value 的赋值"></a>Interface value 的赋值</h1><p>从概念上来讲，interface value 有两部分组成：type 部分是一个 concrete type，vlaue 部分是这个 concrete type 对应的 instance，它们分别称之为 interface value 的 dynamic type 和 dynamic value。</p>
+<p>由于 Go 是静态类型的语言，type 是在编译阶段已经定义好的，而 interface 存储的值是动态的，在上面这个概念模型中，type 部分更准确叫法是 type descriptors，主要是提供 concrete type 的相关信息，包括 method、name 等。</p>
+<p>下面这几个语句：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w io.Writer</div><div class="line">w = os.Stdout</div><div class="line">w = <span class="built_in">new</span>(bytes.Buffer)</div><div class="line">w = <span class="literal">nil</span></div></pre></td></tr></table></figure></p>
+<p>变量 <code>w</code> 依次存储了三种不同的值，在此我们依次来看看每种不同的值的确切含义。</p>
+<p>语句 <code>var w io.Writer</code> 声明并初始化了一个 interface value <code>w</code>，其值是 <code>nil</code>，此时 type 和 value 部分都是 <code>nil</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">w:</div><div class="line">    type --&gt; nil</div><div class="line">    value --&gt; nil</div></pre></td></tr></table></figure>
+<p>interface value 是否是 nil 取决于其 dynamic type，在 nil 的 interface value 上调用会 panic<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// panic</span></div></pre></td></tr></table></figure></p>
+<p>语句 <code>w = os.Stdout</code> 赋值 <code>*os.File</code> 类型的 value 给 w，这个赋值操作包含一个隐式的类型转换，用以把 concrete type 转换成 interface type <code>io.Writer(*os.File)</code>，在这个转换过程中 dynamic type 被赋值为 <code>*os.File</code> 类型，在这里其实是它的 type descriptor，同样得，dynamic value 赋值为 os.Stdout 的一份 copy，一个指向 <code>os.File</code> 类型的指针且代表<strong>标准输出</strong>的变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">w:</div><div class="line">    type --&gt; *os.File</div><div class="line">    value -------&gt; fd int=1(stdout)</div></pre></td></tr></table></figure></p>
+<p>在 interface value w 上调用 <code>Write</code> method 实际上调用的是 <code>*os.File</code> 类型的 Write 方法，于是输出 “hello”。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// "hello"</span></div></pre></td></tr></table></figure></p>
+<p>由于在编译阶段，我们并不知道一个 interface value 的 dynamic type 是什么，所以 interface value 的调用必须进行 dynamic dispatch。为了能调用 dynamic value 的 Write method，compiler 必须生成相关代码以便在执行的时候通过 dynamic type 获取对应 method 的真实地址的 copy，在调用的形式上好像是我们直接调用了 dynamic value 的 Write method。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">os.Stdout.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// "hello"</span></div></pre></td></tr></table></figure></p>
+<p>语句 <code>w=new(bytes.Buffer)</code> 赋值 <code>*bytes.Buffer</code> 类型的 value 作为 w 的 dynamic value，对 w 的处理是也类似的，调用 Write method 将调用 <code>*bytes.Buffer</code> 的 Write method。</p>
+<p>语句 <code>w=nil</code> 和初始语句一样将 w 重置为 nil。</p>
+<h1 id="Interface-value-的比较"><a href="#Interface-value-的比较" class="headerlink" title="Interface value 的比较"></a>Interface value 的比较</h1><p>Interface value 可以使用 <code>==</code> 和 <code>!=</code> 语句进行比较的。如果两个 interface value 的 dynamic type 相同，dynamic value 根据 dynamic type 的 <code>==</code> 比较操作是相等的，那么这两个 interface value 是相等的。因而 interface value 可以用在 map 中作为key 或者 switch 语句中。</p>
+<p>虽然 interface value 本身是可以比较的，但是如果 dynamic type 不支持 compare 操作，那么对两个 dynamic type 相同的 interface value 比较将 panic，比如 slice。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125; = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line">fmt.Println(x == x) <span class="comment">// panic: comparing uncomparable type []int</span></div></pre></td></tr></table></figure></p>
+<p>所以使用时你应该总是留意，interface value 的 dynamic 是不是可以 compare 类型，不管 interface value 单独出现还是出现在其它类型中。</p>
+<h1 id="格式化输出-interface-value"><a href="#格式化输出-interface-value" class="headerlink" title="格式化输出 interface value"></a>格式化输出 interface value</h1><p>Go 提供了格式化输出 interface value 的方法，方便在开发和调试中使用。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w io.Writer</div><div class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "&lt;nil&gt;"</span></div><div class="line"></div><div class="line">w=os.Stdout</div><div class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "*os.File"</span></div><div class="line"></div><div class="line">w=<span class="built_in">new</span>(bytes.Buffer)</div><div class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "*bytes.Buffer"</span></div></pre></td></tr></table></figure></p>
+<h1 id="警告：dynamic-value-是-nil-的-interface-value-并不是-nil"><a href="#警告：dynamic-value-是-nil-的-interface-value-并不是-nil" class="headerlink" title="警告：dynamic value 是 nil 的 interface value 并不是 nil"></a>警告：dynamic value 是 nil 的 interface value 并不是 nil</h1><p>Interface value 是 nil 和 interface value 包含的 dynamic value 是 nil 并不是一回事，<strong>后者不是 nil</strong>，这个潜在的区别给初学 Go 的 developer 造成了一定的困扰。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> debug = <span class="literal">false</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> buf *bytes.Buffer</div><div class="line">    <span class="keyword">if</span> debug &#123;</div><div class="line">        buf = <span class="built_in">new</span>(bytes.Buffer) <span class="comment">// enable collection of output</span></div><div class="line">    &#125;</div><div class="line">    f(buf) <span class="comment">// <span class="doctag">NOTE:</span> subtly incorrect!</span></div><div class="line">    <span class="keyword">if</span> debug &#123;</div><div class="line">        <span class="comment">// ...use buf...</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// If out is non-nil, output will be written to it.</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(out io.Writer)</span></span> &#123;</div><div class="line">    <span class="comment">// ...do something...</span></div><div class="line">    <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</div><div class="line">        out.Write([]<span class="keyword">byte</span>(<span class="string">"done!\n"</span>))</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在上面的代码中，函数 f 中将会出现 panic。由于对于 <code>*byte.Buffer</code> 时，当其值是 nil 时也满足 io.Writer 这个 interface，赋值给 out 之后，out 并不是 nil，但是调用 Write 方法时，Write 的 receiver 也就是 out 的 dynamic value 是 nil，因而会 panic。</p>
+<p>解决方法是改变 main 中的 buf 为 io.Writer。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/14/talk-about-test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -521,7 +695,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/12/go-interface-2/" itemprop="url">Go interface 详解（二）</a></h1>
+                <a class="post-title-link" href="/2017/10/12/go-interface-2/" itemprop="url">Go interface 详解(二) ：定义和使用</a></h1>
         
 
         <div class="post-meta">
@@ -701,7 +875,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/10/go-interface-1/" itemprop="url">Go interface 详解（一）</a></h1>
+                <a class="post-title-link" href="/2017/10/10/go-interface-1/" itemprop="url">Go interface 详解(一) ：介绍</a></h1>
         
 
         <div class="post-meta">
@@ -1144,7 +1318,7 @@
 <p><strong>在分析问题的时候能够跳出问题本身思考更普遍的情况</strong></p>
 <p><strong>在寻求答案的时候，能够根据理由可信度判断是否接受这个结论</strong></p>
 <p>从认知深度的提升也延伸出了一个重要的概念：通过深度认知得出的结论，往往能够解释相似情境中的很多问题，在这些结论中，有些结论经过了更为广泛长期的验证，也在更普遍的领域具有指导意义和应用价值，这些结论是<strong>临界知识</strong>。</p>
-<p>临界知识就是具有普遍指导意义的规律或定律，提升认知深度就是掌握更多的临界知识，并学会应用。</p>
+<p><strong>临界知识就是具有普遍指导意义的规律或定律，提升认知深度就是掌握更多的临界知识，并学会应用</strong>。</p>
 <p><strong>请注意从知识的作用–&gt;定义认知深度–&gt;提高认知深度–&gt;掌握临界知识的思考过程和路径</strong></p>
 <h1 id="学习能力差的问题是什么"><a href="#学习能力差的问题是什么" class="headerlink" title="学习能力差的问题是什么"></a>学习能力差的问题是什么</h1><p>上面分析了需要学习的真正知识就是要掌握的临界知识，学习能力差也就是体现在学习的知识并不是临界知识，这样的知识只是事务的表层，这样的知识提升的往往是<strong>技术效率</strong>，也就是只要知识发生变化就需要重新学习，由于没有掌握临界知识的底层规律，无法把现有的问题和以往的知识联系起来，无法看透问题的本质可能就是已经掌握的知识的一种另一种表现，这就是学习层次无法提升的重要原因，直接反应出来的是学习能力差，学习效率低。</p>
 <h1 id="哪些知识需要学"><a href="#哪些知识需要学" class="headerlink" title="哪些知识需要学"></a>哪些知识需要学</h1><p>按照知识反应的能力把能力对应的课程划分为：</p>
@@ -1168,8 +1342,8 @@
 <p>那什么才是把慢功夫花在真问题上，就是把时间花在重要的就基本概念、有启发的观点和自己没想明白的问题上。</p>
 <h1 id="学习需要的底层方法"><a href="#学习需要的底层方法" class="headerlink" title="学习需要的底层方法"></a>学习需要的底层方法</h1><p>上面提到知识的真正作用是帮助我们提升认知层次进而改变我们的行为模式，而学习的本质又是什么？</p>
 <p>学习是一个长期动态变化的过程，在这个动态变化过程中我们其实就是不断对我们提出的假设进行验证，修正，继续假设修正，直到找到一个满足我们要求的假设或者行为，然后不断实践它以产生有用的输出。</p>
-<p>可以看出，学习最重要的就是提出假设，验证假设，调整假设，做出决策和行动。</p>
-<p>而我们所有的假设和行动都在什么地方？在我们一点一滴的生活行动当中，因而学习的本质其实就是对我们的生活行动不断进行反思修正的过程，具体来有三个方法可以帮助我们实践这个过程：反思、以教为学和刻意练习。</p>
+<p>可以看出，<strong>学习最重要的就是提出假设，验证假设，调整假设，做出决策和行动</strong>。</p>
+<p>而我们所有的假设和行动都在什么地方？在我们一点一滴的生活行动当中，因而学习的本质其实就是对我们的生活行动不断进行反思修正的过程，具体来有三个方法可以帮助我们实践这个过程：<strong>反思、以教为学和刻意练习</strong>。</p>
 <h2 id="反思：提升知识的掌握层次"><a href="#反思：提升知识的掌握层次" class="headerlink" title="反思：提升知识的掌握层次"></a>反思：提升知识的掌握层次</h2><p>总结和反思是不同的，总结是对结果的好坏进行分析；而反思是对产生结果的原因进行分析，反思的实质是对假设进行校正。</p>
 <p>做事的顺序：做出假设——→采取行动——→产生结果</p>
 <p>反思的顺序：观察结果（现象）——→研究原先假设——→反思校正假设</p>
@@ -1184,12 +1358,17 @@
 <li>培养记反思日记的习惯</li>
 </ul>
 <h2 id="以教为学"><a href="#以教为学" class="headerlink" title="以教为学"></a>以教为学</h2><p>以教为学顾名思义就是把自己知道的讲给别人，教是也是一个动态的过程，通过教不但可以检测自己学的程度，强化自己学习的记忆的，在别人提出疑问或质疑还能增强我们的认识。</p>
-<h2 id="刻意练习"><a href="#刻意练习" class="headerlink" title="刻意练习"></a>刻意练习</h2><p>刻意练习就是有目的的，有针对性的对自己未掌握以及需要掌握的知识不断进行练习和优化，刻意练习非常重要的一点是：第一，一定要有目标，第二，一定要有反馈。</p>
+<h2 id="刻意练习"><a href="#刻意练习" class="headerlink" title="刻意练习"></a>刻意练习</h2><p>刻意练习就是有目的的，有针对性的对自己未掌握以及需要掌握的知识不断进行练习和优化，刻意练习非常重要的一点是：<strong>第一，要有目标，第二，要有反馈</strong>。</p>
 <p>刻意练习的过程就是不断构筑自我元认知的过程，而元认知就是需要掌握的知识的最基础的概念以及最基础的规律的理解和运用，通过掌握的知识不断构筑更大的知识单元，直到能够解决复杂的问题。</p>
 <h1 id="学习需要的能力技巧"><a href="#学习需要的能力技巧" class="headerlink" title="学习需要的能力技巧"></a>学习需要的能力技巧</h1><p>技巧是学习的工具，利用这些工具可以让学习事半功倍。</p>
 <h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p>记录是主动思考的过程，记录不是流水账，而是实实在在记录发生了什么事情，为什么发生，这样的记录有助于我们回顾和观察事件的整个发生过程，有助于还原事情真相，因为<strong>事情的时间间隔越久，我们就越容易对自己当初的行为动机和想法按照对现在有利的结果进行解读</strong>，这就违背了事情的真相。</p>
 <h2 id="定期回顾"><a href="#定期回顾" class="headerlink" title="定期回顾"></a>定期回顾</h2><p>定期回顾就是上面我们介绍的反思，不同于反思，定期回顾是一种习惯性的反思，并且只有记下来了才可能进行定期回顾，不然回顾很容易基于对过去的假象进行回顾。</p>
-<p>回顾工作具体要怎么做呢？回顾可以分为三个层次：周/月度回顾，主要是微观层面审视解决问题的假设和效果；年度回顾，检视基本思维方式和灵感激发；五年以上回顾，探寻基本规律如何影响生活。</p>
+<p>回顾工作具体要怎么做呢？回顾可以分为三个层次：</p>
+<ul>
+<li>周/月度回顾，主要是微观层面审视解决问题的假设和效果；</li>
+<li>年度回顾，检视基本思维方式和灵感激发；</li>
+<li>五年以上回顾，探寻基本规律如何影响生活。</li>
+</ul>
 <h2 id="付费购买"><a href="#付费购买" class="headerlink" title="付费购买"></a>付费购买</h2><p>辣么多知识付费的服务和产品，此条不展开细讲了。</p>
 <h1 id="发现临界知识"><a href="#发现临界知识" class="headerlink" title="发现临界知识"></a>发现临界知识</h1><p>临界知识的思想，核心是用更加可靠学科的研究方法、思想和结论来处理没那么可靠的领域的问题。简言之，就是解决问题最稳妥的办法是拿可信度更高的方法去处理问题。发现临界知识就是找到这些可靠领域提供给我们的科学方法和思想，如何寻找？</p>
 <p>1.从自己感兴趣的领域入手，学习这个学科的重要知识</p>
@@ -1199,7 +1378,7 @@
 <p>3.试用更加基本的原理来解释这个知识</p>
 <p>4.没有解释的时候，想办法寻找或者自己创造一个假设，并验证</p>
 <h1 id="应用临界知识"><a href="#应用临界知识" class="headerlink" title="应用临界知识"></a>应用临界知识</h1><p>刻意练习我们学到的临界知识，是我们真正掌握它的关键。</p>
-<p>刻意练习要做到：第一，在不同的场景中，重复应用同一个临界知识；第二，在不同的时间里，重复应用同一个临界知识。</p>
+<p>刻意练习要做到：<br>第一，在不同的场景中，重复应用同一个临界知识；<br>第二，在不同的时间里，重复应用同一个临界知识。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此书从更深层次的角度探讨了知识的作用，学习的本质，以及要具备什么样的条件才能学好知识，应用好知识，读罢此书，有一点非常明确，要想从根本上解决我们自身学习效率低的问题，就是不断提高自身对临界知识的掌握，而掌握这些临界知识就需要我们动用自己的所有神经掌握自己专业之内和之外那些底层的知识和规律，以计算机角度来解释这个问题就是，学好算法、网络原理、操作系统、统计学、数学、计算机语言理论等基础知识是保持在变化多端的 IT 领域立足的关键。</p>
 
           
@@ -1894,175 +2073,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/17/go-o-o/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/17/go-o-o/" itemprop="url">go 中的面向对象</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T13:26:18+08:00">
-                Aug 17 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/17/go-o-o/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/17/go-o-o/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Go 不是基于 class 的语言，但是 Go 提供了强大的类型系统来实现 OO（Object Oriented），关于如何正确使用 OO 的争论网上已经非常多了，在此我们秉承 Go 提供的面向对象机制来实现不同的例子和使用模式，借此了解 Go 中的 OO。</p>
-<h2 id="使用-embed-type-实现继承"><a href="#使用-embed-type-实现继承" class="headerlink" title="使用 embed type 实现继承"></a>使用 embed type 实现继承</h2><p>Go 中的嵌入类型 <code>embed type</code> 本质上是一种 composition，Go 不像其它 OO 语言那样提供基于类的继承，那些继承体现的是 <code>is-a</code> 关系，但是 Go 不是。</p>
-<p>Go 通过 embed type，可以实现 method 和 field 的复用。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">sayName</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</div><div class="line">    Person</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    p := Person&#123;name: <span class="string">"C"</span>&#125;</div><div class="line">    p.sayName() <span class="comment">// #1 C</span></div><div class="line"></div><div class="line">    s1 := Student&#123;name: <span class="string">"Java"</span>&#125;</div><div class="line">    s1.sayName() <span class="comment">// #2 此行输出空字符串</span></div><div class="line"></div><div class="line">    s2 := Student&#123;name: <span class="string">"Java"</span>, Person: Person&#123;name: <span class="string">"VB"</span>&#125;&#125;</div><div class="line">    s2.sayName()         <span class="comment">// #3 VB</span></div><div class="line">    fmt.Println(s2.name) <span class="comment">// #4 Java</span></div><div class="line">    fmt.Println(s2.Person.name) <span class="comment">//#5 VB</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>Person</code> 是 <code>Student</code> 的 embed type，因而 Student 可以直接使用 Person 的 field 和 method，需要注意的是：</p>
-<p>1.Student 中的同名属性可以遮蔽 embed type 的属性，<code>#4</code> 的输出<br>2.Student 虽然可以直接调用 embed type 的 method，但是 method 的 receiver 仍然是 embed type，所以 <code>#2</code> 输出为空。<br>3.直接通过 embed type 继承，embed type 无法获取被嵌入类型的属性，原因由 2 导致。</p>
-<h2 id="类型组合的强大魔力"><a href="#类型组合的强大魔力" class="headerlink" title="类型组合的强大魔力"></a>类型组合的强大魔力</h2><p>Go 支持任意类型的 embed type，当然也包括 interface type，通过组合就可以实现多种不同行为的任意组合，这也是 Go 倡导<strong>以更小的单元实现你的代码功能，然后组合它们</strong>的理念。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// student 行为</span></div><div class="line"><span class="keyword">type</span> StudentTalk <span class="keyword">interface</span> &#123;</div><div class="line">    talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// teacher 行为</span></div><div class="line"><span class="keyword">type</span> TeacherTalk <span class="keyword">interface</span> &#123;</div><div class="line">    say()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>首先定义两个 interface 用来表示不同的行为。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// people 行为</span></div><div class="line"><span class="keyword">type</span> PeopleTalk <span class="keyword">interface</span> &#123;</div><div class="line">    StudentTalk</div><div class="line">    TeacherTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>通过 embed type 把定义的两个 interface 组合为新的 interface <code>PeopleTalk</code>，此时 PeopleTalk 继承了两个 interface 的 method 集合，也就是 PeopleTalk 拥有了 StudentTalk 和 TeacherTalk 的 method 合集。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    TeacherTalk</div><div class="line">    StudentTalk</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Person 也内嵌了 TeacherTalk 和 StudentTalk，对 Person 来说既可以理解成<strong>继承了两个 interface 的 method 集合</strong>，也可以理解是 Person 拥有<strong>两个类型为 TeacherTalk 和 StudentTalk 的 field</strong>，它们的分别可以被赋值为实现了它们的 struct 的值。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Student)</span> <span class="title">talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"student talk"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Teacher <span class="keyword">struct</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Teacher)</span> <span class="title">say</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"teacher say"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Struct Student 和 Teacher 分别实现了 StudentTalk 和 TeacherTalk。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meet</span><span class="params">(p PeopleTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;people meet&lt;===="</span>)</div><div class="line">    meetTeacher(p)</div><div class="line">    meetStudent(p)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetTeacher</span><span class="params">(ps TeacherTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;teacher meet&lt;===="</span>)</div><div class="line">    ps.say()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">meetStudent</span><span class="params">(ps StudentTalk)</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"====&gt;student meet&lt;===="</span>)</div><div class="line">    ps.talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    t := Teacher&#123;&#125;</div><div class="line">    s := Student&#123;&#125;</div><div class="line">    <span class="comment">// Person 实现了 PeopleTalk 方法，通过 Teacher 和 Student 实例</span></div><div class="line">    p := Person&#123;TeacherTalk: &amp;t, StudentTalk: &amp;s&#125;</div><div class="line">    meet(p)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面这段 Go 代码展示了 interface 组合带来的魔力，meet function 的参数是 PeopleTalk，而 Person 的实例 p 由于通过实例 t 和 s 实现了 PeopleTalk 的 method，也就是说 p 可以直接通过 meet 函数传递，<strong>meet 的参数 PeopleTalk</strong>，而且实现了 PeopleTalk 必然实现了 StudentTalk 和 TeacherTalk，因为 PeopleTalk 是由它们组合而成的，进而可以在 meet 函数中可以直接调用 meetTeacher 和 meetStudent，它们各自的参数分别是 TeacherTalk 和 StudentTalk。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2116,7 +2126,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-count">44</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
