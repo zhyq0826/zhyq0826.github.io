@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="mysql schema 变更的一般方案变更 mysql table schema 是使用 mysql 的过程中经常需要做的一件事，一般意义变更可以根据场景的不同做不同的操作。 1.直接 alter 如果数据量非常少，读写不频繁，可以直接对表进行 alter，由于数据少直接 alter 并会造成太长时间的锁表，一般情况都是能接受的 2.停机升级 对于数据量特别大的表，如果直接 alter 将导致线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql 在线 scheme 变更方案以及三款工具评测">
+<meta property="og:url" content="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="mysql schema 变更的一般方案变更 mysql table schema 是使用 mysql 的过程中经常需要做的一件事，一般意义变更可以根据场景的不同做不同的操作。 1.直接 alter 如果数据量非常少，读写不频繁，可以直接对表进行 alter，由于数据少直接 alter 并会造成太长时间的锁表，一般情况都是能接受的 2.停机升级 对于数据量特别大的表，如果直接 alter 将导致线">
+<meta property="og:updated_time" content="2017-11-12T08:34:05.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql 在线 scheme 变更方案以及三款工具评测">
+<meta name="twitter:description" content="mysql schema 变更的一般方案变更 mysql table schema 是使用 mysql 的过程中经常需要做的一件事，一般意义变更可以根据场景的不同做不同的操作。 1.直接 alter 如果数据量非常少，读写不频繁，可以直接对表进行 alter，由于数据少直接 alter 并会造成太长时间的锁表，一般情况都是能接受的 2.停机升级 对于数据量特别大的表，如果直接 alter 将导致线">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/"/>
+
+
+
+
+
+  <title>mysql 在线 scheme 变更方案以及三款工具评测 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql 在线 scheme 变更方案以及三款工具评测</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T12:03:22+08:00">
+                Oct 19 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/19/mysql-online-migration-program-and-tool-compare/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/19/mysql-online-migration-program-and-tool-compare/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="mysql-schema-变更的一般方案"><a href="#mysql-schema-变更的一般方案" class="headerlink" title="mysql schema 变更的一般方案"></a>mysql schema 变更的一般方案</h1><p>变更 mysql table schema 是使用 mysql 的过程中经常需要做的一件事，一般意义变更可以根据场景的不同做不同的操作。</p>
+<p>1.直接 alter</p>
+<p>如果数据量非常少，读写不频繁，可以直接对表进行 alter，由于数据少直接 alter 并会造成太长时间的锁表，一般情况都是能接受的</p>
+<p>2.停机升级</p>
+<p>对于数据量特别大的表，如果直接 alter 将导致线上不可用可以考虑停机修改，当然如果停机时间过长不能接受，只能做在线改了</p>
+<p>3.不停机在线迁移</p>
+<p>很多团队面临的业务都无法停机，在线变更 schema 也确实是很多团队都需要做的事，我曾经做过一次 <a href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">Mongodb 亿级拆分方案</a>，大致思路是：<br>1、在应用程序中拦截所有的 update，insert，delete 操作<br>2、为数据一致性建立迁移缓冲区，临时保存迁移用户的所有业务数据<br>3、在业务代码中利用迁移缓冲区做一致性输出<br>4、离线迁移所有用户数据</p>
+<p>最核心的需要解决的问题是<strong>拦截所有操作</strong>和<strong>保证用户数据在迁移过程中的一致性</strong>。</p>
+<p>在 mysql 中进行在线 schema 变更其实也会面临这样的问题，但往往由于不同团队业务发展的不同，导致拦截所有的操作变得不可能，这就需要借助 mysql 自身的特点进行 schema 变更，思路就是：<br>1、建立临时表<br>2、原表建立更新触发器<br>3、迁移数据</p>
+<p>利用 <a href="https://dev.mysql.com/doc/refman/5.7/en/trigger-syntax.html" target="_blank" rel="external">mysql 触发器</a>可以对原表的更改进行跟踪，以达到保证数据一致性的目的。</p>
+<p>对于在线变更 mysql schema 已经有不同的团队给出了不同的解决方案。</p>
+<p><strong><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="external">pt-online-schema-change</a></strong></p>
+<p>Percona 出品，Perl 实现。</p>
+<p><strong><a href="https://github.com/facebookincubator/OnlineSchemaChange" target="_blank" rel="external">OnlineSchemaChange</a></strong></p>
+<p>Facebook 出品，Python 实现。</p>
+<p><strong><a href="https://github.com/github/gh-ost" target="_blank" rel="external">gh-ost</a></strong></p>
+<p>GitHub 出品，Go 实现。</p>
+<p>下面简单对三个工具的特性和使用进行了评测</p>
+<h1 id="pt-online-schema-change"><a href="#pt-online-schema-change" class="headerlink" title="pt-online-schema-change"></a>pt-online-schema-change</h1><p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="external">https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html</a></p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>在线变更 mysql scheme，不阻塞表的 reads 和 writes</p>
+<h3 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h3><ul>
+<li>仔细阅读工具文档</li>
+<li>审查工具已知的BUG</li>
+<li>在非生产环境测试</li>
+<li>备份生产环境数据并确认</li>
+</ul>
+<h3 id="pt-的工作方式"><a href="#pt-的工作方式" class="headerlink" title="pt 的工作方式"></a>pt 的工作方式</h3><p>pt-online-schema-change 模拟了 mysql 内部更改表的方式，但是 pt 是在原始表的副本上进行修改，这意味着原始表不会被 lock，client 依然可以继续读写原始表的数据，这样线上的业务不受影响。</p>
+<ol>
+<li>创建一个需要修改的 table 的副本，即一张 empty table</li>
+<li>根据你的需要修改这张表，</li>
+<li>从原始表中复制数据到修改之后的 table</li>
+<li>复制完成之后，用新表代替旧表，并删除旧表</li>
+</ol>
+<p>pt 的复制以 small chunk 的形式执行，这样会导致其执行的总时间是千差万别的。</p>
+<p>为了保证数据的一致性，pt 会在 origin table 创建 trigger 来保证对 origin table 的修改反应到 new table 中，所以<strong>必须保证原始表中不存在相同的触发器才能让 pt 正常工作</strong>。</p>
+<p>pt 在数据 copy 完成之后，会使用 mysql 提供的原子操作 <code>rename table</code> 同时修改 origin table 和 new table，修改完成之后drop origin table。</p>
+<p>如果 origin table 有外键 refer pt 无法使用 atomic 的方式完成表的替换，必须更新对应的外键才行。</p>
+<h3 id="foreign-key-引起的-side-effects"><a href="#foreign-key-引起的-side-effects" class="headerlink" title="foreign key 引起的 side effects"></a>foreign key 引起的 side effects</h3><p>最终的表和 origin table 有相同的 foreign keys 和 index，但是对象的名字可能稍有差别为了避免冲突。</p>
+<h3 id="使用-pt-的注意事项"><a href="#使用-pt-的注意事项" class="headerlink" title="使用 pt 的注意事项"></a>使用 pt 的注意事项</h3><p>pt 默认不会执行表的修改，除非你指定了 <code>—execute</code> ，默认是未开启的，pt 提供了一些列的措施用来避免一些问题的出现和不必要的负载，包括自动检测 replicate 等</p>
+<ul>
+<li>pt 将拒绝执行如果 origin table 没有 primary key 或 unique index <strong>—alter</strong></li>
+<li>pt 将拒绝执行如果检测到 replicate filter <strong>—[no]check-replication-filters</strong></li>
+<li>pt 将停止 copy 如果检测到 replicate 延迟过高 <strong>—max-lag</strong></li>
+<li>pt 将停止 copy 或者终止操作如果检测到 server 的负载过高 <strong>—max-load and —critical-load</strong></li>
+<li>pt 将设置 innodb_lock_wait_timeout=1 and (for MySQL 5.5 and newer) lock_wait_timeout=60 ，保证其操作过程尽量不破坏其他 transaction <strong>—set-vars</strong></li>
+<li>pt 将拒绝修改表如果有外键约束，除非指定外键的修改方法 <strong>—alter-foreign-keys-method</strong></li>
+</ul>
+<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget percona.com/get/percona-toolkit.tar.gz</div><div class="line">wget percona.com/get/percona-toolkit.rpm</div><div class="line">wget percona.com/get/percona-toolkit.deb</div></pre></td></tr></table></figure>
+<p>根据不同的平台下载和解压即可使用，pt 是用 Perl 构建的。</p>
+<h3 id="一些参考"><a href="#一些参考" class="headerlink" title="一些参考"></a>一些参考</h3><ul>
+<li><a href="https://www.2cto.com/net/201612/573563.html" target="_blank" rel="external">https://www.2cto.com/net/201612/573563.html</a></li>
+</ul>
+<h1 id="OnlineSchemaChange"><a href="#OnlineSchemaChange" class="headerlink" title="OnlineSchemaChange"></a>OnlineSchemaChange</h1><h3 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h3><p><a href="https://github.com/facebookincubator/OnlineSchemaChange/wiki/How-OSC-works" target="_blank" rel="external">https://github.com/facebookincubator/OnlineSchemaChange/wiki/How-OSC-works</a></p>
+<p>OSC 所有的语句在 sql_log_bin = 0 模式下工作，他可以再 master 或者 replica 上执行，意味着你可以事先在 replica 执行，待验证没有问题之后切换 replica 为 master。</p>
+<p>OSC 的工作分为几个阶段</p>
+<h4 id="INIT-阶段"><a href="#INIT-阶段" class="headerlink" title="INIT 阶段"></a>INIT 阶段</h4><p>首先做一些必备的检查确保所有需要修改的 schema 满足必要的条件，然后用新的 schema 创建一个 empty table 叫 shadow table，同时创建一个 change table 用来记录 异步 dump 和 load 的过程中发生的改变叫  deltas table，change table 包含原始表的所有数据和一个自增序列用来跟踪变化的顺序，以及一个 int column 跟踪 dml 语句。</p>
+<p>于此同时，insert 、update、delete 三个 trigger 在 origin table 中创建用来跟踪数据对应的变化。</p>
+<p>特殊点的是 update trigger，如果 PK column 没有改变，仅仅在 change table 中记录更新后的值，如果 PK column 变更，一条 delete 和 insert 语句分别记录，用来删除旧数据和插入新数据</p>
+<h4 id="dump"><a href="#dump" class="headerlink" title="dump"></a>dump</h4><p>一个 consistent snapshot 将打开用于对现有的表创建一个快照 stale view。使用 select NTO OUTFILE dump data 到磁盘以分块的形式，没有 使用 insert NTO … SELECT FROM 是为了避免锁表。</p>
+<h4 id="load"><a href="#load" class="headerlink" title="load"></a>load</h4><p>然后从 disk 上 load data 到 mysql 的 shadown table 使用 load data infile，load 完成之后删除这些 dump 的文件。</p>
+<p>要确保磁盘空间是足够的，尤其是 origin table 是被压缩过的。</p>
+<h3 id="replay"><a href="#replay" class="headerlink" title="replay"></a>replay</h3><p>在 dump 和 load 阶段会有很多 DML 发生在 origin  table，change table 会记录这一些利用我们之前创建的 trigger，这些记录会不断 replay 到 shadow table 中，replay 会执行很多次，因为每次 replay 时又有 DML 发生了。</p>
+<p>我们不会从 delta table 取数据只会获取变更的 id 和类型，数据本质 replay 时会去再查询。</p>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>必须要有主键或唯一性外键</li>
+<li>不支持重命名 column</li>
+<li>origin table 不能有 trigger </li>
+<li>不能有外键引用</li>
+<li>只有一个 OSC 实例存在</li>
+<li>Running OSC for the same table on Master and Slave at the same time will break replication.</li>
+<li>OSC will stop replication on slave by default to avoid MDL lock chaining on slaves</li>
+<li>OSC is not able to run schema change together with RBR on any MySQL version other than Facebook’s MySQL. See more detail in</li>
+<li>无法在非 Facebook Mysql 基于 RBR 模式运行 OSC</li>
+</ul>
+<p><code>show variables like &#39;$binlog_format%&#39;;</code></p>
+<h3 id="测评信息"><a href="#测评信息" class="headerlink" title="测评信息"></a>测评信息</h3><h4 id="错误三"><a href="#错误三" class="headerlink" title="错误三"></a>错误三</h4><p>osc 不支持非 mysql 版本的 binlog_format 为 row 的</p>
+<p>show variables like ‘%binlog_format%’; </p>
+<p><a href="http://blog.csdn.net/zhuwinmin/article/details/72875964" target="_blank" rel="external">http://blog.csdn.net/zhuwinmin/article/details/72875964</a></p>
+<h4 id="错误一"><a href="#错误一" class="headerlink" title="错误一"></a>错误一</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    raise OSCError(<span class="string">'UNABLE_TO_GET_DISK_SPACE'</span>, &#123;<span class="string">'path'</span>: path&#125;)</div><div class="line">OSCError: UNABLE_TO_GET_DISK_SPACE: Unable to <span class="built_in">read</span> free disk size <span class="keyword">for</span> path: NULL</div></pre></td></tr></table></figure>
+<p>可能由于是 mac 系统无法获取磁盘空间，所以指定了 一个目录</p>
+<h4 id="错误二"><a href="#错误二" class="headerlink" title="错误二"></a>错误二</h4><p>指定目录之后由于 mysql 的限制 无法使用 <code>SELECT INTO OUTFILE</code> 语句，查看当前的 show variables like ‘%secure_file_pri%’; 指定导出目录到此，如果没有自己设置一个再指定导出目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GENERIC_MYSQL_ERROR: MySQL Error during stage <span class="string">"running DDL on db 'blog'"</span>: [1290] The MySQL server is running with the --secure-file-priv option so it cannot execute this statement</div></pre></td></tr></table></figure>
+<p><a href="http://www.jianshu.com/p/bd9f38340e83" target="_blank" rel="external">http://www.jianshu.com/p/bd9f38340e83</a></p>
+<h3 id="时间消耗（shcema-无变动）"><a href="#时间消耗（shcema-无变动）" class="headerlink" title="时间消耗（shcema 无变动）"></a>时间消耗（shcema 无变动）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> dump: 19.043s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> load: 140.702s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> replay: 0.254s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> table checksum: 27.589s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> delta checksum: 0.000s</div><div class="line">INFO      2017-10-20 12:02:54.864 Time holding locks: 1.685s</div></pre></td></tr></table></figure>
+<p>时间消耗 （schema 全部变动）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INFO      2017-10-20 13:59:07.838 Time in load: 244.596s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in replay: 805.802s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in table checksum: 828.422s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in delta checksum: 0.001s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time holding locks: 1.183s</div></pre></td></tr></table></figure>
+<h1 id="gh-ost"><a href="#gh-ost" class="headerlink" title="gh-ost"></a>gh-ost</h1><p><a href="https://github.com/github/gh-ost" target="_blank" rel="external">https://github.com/github/gh-ost</a></p>
+<p>github 出品的，没有使用触发器的一种迁移方案，其工作原理和其他方案类似</p>
+<h3 id="错误一-1"><a href="#错误一-1" class="headerlink" title="错误一"></a><strong>错误一</strong></h3><p>2017-10-20 16:27:34 FATAL 127.0.0.1:3306 must have binary logs enabled</p>
+<p><a href="https://oguya.ch/posts/2016-01-07-enable-mysql-binlog/" target="_blank" rel="external">https://oguya.ch/posts/2016-01-07-enable-mysql-binlog/</a></p>
+<p>2017-10-20T08:33:49.565140Z 0 [ERROR] You have enabled the binary log, but you haven’t provided the mandatory server-id. Please refer to the proper server start-up parameters documentation</p>
+<h1 id="mysql-错误"><a href="#mysql-错误" class="headerlink" title="mysql 错误"></a>mysql 错误</h1><p>2017-10-20T09:44:46.421571Z 5 [Note] Aborted connection 5 to db: ‘information_schema’ user: ‘root’ host: ‘localhost’ (Got an error reading communication packets)</p>
+<p><a href="https://www.percona.com/blog/2016/05/16/mysql-got-an-error-reading-communication-packet-errors/" target="_blank" rel="external">https://www.percona.com/blog/2016/05/16/mysql-got-an-error-reading-communication-packet-errors/</a></p>
+<p><a href="http://www.cnblogs.com/ivictor/p/5979731.html" target="_blank" rel="external">http://www.cnblogs.com/ivictor/p/5979731.html</a></p>
+<h2 id="MySQL-·-答疑解惑-·-MySQL-的那些网络超时错误"><a href="#MySQL-·-答疑解惑-·-MySQL-的那些网络超时错误" class="headerlink" title="MySQL · 答疑解惑 · MySQL 的那些网络超时错误"></a>MySQL · 答疑解惑 · MySQL 的那些网络超时错误</h2><p><a href="http://mysql.taobao.org/monthly/2017/05/04/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2017/05/04/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/18/go-interface-3/" rel="next" title="Go interface 详解 (三) ：interface 的值">
+                <i class="fa fa-chevron-left"></i> Go interface 详解 (三) ：interface 的值
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/24/go-common-mistake-1/" rel="prev" title="Go 常见错误之一：值拷贝和 for 循环中的单一变量">
+                Go 常见错误之一：值拷贝和 for 循环中的单一变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="三月沙" />
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql-schema-变更的一般方案"><span class="nav-number">1.</span> <span class="nav-text">mysql schema 变更的一般方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pt-online-schema-change"><span class="nav-number">2.</span> <span class="nav-text">pt-online-schema-change</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#作用"><span class="nav-number">2.0.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#风险"><span class="nav-number">2.0.2.</span> <span class="nav-text">风险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pt-的工作方式"><span class="nav-number">2.0.3.</span> <span class="nav-text">pt 的工作方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#foreign-key-引起的-side-effects"><span class="nav-number">2.0.4.</span> <span class="nav-text">foreign key 引起的 side effects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-pt-的注意事项"><span class="nav-number">2.0.5.</span> <span class="nav-text">使用 pt 的注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装"><span class="nav-number">2.0.6.</span> <span class="nav-text">下载安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些参考"><span class="nav-number">2.0.7.</span> <span class="nav-text">一些参考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OnlineSchemaChange"><span class="nav-number">3.</span> <span class="nav-text">OnlineSchemaChange</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作方式"><span class="nav-number">3.0.1.</span> <span class="nav-text">工作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#INIT-阶段"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">INIT 阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dump"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">dump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#load"><span class="nav-number">3.0.1.3.</span> <span class="nav-text">load</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#replay"><span class="nav-number">3.0.2.</span> <span class="nav-text">replay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制"><span class="nav-number">3.0.3.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测评信息"><span class="nav-number">3.0.4.</span> <span class="nav-text">测评信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#错误三"><span class="nav-number">3.0.4.1.</span> <span class="nav-text">错误三</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误一"><span class="nav-number">3.0.4.2.</span> <span class="nav-text">错误一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误二"><span class="nav-number">3.0.4.3.</span> <span class="nav-text">错误二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间消耗（shcema-无变动）"><span class="nav-number">3.0.5.</span> <span class="nav-text">时间消耗（shcema 无变动）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gh-ost"><span class="nav-number">4.</span> <span class="nav-text">gh-ost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误一-1"><span class="nav-number">4.0.1.</span> <span class="nav-text">错误一</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql-错误"><span class="nav-number">5.</span> <span class="nav-text">mysql 错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-·-答疑解惑-·-MySQL-的那些网络超时错误"><span class="nav-number">5.1.</span> <span class="nav-text">MySQL · 答疑解惑 · MySQL 的那些网络超时错误</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/';
+          this.page.identifier = '2017/10/19/mysql-online-migration-program-and-tool-compare/';
+          this.page.title = 'mysql 在线 scheme 变更方案以及三款工具评测';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -283,6 +283,1117 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/13/airflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/13/airflow/" itemprop="url">使用 airflow 替代你的 crontab</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-13T20:50:20+08:00">
+                Nov 13 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/13/airflow/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/13/airflow/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Airflow-是什么"><a href="#Airflow-是什么" class="headerlink" title="Airflow 是什么"></a>Airflow 是什么</h1><p>airflow 是 Airbnb 开发的用于工作流管理的开源项目，现在 Apache 下做孵化，地址是 <a href="https://github.com/apache/incubator-airflow。" target="_blank" rel="external">https://github.com/apache/incubator-airflow。</a></p>
+<h1 id="Airflow-解决什么问题"><a href="#Airflow-解决什么问题" class="headerlink" title="Airflow 解决什么问题"></a>Airflow 解决什么问题</h1><p>Airflow 主要解决的问题可以参考 Airbnb 官方的博客: <a href="https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8" target="_blank" rel="external">airflow-a-workflow-management-platform</a>，简单来说就是管理和调度各种离线定时 Job ，可以替代 crontab。</p>
+<p>当 cron job 规模达到数百上千时，其对人的要求将会非常高的，如果你的团队经历过这样的事情，应该能体会其中痛苦，所以使用类似 airflow 这样的工具代替 cron 来做定时任务将会极大提高工作效率。</p>
+<h1 id="开始使用-airflow-之前需要知道和准备的"><a href="#开始使用-airflow-之前需要知道和准备的" class="headerlink" title="开始使用 airflow 之前需要知道和准备的"></a>开始使用 airflow 之前需要知道和准备的</h1><p>Airflow 在 pip 上已经更名为 <code>apache-airflow</code>，下载最新版请使用后者 <code>pip install apache-airflow</code></p>
+<p>Airflow 1.8 版本依赖的是 MySQL 5.6 以上，5.7 以下报 <code>1071, u&#39;Specified key was too long; max key length is 767 bytes</code>，如果你使用 MySQL 作为你的 airflow backend 请升级你的 MySQL 到最新版</p>
+<p>MySQL 5.6 升级到 5.7 在使用 airflow 时会报 <code>1146, u&quot;Table &#39;performance_schema.session_variables&#39; doesn&#39;t exist&quot;</code>，执行 <code>mysql_upgrade -u root -p --force</code> 解决</p>
+<p>Airflow 的 mysql driver 使用的是 mysqlclient <code>mysql://root:@127.0.0.1/sqlalchemy_lab?charset=utf8</code>，如果使用其他 driver 将报 syntax error</p>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>Airflow 中最基本的两个概念是：DAG 和 task。DAG 的全称是 Directed Acyclic Graph 是所有你想执行的任务的集合，在这个集合中你定义了他们的依赖关系，一个 DAG 是指一个 DAG object，一个 DAG object 可以在 Python 脚本中配置完成。</p>
+<p>比如一个简单的的 DAG 包含三个 task：A、B、C，A 执行成功之后 B 才能执行，C 不依赖 A 和 B 即可执行。在这个简单的 DAG 中 A B C 可以是任何你想要执行的任务。</p>
+<p>DAG 的定义使用 Python 完成的，其实就是一个 Python 文件，存放在 DAG 目录，Airflow 会动态的从这个目录构建 DAG object，每个 DAG object 代表了一个 workflow，每个 workflow 都可以包含任意个 task。</p>
+<h1 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h1><p>Airflow 是基于 Python 构建的，可以很容易用 pip 安装使用，<code>pip install apache-airflow</code>，默认情况下 airflow 会在 <code>~/airflow</code> 目录存放相关配置。</p>
+<p>Airflow 提供了一些列命令来完成 airflow 的初始化工作来完成 airflow 的正确使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">airflow initdb</div><div class="line">airflow webserver</div><div class="line">airflow scheduler</div></pre></td></tr></table></figure>
+<p>更详细的信息请参考文档 <a href="http://airflow.incubator.apache.org/" target="_blank" rel="external">http://airflow.incubator.apache.org/</a></p>
+<h1 id="第一个-DAG"><a href="#第一个-DAG" class="headerlink" title="第一个 DAG"></a>第一个 DAG</h1><p>DAG 的配置用 Python 完成像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Code that goes along with the Airflow tutorial located at:</div><div class="line">https://github.com/airbnb/airflow/blob/master/airflow/example_dags/tutorial.py</div><div class="line">"""</div><div class="line"><span class="keyword">from</span> airflow <span class="keyword">import</span> DAG</div><div class="line"><span class="keyword">from</span> airflow.operators.bash_operator <span class="keyword">import</span> BashOperator</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</div><div class="line"></div><div class="line"></div><div class="line">default_args = &#123;</div><div class="line">    <span class="string">'owner'</span>: <span class="string">'airflow'</span>,</div><div class="line">    <span class="string">'depends_on_past'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'start_date'</span>: datetime(<span class="number">2015</span>, <span class="number">6</span>, <span class="number">1</span>),</div><div class="line">    <span class="string">'email'</span>: [<span class="string">'airflow@airflow.com'</span>],</div><div class="line">    <span class="string">'email_on_failure'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'email_on_retry'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'retries'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'retry_delay'</span>: timedelta(minutes=<span class="number">5</span>),</div><div class="line">    <span class="comment"># 'queue': 'bash_queue',</span></div><div class="line">    <span class="comment"># 'pool': 'backfill',</span></div><div class="line">    <span class="comment"># 'priority_weight': 10,</span></div><div class="line">    <span class="comment"># 'end_date': datetime(2016, 1, 1),</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">dag = DAG(<span class="string">'tutorial'</span>, default_args=default_args)</div><div class="line"></div><div class="line"><span class="comment"># t1, t2 and t3 are examples of tasks created by instantiating operators</span></div><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">templated_command = <span class="string">"""</span></div><div class="line">    &#123;% for i in range(5) %&#125;</div><div class="line">        echo "&#123;&#123; ds &#125;&#125;"</div><div class="line">        echo "&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;"</div><div class="line">        echo "&#123;&#123; params.my_param &#125;&#125;"</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">"""</div><div class="line"></div><div class="line">t3 = BashOperator(</div><div class="line">    task_id=<span class="string">'templated'</span>,</div><div class="line">    bash_command=templated_command,</div><div class="line">    params=&#123;<span class="string">'my_param'</span>: <span class="string">'Parameter I passed in'</span>&#125;,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2.set_upstream(t1)</div><div class="line">t3.set_upstream(t1)</div></pre></td></tr></table></figure>
+<p>DAG 脚本的目的只是定义 DAG 的配置，并不包含任何的数据处理，在这里 operator 就是 task。</p>
+<h1 id="DAG-的实例化"><a href="#DAG-的实例化" class="headerlink" title="DAG 的实例化"></a>DAG 的实例化</h1><p>一个 DAG 脚本是由 DAG object 的实例化和对应的 operator 组成的，除此之外我们还可以定义默认的参数提供给每个任务。</p>
+<p>DAG 对象实例化可以根据我们的需要提供对应的初始化参数，实例化 DAG 对象需要提供唯一的 dag_id：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dag = DAG(</div><div class="line">    <span class="string">'tutorial'</span>, default_args=default_args, schedule_interval=timedelta(<span class="number">1</span>))</div></pre></td></tr></table></figure>
+<h1 id="task-的实例化"><a href="#task-的实例化" class="headerlink" title="task 的实例化"></a>task 的实例化</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div></pre></td></tr></table></figure>
+<p>task 对象的定义的就是 operator 的实例化，operator 有 task_id，用来区分任务，可以按照需要定制 bash_command，也可以传递参数等。</p>
+<h1 id="task-的依赖"><a href="#task-的依赖" class="headerlink" title="task 的依赖"></a>task 的依赖</h1><p>task 之间是能相互建立依赖的，形如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">t2.set_upstream(t1)</div><div class="line"></div><div class="line"><span class="comment"># This means that t2 will depend on t1</span></div><div class="line"><span class="comment"># running successfully to run</span></div><div class="line"><span class="comment"># It is equivalent to</span></div><div class="line"><span class="comment"># t1.set_downstream(t2)</span></div><div class="line"></div><div class="line">t3.set_upstream(t1)</div><div class="line"></div><div class="line"><span class="comment"># all of this is equivalent to</span></div><div class="line"><span class="comment"># dag.set_dependency('print_date', 'sleep')</span></div><div class="line"><span class="comment"># dag.set_dependency('print_date', 'templated')</span></div></pre></td></tr></table></figure>
+<p>Airflow 会自动检测环形依赖以防止 task 无法工作的情况出现，更复杂的情况请参考文档。</p>
+<h1 id="执行和测试"><a href="#执行和测试" class="headerlink" title="执行和测试"></a>执行和测试</h1><p>和 airflow.cfg 同级目录下建立 dag 目录，用来存放第一个 dag 脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Code that goes along with the Airflow located at:</div><div class="line">http://airflow.readthedocs.org/en/latest/tutorial.html</div><div class="line">"""</div><div class="line"><span class="keyword">from</span> airflow <span class="keyword">import</span> DAG</div><div class="line"><span class="keyword">from</span> airflow.operators.bash_operator <span class="keyword">import</span> BashOperator</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</div><div class="line"></div><div class="line"></div><div class="line">default_args = &#123;</div><div class="line">    <span class="string">'owner'</span>: <span class="string">'airflow'</span>,</div><div class="line">    <span class="string">'depends_on_past'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'start_date'</span>: datetime(<span class="number">2015</span>, <span class="number">6</span>, <span class="number">1</span>),</div><div class="line">    <span class="string">'email'</span>: [<span class="string">'airflow@airflow.com'</span>],</div><div class="line">    <span class="string">'email_on_failure'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'email_on_retry'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'retries'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'retry_delay'</span>: timedelta(minutes=<span class="number">5</span>),</div><div class="line">    <span class="comment"># 'queue': 'bash_queue',</span></div><div class="line">    <span class="comment"># 'pool': 'backfill',</span></div><div class="line">    <span class="comment"># 'priority_weight': 10,</span></div><div class="line">    <span class="comment"># 'end_date': datetime(2016, 1, 1),</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">dag = DAG(</div><div class="line">    <span class="string">'tutorial'</span>, default_args=default_args, schedule_interval=timedelta(<span class="number">1</span>))</div><div class="line"></div><div class="line"><span class="comment"># t1, t2 and t3 are examples of tasks created by instantiating operators</span></div><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">templated_command = <span class="string">"""</span></div><div class="line">    &#123;% for i in range(5) %&#125;</div><div class="line">        echo "&#123;&#123; ds &#125;&#125;"</div><div class="line">        echo "&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;"</div><div class="line">        echo "&#123;&#123; params.my_param &#125;&#125;"</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">"""</div><div class="line"></div><div class="line">t3 = BashOperator(</div><div class="line">    task_id=<span class="string">'templated'</span>,</div><div class="line">    bash_command=templated_command,</div><div class="line">    params=&#123;<span class="string">'my_param'</span>: <span class="string">'Parameter I passed in'</span>&#125;,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2.set_upstream(t1)</div><div class="line">t3.set_upstream(t1)</div></pre></td></tr></table></figure>
+<p>然后执行 <code>python tutorial.py</code> ，如果没有报错说明 tutorial 建立成功了。</p>
+<h1 id="airflow-的命令行"><a href="#airflow-的命令行" class="headerlink" title="airflow 的命令行"></a>airflow 的命令行</h1><p>airflow 提供了一些列的命令行用来查看 dag 和 task</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># print the list of active DAGs</div><div class="line">airflow list_dags</div><div class="line"></div><div class="line"># prints the list of tasks the &quot;tutorial&quot; dag_id</div><div class="line">airflow list_tasks tutorial</div><div class="line"></div><div class="line"># prints the hierarchy of tasks in the tutorial DAG</div><div class="line">airflow list_tasks tutorial --tree</div></pre></td></tr></table></figure>
+<h1 id="测试任务的执行"><a href="#测试任务的执行" class="headerlink" title="测试任务的执行"></a>测试任务的执行</h1><p>执行任务很简单，指定 dag 并去指定 task 和执行的日期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># command layout: command subcommand dag_id task_id date</div><div class="line"></div><div class="line"># testing print_date</div><div class="line">airflow test tutorial print_date 2015-06-01</div><div class="line"></div><div class="line"># testing sleep</div><div class="line">airflow test tutorial sleep 2015-06-01</div></pre></td></tr></table></figure>
+<p>test 命令会执行任务并且输出到控制台，不会把任务的执行状态进行持久化</p>
+<h1 id="执行任务和并记录状态"><a href="#执行任务和并记录状态" class="headerlink" title="执行任务和并记录状态"></a>执行任务和并记录状态</h1><p>执行任务在 Airflow 中称之为 backfill，以 backfill 执行会真正开始追踪任务的执行状态和依赖，并且会记录日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># optional, start a web server in debug mode in the background</div><div class="line"># airflow webserver --debug &amp;</div><div class="line"></div><div class="line"># start your backfill on a date range</div><div class="line">airflow backfill tutorial -s 2015-06-01 -e 2015-06-07</div></pre></td></tr></table></figure>
+<h1 id="更多关于-DAG-和-operator"><a href="#更多关于-DAG-和-operator" class="headerlink" title="更多关于 DAG 和 operator"></a>更多关于 DAG 和 operator</h1><h2 id="DAG-的-scope"><a href="#DAG-的-scope" class="headerlink" title="DAG 的 scope"></a>DAG 的 scope</h2><p>Airflow 会默认加载任意它能导入到饿 DAG object，这就意味着只要是全局的 DAG object 都可以被导入，但是有时候为了让 DAG 不被导入，比如 SubDagOperator 就可以使用 local 的作用域。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">dag_1 = DAG('this_dag_will_be_discovered')</div><div class="line"></div><div class="line">def my_function()</div><div class="line">    dag_2 = DAG('but_this_dag_will_not')</div><div class="line"></div><div class="line">my_function()</div></pre></td></tr></table></figure>
+<h2 id="DAG-可以指定默认的参数"><a href="#DAG-可以指定默认的参数" class="headerlink" title="DAG 可以指定默认的参数"></a>DAG 可以指定默认的参数</h2><p>DAG 的默认参数会应用到所有的 operator 中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">default_args=dict(</div><div class="line">    start_date=datetime(<span class="number">2016</span>, <span class="number">1</span>, <span class="number">1</span>),</div><div class="line">    owner=<span class="string">'Airflow'</span>)</div><div class="line"></div><div class="line">dag = DAG(<span class="string">'my_dag'</span>, default_args=default_args)</div><div class="line">op = DummyOperator(task_id=<span class="string">'dummy'</span>, dag=dag)</div><div class="line">print(op.owner) <span class="comment"># Airflow</span></div></pre></td></tr></table></figure>
+<h2 id="扩展性极强的-operator"><a href="#扩展性极强的-operator" class="headerlink" title="扩展性极强的 operator"></a>扩展性极强的 operator</h2><p>Airflow operator 很容易扩展，这也是 airflow 几乎支持任何形式 task 重要原因。虽然 Airflow 支持不同的 task 可以传输数据，但是如果你的两个 task 之间确实需要共享数据，最好的办法是把他们写在一起。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="http://airflow.incubator.apache.org/" target="_blank" rel="external">http://airflow.incubator.apache.org/</a></li>
+<li><a href="https://github.com/apache/incubator-airflow" target="_blank" rel="external">https://github.com/apache/incubator-airflow</a></li>
+<li><a href="https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8" target="_blank" rel="external">https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/09/how-teach-child-computer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/09/how-teach-child-computer/" itemprop="url">如何向小孩子解释计算机是什么</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T13:10:27+08:00">
+                Nov 9 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/09/how-teach-child-computer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/09/how-teach-child-computer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Medium 有篇文章 <a href="https://dev.to/tkaczanowski/explaining-programming-to-6-years-old-kids" target="_blank" rel="external">Explaining Programming to 6 Years Old Kids</a> 讲了如何向小孩子解释计算机，过程挺有意思的，作者总结了两个讲解的原则用来把自己的想法告诉小孩子:</p>
+<blockquote>
+<p>第一，通过提问和绘画的形式让小孩子参与其中<br>第二，通过他们已知的东西来向他们讲解未知的</p>
+</blockquote>
+<p>小孩子注意力不够集中，但是对于他们知道的东西都会踊跃发言，这正是表现他们的好机会，所以通过这样的方式可以更好的让孩子和演讲者形成互动。</p>
+<p>除此之外，作者还总结了几个技巧:</p>
+<ul>
+<li>大人要严肃对待给孩子讲解的事</li>
+<li>通过绘画的形式能够很好的抓住孩子的注意力，让他们积极参与</li>
+<li>要有耐心，准备好一遍又一遍的向孩子解释</li>
+<li>纠正孩子的错误是没有意义的，最重要的的让孩子以他们自己的方式理解你所说的东西</li>
+</ul>
+<p>ps:我打算在孩子 3 岁的时候教孩子学编程，让他认识计算机，😆</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/08/python-float/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/08/python-float/" itemprop="url">python float 和 decimal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-08T18:23:18+08:00">
+                Nov 8 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/08/python-float/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/08/python-float/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 Python 官方的文档 <a href="https://docs.python.org/2/tutorial/floatingpoint.html" target="_blank" rel="external">Floating Point Arithmetic: Issues and Limitations</a> 解释了 Python float 类型的一些问题和限制。</p>
+<p>这里我想记录的是 Python 的 Decimal 类型和 float 的转换问题。</p>
+<p>Python 的 Decimal 支持从 str 和 float 进行转换，比如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f = <span class="number">3.1666666666666666</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Decimal(str(f))</div><div class="line">Decimal(<span class="string">'3.16666666667'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Decimal(f)</div><div class="line">Decimal(<span class="string">'3.166666666666666518636930049979127943515777587890625'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Decimal.from_float(f)</div><div class="line">Decimal(<span class="string">'3.166666666666666518636930049979127943515777587890625'</span>)</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>比如很明显能看出一个数通过 str 或 float 直接转换都会和真正输入的不一样，这个问题是由于小数以二进制形式在计算机内表达的问题。除此之外，可以很明显看到 float 转换到 str 是经过 round 的，具体可以参考 <a href="https://stackoverflow.com/questions/1317558/converting-a-float-to-a-string-without-rounding-it" target="_blank" rel="external">converting-a-float-to-a-string-without-rounding-it</a> ，最终说的都是浮点用二进制表示的问题。</p>
+<p>所以在应对精度非常高的浮点的时候，记得一定要<strong>保留指定位的小数</strong>，尤其是在数据库设计时如果需要 Decimal 类型的，记得指定<strong>具体的精度</strong>来使数据在数据库和 Python 中都能保持一致。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/08/how-dns-resolve-in-linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/08/how-dns-resolve-in-linux/" itemprop="url">linux 中的 dns 解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-08T17:36:27+08:00">
+                Nov 8 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/08/how-dns-resolve-in-linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/08/how-dns-resolve-in-linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>我在用 linux 桌面环境有 2 年了，做服务端开发大部分时候都在和 linux 打交道，后来转投 mac，其实本质都是一样的，好奇 linux 下的 dns 解析的过程，看了很多资料发现过程还是比我想象的要复杂，虽然想好好写一写但投入时间还是挺大的，此篇我也许会慢慢更新直到完整，也许可能就写这么一些了。</p>
+</blockquote>
+<h1 id="什么是-DNS"><a href="#什么是-DNS" class="headerlink" title="什么是 DNS"></a>什么是 DNS</h1><p>DNS 全称是 Domain Name System，大意是域名解析系统，它的职责是把域名翻译成一个一个可以识别的 IP 供不同的计算机设备连接。</p>
+<h1 id="linux-有关-DNS-解析的配置和文件"><a href="#linux-有关-DNS-解析的配置和文件" class="headerlink" title="linux 有关 DNS 解析的配置和文件"></a>linux 有关 DNS 解析的配置和文件</h1><p>linux 中有三个文件是关于 dns 解析的：</p>
+<ul>
+<li>/etc/hosts 记录 hostname 对应的ip地址</li>
+<li>/etc/resolv.conf 设置DNS服务器的ip地址</li>
+<li>/etc/host.conf 指定域名解析的顺序（是从本地的hosts文件解析还是从DNS解析）</li>
+</ul>
+<p><code>/etc/hosts</code> 的存在是早期网络并不是特别发达，仅仅在 hosts 中保存主机名和 ip 地址的对应关系即可满足需要，随着网络的发展逐渐出现分布式 DNS 服务，但是 <code>/etc/hosts</code> 形式保留下来了。</p>
+<p><code>/etc/resolv.conf</code> 是配置DNS 域名和 ip 地址的，网上有很多资料可以参考一下。</p>
+<h1 id="一个域名是如何被解析的"><a href="#一个域名是如何被解析的" class="headerlink" title="一个域名是如何被解析的"></a>一个域名是如何被解析的</h1><p><a href="https://www.verisign.com/en_US/website-presence/online/how-dns-works/index.xhtml" target="_blank" rel="external">How the Domain Name System (DNS) Works
+</a> 这篇大致解释了域名被解析的过程，基本可以分为：</p>
+<ul>
+<li>向根域名服务请求顶级域名所在所在域名服务</li>
+<li>向顶级域名服务请求二级域名服务</li>
+<li>向二级域名服务请求具体的 ip 地址</li>
+</ul>
+<p>真实的解析过程是要更复杂的，参考 <a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="external">linux下DNS解析（nslookup、dig、host）</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="external">http://122269875.blog.51cto.com/1660536/1713947</a></li>
+<li><a href="https://www.nslookuptool.com/chs/" target="_blank" rel="external">https://www.nslookuptool.com/chs/</a></li>
+<li><a href="http://roclinux.cn/?p=1820" target="_blank" rel="external">http://roclinux.cn/?p=1820</a></li>
+<li><a href="http://www.steves-internet-guide.com/dns-guide-beginners/" target="_blank" rel="external">http://www.steves-internet-guide.com/dns-guide-beginners/</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/24/go-common-mistake-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/24/go-common-mistake-1/" itemprop="url">Go 常见错误之一：值拷贝和 for 循环中的单一变量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T12:47:05+08:00">
+                Oct 24 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/24/go-common-mistake-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/24/go-common-mistake-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 Go 常见的错误一文中 <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/" target="_blank" rel="external">http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/</a> 有这么一段代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (  </div><div class="line">    <span class="string">"fmt"</span></div><div class="line">    <span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> field <span class="keyword">struct</span> &#123;  </div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *field)</span> <span class="title">print</span><span class="params">()</span></span> &#123;  </div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </div><div class="line">    data := []field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">        <span class="keyword">go</span> v.<span class="built_in">print</span>()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    time.Sleep(<span class="number">3</span> * time.Second)</div><div class="line">    <span class="comment">//goroutines print: three, three, three</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>把 field slice 的类型改为 pointer 结果又不同：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (  </div><div class="line">    <span class="string">"fmt"</span></div><div class="line">    <span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> field <span class="keyword">struct</span> &#123;  </div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *field)</span> <span class="title">print</span><span class="params">()</span></span> &#123;  </div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </div><div class="line">    data := []*field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">        v := v</div><div class="line">        <span class="keyword">go</span> v.<span class="built_in">print</span>()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    time.Sleep(<span class="number">3</span> * time.Second)</div><div class="line">    <span class="comment">//goroutines print: one, two, three</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这两段代码的差异究竟是如何导致结果的不同？</p>
+<p>我对上面的代码 for 循环中的部分进行了一下改造，改造之后对应的代码分别是：</p>
+<p>slice 是非指针<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">data := []field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">    pp := (*field).<span class="built_in">print</span></div><div class="line">    <span class="keyword">go</span> pp(&amp;v) <span class="comment">//非 pointer</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> slice 是指针<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">data := []*field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">    pp := (*field).<span class="built_in">print</span></div><div class="line">    <span class="keyword">go</span> pp(v) <span class="comment">// pointer</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>改造之后再去看原来的代码就能看出最明显的差异在 <code>print</code> 的这个 method 的 <code>receiver</code> 的传递上。</p>
+<p>在 Go 中<strong>函数的调用是值拷贝 copy value</strong>，而且<strong>在 for 循环中 v 的变量始终是一个变量</strong>。</p>
+<p>如果 v 是 pointer，print 这个 method 接收的是指针的拷贝，for 循环体中每次迭代 v 的 pointer value 都是不同的，所以输出不同。</p>
+<p>如果 v 是一个普通的 struct，for 循环体中每次迭代 &amp;v 都是 v 这个变量本身的 pointer，也就是总是指向同一个 field，由于在很大程度上这段代码中的 goroutine 都是在 for 结束之后才执行，而此时 v 将会指向最后一个 field，也就是 <code>{&quot;three&quot;}</code>，所以输出相同。</p>
+<p>有人说 one、two、three 的随机输出是因为 CPU 是多核的原因导致的，如果改成单核就是顺序输出，这样的说法并不是特别准确。理论上来讲 goroutine 的调度是有一定的随机性的，也就是即使是单核输出也有可能是随机的，只是在运行如此简单的例子时一般机器环境都不会导致这 3 个简单的 goroutine 出现交叉执行。比如可以在 print 输出之前模拟 io 繁忙的来达到即使是单核也可能是随机输出的目的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> rand.Intn(<span class="number">100</span>) &gt; <span class="number">20</span> &#123;</div><div class="line">    time.Sleep(<span class="number">1</span> * time.Second)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/19/mysql-online-migration-program-and-tool-compare/" itemprop="url">mysql 在线 scheme 变更方案以及三款工具评测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T12:03:22+08:00">
+                Oct 19 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/19/mysql-online-migration-program-and-tool-compare/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/19/mysql-online-migration-program-and-tool-compare/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="mysql-schema-变更的一般方案"><a href="#mysql-schema-变更的一般方案" class="headerlink" title="mysql schema 变更的一般方案"></a>mysql schema 变更的一般方案</h1><p>变更 mysql table schema 是使用 mysql 的过程中经常需要做的一件事，一般意义变更可以根据场景的不同做不同的操作。</p>
+<p>1.直接 alter</p>
+<p>如果数据量非常少，读写不频繁，可以直接对表进行 alter，由于数据少直接 alter 并会造成太长时间的锁表，一般情况都是能接受的</p>
+<p>2.停机升级</p>
+<p>对于数据量特别大的表，如果直接 alter 将导致线上不可用可以考虑停机修改，当然如果停机时间过长不能接受，只能做在线改了</p>
+<p>3.不停机在线迁移</p>
+<p>很多团队面临的业务都无法停机，在线变更 schema 也确实是很多团队都需要做的事，我曾经做过一次 <a href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">Mongodb 亿级拆分方案</a>，大致思路是：<br>1、在应用程序中拦截所有的 update，insert，delete 操作<br>2、为数据一致性建立迁移缓冲区，临时保存迁移用户的所有业务数据<br>3、在业务代码中利用迁移缓冲区做一致性输出<br>4、离线迁移所有用户数据</p>
+<p>最核心的需要解决的问题是<strong>拦截所有操作</strong>和<strong>保证用户数据在迁移过程中的一致性</strong>。</p>
+<p>在 mysql 中进行在线 schema 变更其实也会面临这样的问题，但往往由于不同团队业务发展的不同，导致拦截所有的操作变得不可能，这就需要借助 mysql 自身的特点进行 schema 变更，思路就是：<br>1、建立临时表<br>2、原表建立更新触发器<br>3、迁移数据</p>
+<p>利用 <a href="https://dev.mysql.com/doc/refman/5.7/en/trigger-syntax.html" target="_blank" rel="external">mysql 触发器</a>可以对原表的更改进行跟踪，以达到保证数据一致性的目的。</p>
+<p>对于在线变更 mysql schema 已经有不同的团队给出了不同的解决方案。</p>
+<p><strong><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="external">pt-online-schema-change</a></strong></p>
+<p>Percona 出品，Perl 实现。</p>
+<p><strong><a href="https://github.com/facebookincubator/OnlineSchemaChange" target="_blank" rel="external">OnlineSchemaChange</a></strong></p>
+<p>Facebook 出品，Python 实现。</p>
+<p><strong><a href="https://github.com/github/gh-ost" target="_blank" rel="external">gh-ost</a></strong></p>
+<p>GitHub 出品，Go 实现。</p>
+<p>下面简单对三个工具的特性和使用进行了评测</p>
+<h1 id="pt-online-schema-change"><a href="#pt-online-schema-change" class="headerlink" title="pt-online-schema-change"></a>pt-online-schema-change</h1><p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="external">https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html</a></p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>在线变更 mysql scheme，不阻塞表的 reads 和 writes</p>
+<h3 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h3><ul>
+<li>仔细阅读工具文档</li>
+<li>审查工具已知的BUG</li>
+<li>在非生产环境测试</li>
+<li>备份生产环境数据并确认</li>
+</ul>
+<h3 id="pt-的工作方式"><a href="#pt-的工作方式" class="headerlink" title="pt 的工作方式"></a>pt 的工作方式</h3><p>pt-online-schema-change 模拟了 mysql 内部更改表的方式，但是 pt 是在原始表的副本上进行修改，这意味着原始表不会被 lock，client 依然可以继续读写原始表的数据，这样线上的业务不受影响。</p>
+<ol>
+<li>创建一个需要修改的 table 的副本，即一张 empty table</li>
+<li>根据你的需要修改这张表，</li>
+<li>从原始表中复制数据到修改之后的 table</li>
+<li>复制完成之后，用新表代替旧表，并删除旧表</li>
+</ol>
+<p>pt 的复制以 small chunk 的形式执行，这样会导致其执行的总时间是千差万别的。</p>
+<p>为了保证数据的一致性，pt 会在 origin table 创建 trigger 来保证对 origin table 的修改反应到 new table 中，所以<strong>必须保证原始表中不存在相同的触发器才能让 pt 正常工作</strong>。</p>
+<p>pt 在数据 copy 完成之后，会使用 mysql 提供的原子操作 <code>rename table</code> 同时修改 origin table 和 new table，修改完成之后drop origin table。</p>
+<p>如果 origin table 有外键 refer pt 无法使用 atomic 的方式完成表的替换，必须更新对应的外键才行。</p>
+<h3 id="foreign-key-引起的-side-effects"><a href="#foreign-key-引起的-side-effects" class="headerlink" title="foreign key 引起的 side effects"></a>foreign key 引起的 side effects</h3><p>最终的表和 origin table 有相同的 foreign keys 和 index，但是对象的名字可能稍有差别为了避免冲突。</p>
+<h3 id="使用-pt-的注意事项"><a href="#使用-pt-的注意事项" class="headerlink" title="使用 pt 的注意事项"></a>使用 pt 的注意事项</h3><p>pt 默认不会执行表的修改，除非你指定了 <code>—execute</code> ，默认是未开启的，pt 提供了一些列的措施用来避免一些问题的出现和不必要的负载，包括自动检测 replicate 等</p>
+<ul>
+<li>pt 将拒绝执行如果 origin table 没有 primary key 或 unique index <strong>—alter</strong></li>
+<li>pt 将拒绝执行如果检测到 replicate filter <strong>—[no]check-replication-filters</strong></li>
+<li>pt 将停止 copy 如果检测到 replicate 延迟过高 <strong>—max-lag</strong></li>
+<li>pt 将停止 copy 或者终止操作如果检测到 server 的负载过高 <strong>—max-load and —critical-load</strong></li>
+<li>pt 将设置 innodb_lock_wait_timeout=1 and (for MySQL 5.5 and newer) lock_wait_timeout=60 ，保证其操作过程尽量不破坏其他 transaction <strong>—set-vars</strong></li>
+<li>pt 将拒绝修改表如果有外键约束，除非指定外键的修改方法 <strong>—alter-foreign-keys-method</strong></li>
+</ul>
+<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget percona.com/get/percona-toolkit.tar.gz</div><div class="line">wget percona.com/get/percona-toolkit.rpm</div><div class="line">wget percona.com/get/percona-toolkit.deb</div></pre></td></tr></table></figure>
+<p>根据不同的平台下载和解压即可使用，pt 是用 Perl 构建的。</p>
+<h3 id="一些参考"><a href="#一些参考" class="headerlink" title="一些参考"></a>一些参考</h3><ul>
+<li><a href="https://www.2cto.com/net/201612/573563.html" target="_blank" rel="external">https://www.2cto.com/net/201612/573563.html</a></li>
+</ul>
+<h1 id="OnlineSchemaChange"><a href="#OnlineSchemaChange" class="headerlink" title="OnlineSchemaChange"></a>OnlineSchemaChange</h1><h3 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h3><p><a href="https://github.com/facebookincubator/OnlineSchemaChange/wiki/How-OSC-works" target="_blank" rel="external">https://github.com/facebookincubator/OnlineSchemaChange/wiki/How-OSC-works</a></p>
+<p>OSC 所有的语句在 sql_log_bin = 0 模式下工作，他可以再 master 或者 replica 上执行，意味着你可以事先在 replica 执行，待验证没有问题之后切换 replica 为 master。</p>
+<p>OSC 的工作分为几个阶段</p>
+<h4 id="INIT-阶段"><a href="#INIT-阶段" class="headerlink" title="INIT 阶段"></a>INIT 阶段</h4><p>首先做一些必备的检查确保所有需要修改的 schema 满足必要的条件，然后用新的 schema 创建一个 empty table 叫 shadow table，同时创建一个 change table 用来记录 异步 dump 和 load 的过程中发生的改变叫  deltas table，change table 包含原始表的所有数据和一个自增序列用来跟踪变化的顺序，以及一个 int column 跟踪 dml 语句。</p>
+<p>于此同时，insert 、update、delete 三个 trigger 在 origin table 中创建用来跟踪数据对应的变化。</p>
+<p>特殊点的是 update trigger，如果 PK column 没有改变，仅仅在 change table 中记录更新后的值，如果 PK column 变更，一条 delete 和 insert 语句分别记录，用来删除旧数据和插入新数据</p>
+<h4 id="dump"><a href="#dump" class="headerlink" title="dump"></a>dump</h4><p>一个 consistent snapshot 将打开用于对现有的表创建一个快照 stale view。使用 select NTO OUTFILE dump data 到磁盘以分块的形式，没有 使用 insert NTO … SELECT FROM 是为了避免锁表。</p>
+<h4 id="load"><a href="#load" class="headerlink" title="load"></a>load</h4><p>然后从 disk 上 load data 到 mysql 的 shadown table 使用 load data infile，load 完成之后删除这些 dump 的文件。</p>
+<p>要确保磁盘空间是足够的，尤其是 origin table 是被压缩过的。</p>
+<h3 id="replay"><a href="#replay" class="headerlink" title="replay"></a>replay</h3><p>在 dump 和 load 阶段会有很多 DML 发生在 origin  table，change table 会记录这一些利用我们之前创建的 trigger，这些记录会不断 replay 到 shadow table 中，replay 会执行很多次，因为每次 replay 时又有 DML 发生了。</p>
+<p>我们不会从 delta table 取数据只会获取变更的 id 和类型，数据本质 replay 时会去再查询。</p>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>必须要有主键或唯一性外键</li>
+<li>不支持重命名 column</li>
+<li>origin table 不能有 trigger </li>
+<li>不能有外键引用</li>
+<li>只有一个 OSC 实例存在</li>
+<li>Running OSC for the same table on Master and Slave at the same time will break replication.</li>
+<li>OSC will stop replication on slave by default to avoid MDL lock chaining on slaves</li>
+<li>OSC is not able to run schema change together with RBR on any MySQL version other than Facebook’s MySQL. See more detail in</li>
+<li>无法在非 Facebook Mysql 基于 RBR 模式运行 OSC</li>
+</ul>
+<p><code>show variables like &#39;$binlog_format%&#39;;</code></p>
+<h3 id="测评信息"><a href="#测评信息" class="headerlink" title="测评信息"></a>测评信息</h3><h4 id="错误三"><a href="#错误三" class="headerlink" title="错误三"></a>错误三</h4><p>osc 不支持非 mysql 版本的 binlog_format 为 row 的</p>
+<p>show variables like ‘%binlog_format%’; </p>
+<p><a href="http://blog.csdn.net/zhuwinmin/article/details/72875964" target="_blank" rel="external">http://blog.csdn.net/zhuwinmin/article/details/72875964</a></p>
+<h4 id="错误一"><a href="#错误一" class="headerlink" title="错误一"></a>错误一</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    raise OSCError(<span class="string">'UNABLE_TO_GET_DISK_SPACE'</span>, &#123;<span class="string">'path'</span>: path&#125;)</div><div class="line">OSCError: UNABLE_TO_GET_DISK_SPACE: Unable to <span class="built_in">read</span> free disk size <span class="keyword">for</span> path: NULL</div></pre></td></tr></table></figure>
+<p>可能由于是 mac 系统无法获取磁盘空间，所以指定了 一个目录</p>
+<h4 id="错误二"><a href="#错误二" class="headerlink" title="错误二"></a>错误二</h4><p>指定目录之后由于 mysql 的限制 无法使用 <code>SELECT INTO OUTFILE</code> 语句，查看当前的 show variables like ‘%secure_file_pri%’; 指定导出目录到此，如果没有自己设置一个再指定导出目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GENERIC_MYSQL_ERROR: MySQL Error during stage <span class="string">"running DDL on db 'blog'"</span>: [1290] The MySQL server is running with the --secure-file-priv option so it cannot execute this statement</div></pre></td></tr></table></figure>
+<p><a href="http://www.jianshu.com/p/bd9f38340e83" target="_blank" rel="external">http://www.jianshu.com/p/bd9f38340e83</a></p>
+<h3 id="时间消耗（shcema-无变动）"><a href="#时间消耗（shcema-无变动）" class="headerlink" title="时间消耗（shcema 无变动）"></a>时间消耗（shcema 无变动）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> dump: 19.043s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> load: 140.702s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> replay: 0.254s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> table checksum: 27.589s</div><div class="line">INFO      2017-10-20 12:02:54.863 Time <span class="keyword">in</span> delta checksum: 0.000s</div><div class="line">INFO      2017-10-20 12:02:54.864 Time holding locks: 1.685s</div></pre></td></tr></table></figure>
+<p>时间消耗 （schema 全部变动）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INFO      2017-10-20 13:59:07.838 Time in load: 244.596s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in replay: 805.802s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in table checksum: 828.422s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time in delta checksum: 0.001s</div><div class="line">INFO      2017-10-20 13:59:07.839 Time holding locks: 1.183s</div></pre></td></tr></table></figure>
+<h1 id="gh-ost"><a href="#gh-ost" class="headerlink" title="gh-ost"></a>gh-ost</h1><p><a href="https://github.com/github/gh-ost" target="_blank" rel="external">https://github.com/github/gh-ost</a></p>
+<p>github 出品的，没有使用触发器的一种迁移方案，其工作原理和其他方案类似</p>
+<h3 id="错误一-1"><a href="#错误一-1" class="headerlink" title="错误一"></a><strong>错误一</strong></h3><p>2017-10-20 16:27:34 FATAL 127.0.0.1:3306 must have binary logs enabled</p>
+<p><a href="https://oguya.ch/posts/2016-01-07-enable-mysql-binlog/" target="_blank" rel="external">https://oguya.ch/posts/2016-01-07-enable-mysql-binlog/</a></p>
+<p>2017-10-20T08:33:49.565140Z 0 [ERROR] You have enabled the binary log, but you haven’t provided the mandatory server-id. Please refer to the proper server start-up parameters documentation</p>
+<h1 id="mysql-错误"><a href="#mysql-错误" class="headerlink" title="mysql 错误"></a>mysql 错误</h1><p>2017-10-20T09:44:46.421571Z 5 [Note] Aborted connection 5 to db: ‘information_schema’ user: ‘root’ host: ‘localhost’ (Got an error reading communication packets)</p>
+<p><a href="https://www.percona.com/blog/2016/05/16/mysql-got-an-error-reading-communication-packet-errors/" target="_blank" rel="external">https://www.percona.com/blog/2016/05/16/mysql-got-an-error-reading-communication-packet-errors/</a></p>
+<p><a href="http://www.cnblogs.com/ivictor/p/5979731.html" target="_blank" rel="external">http://www.cnblogs.com/ivictor/p/5979731.html</a></p>
+<h2 id="MySQL-·-答疑解惑-·-MySQL-的那些网络超时错误"><a href="#MySQL-·-答疑解惑-·-MySQL-的那些网络超时错误" class="headerlink" title="MySQL · 答疑解惑 · MySQL 的那些网络超时错误"></a>MySQL · 答疑解惑 · MySQL 的那些网络超时错误</h2><p><a href="http://mysql.taobao.org/monthly/2017/05/04/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2017/05/04/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/18/go-interface-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1013,1066 +2124,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/10/pipenv/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/10/pipenv/" itemprop="url">使用 pipenv 和 autoenv 构造一键 Python Project 环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T14:04:07+08:00">
-                Oct 10 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/10/pipenv/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/10/pipenv/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，<a href="https://pypi.org/project/autoenv/" target="_blank" rel="external">autoenv</a> 和 <a href="https://pypi.org/project/pipenv/" target="_blank" rel="external">pipenv</a>可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。</p>
-<h1 id="使用-autoenv-自动激活-env-环境"><a href="#使用-autoenv-自动激活-env-环境" class="headerlink" title="使用 autoenv 自动激活 env 环境"></a>使用 autoenv 自动激活 env 环境</h1><p>autoenv 可以在进入项目之后自动检测项目目录的 .env 文件并激活项目所需的 virtualenv 环境，这样能够保证每次切换项目都能自动进入项目自身依赖的虚拟环境。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew install autoenv</div><div class="line"><span class="built_in">echo</span> <span class="string">"source <span class="variable">$(brew --prefix autoenv)</span>/activate.sh"</span> &gt;&gt; ~/.bash_profile</div></pre></td></tr></table></figure>
-<h1 id="使用-pipenv-自动构建环境和依赖"><a href="#使用-pipenv-自动构建环境和依赖" class="headerlink" title="使用 pipenv 自动构建环境和依赖"></a>使用 pipenv 自动构建环境和依赖</h1><p>pipenv 是结合了 virtualenv 和 pip 的构建工具，这样就省去了分开使用二者的麻烦，而且 pipenv 借鉴了开源社区众多包管理工具的优秀特性，真可谓集中家之长来为 Python 提供了一个优秀的包管理工具，其作者就是大名鼎鼎 requests 的作者。</p>
-<p>确保系统上已经有了 Python 和 pip :<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ python --version</div><div class="line">Python 2.7.12</div><div class="line"></div><div class="line">$ pip --version</div><div class="line">pip 9.0.1 from /Library/Python/2.7/site-packages (python 2.7)</div></pre></td></tr></table></figure></p>
-<p>安装 pipenv :<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install --user pipenv</div></pre></td></tr></table></figure></p>
-<p><code>--user</code> 选项将 pipenv 安装在系统的用户目录，避免使用 sudo 权限以及破坏系统原有的依赖，在 Linux 和 macOS 中可以使用 <code>python -m site --user-base</code> 查看 pip 用户目录在什么地方：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python -m site --user-base</div><div class="line">/Users/zhyq0826/Library/Python/2.7</div></pre></td></tr></table></figure></p>
-<p>一般情况下 Python 的用户 bin 目录并没有加入的 shell bin 中，找到该目录并加入到用户 path 中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/Users/zhyq0826/Library/Python/2.7/bin</div></pre></td></tr></table></figure></p>
-<p>pipenv 结合了 virtualenv 和 pip，借助 pipenv 可以一键创建 virtualenv 环境，也就是说每个项目都可以拥有自己单独的虚拟环境和依赖安装了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> myproject</div><div class="line">$ pipenv install</div></pre></td></tr></table></figure>
-<p>如果项目中已经有了 <code>requirements.txt</code> pipenv 会自动进行转换生成 <code>Pipfile</code> 文件，该文件是 pipenv 用来跟踪依赖包信息的文件。</p>
-<p>如果出现：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Warning: Your dependencies could not be resolved. You likely have a mismatch <span class="keyword">in</span> your sub-dependencies.</div><div class="line">  You can use $ pipenv install --skip-lock to bypass this mechanism, <span class="keyword">then</span> run $ pipenv graph to inspect the situation.</div></pre></td></tr></table></figure></p>
-<p>说明在安装过程中有错误，可以按照提示进行操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pipenv install --skip-lock</div></pre></td></tr></table></figure></p>
-<p>在我的 Pro turbo-markdown 目录上安装的提示信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Creating a virtualenv <span class="keyword">for</span> this project…</div><div class="line">⠋Using real prefix <span class="string">'/System/Library/Frameworks/Python.framework/Versions/2.7'</span></div><div class="line">New python executable <span class="keyword">in</span> /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY/bin/python</div><div class="line">Installing setuptools, pip, wheel...done.</div><div class="line"></div><div class="line">Virtualenv location: /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY</div><div class="line">Creating a Pipfile <span class="keyword">for</span> this project…</div><div class="line">Pipfile.lock not found, creating…</div><div class="line">Locking [dev-packages] dependencies…</div><div class="line">Locking [packages] dependencies…</div><div class="line">Updated Pipfile.lock (c23e27)!</div><div class="line">Installing dependencies from Pipfile.lock (c23e27)…</div><div class="line">  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/0 — 00:00:00</div><div class="line">To activate this project<span class="string">'s virtualenv, run the following:</span></div><div class="line"> $ pipenv shell</div></pre></td></tr></table></figure></p>
-<p>把输出的 env 的目录送到 .env 文件，下次 cd 进入项目目录之后会自动激活：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"source /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY/bin/python"</span> &gt;&gt;.env</div></pre></td></tr></table></figure></p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>好工具的使用要趁早，早用早解放，省时又省力😁。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/09/my-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/09/my-learning/" itemprop="url">认识学习的目的、本质和底层规律</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T12:48:24+08:00">
-                Oct 9 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/读书笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/09/my-learning/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/09/my-learning/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>本文是《好好学习：个人知识管理精进指南》的读书笔记</p>
-</blockquote>
-<h1 id="知识的真正作用以及发展历程"><a href="#知识的真正作用以及发展历程" class="headerlink" title="知识的真正作用以及发展历程"></a>知识的真正作用以及发展历程</h1><p>知识发展共经历了三个阶段：</p>
-<p>第一阶段，知识数量构建认识优势<br>第二阶段，知识获取速度构建认知优势<br>第三阶段，知识深度构建认知优势（现在的阶段）</p>
-<p>这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。</p>
-<p>不难看出管理知识的真正目的就是提<strong>升认知深度，改变行为模式</strong>，这也是知识的真正作用。</p>
-<h1 id="如何提升认知深度"><a href="#如何提升认知深度" class="headerlink" title="如何提升认知深度"></a>如何提升认知深度</h1><p>分析 how 之前我们需要知道 what 和 why</p>
-<p>什么才是认知深度?</p>
-<p>从案例入手分析认知深度反应在哪几个方面：</p>
-<p><strong>问</strong>：怎么增加团队的认同感</p>
-<p><strong>答案1</strong>：领导经常开会强调。<br><strong>答案2</strong>：人的认同感来自全力以赴完成一个共同目标，其中付出努力的程度以及共同参与的仪式感都很重要。</p>
-<p>答案 2 比答案 1 差别体现在：</p>
-<p>第一，形式上，简单回答是对具体问题或事情本身做出回答，深度回答是分析具体现象之后找出抽象规律。</p>
-<p>第二，思考方式上，简单回答根据自己的直观感受，情绪和经验做出回答，深度回答依托于有实验验证或有数据分析支持的结论。</p>
-<p>第三，效果上，简单回答只能解决一个特定的问题，深度回答能更普遍解决类似的问题，启发我们由表及里地思考问题。</p>
-<p>所以深度认知能力是指：</p>
-<p><strong>在分析问题的时候能够跳出问题本身思考更普遍的情况</strong></p>
-<p><strong>在寻求答案的时候，能够根据理由可信度判断是否接受这个结论</strong></p>
-<p>从认知深度的提升也延伸出了一个重要的概念：通过深度认知得出的结论，往往能够解释相似情境中的很多问题，在这些结论中，有些结论经过了更为广泛长期的验证，也在更普遍的领域具有指导意义和应用价值，这些结论是<strong>临界知识</strong>。</p>
-<p><strong>临界知识就是具有普遍指导意义的规律或定律，提升认知深度就是掌握更多的临界知识，并学会应用</strong>。</p>
-<p><strong>请注意从知识的作用–&gt;定义认知深度–&gt;提高认知深度–&gt;掌握临界知识的思考过程和路径</strong></p>
-<h1 id="学习能力差的问题是什么"><a href="#学习能力差的问题是什么" class="headerlink" title="学习能力差的问题是什么"></a>学习能力差的问题是什么</h1><p>上面分析了需要学习的真正知识就是要掌握的临界知识，学习能力差也就是体现在学习的知识并不是临界知识，这样的知识只是事务的表层，这样的知识提升的往往是<strong>技术效率</strong>，也就是只要知识发生变化就需要重新学习，由于没有掌握临界知识的底层规律，无法把现有的问题和以往的知识联系起来，无法看透问题的本质可能就是已经掌握的知识的一种另一种表现，这就是学习层次无法提升的重要原因，直接反应出来的是学习能力差，学习效率低。</p>
-<h1 id="哪些知识需要学"><a href="#哪些知识需要学" class="headerlink" title="哪些知识需要学"></a>哪些知识需要学</h1><p>按照知识反应的能力把能力对应的课程划分为：</p>
-<ul>
-<li>公共基础课：执行能力</li>
-<li>专业必修课：专业能力</li>
-<li>通用必修课：结构能力</li>
-</ul>
-<p><strong>公共基础课</strong>，就是每个每天都用到的能力，比如时间管理，资料信息管理，沟通谈判技巧</p>
-<p><strong>专业必修课</strong>，专业能力并不是仅仅一个特定领域的知识，而是可以跨学科思考，系统性解决问题的知识，我们要能够做到在自己特定的领域内，夸学科思考，解决问题，能够灵活性应用多个学科的知识，让他们在合适的时机出现在合适的位置为我们解决问题。</p>
-<p><strong>通用必修课</strong>，就是要掌握临界知识，认知事务的更加底层的结构和规律，我们经营的领域是如何产生的，影响这个领域发展的基本动力是什么，有哪些规律会普遍影响这些事务，这就像在深刻理解一场战役为什么爆发，会以什么样的脉络发展，其中起决定性的作用的因素究竟是什么样。</p>
-<p>毛泽东抗日战争看透了战争的本质，思考到了底层规律：中日战争的底层决定因素，是中国战略空间的广阔和日本需要速战速决的压力，所以影响战争的决定性因素是空间和时间的博弈。</p>
-<p>通过分析真正影响我们认知深度的是通用必修课。</p>
-<h1 id="学习需要的底层思维"><a href="#学习需要的底层思维" class="headerlink" title="学习需要的底层思维"></a>学习需要的底层思维</h1><p>第一，跳出低水平勤奋的误区，不要只做摘记，不对知识进行联系和整理，没有对新旧知识建立关联，不能内化成能力</p>
-<p>第二，放慢速度，将获得的知识和已有的知识进行网络状联系，在此过程中内化知识，形成新行为暗示，比如将自己已有的模型思考框架和新的知识相联系看是否能够发现新的规律，因而读书不追求数量，也不一定要去读完，而是需要解决某个问题的时候，主动去寻找这个问题有关的书籍和文章，去观察 — <strong>作者用什么样的思路解决问题？在这个解决方案背后？是否有我熟悉的知识？我还能把这个解决方案应用到什么地方？</strong></p>
-<h1 id="学习需要的心态"><a href="#学习需要的心态" class="headerlink" title="学习需要的心态"></a>学习需要的心态</h1><h2 id="绿灯思维的心态"><a href="#绿灯思维的心态" class="headerlink" title="绿灯思维的心态"></a>绿灯思维的心态</h2><p>绿灯思维是防止习惯性防御的思维出现，之所以有习惯性防御是因为我们怕暴露自己的思考背后的思维，因为害怕别人发现它是错误的。</p>
-<p><strong>区分否定我和否定我的观点是不一样的行为，质疑观点不一定是质疑提出观点的人。</strong></p>
-<h2 id="慢就是快的心态"><a href="#慢就是快的心态" class="headerlink" title="慢就是快的心态"></a>慢就是快的心态</h2><p>快是结果，不是原因，之所以快是因为能力强才快，如果正式需要提高能力的时候就应该慢下来认真学。</p>
-<p>高效的学习是知识融汇贯通的结果，有了对重要的、核心知识的深刻理解，我们才能游刃有余运用，对我们大多数人而言，阻碍我们融汇贯通的原因是我们在学习中遇到的一些阻塞没有把它攻克，导致我们其实有自以为知道，其实不知道的知识阻塞。</p>
-<p>比如读书，首先找到这本书对自身而言最紧要之处，花慢功夫认真领会，打通知识阻塞，弄懂基本原理。</p>
-<p>那什么才是把慢功夫花在真问题上，就是把时间花在重要的就基本概念、有启发的观点和自己没想明白的问题上。</p>
-<h1 id="学习需要的底层方法"><a href="#学习需要的底层方法" class="headerlink" title="学习需要的底层方法"></a>学习需要的底层方法</h1><p>上面提到知识的真正作用是帮助我们提升认知层次进而改变我们的行为模式，而学习的本质又是什么？</p>
-<p>学习是一个长期动态变化的过程，在这个动态变化过程中我们其实就是不断对我们提出的假设进行验证，修正，继续假设修正，直到找到一个满足我们要求的假设或者行为，然后不断实践它以产生有用的输出。</p>
-<p>可以看出，<strong>学习最重要的就是提出假设，验证假设，调整假设，做出决策和行动</strong>。</p>
-<p>而我们所有的假设和行动都在什么地方？在我们一点一滴的生活行动当中，因而学习的本质其实就是对我们的生活行动不断进行反思修正的过程，具体来有三个方法可以帮助我们实践这个过程：<strong>反思、以教为学和刻意练习</strong>。</p>
-<h2 id="反思：提升知识的掌握层次"><a href="#反思：提升知识的掌握层次" class="headerlink" title="反思：提升知识的掌握层次"></a>反思：提升知识的掌握层次</h2><p>总结和反思是不同的，总结是对结果的好坏进行分析；而反思是对产生结果的原因进行分析，反思的实质是对假设进行校正。</p>
-<p>做事的顺序：做出假设——→采取行动——→产生结果</p>
-<p>反思的顺序：观察结果（现象）——→研究原先假设——→反思校正假设</p>
-<h3 id="反思的作用"><a href="#反思的作用" class="headerlink" title="反思的作用"></a><strong>反思的作用</strong></h3><ul>
-<li>发现知识误区</li>
-<li>促进已有知识产生新知识</li>
-<li>检验学习的新知识是否用了起来</li>
-</ul>
-<h3 id="如何训练反思能力"><a href="#如何训练反思能力" class="headerlink" title="如何训练反思能力"></a><strong>如何训练反思能力</strong></h3><ul>
-<li>从小事反思，深入突破</li>
-<li>把生活案例化处理</li>
-<li>培养记反思日记的习惯</li>
-</ul>
-<h2 id="以教为学"><a href="#以教为学" class="headerlink" title="以教为学"></a>以教为学</h2><p>以教为学顾名思义就是把自己知道的讲给别人，教是也是一个动态的过程，通过教不但可以检测自己学的程度，强化自己学习的记忆的，在别人提出疑问或质疑还能增强我们的认识。</p>
-<h2 id="刻意练习"><a href="#刻意练习" class="headerlink" title="刻意练习"></a>刻意练习</h2><p>刻意练习就是有目的的，有针对性的对自己未掌握以及需要掌握的知识不断进行练习和优化，刻意练习非常重要的一点是：<strong>第一，要有目标，第二，要有反馈</strong>。</p>
-<p>刻意练习的过程就是不断构筑自我元认知的过程，而元认知就是需要掌握的知识的最基础的概念以及最基础的规律的理解和运用，通过掌握的知识不断构筑更大的知识单元，直到能够解决复杂的问题。</p>
-<h1 id="学习需要的能力技巧"><a href="#学习需要的能力技巧" class="headerlink" title="学习需要的能力技巧"></a>学习需要的能力技巧</h1><p>技巧是学习的工具，利用这些工具可以让学习事半功倍。</p>
-<h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p>记录是主动思考的过程，记录不是流水账，而是实实在在记录发生了什么事情，为什么发生，这样的记录有助于我们回顾和观察事件的整个发生过程，有助于还原事情真相，因为<strong>事情的时间间隔越久，我们就越容易对自己当初的行为动机和想法按照对现在有利的结果进行解读</strong>，这就违背了事情的真相。</p>
-<h2 id="定期回顾"><a href="#定期回顾" class="headerlink" title="定期回顾"></a>定期回顾</h2><p>定期回顾就是上面我们介绍的反思，不同于反思，定期回顾是一种习惯性的反思，并且只有记下来了才可能进行定期回顾，不然回顾很容易基于对过去的假象进行回顾。</p>
-<p>回顾工作具体要怎么做呢？回顾可以分为三个层次：</p>
-<ul>
-<li>周/月度回顾，主要是微观层面审视解决问题的假设和效果；</li>
-<li>年度回顾，检视基本思维方式和灵感激发；</li>
-<li>五年以上回顾，探寻基本规律如何影响生活。</li>
-</ul>
-<h2 id="付费购买"><a href="#付费购买" class="headerlink" title="付费购买"></a>付费购买</h2><p>辣么多知识付费的服务和产品，此条不展开细讲了。</p>
-<h1 id="发现临界知识"><a href="#发现临界知识" class="headerlink" title="发现临界知识"></a>发现临界知识</h1><p>临界知识的思想，核心是用更加可靠学科的研究方法、思想和结论来处理没那么可靠的领域的问题。简言之，就是解决问题最稳妥的办法是拿可信度更高的方法去处理问题。发现临界知识就是找到这些可靠领域提供给我们的科学方法和思想，如何寻找？</p>
-<p>1.从自己感兴趣的领域入手，学习这个学科的重要知识</p>
-<p>所有现象层面的知识研究到底层之后，都会联系起来。所以，从自己感兴趣的领域入手去阅读经典的书籍，从中寻找最重要的原理和知识。</p>
-<p>2.找到最重要的知识和原理的原始出处</p>
-<p>尽管我们可能发现了事情背后的规律，但是这往往还不够，还要进一步寻找这个规律的原始出处。这个步骤非常重要，也是大多数人在学习研究的时候忽略的一个环节——找到重要的结论是怎么来的。</p>
-<p>3.试用更加基本的原理来解释这个知识</p>
-<p>4.没有解释的时候，想办法寻找或者自己创造一个假设，并验证</p>
-<h1 id="应用临界知识"><a href="#应用临界知识" class="headerlink" title="应用临界知识"></a>应用临界知识</h1><p>刻意练习我们学到的临界知识，是我们真正掌握它的关键。</p>
-<p>刻意练习要做到：<br>第一，在不同的场景中，重复应用同一个临界知识；<br>第二，在不同的时间里，重复应用同一个临界知识。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此书从更深层次的角度探讨了知识的作用，学习的本质，以及要具备什么样的条件才能学好知识，应用好知识，读罢此书，有一点非常明确，要想从根本上解决我们自身学习效率低的问题，就是不断提高自身对临界知识的掌握，而掌握这些临界知识就需要我们动用自己的所有神经掌握自己专业之内和之外那些底层的知识和规律，以计算机角度来解释这个问题就是，学好算法、网络原理、操作系统、统计学、数学、计算机语言理论等基础知识是保持在变化多端的 IT 领域立足的关键。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/29/python-bumpversion/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/29/python-bumpversion/" itemprop="url">使用 Python bumpversion 轻松实现版本管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-29T07:46:21+08:00">
-                Sep 29 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/29/python-bumpversion/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/29/python-bumpversion/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bumpversion 是用来实现 Python package 的包管理工具，它利用 setup.cfg 文件进行文件内的版本信息查找和替换，<a href="https://pypi.org/project/bumpversion/" target="_blank" rel="external">pypi</a>。</p>
-<h1 id="小版本-bump-minor"><a href="#小版本-bump-minor" class="headerlink" title="小版本 bump minor"></a>小版本 bump minor</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bumpversion --current-version 0.5.1 minor</div></pre></td></tr></table></figure>
-<p>version 从 0.5.1 –&gt; 0.6.0 </p>
-<h1 id="大版本-bump-major"><a href="#大版本-bump-major" class="headerlink" title="大版本 bump major"></a>大版本 bump major</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bumpversion --current-version 1.1.9 major</div></pre></td></tr></table></figure>
-<p>version 从 1.1.9 –&gt; 2.0.0 </p>
-<h1 id="补丁修复"><a href="#补丁修复" class="headerlink" title="补丁修复"></a>补丁修复</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bumpversion --current-version 1.1.9 patch</div></pre></td></tr></table></figure>
-<p>version 从 1.1.9 –&gt; 1.1.10</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/19/md5-intro/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/19/md5-intro/" itemprop="url">说说 MD5</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T19:05:56+08:00">
-                Sep 19 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/19/md5-intro/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/19/md5-intro/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="什么是-MD5"><a href="#什么是-MD5" class="headerlink" title="什么是 MD5"></a>什么是 MD5</h1><p>MD5 全称是  Message-Digest Algorithm，是一种密码散列函数，可产生一种128位（16字节）的散列值（hash value），MD5 常用于校验数据的完整性以及生成唯一的数据摘要信息。</p>
-<p>由于 MD5 被证明无法防止碰撞，也就是会出现两个不一样的数据采用 MD5 加密之后生成相同的摘要，为了的使用场景中提高碰撞的几率，一般会加入一些随机数来保证碰撞的可能性尽可能低。</p>
-<p>一般128位的MD5散列被表示为32位十六进制数字。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> md5</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>MD5.new(<span class="string">'a'</span>).hexdigest()</div><div class="line"><span class="string">'0cc175b9c0f1b6a831c399e269772661'</span></div></pre></td></tr></table></figure>
-<h1 id="何时使用-MD5"><a href="#何时使用-MD5" class="headerlink" title="何时使用 MD5"></a>何时使用 MD5</h1><p>MD5 可以用检验数据的完整性和一致性，因而可以利用 MD5 的这种特点来标识数据的唯一性，在实际开发中 MD5 常被用来</p>
-<p>1.爬虫系统中标识 URL 的唯一性</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hash_url</span><span class="params">(url)</span>:</span></div><div class="line">    url = url.strip()</div><div class="line">    url = urllib.unquote(url)</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">return</span> hashlib.md5(str(url)).hexdigest()</div><div class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">        <span class="keyword">return</span> hashlib.md5(url.encode(<span class="string">'utf-8'</span>)).hexdigest()</div></pre></td></tr></table></figure>
-<p>上面的这段函数可以把爬虫抓取的页面的 URL 进行 MD5 之后存储便于进行唯一性校验，处理 url 之前注意要进行空格过滤和解码，保证数据的前后一致性。</p>
-<p>2.需要唯一性的其他地方</p>
-<p>只要涉及需要唯一性的地方都可以尝试使用 MD5，如果某些场景或业务数据量非常大，需要注意对碰撞的检测。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/14/deep-understand-python-package/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/deep-understand-python-package/" itemprop="url">深入理解 Python package</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T18:37:13+08:00">
-                Sep 14 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/14/deep-understand-python-package/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/14/deep-understand-python-package/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Python 是通过 module 组织代码的，module 即一个 py 文件，module 又是通过 package 来组织的，package 是一个包含 <code>__init__.py</code> 的文件夹，代码，module，package 它们三者的关系就是：module 包含代码，package 至少包含一个为 <code>__init__.py</code> 的 module。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package</div><div class="line">├── __init__.py</div><div class="line">├── submodule.py</div><div class="line">└── subpackage</div><div class="line">    └── __init__.py</div></pre></td></tr></table></figure>
-<p>Python 的 package 以及 package 中的 <code>__init__.py</code> 共同决定了 package 中的 module 是如何被外界访问的。</p>
-<h1 id="空的-init-py"><a href="#空的-init-py" class="headerlink" title="空的 __init__.py"></a>空的 <code>__init__.py</code></h1><p>不包含任何代码的 <code>__init__.py</code> 只用来标识一个文件夹是一个 package，而 package 是可以被导出的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> package <span class="keyword">import</span> item</div></pre></td></tr></table></figure>
-<p>此处的 <code>item</code> 可以是 package 中包含的 submodule 或  subpackage。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from package import submodule</div><div class="line">&gt;&gt;&gt; from package import subpackage</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<h1 id="init-py-不为空"><a href="#init-py-不为空" class="headerlink" title="__init__.py 不为空"></a><code>__init__.py</code> 不为空</h1><p>如果 <code>__init__.py</code> 不为空，其中包含的任何变量，包括 function、class、variable 以及 任何被导入的 module 都可以通过 package 导出。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> package <span class="keyword">import</span> item</div></pre></td></tr></table></figure>
-<p>此处的 <code>item</code> 可以是 <code>__init__.py</code> 中的任何变量。</p>
-<h1 id="package-的初始化工作"><a href="#package-的初始化工作" class="headerlink" title="package 的初始化工作"></a>package 的初始化工作</h1><p>一个 package 被导入，不管在什么时候 <code>__init__.py</code> 中的代码只执行一次。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import package</div><div class="line">hello world</div><div class="line">&gt;&gt;&gt; import package</div><div class="line">&gt;&gt;&gt; import package</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>由于 package 被导入时 <code>__init__.py</code> 中的可执行代码会被执行，所以小心在 package 中放置你的代码，尽可能消除它们产生的副作用，比如把代码尽可能的进行封装成函数或类。</p>
-<h1 id="从-package-中导入变量的顺序"><a href="#从-package-中导入变量的顺序" class="headerlink" title="从 package 中导入变量的顺序"></a>从 package 中导入变量的顺序</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">from</span> package <span class="keyword">import</span> item</div></pre></td></tr></table></figure>
-<p>import 语句首先检查 <code>item</code> 是否是 <code>__init__.py</code> 中定义的变量，然后检查其是不是一个 subpackage，如果不是再去检查其是不是一个 module，都不是将抛出 <code>ImportError</code>。</p>
-<p>在 <code>import item.subitem.subsubitem</code> 语句时，除了最后一个 subsubitem 之外其他 item 都必须是 package，而最后一个 subsubitem 必须是一个 package 或者 module，不能是他前一个 item 定义的 function、class、variable。</p>
-<h1 id="使用-导入"><a href="#使用-导入" class="headerlink" title="使用 * 导入"></a>使用 <code>*</code> 导入</h1><p>在 <code>from package import *</code> 语句中，如果 <code>__init__.py</code> 中定义了 <code>__all__</code> 变量，一个 list，仅仅只有这个 list 中定义的 submodule 或者变量将会被导出。</p>
-<p>如果 <code>__init__.py</code> 中没有 <code>__all__</code> 变量，导出将按照以下规则执行：</p>
-<ol>
-<li>此 package 被导入，并且执行 <code>__init__.py</code> 中可被执行的代码</li>
-<li><code>__init__.py</code> 中定义的 variable 被导入</li>
-<li><code>__init__.py</code> 中被显式导入的 module 被导入</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/12/cookiecutters-for-fast-python-project/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/12/cookiecutters-for-fast-python-project/" itemprop="url">使用 cookiecutter 快速构建 Python 项目</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T07:27:40+08:00">
-                Sep 12 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/12/cookiecutters-for-fast-python-project/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/12/cookiecutters-for-fast-python-project/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="什么是-cookiecutter"><a href="#什么是-cookiecutter" class="headerlink" title="什么是 cookiecutter"></a>什么是 cookiecutter</h1><p><a href="https://github.com/audreyr/cookiecutter" target="_blank" rel="external">cookiecutter</a> 是一款 CLI 用来帮助开发者从模板快速构建项目，比如利用 <a href="https://github.com/audreyr/cookiecutter-pypackage" target="_blank" rel="external">https://github.com/audreyr/cookiecutter-pypackage</a> Python 开发者可以快速构建 Python 项目。</p>
-<h1 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h1><p>安装 <code>pip install cookiecutter</code></p>
-<p>安装完成可以直接使用模板所在的 repo 进行项目创建，第一次使用模板<strong>必须指定模板所在仓库地址</strong> <code>cookiecutter https://github.com/audreyr/cookiecutter-pypackage</code> 或者 <code>cookiecutter gh:audreyr/cookiecutter-pypackage</code>。</p>
-<p>cookiecutter 会在第一次使用模板的时候 clone 模板到 $HOME/.cookiecutters 目录 <code>/Users/zhyq0826/.cookiecutters/cookiecutter-pypackage</code>。</p>
-<p>之后再次使用已经 clone 的模板可以直接使用名称 <code>cookiecutter cookiecutter-pypackage</code>。</p>
-<h1 id="cookiecutter-pypackage"><a href="#cookiecutter-pypackage" class="headerlink" title="cookiecutter-pypackage"></a>cookiecutter-pypackage</h1><p>cookiecutter-pypackage 模板提供了 Python 项目常用的大部分配置包括</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">├── AUTHORS.rst</div><div class="line">├── CONTRIBUTING.rst</div><div class="line">├── HISTORY.rst</div><div class="line">├── LICENSE</div><div class="line">├── MANIFEST.in</div><div class="line">├── Makefile</div><div class="line">├── README.rst</div><div class="line">├── docs</div><div class="line">├── main.py</div><div class="line">├── markdown</div><div class="line">├── requirements_dev.txt</div><div class="line">├── setting.py</div><div class="line">├── setup.cfg</div><div class="line">├── setup.py</div><div class="line">├── tests</div><div class="line">├── tox.ini</div><div class="line">├── travis_pypi_setup.py</div></pre></td></tr></table></figure>
-<blockquote>
-<p>发现好工具，会用好工具，节省时间，珍爱生命 😁。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2126,7 +2177,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2137,7 +2188,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2148,7 +2199,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

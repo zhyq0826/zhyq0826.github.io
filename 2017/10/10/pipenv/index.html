@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/10/10/pipenv/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。 使用 autoenv 自动激活 env 环境autoenv 可以在">
-<meta property="og:updated_time" content="2017-10-13T16:16:25.998Z">
+<meta property="og:updated_time" content="2017-11-12T08:34:36.699Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 pipenv 和 autoenv 构造一键 Python Project 环境">
 <meta name="twitter:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。 使用 autoenv 自动激活 env 环境autoenv 可以在">
@@ -401,7 +401,7 @@
 <p>如果出现：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Warning: Your dependencies could not be resolved. You likely have a mismatch <span class="keyword">in</span> your sub-dependencies.</div><div class="line">  You can use $ pipenv install --skip-lock to bypass this mechanism, <span class="keyword">then</span> run $ pipenv graph to inspect the situation.</div></pre></td></tr></table></figure></p>
 <p>说明在安装过程中有错误，可以按照提示进行操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pipenv install --skip-lock</div></pre></td></tr></table></figure></p>
 <p>在我的 Pro turbo-markdown 目录上安装的提示信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Creating a virtualenv <span class="keyword">for</span> this project…</div><div class="line">⠋Using real prefix <span class="string">'/System/Library/Frameworks/Python.framework/Versions/2.7'</span></div><div class="line">New python executable <span class="keyword">in</span> /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY/bin/python</div><div class="line">Installing setuptools, pip, wheel...done.</div><div class="line"></div><div class="line">Virtualenv location: /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY</div><div class="line">Creating a Pipfile <span class="keyword">for</span> this project…</div><div class="line">Pipfile.lock not found, creating…</div><div class="line">Locking [dev-packages] dependencies…</div><div class="line">Locking [packages] dependencies…</div><div class="line">Updated Pipfile.lock (c23e27)!</div><div class="line">Installing dependencies from Pipfile.lock (c23e27)…</div><div class="line">  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/0 — 00:00:00</div><div class="line">To activate this project<span class="string">'s virtualenv, run the following:</span></div><div class="line"> $ pipenv shell</div></pre></td></tr></table></figure></p>
-<p>把输出的 env 的目录送到 .env 文件，下次 cd 进入项目目录之后会自动激活：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"source /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY/bin/python"</span> &gt;&gt;.env</div></pre></td></tr></table></figure></p>
+<p>把输出的 env 的目录送到 .env 文件，下次 cd 进入项目目录之后会自动激活：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"source /Users/zhyq0826/.local/share/virtualenvs/turbo-markdown-BmR5qYdY/bin/activate"</span> &gt;&gt;.env</div></pre></td></tr></table></figure></p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>好工具的使用要趁早，早用早解放，省时又省力😁。</p>
 
       
@@ -566,7 +566,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -577,7 +577,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -588,7 +588,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
