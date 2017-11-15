@@ -283,6 +283,387 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/15/what-about-consul/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/15/what-about-consul/" itemprop="url">consul 安装和基本使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-15T16:20:58+08:00">
+                Nov 15 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/consul/" itemprop="url" rel="index">
+                    <span itemprop="name">consul</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/15/what-about-consul/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/15/what-about-consul/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什么是-consul"><a href="#什么是-consul" class="headerlink" title="什么是 consul"></a>什么是 consul</h1><p><a href="https://www.consul.io/" target="_blank" rel="external">Consul</a> 是一个服务配置和发现工具，它包含的主要特性有：</p>
+<p><strong>服务发现</strong></p>
+<p>通过 DNS 或 HTTP 对依赖的服务的进行发现。</p>
+<p><strong>健康检查</strong></p>
+<p>Consul clients 能够提供很多种表示服务健康状态的指标，包括服务请求状态，节点内存使用情况等，<br>路由会依赖这些信息进行服务选择。</p>
+<p><strong>KV 存储</strong></p>
+<p>Consul 支持 KV Store，application 可以利用其用来做动态配置、特性标识存储、节点选举、协调等，Consul 的 KV<br>通过 HTTP API 调用，非常方便使用。</p>
+<p><strong>多数据中心</strong></p>
+<p>Consul 支持多数据中心，夸机房。</p>
+<h2 id="Consul-的简单架构"><a href="#Consul-的简单架构" class="headerlink" title="Consul 的简单架构"></a>Consul 的简单架构</h2><p>Consul 是一个分布式，高可用的系统，提供 Consul 服务的 node 都会有一个 Consul agent，agent 的作用是<br>提供节点和服务的健康检查，agent 并不负责 discover service 或者对 KV 进行任何操作。</p>
+<p>Agent 负责和 Consul server 进行通信会话，Consul server 负责的数据存储和数据的复制集。一般 Consul server 由 3-5 个结点组成<br>来达到高可用，server 之间能够进行相互选举。一个 datacenter 推荐至少有一个 Consul server 的集群。</p>
+<h1 id="安装-Consul"><a href="#安装-Consul" class="headerlink" title="安装 Consul"></a>安装 Consul</h1><p>Consul 使用 Go 编写，用 binary package 发布，可以非常容易安装和使用，在此页面<br><a href="https://www.consul.io/downloads.html" target="_blank" rel="external">https://www.consul.io/downloads.html</a> 下载所需平台的包，下载对应的 binary 包解压并且配置 consul binary 包对应的 Path 即可使用。</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux" target="_blank" rel="external">linux path 配置</a></li>
+<li><a href="https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows" target="_blank" rel="external">windows path 配置</a></li>
+</ul>
+<p>设置完 path 即可进行测试:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">consul</div><div class="line">Usage: consul [--version] [--help] &lt;command&gt; [&lt;args&gt;]</div><div class="line"></div><div class="line">Available commands are:</div><div class="line">    agent          Runs a Consul agent</div><div class="line">    catalog        Interact with the catalog</div><div class="line">    event          Fire a new event</div><div class="line">    exec           Executes a command on Consul nodes</div><div class="line">    force-leave    Forces a member of the cluster to enter the &quot;left&quot; state</div><div class="line">    info           Provides debugging information for operators.</div><div class="line">    join           Tell Consul agent to join cluster</div><div class="line">    keygen         Generates a new encryption key</div><div class="line">    keyring        Manages gossip layer encryption keys</div><div class="line">    kv             Interact with the key-value store</div><div class="line">    leave          Gracefully leaves the Consul cluster and shuts down</div><div class="line">    lock           Execute a command holding a lock</div><div class="line">    maint          Controls node or service maintenance mode</div><div class="line">    members        Lists the members of a Consul cluster</div><div class="line">    monitor        Stream logs from a Consul agent</div><div class="line">    operator       Provides cluster-level tools for Consul operators</div><div class="line">    reload         Triggers the agent to reload configuration files</div><div class="line">    rtt            Estimates network round trip time between nodes</div><div class="line">    snapshot       Saves, restores and inspects snapshots of Consul server state</div><div class="line">    validate       Validate config files/directories</div><div class="line">    version        Prints the Consul version</div><div class="line">    watch          Watch for changes in Consul</div></pre></td></tr></table></figure>
+<h1 id="启动-Consul-agent"><a href="#启动-Consul-agent" class="headerlink" title="启动 Consul agent"></a>启动 Consul agent</h1><p>Consul agent 启动之后 Consul 的服务才算是真正的建立了，agent 可以以 client 或 server 的形式启动，在一个 datacenter 中至少有一个 server，通常情况下推荐配置 3-5 个 server。</p>
+<p>Server 启动完毕之后，其他的 agent 都以 client 的形式启动。Client 负责注册服务，健康检查，转发请求。</p>
+<p>为了测试方便，我们以 dev 的模式启动 agent。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">consul agent -dev -node=zhaoyongqiang</div><div class="line">==&gt; Starting Consul agent...</div><div class="line">==&gt; Consul agent running!</div><div class="line">           Version: &apos;v1.0.0&apos;</div><div class="line">           Node ID: &apos;99fa5591-60cb-cd6f-2b82-046d63b50cbe&apos;</div><div class="line">         Node name: &apos;zhaoyongqiangdeiMac.local&apos;</div><div class="line">        Datacenter: &apos;dc1&apos; (Segment: &apos;&lt;all&gt;&apos;)</div><div class="line">            Server: true (Bootstrap: false)</div><div class="line">       Client Addr: [127.0.0.1] (HTTP: 8500, HTTPS: -1, DNS: 8600)</div><div class="line">      Cluster Addr: 127.0.0.1 (LAN: 8301, WAN: 8302)</div><div class="line">           Encrypt: Gossip: false, TLS-Outgoing: false, TLS-Incoming: false</div><div class="line"></div><div class="line">==&gt; Log data will now stream in as it occurs:</div><div class="line"></div><div class="line">    2017/11/15 18:37:06 [DEBUG] Using random ID &quot;99fa5591-60cb-cd6f-2b82-046d63b50cbe&quot; as node ID</div><div class="line">    2017/11/15 18:37:06 [INFO] raft: Initial configuration (index=1): [&#123;Suffrage:Voter ID:99fa5591-60cb-cd6f-2b82-046d63b50cbe Address:127.0.0.1:8300&#125;]</div><div class="line">    2017/11/15 18:37:06 [INFO] raft: Node at 127.0.0.1:8300 [Follower] entering Follower state (Leader: &quot;&quot;)</div><div class="line">    2017/11/15 18:37:06 [INFO] serf: EventMemberJoin: zhaoyongqiangdeiMac.local.dc1 127.0.0.1</div><div class="line">    2017/11/15 18:37:06 [INFO] serf: EventMemberJoin: zhaoyongqiangdeiMac.local 127.0.0.1</div><div class="line">    2017/11/15 18:37:06 [INFO] consul: Handled member-join event for server &quot;zhaoyongqiangdeiMac.local.dc1&quot; in area &quot;wan&quot;</div><div class="line">    2017/11/15 18:37:06 [INFO] consul: Adding LAN server zhaoyongqiangdeiMac.local (Addr: tcp/127.0.0.1:8300) (DC: dc1)</div><div class="line">    2017/11/15 18:37:06 [INFO] agent: Started DNS server 127.0.0.1:8600 (tcp)</div><div class="line">    2017/11/15 18:37:06 [INFO] agent: Started DNS server 127.0.0.1:8600 (udp)</div><div class="line">    2017/11/15 18:37:06 [INFO] agent: Started HTTP server on 127.0.0.1:8500 (tcp)</div><div class="line">    2017/11/15 18:37:06 [WARN] raft: Heartbeat timeout from &quot;&quot; reached, starting election</div><div class="line">    2017/11/15 18:37:06 [INFO] raft: Node at 127.0.0.1:8300 [Candidate] entering Candidate state in term 2</div><div class="line">    2017/11/15 18:37:06 [DEBUG] raft: Votes needed: 1</div><div class="line">    2017/11/15 18:37:06 [DEBUG] raft: Vote granted from 99fa5591-60cb-cd6f-2b82-046d63b50cbe in term 2. Tally: 1</div><div class="line">    2017/11/15 18:37:06 [INFO] raft: Election won. Tally: 1</div><div class="line">    2017/11/15 18:37:06 [INFO] raft: Node at 127.0.0.1:8300 [Leader] entering Leader state</div><div class="line">    2017/11/15 18:37:06 [INFO] consul: cluster leadership acquired</div><div class="line">    2017/11/15 18:37:06 [INFO] consul: New leader elected: zhaoyongqiangdeiMac.local</div><div class="line">    2017/11/15 18:37:06 [DEBUG] consul: Skipping self join check for &quot;zhaoyongqiangdeiMac.local&quot; since the cluster is too small</div><div class="line">    2017/11/15 18:37:06 [INFO] consul: member &apos;zhaoyongqiangdeiMac.local&apos; joined, marking health alive</div><div class="line">    2017/11/15 18:37:07 [INFO] agent: Synced node info</div><div class="line">    2017/11/15 18:38:06 [DEBUG] consul: Skipping self join check for &quot;zhaoyongqiangdeiMac.local&quot; since the cluster is too small</div><div class="line">    2017/11/15 18:38:07 [DEBUG] agent: Node info in sync</div><div class="line">    2017/11/15 18:39:06 [DEBUG] manager: Rebalanced 1 servers, next active server is zhaoyongqiangdeiMac.local.dc1 (Addr: tcp/127.0.0.1:8300) (DC: dc1)</div><div class="line">    2017/11/15 18:39:06 [DEBUG] consul: Skipping self join check for &quot;zhaoyongqiangdeiMac.local&quot; since the cluster is too small</div><div class="line">    2017/11/15 18:39:47 [DEBUG] agent: Node info in sync</div></pre></td></tr></table></figure></p>
+<p><strong>注意 OS X 用户：Consul 使用 hostname 做 node name，如果 node name 包含句点，会导致 DNS 无法工作，所以需要显式设置 node name 用 -node flag</strong></p>
+<h1 id="Consul-集群成员"><a href="#Consul-集群成员" class="headerlink" title="Consul 集群成员"></a>Consul 集群成员</h1><p>使用 <code>consul members</code> 命令可以查看 cluster 中所有 node 的信息。members 命令是基于 <a href="https://www.consul.io/docs/internals/gossip.html" target="_blank" rel="external">gossip protocol</a>，该协议属于最终一致性。这意味着，在任何时间通过当前 agent 获取的信息并不一定是当前 server 的状态，可以通过 HTTP API 获得强一致状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">curl localhost:8500/v1/catalog/nodes                                                                                                                                                                                      !10119</div><div class="line">[</div><div class="line">    &#123;</div><div class="line">        &quot;ID&quot;: &quot;fc63fe61-00b4-92fe-9625-e88b804c23ea&quot;,</div><div class="line">        &quot;Node&quot;: &quot;zhaoyongqiang&quot;,</div><div class="line">        &quot;Address&quot;: &quot;127.0.0.1&quot;,</div><div class="line">        &quot;Datacenter&quot;: &quot;dc1&quot;,</div><div class="line">        &quot;TaggedAddresses&quot;: &#123;</div><div class="line">            &quot;lan&quot;: &quot;127.0.0.1&quot;,</div><div class="line">            &quot;wan&quot;: &quot;127.0.0.1&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;Meta&quot;: &#123;</div><div class="line">            &quot;consul-network-segment&quot;: &quot;&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;CreateIndex&quot;: 5,</div><div class="line">        &quot;ModifyIndex&quot;: 6</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>除此以外还可以使用 DNS Interface 查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">dig @127.0.0.1 -p 8600 zhaoyongqiang.node.consul</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 zhaoyongqiang.node.consul</div><div class="line">; (1 server found)</div><div class="line">;; global options: +cmd</div><div class="line">;; Got answer:</div><div class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 49030</div><div class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0</div><div class="line">;; WARNING: recursion requested but not available</div><div class="line"></div><div class="line">;; QUESTION SECTION:</div><div class="line">;zhaoyongqiang.node.consul. IN  A</div><div class="line"></div><div class="line">;; ANSWER SECTION:</div><div class="line">zhaoyongqiang.node.consul. 0    IN  A   127.0.0.1</div><div class="line"></div><div class="line">;; Query time: 0 msec</div><div class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</div><div class="line">;; WHEN: Wed Nov 15 18:51:20 2017</div><div class="line">;; MSG SIZE  rcvd: 59</div></pre></td></tr></table></figure>
+<h1 id="停止-agent"><a href="#停止-agent" class="headerlink" title="停止 agent"></a>停止 agent</h1><p>可以 Ctrl-C 停止启动的 agent，一旦 agent 终止，这个 node 将会从 cluster 中移除。</p>
+<p>如果强制停止 agent，其他 agent 会自动检测失联的 agent 并且从 cluster 中移除，如果一个 member 失联出故障了，健康<br>状态会标志位 critical，但是其并不会从 catalog 移除。Consul 会在该成员下次上线之后重新连接，这种机制能保证能从特定的网络故障<br>中恢复。</p>
+<p>如果一个 agent 正在执行 server 的功能，graceful 移除可以避免潜在的存储问题。</p>
+<p>ps: 未完待续</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/14/superset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/14/superset/" itemprop="url">可视化数据平台 superset ：安装和使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T20:50:20+08:00">
+                Nov 14 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/14/superset/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/14/superset/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什么是-superset"><a href="#什么是-superset" class="headerlink" title="什么是 superset"></a>什么是 superset</h1><p>Superset 是 Airbnb 开源的大数据可视化平台，其特性包括：</p>
+<ul>
+<li>backend 支持几乎所有主流的数据库</li>
+<li>支持复杂的权限控制和管理(OpenId, OAuth 等)，满足企业内部不同部门人员对数据的权限要求</li>
+<li>丰富的可视化展示，支持自定义创建 dashboard，可分享</li>
+<li>可扩展、细粒度的数据库权限控制，满足不同层级人员对数据库权限的要求</li>
+<li>数据的展示完全可控，可自定义展示字段、聚合数据、数据源等</li>
+<li>深度集成  Druid.io</li>
+</ul>
+<p>Superset 目前由 Apache 孵化，地址是 github.com/apache/incubator-superset</p>
+<h1 id="superset-解决什么问题"><a href="#superset-解决什么问题" class="headerlink" title="superset 解决什么问题"></a>superset 解决什么问题</h1><p>由 superset 的特性不难看出 superset 要解决的问题：</p>
+<ul>
+<li>满足企业内部不同部门对数据的要求：老板、运营、产品、商务</li>
+<li>细粒度的权限划分和控制，可满足不同层级的人员的不同权限</li>
+<li>支持各种主流数据库，hbase、mysql、postgres等</li>
+<li>不同数据不同维度的可视化</li>
+<li>自定义数据的展示和可视化</li>
+</ul>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><p>Superset 由 Python 构建，可使用 pip 安装 <code>pip install superset</code>，详细信息请参考官方文档 <a href="https://superset.incubator.apache.org" target="_blank" rel="external">https://superset.incubator.apache.org</a><br>, 在此我们重点介绍一下 superset 的使用。</p>
+<h1 id="使用-superset"><a href="#使用-superset" class="headerlink" title="使用 superset"></a>使用 superset</h1><h2 id="添加数据源"><a href="#添加数据源" class="headerlink" title="添加数据源"></a>添加数据源</h2><p>Superset 自带权限管理，在使用之前首先按照官方文档的要求新建超级用户，首次登录使用创建的超级用户即可，之后可以按照自己的需求划分组和用户，权限划分在安全菜单中。</p>
+<p>打开 superset 可以看到其菜单分步如下：</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/3e40ac997b07670e80afe65eff9e7030.png" alt=""></p>
+<p>superset 支持国际化，可在右上角切换自己熟悉的语言，这里我们以中文为例。</p>
+<p>在数据源–&gt;数据库列表中添加需要使用的数据库如下：</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/117068961a97e7c4f0c27c83bba4e692.png" alt=""></p>
+<p><code>SQLAlchemy URI</code> 选项是我们需要填写的数据库连接，superset 使用 mysql 时默认使用 mysqlclient 做驱动连接数据库，而且还提供了 sqlalchemy 的文档连接，<code>mysql://scott:tiger@localhost/foo</code> ，需要注意的<strong>如果 passwd 中包含特殊字符，需要进行转义进行 urlquote</strong>。</p>
+<p>填写成功之后点击测试，如果弹窗显示 Ok 表示连接建立成功，此时可以看到数据库的 tables 会在表单下方出现，点击保存。</p>
+<p>如果添加数据库保存报 <a href="https://stackoverflow.com/questions/454854/no-module-named-mysqldb" target="_blank" rel="external">No module named MySQLdb</a> ，安装 <strong>pip install mysql-python</strong></p>
+<p>数据库配置成功之后开始配置需要使用的 table，在数据源–&gt;数据表添加需要使用的 table 如下：</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/569ad0be9a27ab7637b309f717a0e407.png" alt=""></p>
+<p>保存之后回到 table 页，编辑刚才添加的 table，切换到列列表视图，可以看到 table 中包含的所有的列:</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/84667f739b457c74a590cd17dd790a64.png" alt=""></p>
+<p>在此可以配置需要查询的字段、聚合字段等。</p>
+<h2 id="探索数据"><a href="#探索数据" class="headerlink" title="探索数据"></a>探索数据</h2><p>table 配置完成就可以使用 superset 进行数据查询和展示了，在 table 页直接点击 table，进入 table explore 页：</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/dfcde94661de7005dfdea2731965d11c.png" alt=""></p>
+<p>在左侧选项栏依次是：</p>
+<ul>
+<li>数据源和图表类型</li>
+<li>查询时间</li>
+<li>group by 语句</li>
+<li>SQL 过滤条件</li>
+</ul>
+<p>Time 可选 since 和 until ，表示开始和结束区间，如果图表类型支持自定义信息，还会有图表展示的配置。</p>
+<p>配置完成之后点击左上角的 Run query 即可查看结果。</p>
+<p>点击左上角 save 可以保存当前的结果为一个 slice，slice 在 superset 中就是一个数据结果集的展示，多个 slice 可以组成一个 dashboard，可以根据不同人员对数据的不同需求建立不同的  dashboard。</p>
+<p><img src="https://martin-upload.b0.upaiyun.com/web/2017/11/4ab9dc16f5dfe1826a463958d1ce9efe.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Superset 正在逐步应用到生产环境中，后续会我会根据团队的使用情况继续介绍更多 superset 的使用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/13/airflow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -337,8 +718,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -387,37 +768,36 @@
       
         
           
-            <h1 id="Airflow-是什么"><a href="#Airflow-是什么" class="headerlink" title="Airflow 是什么"></a>Airflow 是什么</h1><p>airflow 是 Airbnb 开发的用于工作流管理的开源项目，现在 Apache 下做孵化，地址是 <a href="https://github.com/apache/incubator-airflow。" target="_blank" rel="external">https://github.com/apache/incubator-airflow。</a></p>
+            <h1 id="Airflow-是什么"><a href="#Airflow-是什么" class="headerlink" title="Airflow 是什么"></a>Airflow 是什么</h1><p>Airflow 是 Airbnb 开发的用于工作流管理的开源项目，自带 UI，现在 Apache 下做孵化，地址是<a href="https://github.com/apache/incubator-airflow" target="_blank" rel="external">https://github.com/apache/incubator-airflow</a></p>
+<p><img src="http://airflow.incubator.apache.org/_images/airflow.gif" alt="airflow"></p>
 <h1 id="Airflow-解决什么问题"><a href="#Airflow-解决什么问题" class="headerlink" title="Airflow 解决什么问题"></a>Airflow 解决什么问题</h1><p>Airflow 主要解决的问题可以参考 Airbnb 官方的博客: <a href="https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8" target="_blank" rel="external">airflow-a-workflow-management-platform</a>，简单来说就是管理和调度各种离线定时 Job ，可以替代 crontab。</p>
 <p>当 cron job 规模达到数百上千时，其对人的要求将会非常高的，如果你的团队经历过这样的事情，应该能体会其中痛苦，所以使用类似 airflow 这样的工具代替 cron 来做定时任务将会极大提高工作效率。</p>
-<h1 id="开始使用-airflow-之前需要知道和准备的"><a href="#开始使用-airflow-之前需要知道和准备的" class="headerlink" title="开始使用 airflow 之前需要知道和准备的"></a>开始使用 airflow 之前需要知道和准备的</h1><p>Airflow 在 pip 上已经更名为 <code>apache-airflow</code>，下载最新版请使用后者 <code>pip install apache-airflow</code></p>
-<p>Airflow 1.8 版本依赖的是 MySQL 5.6 以上，5.7 以下报 <code>1071, u&#39;Specified key was too long; max key length is 767 bytes</code>，如果你使用 MySQL 作为你的 airflow backend 请升级你的 MySQL 到最新版</p>
-<p>MySQL 5.6 升级到 5.7 在使用 airflow 时会报 <code>1146, u&quot;Table &#39;performance_schema.session_variables&#39; doesn&#39;t exist&quot;</code>，执行 <code>mysql_upgrade -u root -p --force</code> 解决</p>
-<p>Airflow 的 mysql driver 使用的是 mysqlclient <code>mysql://root:@127.0.0.1/sqlalchemy_lab?charset=utf8</code>，如果使用其他 driver 将报 syntax error</p>
+<h1 id="开始使用-airflow-之前需要知道和准备的"><a href="#开始使用-airflow-之前需要知道和准备的" class="headerlink" title="开始使用 airflow 之前需要知道和准备的"></a>开始使用 airflow 之前需要知道和准备的</h1><p>Airflow 在 pip 上已经更名为 <code>apache-airflow</code>，下载最新版请使用后者 <code>pip install apache-airflow</code>。</p>
+<p>Airflow 1.8 版本依赖的是 MySQL 5.6 以上，5.7 以下报 <code>1071, u&#39;Specified key was too long; max key length is 767 bytes</code>，如果你使用 MySQL 作为你的 airflow backend 请升级你的 MySQL 到最新版。</p>
+<p>MySQL 5.6 升级到 5.7 在使用 airflow 时会报 <code>1146, u&quot;Table &#39;performance_schema.session_variables&#39; doesn&#39;t exist&quot;</code>，执行 <code>mysql_upgrade -u root -p --force</code> 解决。</p>
+<p>Airflow 的 mysql driver 使用的是 mysqlclient <code>mysql://root:@127.0.0.1/sqlalchemy_lab?charset=utf8</code>，如果使用其他 driver 将报 syntax error。</p>
 <h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>Airflow 中最基本的两个概念是：DAG 和 task。DAG 的全称是 Directed Acyclic Graph 是所有你想执行的任务的集合，在这个集合中你定义了他们的依赖关系，一个 DAG 是指一个 DAG object，一个 DAG object 可以在 Python 脚本中配置完成。</p>
 <p>比如一个简单的的 DAG 包含三个 task：A、B、C，A 执行成功之后 B 才能执行，C 不依赖 A 和 B 即可执行。在这个简单的 DAG 中 A B C 可以是任何你想要执行的任务。</p>
 <p>DAG 的定义使用 Python 完成的，其实就是一个 Python 文件，存放在 DAG 目录，Airflow 会动态的从这个目录构建 DAG object，每个 DAG object 代表了一个 workflow，每个 workflow 都可以包含任意个 task。</p>
 <h1 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h1><p>Airflow 是基于 Python 构建的，可以很容易用 pip 安装使用，<code>pip install apache-airflow</code>，默认情况下 airflow 会在 <code>~/airflow</code> 目录存放相关配置。</p>
-<p>Airflow 提供了一些列命令来完成 airflow 的初始化工作来完成 airflow 的正确使用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">airflow initdb</div><div class="line">airflow webserver</div><div class="line">airflow scheduler</div></pre></td></tr></table></figure>
+<p>Airflow 提供了一些列命令来完成 airflow 的初始化工作来和它的正确使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 在 airflow 目录初始化数据库和 airflow 配置</div><div class="line">airflow initdb</div><div class="line"># 启动 airflow web</div><div class="line">airflow webserver</div><div class="line"># 开始调度</div><div class="line">airflow scheduler</div></pre></td></tr></table></figure>
 <p>更详细的信息请参考文档 <a href="http://airflow.incubator.apache.org/" target="_blank" rel="external">http://airflow.incubator.apache.org/</a></p>
 <h1 id="第一个-DAG"><a href="#第一个-DAG" class="headerlink" title="第一个 DAG"></a>第一个 DAG</h1><p>DAG 的配置用 Python 完成像这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Code that goes along with the Airflow tutorial located at:</div><div class="line">https://github.com/airbnb/airflow/blob/master/airflow/example_dags/tutorial.py</div><div class="line">"""</div><div class="line"><span class="keyword">from</span> airflow <span class="keyword">import</span> DAG</div><div class="line"><span class="keyword">from</span> airflow.operators.bash_operator <span class="keyword">import</span> BashOperator</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</div><div class="line"></div><div class="line"></div><div class="line">default_args = &#123;</div><div class="line">    <span class="string">'owner'</span>: <span class="string">'airflow'</span>,</div><div class="line">    <span class="string">'depends_on_past'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'start_date'</span>: datetime(<span class="number">2015</span>, <span class="number">6</span>, <span class="number">1</span>),</div><div class="line">    <span class="string">'email'</span>: [<span class="string">'airflow@airflow.com'</span>],</div><div class="line">    <span class="string">'email_on_failure'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'email_on_retry'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'retries'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'retry_delay'</span>: timedelta(minutes=<span class="number">5</span>),</div><div class="line">    <span class="comment"># 'queue': 'bash_queue',</span></div><div class="line">    <span class="comment"># 'pool': 'backfill',</span></div><div class="line">    <span class="comment"># 'priority_weight': 10,</span></div><div class="line">    <span class="comment"># 'end_date': datetime(2016, 1, 1),</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">dag = DAG(<span class="string">'tutorial'</span>, default_args=default_args)</div><div class="line"></div><div class="line"><span class="comment"># t1, t2 and t3 are examples of tasks created by instantiating operators</span></div><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">templated_command = <span class="string">"""</span></div><div class="line">    &#123;% for i in range(5) %&#125;</div><div class="line">        echo "&#123;&#123; ds &#125;&#125;"</div><div class="line">        echo "&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;"</div><div class="line">        echo "&#123;&#123; params.my_param &#125;&#125;"</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">"""</div><div class="line"></div><div class="line">t3 = BashOperator(</div><div class="line">    task_id=<span class="string">'templated'</span>,</div><div class="line">    bash_command=templated_command,</div><div class="line">    params=&#123;<span class="string">'my_param'</span>: <span class="string">'Parameter I passed in'</span>&#125;,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2.set_upstream(t1)</div><div class="line">t3.set_upstream(t1)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Code that goes along with the Airflow tutorial located at:</div><div class="line">https://github.com/airbnb/airflow/blob/master/airflow/example_dags/tutorial.py</div><div class="line">"""</div><div class="line"><span class="keyword">from</span> airflow <span class="keyword">import</span> DAG</div><div class="line"><span class="keyword">from</span> airflow.operators.bash_operator <span class="keyword">import</span> BashOperator</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</div><div class="line"></div><div class="line"></div><div class="line">default_args = &#123;</div><div class="line">    <span class="string">'owner'</span>: <span class="string">'airflow'</span>,</div><div class="line">    <span class="string">'depends_on_past'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'start_date'</span>: datetime(<span class="number">2015</span>, <span class="number">6</span>, <span class="number">1</span>),</div><div class="line">    <span class="string">'email'</span>: [<span class="string">'airflow@airflow.com'</span>],</div><div class="line">    <span class="string">'email_on_failure'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'email_on_retry'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'retries'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'retry_delay'</span>: timedelta(minutes=<span class="number">5</span>),</div><div class="line">    <span class="comment"># 'queue': 'bash_queue',</span></div><div class="line">    <span class="comment"># 'pool': 'backfill',</span></div><div class="line">    <span class="comment"># 'priority_weight': 10,</span></div><div class="line">    <span class="comment"># 'end_date': datetime(2016, 1, 1),</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">dag = DAG(<span class="string">'tutorial'</span>, default_args=default_args, schedule_interval=timedelta(<span class="number">1</span>))</div><div class="line"></div><div class="line"><span class="comment"># t1, t2 and t3 are examples of tasks created by instantiating operators</span></div><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">templated_command = <span class="string">"""</span></div><div class="line">    &#123;% for i in range(5) %&#125;</div><div class="line">        echo "&#123;&#123; ds &#125;&#125;"</div><div class="line">        echo "&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;"</div><div class="line">        echo "&#123;&#123; params.my_param &#125;&#125;"</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">"""</div><div class="line"></div><div class="line">t3 = BashOperator(</div><div class="line">    task_id=<span class="string">'templated'</span>,</div><div class="line">    bash_command=templated_command,</div><div class="line">    params=&#123;<span class="string">'my_param'</span>: <span class="string">'Parameter I passed in'</span>&#125;,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2.set_upstream(t1) <span class="comment"># t2 依赖 t1</span></div><div class="line">t3.set_upstream(t1)</div></pre></td></tr></table></figure>
 <p>DAG 脚本的目的只是定义 DAG 的配置，并不包含任何的数据处理，在这里 operator 就是 task。</p>
 <h1 id="DAG-的实例化"><a href="#DAG-的实例化" class="headerlink" title="DAG 的实例化"></a>DAG 的实例化</h1><p>一个 DAG 脚本是由 DAG object 的实例化和对应的 operator 组成的，除此之外我们还可以定义默认的参数提供给每个任务。</p>
 <p>DAG 对象实例化可以根据我们的需要提供对应的初始化参数，实例化 DAG 对象需要提供唯一的 dag_id：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dag = DAG(</div><div class="line">    <span class="string">'tutorial'</span>, default_args=default_args, schedule_interval=timedelta(<span class="number">1</span>))</div></pre></td></tr></table></figure>
-<h1 id="task-的实例化"><a href="#task-的实例化" class="headerlink" title="task 的实例化"></a>task 的实例化</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div></pre></td></tr></table></figure>
+<h1 id="Task-的实例化"><a href="#Task-的实例化" class="headerlink" title="Task 的实例化"></a>Task 的实例化</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div></pre></td></tr></table></figure>
 <p>task 对象的定义的就是 operator 的实例化，operator 有 task_id，用来区分任务，可以按照需要定制 bash_command，也可以传递参数等。</p>
-<h1 id="task-的依赖"><a href="#task-的依赖" class="headerlink" title="task 的依赖"></a>task 的依赖</h1><p>task 之间是能相互建立依赖的，形如：</p>
+<h1 id="Task-的依赖"><a href="#Task-的依赖" class="headerlink" title="Task 的依赖"></a>Task 的依赖</h1><p>Task 之间是能相互建立依赖的，形如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">t2.set_upstream(t1)</div><div class="line"></div><div class="line"><span class="comment"># This means that t2 will depend on t1</span></div><div class="line"><span class="comment"># running successfully to run</span></div><div class="line"><span class="comment"># It is equivalent to</span></div><div class="line"><span class="comment"># t1.set_downstream(t2)</span></div><div class="line"></div><div class="line">t3.set_upstream(t1)</div><div class="line"></div><div class="line"><span class="comment"># all of this is equivalent to</span></div><div class="line"><span class="comment"># dag.set_dependency('print_date', 'sleep')</span></div><div class="line"><span class="comment"># dag.set_dependency('print_date', 'templated')</span></div></pre></td></tr></table></figure>
 <p>Airflow 会自动检测环形依赖以防止 task 无法工作的情况出现，更复杂的情况请参考文档。</p>
-<h1 id="执行和测试"><a href="#执行和测试" class="headerlink" title="执行和测试"></a>执行和测试</h1><p>和 airflow.cfg 同级目录下建立 dag 目录，用来存放第一个 dag 脚本</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Code that goes along with the Airflow located at:</div><div class="line">http://airflow.readthedocs.org/en/latest/tutorial.html</div><div class="line">"""</div><div class="line"><span class="keyword">from</span> airflow <span class="keyword">import</span> DAG</div><div class="line"><span class="keyword">from</span> airflow.operators.bash_operator <span class="keyword">import</span> BashOperator</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</div><div class="line"></div><div class="line"></div><div class="line">default_args = &#123;</div><div class="line">    <span class="string">'owner'</span>: <span class="string">'airflow'</span>,</div><div class="line">    <span class="string">'depends_on_past'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'start_date'</span>: datetime(<span class="number">2015</span>, <span class="number">6</span>, <span class="number">1</span>),</div><div class="line">    <span class="string">'email'</span>: [<span class="string">'airflow@airflow.com'</span>],</div><div class="line">    <span class="string">'email_on_failure'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'email_on_retry'</span>: <span class="keyword">False</span>,</div><div class="line">    <span class="string">'retries'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'retry_delay'</span>: timedelta(minutes=<span class="number">5</span>),</div><div class="line">    <span class="comment"># 'queue': 'bash_queue',</span></div><div class="line">    <span class="comment"># 'pool': 'backfill',</span></div><div class="line">    <span class="comment"># 'priority_weight': 10,</span></div><div class="line">    <span class="comment"># 'end_date': datetime(2016, 1, 1),</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">dag = DAG(</div><div class="line">    <span class="string">'tutorial'</span>, default_args=default_args, schedule_interval=timedelta(<span class="number">1</span>))</div><div class="line"></div><div class="line"><span class="comment"># t1, t2 and t3 are examples of tasks created by instantiating operators</span></div><div class="line">t1 = BashOperator(</div><div class="line">    task_id=<span class="string">'print_date'</span>,</div><div class="line">    bash_command=<span class="string">'date'</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2 = BashOperator(</div><div class="line">    task_id=<span class="string">'sleep'</span>,</div><div class="line">    bash_command=<span class="string">'sleep 5'</span>,</div><div class="line">    retries=<span class="number">3</span>,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">templated_command = <span class="string">"""</span></div><div class="line">    &#123;% for i in range(5) %&#125;</div><div class="line">        echo "&#123;&#123; ds &#125;&#125;"</div><div class="line">        echo "&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;"</div><div class="line">        echo "&#123;&#123; params.my_param &#125;&#125;"</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">"""</div><div class="line"></div><div class="line">t3 = BashOperator(</div><div class="line">    task_id=<span class="string">'templated'</span>,</div><div class="line">    bash_command=templated_command,</div><div class="line">    params=&#123;<span class="string">'my_param'</span>: <span class="string">'Parameter I passed in'</span>&#125;,</div><div class="line">    dag=dag)</div><div class="line"></div><div class="line">t2.set_upstream(t1)</div><div class="line">t3.set_upstream(t1)</div></pre></td></tr></table></figure>
-<p>然后执行 <code>python tutorial.py</code> ，如果没有报错说明 tutorial 建立成功了。</p>
-<h1 id="airflow-的命令行"><a href="#airflow-的命令行" class="headerlink" title="airflow 的命令行"></a>airflow 的命令行</h1><p>airflow 提供了一些列的命令行用来查看 dag 和 task</p>
+<h1 id="执行和测试"><a href="#执行和测试" class="headerlink" title="执行和测试"></a>执行和测试</h1><p>和 airflow.cfg 同级目录下建立 dag 目录，用来存放第一个 DAG 脚本，然后执行 <code>python tutorial.py</code> ，如果没有报错说明 tutorial 建立成功了。</p>
+<h1 id="Airflow-的命令行"><a href="#Airflow-的命令行" class="headerlink" title="Airflow 的命令行"></a>Airflow 的命令行</h1><p>Airflow 提供了一些列的命令行用来查看 DAG 和 task</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># print the list of active DAGs</div><div class="line">airflow list_dags</div><div class="line"></div><div class="line"># prints the list of tasks the &quot;tutorial&quot; dag_id</div><div class="line">airflow list_tasks tutorial</div><div class="line"></div><div class="line"># prints the hierarchy of tasks in the tutorial DAG</div><div class="line">airflow list_tasks tutorial --tree</div></pre></td></tr></table></figure>
-<h1 id="测试任务的执行"><a href="#测试任务的执行" class="headerlink" title="测试任务的执行"></a>测试任务的执行</h1><p>执行任务很简单，指定 dag 并去指定 task 和执行的日期</p>
+<h1 id="测试任务的执行"><a href="#测试任务的执行" class="headerlink" title="测试任务的执行"></a>测试任务的执行</h1><p>执行任务很简单，指定 DAG 并去指定 task 和执行的日期</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># command layout: command subcommand dag_id task_id date</div><div class="line"></div><div class="line"># testing print_date</div><div class="line">airflow test tutorial print_date 2015-06-01</div><div class="line"></div><div class="line"># testing sleep</div><div class="line">airflow test tutorial sleep 2015-06-01</div></pre></td></tr></table></figure>
 <p>test 命令会执行任务并且输出到控制台，不会把任务的执行状态进行持久化</p>
 <h1 id="执行任务和并记录状态"><a href="#执行任务和并记录状态" class="headerlink" title="执行任务和并记录状态"></a>执行任务和并记录状态</h1><p>执行任务在 Airflow 中称之为 backfill，以 backfill 执行会真正开始追踪任务的执行状态和依赖，并且会记录日志</p>
@@ -431,6 +811,7 @@
 <li><a href="http://airflow.incubator.apache.org/" target="_blank" rel="external">http://airflow.incubator.apache.org/</a></li>
 <li><a href="https://github.com/apache/incubator-airflow" target="_blank" rel="external">https://github.com/apache/incubator-airflow</a></li>
 <li><a href="https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8" target="_blank" rel="external">https://medium.com/airbnb-engineering/airflow-a-workflow-management-platform-46318b977fd8</a></li>
+<li>Airflow 测试 demo <a href="https://github.com/zhyq0826/airflow" target="_blank" rel="external">https://github.com/zhyq0826/airflow</a></li>
 </ul>
 
           
@@ -1774,361 +2155,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/12/go-interface-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/12/go-interface-2/" itemprop="url">Go interface 详解(二) ：定义和使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T23:45:03+08:00">
-                Oct 12 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/12/go-interface-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/12/go-interface-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
-</blockquote>
-<h1 id="定义-interface"><a href="#定义-interface" class="headerlink" title="定义 interface"></a>定义 interface</h1><p>正如上文所说，Go interface 是一种类型，一个 interface type 指定了一组 method 集合，如果说一个 concrete type 是一个 interface 的 instance，我们说这个 concrete type 实现了这个 interface 的所有方法。</p>
-<p>在 Go 的标准库 <code>io</code> package 中定义了很多有用的 interface：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Closer <span class="keyword">interface</span> &#123;</div><div class="line">    Close() error</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><code>Reader</code> 代表任何可以去读 byte 的类型，类似的，<code>Writer</code> 代表任何可以写入 byte 的类型，<code>Closer</code> 代表任何可以执行 close 的类型。除此之外，我们还能在 io package 中发现其它<strong>组合式的 interface</strong>：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Reader</div><div class="line">    Writer</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriteCloser <span class="keyword">interface</span> &#123;</div><div class="line">    Reader</div><div class="line">    Writer</div><div class="line">    Closer</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><code>ReaderWrite</code> 和 <code>ReadWriteCloser</code> 的语法形式和 struct 的 embedding 非常类似，被称为 <code>embedding interface</code>，通过这种形式可以便捷的实现一个新的 interface 而不必写出 interface 包含的所有 method。</p>
-<p>注意 Go 标准库中对组合 interface 的命名，你应该总是遵循这样的规则。</p>
-<p><code>ReaderWrite</code> 也可以用非 embedding 的形式实现：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>或者是二者的组合：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">    Writer</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>以上的几种实现都是等价的，但是我们更推崇使用 embedding 的形式。</p>
-<p>说完了 interface type 的定义，再说说 interface type 使用。</p>
-<h1 id="实现-interface-并使用"><a href="#实现-interface-并使用" class="headerlink" title="实现 interface 并使用"></a>实现 interface 并使用</h1><p>如果一个 concrete type 实现了某个 interface type，其值可以赋值给 interface type 的 instance。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w io.Writer</div><div class="line">w = os.Stdout</div><div class="line">w = <span class="built_in">new</span>(<span class="keyword">byte</span>.Buffer)</div><div class="line"></div><div class="line"><span class="keyword">var</span> rwc io.ReadWriteCloser</div><div class="line">rwc = os.Stdout</div></pre></td></tr></table></figure></p>
-<p>甚至赋值符号右边也可以是 interface instance，只要它们的关系满足<strong>左边 interface type method 集合是右边 interface type method 集合的子集</strong>即可：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w = rwc</div></pre></td></tr></table></figure></p>
-<p><code>w</code> method 集合 <code>{Writer}</code> 是 <code>rwc</code> method 集合 <code>{Reader, Writer, Closer}</code> 的子集。</p>
-<p>在 Struct 中，在一个类型 T 上直接调用 receiver 是 <code>*T</code> 的 method 是合法的，只要 T 是以 variable 的形势存在，看个例子：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> T <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *T)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">""</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这样是可以的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t T</div><div class="line">t.String()</div></pre></td></tr></table></figure></p>
-<p>但是这样不行：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">T&#123;&#125;.String()</div></pre></td></tr></table></figure></p>
-<p>Struct 这个微妙的细节也体现在 interface 的赋值上，只有 <code>*T</code> 实现了 <code>String</code> 所以 <code>*T</code> 才能满足 interface <code>Stringer</code>，这样是可以的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ fmt.Stringer = &amp;t</div></pre></td></tr></table></figure></p>
-<p>但是这样是不行的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// T does not implement fmt.Stringer (String method has pointer)</span></div><div class="line"><span class="keyword">var</span> _ fmt.Stringer = t</div></pre></td></tr></table></figure></p>
-<p>这也是<a href="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/">理解 go interface 的 5 个关键点</a>第5点所讲到的。</p>
-<p>虽然 interface type 和 concrete type 之间的关系是隐式的 implicitly，但是在某些情况下显式地声明 concrete type 和 interface 的关系则很有用：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ io.Writer = <span class="built_in">new</span>(bytes.Buffer)</div></pre></td></tr></table></figure></p>
-<p><code>new(bytes.Buffer)</code> 返回 <code>bytes.Buffer</code> 的 pointer，这正是实现 <code>Writer</code> 需要的类型。</p>
-<p>即使 <code>nil</code> 我们也可以显式地进行转换:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ io.Writer = (*bytes.Buffer)(<span class="literal">nil</span>)</div></pre></td></tr></table></figure></p>
-<h1 id="Empty-interface"><a href="#Empty-interface" class="headerlink" title="Empty interface"></a>Empty interface</h1><p>还有一种很重要的 interface 需要我们注意：<strong>interface{}</strong>，empty interface 没有任何 method。</p>
-<p>Method 集合是 interface type 和 concrete type 之间关系的契约，也就是说 interface 向 concrete type 提出了要求说，你必须提供我要求的这些方法才能使用我，但是 empty interface 没有提供任何方法是不是不需要任何方法就可以使用它？的确如此。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> any <span class="keyword">interface</span>&#123;&#125;</div><div class="line">any = <span class="literal">true</span></div><div class="line">any = <span class="number">12.34</span></div><div class="line">any = <span class="string">"hello"</span></div><div class="line">any = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"one"</span>: <span class="number">1</span>&#125;</div><div class="line">any = <span class="built_in">new</span>(bytes.Buffer)</div></pre></td></tr></table></figure></p>
-<p>Empty interface 可以让任何类型赋值，但是它没有任何方法该如何真正使用它？这就涉及到 type assertion ，从 <code>interface{}</code> 获取真正有用的 concrete value，后面我们会讲到。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Go interface 提供了在抽象层的组合和使用，只要你愿意你总是能找到一种方法可以在不修改已有包代码的情况下组合使用包中提供的任何功能。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/10/go-interface-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/10/go-interface-1/" itemprop="url">Go interface 详解(一) ：介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T22:52:51+08:00">
-                Oct 10 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/10/go-interface-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/10/go-interface-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
-</blockquote>
-<p>Go 中的 interface 是一种类型，更准确的说是一种抽象类型 abstract type，一个 interface 就是包含了一系列行为的 method 集合，interface 的定义很简单：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Go 中的 interface 不同于其它语言，它是隐式的 implicitly，这意味着对于一个已有类型，你可以不用更改任何代码就可以让其满足某个 interface。</p>
-<p>如果一个 concrete type 实现了某个 interface，我们说这个 concrete type 实现了 interface 包含的所有 method，<strong>必须是所有的 method</strong>。</p>
-<p>在 Go 的标准库 <code>fmt</code> 中有一系列的方法可以很好的诠释 interface 是如何应用到实践当中的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> fmt</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Fprintf</span><span class="params">(w io.Writer, format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span></div><div class="line"></div><div class="line"><span class="title">func</span> <span class="title">Printf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span> &#123;</div><div class="line">    <span class="keyword">return</span> Fprintf(os.Stdout, format, args...)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sprintf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> buf bytes.Buffer</div><div class="line">    Fprintf(&amp;buf, format, args...)</div><div class="line">    <span class="keyword">return</span> buf.String()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>Fprintf</code> 中的前缀 <code>F</code> 表示 <code>File</code>，意思是格式化的输出被输出到函数指定的第一个 <code>File</code> 类型的参数中。</p>
-<p>在 <code>Printf</code> 函数中，调用 <code>Fprintf</code> 时指定的输出是标准输出，这正是 <code>Printf</code> 的功能：Printf formats according to a format specifier and writes to standard output，根据指定的格式化要求输出到标准输出，<code>os.Stdout</code> 的类型是 <code>*os.File</code> 。</p>
-<p>同样在 <code>Sprintf</code> 函数中，调用 <code>Fprintf</code> 时指定的输出是一个指向某个 memory buffer 的指针，其类似一个 <code>*os.File</code>。</p>
-<p>虽然 <code>bytes.Buffer</code> 和 <code>os.Stdout</code> 是不同的，但是它们都可以被用于调用同一个函数 <code>Fprintf</code>，就是因为 <code>Fprintf</code> 的第一个参数是接口类型 <code>io.Writer</code> ，而 <code>bytes.Buffer</code> 和 <code>os.Stdout</code> 都实现了这个 interface，即它们都实现了 <code>Write</code> 这个 method，这个 interface 并不是一个 <code>File</code> 却完成了类似 <code>File</code>的功能。</p>
-<p><code>Fprintf</code> 其实并不关心它的第一个参数是一个 file 还是一段 memory，它只是调用了 <code>Write</code> method。这正是 interface 所关注的，<strong>只在乎行为，不在乎其值</strong>，这种能力让我们可以非常自由的向 <code>Fprintf</code> 传递任何满足 <code>io.Writer</code> 的 concrete type，这是 Go interface 带来的 <code>substitutability</code> 可替代性，object-oriented programming 的一种重要特性。</p>
-<p>看个例子：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> ByteCounter <span class="keyword">int</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *ByteCounter)</span> <span class="title">Write</span><span class="params">(p []<span class="keyword">byte</span>)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</div><div class="line">    *c += ByteCounter(<span class="built_in">len</span>(p)) <span class="comment">// convert int to ByteCounter</span></div><div class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(p), <span class="literal">nil</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> c ByteCounter</div><div class="line">    c.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</div><div class="line">    fmt.Println(c) <span class="comment">// 5  #1</span></div><div class="line">    fmt.Fprintf(&amp;c, <span class="string">"hello"</span>) #<span class="number">2</span> </div><div class="line">    fmt.Println(c) <span class="comment">// 10  #3</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>ByteCounter</code> 实现了 <code>Write</code> method，它满足 <code>io.Writer</code> interface，<code>Write</code> method 计算传给它的 byte slice 的长度并且赋值给自身，所以 <code>#1</code> 输出到标准输出的是它的值 5，正如前文所言，调用 <code>fmt.Fprintf</code> 时再次调用了 c 的 <code>Write</code> method，所以 <code>#3</code> 输出是 10。</p>
-<p>这就是 Go 中的 interface 所具有的最基本的功能：作为一种 abstract type，实现各种 concrete type 的行为统一。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2177,7 +2208,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2188,7 +2219,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2199,7 +2230,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

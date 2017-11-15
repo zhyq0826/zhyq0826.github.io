@@ -283,6 +283,356 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/12/go-interface-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/12/go-interface-2/" itemprop="url">Go interface 详解(二) ：定义和使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T23:45:03+08:00">
+                Oct 12 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/12/go-interface-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/12/go-interface-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
+</blockquote>
+<h1 id="定义-interface"><a href="#定义-interface" class="headerlink" title="定义 interface"></a>定义 interface</h1><p>正如上文所说，Go interface 是一种类型，一个 interface type 指定了一组 method 集合，如果说一个 concrete type 是一个 interface 的 instance，我们说这个 concrete type 实现了这个 interface 的所有方法。</p>
+<p>在 Go 的标准库 <code>io</code> package 中定义了很多有用的 interface：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Closer <span class="keyword">interface</span> &#123;</div><div class="line">    Close() error</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Reader</code> 代表任何可以去读 byte 的类型，类似的，<code>Writer</code> 代表任何可以写入 byte 的类型，<code>Closer</code> 代表任何可以执行 close 的类型。除此之外，我们还能在 io package 中发现其它<strong>组合式的 interface</strong>：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Reader</div><div class="line">    Writer</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriteCloser <span class="keyword">interface</span> &#123;</div><div class="line">    Reader</div><div class="line">    Writer</div><div class="line">    Closer</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>ReaderWrite</code> 和 <code>ReadWriteCloser</code> 的语法形式和 struct 的 embedding 非常类似，被称为 <code>embedding interface</code>，通过这种形式可以便捷的实现一个新的 interface 而不必写出 interface 包含的所有 method。</p>
+<p>注意 Go 标准库中对组合 interface 的命名，你应该总是遵循这样的规则。</p>
+<p><code>ReaderWrite</code> 也可以用非 embedding 的形式实现：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>或者是二者的组合：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> ReadWriter <span class="keyword">interface</span> &#123;</div><div class="line">    Read(p []<span class="keyword">byte</span>)(n intm err error)</div><div class="line">    Writer</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上的几种实现都是等价的，但是我们更推崇使用 embedding 的形式。</p>
+<p>说完了 interface type 的定义，再说说 interface type 使用。</p>
+<h1 id="实现-interface-并使用"><a href="#实现-interface-并使用" class="headerlink" title="实现 interface 并使用"></a>实现 interface 并使用</h1><p>如果一个 concrete type 实现了某个 interface type，其值可以赋值给 interface type 的 instance。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w io.Writer</div><div class="line">w = os.Stdout</div><div class="line">w = <span class="built_in">new</span>(<span class="keyword">byte</span>.Buffer)</div><div class="line"></div><div class="line"><span class="keyword">var</span> rwc io.ReadWriteCloser</div><div class="line">rwc = os.Stdout</div></pre></td></tr></table></figure></p>
+<p>甚至赋值符号右边也可以是 interface instance，只要它们的关系满足<strong>左边 interface type method 集合是右边 interface type method 集合的子集</strong>即可：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">w = rwc</div></pre></td></tr></table></figure></p>
+<p><code>w</code> method 集合 <code>{Writer}</code> 是 <code>rwc</code> method 集合 <code>{Reader, Writer, Closer}</code> 的子集。</p>
+<p>在 Struct 中，在一个类型 T 上直接调用 receiver 是 <code>*T</code> 的 method 是合法的，只要 T 是以 variable 的形势存在，看个例子：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> T <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *T)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">""</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样是可以的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t T</div><div class="line">t.String()</div></pre></td></tr></table></figure></p>
+<p>但是这样不行：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">T&#123;&#125;.String()</div></pre></td></tr></table></figure></p>
+<p>Struct 这个微妙的细节也体现在 interface 的赋值上，只有 <code>*T</code> 实现了 <code>String</code> 所以 <code>*T</code> 才能满足 interface <code>Stringer</code>，这样是可以的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ fmt.Stringer = &amp;t</div></pre></td></tr></table></figure></p>
+<p>但是这样是不行的：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// T does not implement fmt.Stringer (String method has pointer)</span></div><div class="line"><span class="keyword">var</span> _ fmt.Stringer = t</div></pre></td></tr></table></figure></p>
+<p>这也是<a href="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/">理解 go interface 的 5 个关键点</a>第5点所讲到的。</p>
+<p>虽然 interface type 和 concrete type 之间的关系是隐式的 implicitly，但是在某些情况下显式地声明 concrete type 和 interface 的关系则很有用：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ io.Writer = <span class="built_in">new</span>(bytes.Buffer)</div></pre></td></tr></table></figure></p>
+<p><code>new(bytes.Buffer)</code> 返回 <code>bytes.Buffer</code> 的 pointer，这正是实现 <code>Writer</code> 需要的类型。</p>
+<p>即使 <code>nil</code> 我们也可以显式地进行转换:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _ io.Writer = (*bytes.Buffer)(<span class="literal">nil</span>)</div></pre></td></tr></table></figure></p>
+<h1 id="Empty-interface"><a href="#Empty-interface" class="headerlink" title="Empty interface"></a>Empty interface</h1><p>还有一种很重要的 interface 需要我们注意：<strong>interface{}</strong>，empty interface 没有任何 method。</p>
+<p>Method 集合是 interface type 和 concrete type 之间关系的契约，也就是说 interface 向 concrete type 提出了要求说，你必须提供我要求的这些方法才能使用我，但是 empty interface 没有提供任何方法是不是不需要任何方法就可以使用它？的确如此。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> any <span class="keyword">interface</span>&#123;&#125;</div><div class="line">any = <span class="literal">true</span></div><div class="line">any = <span class="number">12.34</span></div><div class="line">any = <span class="string">"hello"</span></div><div class="line">any = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"one"</span>: <span class="number">1</span>&#125;</div><div class="line">any = <span class="built_in">new</span>(bytes.Buffer)</div></pre></td></tr></table></figure></p>
+<p>Empty interface 可以让任何类型赋值，但是它没有任何方法该如何真正使用它？这就涉及到 type assertion ，从 <code>interface{}</code> 获取真正有用的 concrete value，后面我们会讲到。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Go interface 提供了在抽象层的组合和使用，只要你愿意你总是能找到一种方法可以在不修改已有包代码的情况下组合使用包中提供的任何功能。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/10/go-interface-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/go-interface-1/" itemprop="url">Go interface 详解(一) ：介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T22:52:51+08:00">
+                Oct 10 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/10/go-interface-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/10/go-interface-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
+</blockquote>
+<p>Go 中的 interface 是一种类型，更准确的说是一种抽象类型 abstract type，一个 interface 就是包含了一系列行为的 method 集合，interface 的定义很简单：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> io</div><div class="line"></div><div class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</div><div class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Go 中的 interface 不同于其它语言，它是隐式的 implicitly，这意味着对于一个已有类型，你可以不用更改任何代码就可以让其满足某个 interface。</p>
+<p>如果一个 concrete type 实现了某个 interface，我们说这个 concrete type 实现了 interface 包含的所有 method，<strong>必须是所有的 method</strong>。</p>
+<p>在 Go 的标准库 <code>fmt</code> 中有一系列的方法可以很好的诠释 interface 是如何应用到实践当中的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> fmt</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Fprintf</span><span class="params">(w io.Writer, format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span></div><div class="line"></div><div class="line"><span class="title">func</span> <span class="title">Printf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">int</span>, error)</span> &#123;</div><div class="line">    <span class="keyword">return</span> Fprintf(os.Stdout, format, args...)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sprintf</span><span class="params">(format <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> buf bytes.Buffer</div><div class="line">    Fprintf(&amp;buf, format, args...)</div><div class="line">    <span class="keyword">return</span> buf.String()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Fprintf</code> 中的前缀 <code>F</code> 表示 <code>File</code>，意思是格式化的输出被输出到函数指定的第一个 <code>File</code> 类型的参数中。</p>
+<p>在 <code>Printf</code> 函数中，调用 <code>Fprintf</code> 时指定的输出是标准输出，这正是 <code>Printf</code> 的功能：Printf formats according to a format specifier and writes to standard output，根据指定的格式化要求输出到标准输出，<code>os.Stdout</code> 的类型是 <code>*os.File</code> 。</p>
+<p>同样在 <code>Sprintf</code> 函数中，调用 <code>Fprintf</code> 时指定的输出是一个指向某个 memory buffer 的指针，其类似一个 <code>*os.File</code>。</p>
+<p>虽然 <code>bytes.Buffer</code> 和 <code>os.Stdout</code> 是不同的，但是它们都可以被用于调用同一个函数 <code>Fprintf</code>，就是因为 <code>Fprintf</code> 的第一个参数是接口类型 <code>io.Writer</code> ，而 <code>bytes.Buffer</code> 和 <code>os.Stdout</code> 都实现了这个 interface，即它们都实现了 <code>Write</code> 这个 method，这个 interface 并不是一个 <code>File</code> 却完成了类似 <code>File</code>的功能。</p>
+<p><code>Fprintf</code> 其实并不关心它的第一个参数是一个 file 还是一段 memory，它只是调用了 <code>Write</code> method。这正是 interface 所关注的，<strong>只在乎行为，不在乎其值</strong>，这种能力让我们可以非常自由的向 <code>Fprintf</code> 传递任何满足 <code>io.Writer</code> 的 concrete type，这是 Go interface 带来的 <code>substitutability</code> 可替代性，object-oriented programming 的一种重要特性。</p>
+<p>看个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> ByteCounter <span class="keyword">int</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *ByteCounter)</span> <span class="title">Write</span><span class="params">(p []<span class="keyword">byte</span>)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</div><div class="line">    *c += ByteCounter(<span class="built_in">len</span>(p)) <span class="comment">// convert int to ByteCounter</span></div><div class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(p), <span class="literal">nil</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> c ByteCounter</div><div class="line">    c.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</div><div class="line">    fmt.Println(c) <span class="comment">// 5  #1</span></div><div class="line">    fmt.Fprintf(&amp;c, <span class="string">"hello"</span>) #<span class="number">2</span> </div><div class="line">    fmt.Println(c) <span class="comment">// 10  #3</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>ByteCounter</code> 实现了 <code>Write</code> method，它满足 <code>io.Writer</code> interface，<code>Write</code> method 计算传给它的 byte slice 的长度并且赋值给自身，所以 <code>#1</code> 输出到标准输出的是它的值 5，正如前文所言，调用 <code>fmt.Fprintf</code> 时再次调用了 c 的 <code>Write</code> method，所以 <code>#3</code> 输出是 10。</p>
+<p>这就是 Go 中的 interface 所具有的最基本的功能：作为一种 abstract type，实现各种 concrete type 的行为统一。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/10/pipenv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1667,400 +2017,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/03/go-channel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/03/go-channel/" itemprop="url">go channel 的基础特性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T22:17:33+08:00">
-                Aug 3 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/03/go-channel/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/03/go-channel/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>此篇介绍 go channel</p>
-</blockquote>
-<h2 id="什么是-goroutine"><a href="#什么是-goroutine" class="headerlink" title="什么是 goroutine"></a>什么是 goroutine</h2><blockquote>
-<p>They’re called goroutines because the existing terms — threads, coroutines, processes, and so on — convey inaccurate connotations. A goroutine has a simple model: it is a function executing in parallel with other goroutines in the same address space. It is lightweight, costing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.</p>
-</blockquote>
-<p>正如官方所言，goroutine 是一个轻量级的执行单元，相比线程开销更小，完全由 Go 语言负责调度，是 Go 支持并发的核心。开启一个 goroutine 非常简单:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">go</span> fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">	time.Sleep(<span class="number">1</span>) <span class="comment">//1</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p> <code>#1</code> 的代码是必须的，这是为了让新开启的 goroutine 有机会得到执行，开启一个 goroutine 之后，后续的代码会继续执行，在上面的例子中后续代码执行完毕程序就终止了，而开启的 goroutine 可能还没开始执行。</p>
-<p>如果尝试去掉 <code>#1</code> 处的代码，程序也可能会正常运行，这是因为恰巧开启的 goroutine 只是简单的执行了一次输出，如果 goroutine 中耗时稍长就会导致只能看到主一句 <code>main function message</code> 。 </p>
-<p>换句话话说，这里的 <code>time.sleep</code> 提供的是一种调度机制，这也是 Go 中 channel 存在的目的：负责消息传递和调度。</p>
-<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><p>Channel 是 Go 中为 goroutine 提供的一种通信机制，channel 是有类型的，而且是有方向的，可以把 channel 类比成 unix 中的 pipe。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">i := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)<span class="comment">//int 类型</span></div><div class="line">s := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)<span class="comment">//字符串类型</span></div><div class="line">r := <span class="built_in">make</span>(&lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)<span class="comment">//只读</span></div><div class="line">w := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- []<span class="keyword">int</span>)<span class="comment">//只写</span></div></pre></td></tr></table></figure>
-<p>Channel 最重要的作用就是传递消息。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">		c &lt;- <span class="number">1</span> <span class="comment">//1</span></div><div class="line">	&#125;()</div><div class="line">	&lt;-c <span class="comment">//2</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>例子中声明了一个 int 类型的 channel，在 goroutine 中在代码 <code>#1</code> 处向 channel 发送了数据 <code>1</code> ，在 main 中 <code>#2</code> 处等待数据的接收，如果 c 中没有数据，代码的执行将发生阻塞，直到 c 中数据接收完毕。这是 channel 最简单的用法之一：同步 ，这种类型的 channel 没有设置容量，称之为 <strong>unbuffered channel</strong>。</p>
-<h2 id="unbuffered-channel-和-buffered-channel"><a href="#unbuffered-channel-和-buffered-channel" class="headerlink" title="unbuffered channel 和 buffered channel"></a>unbuffered channel 和 buffered channel</h2><p>Channel 可以设置容量，表示 channel 允许接收的消息个数，默认的 channel 容量是 0 称为 <strong>unbuffered channel</strong> ，对 unbuffered channel 执行 <strong>读</strong> 操作 value := &lt;-ch 会一直阻塞直到有数据可接收，执行 <strong>写</strong> 操作 ch &lt;- value 也会一直阻塞直到有 goroutine 对 channel 开始执行接收，正因为如此在同一个 goroutine 中使用 unbuffered channel 会造成 deadlock。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	c &lt;- <span class="number">1</span></div><div class="line">	&lt;-c</div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>执行报 <code>fatal error: all goroutines are asleep - deadlock!</code> ，读和写相互等待对方从而导致死锁发生。</p>
-<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-16+at+10.10.54+AM.png" alt="来自 www.goinggo.net"></p>
-<p>如果 channel 的容量不是 0，此类 channel 称之为 <strong>buffered channel</strong> ，buffered channel 在消息写入个数 <strong>未达到容量的上限之前不会阻塞</strong> ，一旦写入消息个数超过上限，下次输入将会阻塞，直到 channel 有位置可以再写入。</p>
-<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-17+at+8.38.15+AM.png" alt="来自 www.goinggo.net"></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面的例子会输出：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">reading <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">reading <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
-<p>根据上文对 buffered channel 的解释，这个例子中 channel <code>c</code> 的容量是 3，在写入消息个数不超过 3 时不会阻塞，输出应该是：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">0</span></div><div class="line">reading <span class="number">1</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
-<p>问题在哪里？问题其实是在 <code>fmt.Println</code> ，一次输出就导致 goroutine 的执行发生了切换(相当于发生了 IO 阻塞)，因而即使 c 没有发生阻塞 goroutine 也会让出执行，一起来验证一下这个问题。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		&lt;-c</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里创建了一个 slice 用来保存 c 进行写入和读取时的执行顺序，num 是用来标识执行顺序的，在没有加入 Println 之前，最终 s 是 [inner=&gt;1 inner=&gt;2 inner=&gt;3 inner=&gt;4 outer=&gt;5 outer=&gt;6 outer=&gt;7 outer=&gt;8] ，输出结果表明 c 达到容量上线之后才会发生阻塞。</p>
-<p>相反有输出语句的版本结果则不同：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>[outer=&gt;1 inner=&gt;2 outer=&gt;3 inner=&gt;4 inner=&gt;5 inner=&gt;6 outer=&gt;7 outer=&gt;8] 输出结果能表明两个 goroutine 是交替执行，也就是说 IO 的调用 Println 导致 goroutine 的让出了执行。</p>
-<h2 id="读取多个-channel-的消息"><a href="#读取多个-channel-的消息" class="headerlink" title="读取多个 channel 的消息"></a>读取多个 channel 的消息</h2><p>Go 提供了 select 语句来处理多个 channel 的消息读取。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line">	c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c1 &lt;- <span class="string">"from 1"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c2 &lt;- <span class="string">"from 2"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			<span class="keyword">select</span> &#123;</div><div class="line">			<span class="keyword">case</span> msg1 := &lt;-c1:</div><div class="line">				fmt.Println(msg1)</div><div class="line">			<span class="keyword">case</span> msg2 := &lt;-c2:</div><div class="line">				fmt.Println(msg2)</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">var</span> input <span class="keyword">string</span></div><div class="line">	fmt.Scanln(&amp;input)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>select 语句可以从多个可读的 channel 中随机选取一个执行，注意是 <strong>随机选取。</strong> </p>
-<h2 id="Channel-关闭之后"><a href="#Channel-关闭之后" class="headerlink" title="Channel 关闭之后"></a>Channel 关闭之后</h2><p>Channel 可以被关闭 <code>close</code> ，<strong>channel 关闭之后仍然可以读取</strong>，如果 channel 关闭之前有值写入，关闭之后将依次读取 channel 中的消息，读完完毕之后再次读取将会返回 channel 的类型的 zero value：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出 1 2 3 0 0 0 ，0 是 int channel c 的 zero value。</p>
-<p><strong>被关闭的 channel 可以进行 range 迭代</strong>：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> c &#123;</div><div class="line">		fmt.Println(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>未被关闭的 channel 则不行，如果没有被关闭，range 在输出完 channel 中的消息之后将会阻塞一直等待，从而发生死锁。</p>
-<h2 id="判断-channel-的关闭"><a href="#判断-channel-的关闭" class="headerlink" title="判断 channel 的关闭"></a>判断 channel 的关闭</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value, ok &lt;- c</div></pre></td></tr></table></figure>
-<p>用来判断 channel 是否关闭，如果 channel 是关闭状态，ok 是 false，value 是 channel 的 zero value，否则 ok 是 true 表示 channel 未关闭，value 表示 channel 中的值。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.miek.nl/go" target="_blank" rel="external">https://www.miek.nl/go</a></li>
-<li><a href="http://guzalexander.com/2013/12/06/golang-channels-tutorial.html" target="_blank" rel="external">http://guzalexander.com/2013/12/06/golang-channels-tutorial.html</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/30/go-new-programmer-best-practice/" itemprop="url">新手 go 程序员的最佳实践</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T22:02:22+08:00">
-                Jul 30 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/30/go-new-programmer-best-practice/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/30/go-new-programmer-best-practice/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。</p>
-</blockquote>
-<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 <a href="https://golang.org/doc/code.html" target="_blank" rel="external">How to Write Go Code</a>。</p>
-<p>Go 提供了非常优秀的工具来保证代码的风格和质量，比如：gofmt，godoc，goimports，学会使用它们。</p>
-<p>对于新手来说不要着急一开始就想要完整的 Go 程序，你应该认真熟悉 Go 的基本语义和特性，认真读完 官方的 <a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">Effictive Go</a></p>
-<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>不要害怕犯错，对于一门新的语言，大家都是平等，即使是用 Go 写过一到两年程序的人也会犯一些低级的错误。</p>
-<p>要学会顺势而为，学会用 Go 的方式去写 Go 的程序，比如要遵循 Go conventions，不要像 C 一样在 Go 中总是使用指针。</p>
-<p>新手都应该看看这篇文章 <a href="http://talks.golang.org/2012/splash.article，它有助于你了解" target="_blank" rel="external">http://talks.golang.org/2012/splash.article，它有助于你了解</a> Go 是如何诞生的，它的哲学理念是什么。</p>
-<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>新手不要一开始就过渡关注 goroutine，channel 这些涉及并发的概念，你有可能滥用 channel 而不知道节制，毕竟 Go 在很多方面都表现的非常节制。</p>
-<p>理解 interface，了解它的潜力，学会用组合和 interface 创建健壮的 Go 代码， 它是 Go 最富有天赋的能力之一。</p>
-<p>如果你之前使用的其它 object-oriented 语言，暂时忘掉那些关于 OO 的特性和思维，虽然 Go 支持 OO，但 Go 不是基于类的语言，不支持类的继承。</p>
-<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>Go 是强类型语言，意味着实现非常复杂的系统 API 时有可能会像 Java 或 C++ 一样使用大量的预定义类型，使代码变得脆弱丑陋，这并不是真正的 Go。Go 的 interface 和闭包特性允许我们写出更优雅更通用的实现。</p>
-<p>学会高效的使用闭包，为此可以学习一些函数式编程语言的理论，或者学学 Ruby，可以看看 The Well-Grounded Rubyist 这本书，然后尝试在 Go 编程中尝试使用这些知识。</p>
-<p>学会测试 Go 程序，学会使用 Go 相关的测试工具 unit testing，beachmarking testing，利用测试不断纠正和提高 Go 程序的质量，可以看看这个 <a href="http://github.com/feyeleanor/GoSpeed。" target="_blank" rel="external">http://github.com/feyeleanor/GoSpeed。</a></p>
-<h1 id="5"><a href="#5" class="headerlink" title="5"></a>5</h1><p>不要强迫你把过去其它语言的经验带入 Go，每个语言都是不同的，如果你是第一次接触 Go，让自己用一个全新的视角去看待它，也就是你需要尝试从语言的创作者以及社区的角度去理解它。</p>
-<p>一开始使用 Go，尽量避免使用 third party library，可能它们能简化你正在做的事情，但从长远角度来看，它们也妨碍了你对这么语言的理解。</p>
-<p>从标准库中学习如何写出更好的 Go 代码，比如你可以从 <code>net/http</code> package 中学习如何使用 concurrency，也可以去看看  Rob Pike 关于 concurrency 的视频。</p>
-<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>尝试使用 composition 而不是 inheritance，基于 OO 的 inheritance 的思维方式会妨碍你写出优雅的 Go 代码。</p>
-<p>拥抱 interface。</p>
-<p>并不是所有的都是 object。</p>
-<blockquote>
-<p>A language that doesn’t affect the way you think about programming, is not worth knowing. — Alan Perlis</p>
-</blockquote>
-<p>如果一门语言没有影响你对编程的思考，这么语言就不值得学习。</p>
-<h1 id="7"><a href="#7" class="headerlink" title="7"></a>7</h1><ul>
-<li>保持函数短小，变量名不要太长</li>
-<li>不要像写其它语言一样写 Go，Go 不是 Java，不是 Python，不是 Ruby。</li>
-<li>花点时间搞懂 named and unnamed types。</li>
-<li>学会构建完整的 Go project，并且发布它们。</li>
-<li>Interface 很重要，你应该学会使用它们，很多你遇到的问题都可以用 interface 解决。</li>
-<li>学习阅读源码是学习 Go 的一种极佳的方式。</li>
-<li>保持简洁，简洁是 Go 的一个重要特性之一，避免过度工程化。</li>
-<li>以更小的单元实现你的代码功能，然后组合它们。</li>
-</ul>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这时间上有很多朴素的道理，很多人都知道，但是这些道理并没有给知道的人带来什么改变，比如勤奋不一定能成功，还是很多人很勤奋，有了好运气也不一定能成功，还是很多人天天盼望走狗屎运，前者太勤奋了，没有时间思考，后者不知道勤奋，总是抱有幻想。</p>
-<p>学习语言也是一样，不要着急实践，要先想一想，看一看，看完之后不能太懒，还要动手练一练。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2109,7 +2070,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2120,7 +2081,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2131,7 +2092,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
