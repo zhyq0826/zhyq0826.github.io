@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -108,7 +108,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -149,7 +149,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -164,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left 
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
   page-home">
     <div class="headband"></div>
 
@@ -250,6 +250,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -269,6 +279,1280 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/10/pipenv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/10/pipenv/" itemprop="url">使用 pipenv 和 autoenv 构造一键 Python Project 环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T14:04:07+08:00">
+                Oct 10 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/10/pipenv/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/10/pipenv/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，<a href="https://pypi.org/project/autoenv/" target="_blank" rel="external">autoenv</a> 和 <a href="https://pypi.org/project/pipenv/" target="_blank" rel="external">pipenv</a>可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/10/pipenv/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/09/my-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/09/my-learning/" itemprop="url">我的学习方法论</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T12:48:24+08:00">
+                Oct 9 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/方法论/" itemprop="url" rel="index">
+                    <span itemprop="name">方法论</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/09/my-learning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/09/my-learning/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          学习的第1步：认识学习的目的、本质和底层规律知识的真正作用以及发展历程知识发展共经历了三个阶段：
+第一阶段，知识数量构建认识优势第二阶段，知识获取速度构建认知优势第三阶段，知识深度构建认知优势（现在的阶段）
+这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。不难
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/09/my-learning/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/29/python-bumpversion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/29/python-bumpversion/" itemprop="url">使用 Python bumpversion 轻松实现版本管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-29T07:46:21+08:00">
+                Sep 29 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/29/python-bumpversion/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/29/python-bumpversion/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          bumpversion 是用来实现 Python package 的包管理工具，它利用 setup.cfg 文件进行文件内的版本信息查找和替换，pypi。
+小版本 bump minor1bumpversion --current-version 0.5.1 minor
+version 从 0.5.1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/29/python-bumpversion/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/19/md5-intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/19/md5-intro/" itemprop="url">说说 MD5</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T19:05:56+08:00">
+                Sep 19 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/19/md5-intro/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/19/md5-intro/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          什么是 MD5MD5 全称是  Message-Digest Algorithm，是一种密码散列函数，可产生一种128位（16字节）的散列值（hash value），MD5 常用于校验数据的完整性以及生成唯一的数据摘要信息。
+由于 MD5 被证明无法防止碰撞，也就是会出现两个不一样的数据采用 MD5
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/19/md5-intro/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/14/deep-understand-python-package/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/14/deep-understand-python-package/" itemprop="url">深入理解 Python package</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T18:37:13+08:00">
+                Sep 14 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/14/deep-understand-python-package/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/14/deep-understand-python-package/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Python 是通过 module 组织代码的，module 即一个 py 文件，module 又是通过 package 来组织的，package 是一个包含 <code>__init__.py</code> 的文件夹，代码，module，package 它们三者的关系就是：module 包含代码，package 至少包含一个为 <code>__init__.py</code> 的 module。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package</div><div class="line">├── __init__.py</div><div class="line">├── submodule.py</div><div class="line">└── subpackage</div><div class="line">    └── __init__.py</div></pre></td></tr></table></figure>
+<p>Python 的 package 以及 package 中的 <code>__init__.py</code> 共同决定了 package 中的 module 是如何被外界访问的。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/14/deep-understand-python-package/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/09/12/cookiecutters-for-fast-python-project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/12/cookiecutters-for-fast-python-project/" itemprop="url">使用 cookiecutter 快速构建 Python 项目</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T07:27:40+08:00">
+                Sep 12 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/12/cookiecutters-for-fast-python-project/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/12/cookiecutters-for-fast-python-project/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          什么是 cookiecuttercookiecutter 是一款 CLI 用来帮助开发者从模板快速构建项目，比如利用 https://github.com/audreyr/cookiecutter-pypackage Python 开发者可以快速构建 Python 项目。
+如何使用？安装 pip i
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/12/cookiecutters-for-fast-python-project/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/17/go-o-o/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/17/go-o-o/" itemprop="url">go 中的面向对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T13:26:18+08:00">
+                Aug 17 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/17/go-o-o/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/17/go-o-o/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Go 不是基于 class 的语言，但是 Go 提供了强大的类型系统来实现 OO（Object Oriented），关于如何正确使用 OO 的争论网上已经非常多了，在此我们秉承 Go 提供的面向对象机制来实现不同的例子和使用模式，借此了解 Go 中的 OO。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/17/go-o-o/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/10/go-no-reference-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/go-no-reference-type/" itemprop="url">严格来说 go 没有引用类型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T12:50:50+08:00">
+                Aug 10 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/10/go-no-reference-type/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/10/go-no-reference-type/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="什么是引用类型"><a href="#什么是引用类型" class="headerlink" title="什么是引用类型"></a>什么是引用类型</h2><p>简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。</p>
+<p><strong>code-1</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>dd = dict()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(c)</div><div class="line"><span class="number">4476836672</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(dd)</div><div class="line"><span class="number">4476836672</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p><code>code-1</code> 中的 Python 代码显示 c 和 dd 两个变量的内存地址都是一样的。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/10/go-no-reference-type/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -386,57 +1670,20 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>此篇介绍 go channel</p>
 </blockquote>
 <h2 id="什么是-goroutine"><a href="#什么是-goroutine" class="headerlink" title="什么是 goroutine"></a>什么是 goroutine</h2><blockquote>
 <p>They’re called goroutines because the existing terms — threads, coroutines, processes, and so on — convey inaccurate connotations. A goroutine has a simple model: it is a function executing in parallel with other goroutines in the same address space. It is lightweight, costing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.</p>
 </blockquote>
 <p>正如官方所言，goroutine 是一个轻量级的执行单元，相比线程开销更小，完全由 Go 语言负责调度，是 Go 支持并发的核心。开启一个 goroutine 非常简单:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">go</span> fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">	time.Sleep(<span class="number">1</span>) <span class="comment">//1</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p> <code>#1</code> 的代码是必须的，这是为了让新开启的 goroutine 有机会得到执行，开启一个 goroutine 之后，后续的代码会继续执行，在上面的例子中后续代码执行完毕程序就终止了，而开启的 goroutine 可能还没开始执行。</p>
-<p>如果尝试去掉 <code>#1</code> 处的代码，程序也可能会正常运行，这是因为恰巧开启的 goroutine 只是简单的执行了一次输出，如果 goroutine 中耗时稍长就会导致只能看到主一句 <code>main function message</code> 。 </p>
-<p>换句话话说，这里的 <code>time.sleep</code> 提供的是一种调度机制，这也是 Go 中 channel 存在的目的：负责消息传递和调度。</p>
-<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><p>Channel 是 Go 中为 goroutine 提供的一种通信机制，channel 是有类型的，而且是有方向的，可以把 channel 类比成 unix 中的 pipe。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">i := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)<span class="comment">//int 类型</span></div><div class="line">s := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)<span class="comment">//字符串类型</span></div><div class="line">r := <span class="built_in">make</span>(&lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)<span class="comment">//只读</span></div><div class="line">w := <span class="built_in">make</span>(<span class="keyword">chan</span>&lt;- []<span class="keyword">int</span>)<span class="comment">//只写</span></div></pre></td></tr></table></figure>
-<p>Channel 最重要的作用就是传递消息。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		fmt.Println(<span class="string">"goroutine message"</span>)</div><div class="line">		c &lt;- <span class="number">1</span> <span class="comment">//1</span></div><div class="line">	&#125;()</div><div class="line">	&lt;-c <span class="comment">//2</span></div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>例子中声明了一个 int 类型的 channel，在 goroutine 中在代码 <code>#1</code> 处向 channel 发送了数据 <code>1</code> ，在 main 中 <code>#2</code> 处等待数据的接收，如果 c 中没有数据，代码的执行将发生阻塞，直到 c 中数据接收完毕。这是 channel 最简单的用法之一：同步 ，这种类型的 channel 没有设置容量，称之为 <strong>unbuffered channel</strong>。</p>
-<h2 id="unbuffered-channel-和-buffered-channel"><a href="#unbuffered-channel-和-buffered-channel" class="headerlink" title="unbuffered channel 和 buffered channel"></a>unbuffered channel 和 buffered channel</h2><p>Channel 可以设置容量，表示 channel 允许接收的消息个数，默认的 channel 容量是 0 称为 <strong>unbuffered channel</strong> ，对 unbuffered channel 执行 <strong>读</strong> 操作 value := &lt;-ch 会一直阻塞直到有数据可接收，执行 <strong>写</strong> 操作 ch &lt;- value 也会一直阻塞直到有 goroutine 对 channel 开始执行接收，正因为如此在同一个 goroutine 中使用 unbuffered channel 会造成 deadlock。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">	c &lt;- <span class="number">1</span></div><div class="line">	&lt;-c</div><div class="line">	fmt.Println(<span class="string">"main function message"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>执行报 <code>fatal error: all goroutines are asleep - deadlock!</code> ，读和写相互等待对方从而导致死锁发生。</p>
-<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-16+at+10.10.54+AM.png" alt="来自 www.goinggo.net"></p>
-<p>如果 channel 的容量不是 0，此类 channel 称之为 <strong>buffered channel</strong> ，buffered channel 在消息写入个数 <strong>未达到容量的上限之前不会阻塞</strong> ，一旦写入消息个数超过上限，下次输入将会阻塞，直到 channel 有位置可以再写入。</p>
-<p><img src="https://www.goinggo.net/images/goinggo/Screen+Shot+2014-02-17+at+8.38.15+AM.png" alt="来自 www.goinggo.net"></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面的例子会输出：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">reading <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">reading <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
-<p>根据上文对 buffered channel 的解释，这个例子中 channel <code>c</code> 的容量是 3，在写入消息个数不超过 3 时不会阻塞，输出应该是：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">write to c <span class="number">0</span></div><div class="line">write to c <span class="number">1</span></div><div class="line">write to c <span class="number">2</span></div><div class="line">reading <span class="number">0</span></div><div class="line">reading <span class="number">1</span></div><div class="line">reading <span class="number">2</span></div><div class="line">write to c <span class="number">3</span></div><div class="line">reading <span class="number">3</span></div></pre></td></tr></table></figure>
-<p>问题在哪里？问题其实是在 <code>fmt.Println</code> ，一次输出就导致 goroutine 的执行发生了切换(相当于发生了 IO 阻塞)，因而即使 c 没有发生阻塞 goroutine 也会让出执行，一起来验证一下这个问题。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		&lt;-c</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里创建了一个 slice 用来保存 c 进行写入和读取时的执行顺序，num 是用来标识执行顺序的，在没有加入 Println 之前，最终 s 是 [inner=&gt;1 inner=&gt;2 inner=&gt;3 inner=&gt;4 outer=&gt;5 outer=&gt;6 outer=&gt;7 outer=&gt;8] ，输出结果表明 c 达到容量上线之后才会发生阻塞。</p>
-<p>相反有输出语句的版本结果则不同：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"strconv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	s := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">8</span>)</div><div class="line">	<span class="keyword">var</span> num <span class="keyword">int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">			c &lt;- i</div><div class="line">			num++</div><div class="line">			v := <span class="string">"inner=&gt;"</span> + strconv.Itoa(num)</div><div class="line">			s = <span class="built_in">append</span>(s, v)</div><div class="line">			fmt.Println(<span class="string">"write to c "</span>, i)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">4</span>; i++ &#123;</div><div class="line">		num++</div><div class="line">		v := <span class="string">"outer=&gt;"</span> + strconv.Itoa(num)</div><div class="line">		s = <span class="built_in">append</span>(s, v)</div><div class="line">		fmt.Println(<span class="string">"reading"</span>, &lt;-c)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(s)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>[outer=&gt;1 inner=&gt;2 outer=&gt;3 inner=&gt;4 inner=&gt;5 inner=&gt;6 outer=&gt;7 outer=&gt;8] 输出结果能表明两个 goroutine 是交替执行，也就是说 IO 的调用 Println 导致 goroutine 的让出了执行。</p>
-<h2 id="读取多个-channel-的消息"><a href="#读取多个-channel-的消息" class="headerlink" title="读取多个 channel 的消息"></a>读取多个 channel 的消息</h2><p>Go 提供了 select 语句来处理多个 channel 的消息读取。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line">	c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c1 &lt;- <span class="string">"from 1"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			c2 &lt;- <span class="string">"from 2"</span></div><div class="line">			time.Sleep(time.Second * <span class="number">2</span>)</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		<span class="keyword">for</span> &#123;</div><div class="line">			<span class="keyword">select</span> &#123;</div><div class="line">			<span class="keyword">case</span> msg1 := &lt;-c1:</div><div class="line">				fmt.Println(msg1)</div><div class="line">			<span class="keyword">case</span> msg2 := &lt;-c2:</div><div class="line">				fmt.Println(msg2)</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">var</span> input <span class="keyword">string</span></div><div class="line">	fmt.Scanln(&amp;input)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>select 语句可以从多个可读的 channel 中随机选取一个执行，注意是 <strong>随机选取。</strong> </p>
-<h2 id="Channel-关闭之后"><a href="#Channel-关闭之后" class="headerlink" title="Channel 关闭之后"></a>Channel 关闭之后</h2><p>Channel 可以被关闭 <code>close</code> ，<strong>channel 关闭之后仍然可以读取</strong>，如果 channel 关闭之前有值写入，关闭之后将依次读取 channel 中的消息，读完完毕之后再次读取将会返回 channel 的类型的 zero value：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">	fmt.Println(&lt;-c)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出 1 2 3 0 0 0 ，0 是 int channel c 的 zero value。</p>
-<p><strong>被关闭的 channel 可以进行 range 迭代</strong>：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">		c &lt;- <span class="number">1</span></div><div class="line">		c &lt;- <span class="number">2</span></div><div class="line">		c &lt;- <span class="number">3</span></div><div class="line">		<span class="built_in">close</span>(c)</div><div class="line">	&#125;()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> c &#123;</div><div class="line">		fmt.Println(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>未被关闭的 channel 则不行，如果没有被关闭，range 在输出完 channel 中的消息之后将会阻塞一直等待，从而发生死锁。</p>
-<h2 id="判断-channel-的关闭"><a href="#判断-channel-的关闭" class="headerlink" title="判断 channel 的关闭"></a>判断 channel 的关闭</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">value, ok &lt;- c</div></pre></td></tr></table></figure>
-<p>用来判断 channel 是否关闭，如果 channel 是关闭状态，ok 是 false，value 是 channel 的 zero value，否则 ok 是 true 表示 channel 未关闭，value 表示 channel 中的值。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.miek.nl/go" target="_blank" rel="external">https://www.miek.nl/go</a></li>
-<li><a href="http://guzalexander.com/2013/12/06/golang-channels-tutorial.html" target="_blank" rel="external">http://guzalexander.com/2013/12/06/golang-channels-tutorial.html</a></li>
-</ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/03/go-channel/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -586,1498 +1833,19 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。</p>
 </blockquote>
 <h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 <a href="https://golang.org/doc/code.html" target="_blank" rel="external">How to Write Go Code</a>。</p>
 <p>Go 提供了非常优秀的工具来保证代码的风格和质量，比如：gofmt，godoc，goimports，学会使用它们。</p>
 <p>对于新手来说不要着急一开始就想要完整的 Go 程序，你应该认真熟悉 Go 的基本语义和特性，认真读完 官方的 <a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">Effictive Go</a></p>
-<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>不要害怕犯错，对于一门新的语言，大家都是平等，即使是用 Go 写过一到两年程序的人也会犯一些低级的错误。</p>
-<p>要学会顺势而为，学会用 Go 的方式去写 Go 的程序，比如要遵循 Go conventions，不要像 C 一样在 Go 中总是使用指针。</p>
-<p>新手都应该看看这篇文章 <a href="http://talks.golang.org/2012/splash.article，它有助于你了解" target="_blank" rel="external">http://talks.golang.org/2012/splash.article，它有助于你了解</a> Go 是如何诞生的，它的哲学理念是什么。</p>
-<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>新手不要一开始就过渡关注 goroutine，channel 这些涉及并发的概念，你有可能滥用 channel 而不知道节制，毕竟 Go 在很多方面都表现的非常节制。</p>
-<p>理解 interface，了解它的潜力，学会用组合和 interface 创建健壮的 Go 代码， 它是 Go 最富有天赋的能力之一。</p>
-<p>如果你之前使用的其它 object-oriented 语言，暂时忘掉那些关于 OO 的特性和思维，虽然 Go 支持 OO，但 Go 不是基于类的语言，不支持类的继承。</p>
-<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>Go 是强类型语言，意味着实现非常复杂的系统 API 时有可能会像 Java 或 C++ 一样使用大量的预定义类型，使代码变得脆弱丑陋，这并不是真正的 Go。Go 的 interface 和闭包特性允许我们写出更优雅更通用的实现。</p>
-<p>学会高效的使用闭包，为此可以学习一些函数式编程语言的理论，或者学学 Ruby，可以看看 The Well-Grounded Rubyist 这本书，然后尝试在 Go 编程中尝试使用这些知识。</p>
-<p>学会测试 Go 程序，学会使用 Go 相关的测试工具 unit testing，beachmarking testing，利用测试不断纠正和提高 Go 程序的质量，可以看看这个 <a href="http://github.com/feyeleanor/GoSpeed。" target="_blank" rel="external">http://github.com/feyeleanor/GoSpeed。</a></p>
-<h1 id="5"><a href="#5" class="headerlink" title="5"></a>5</h1><p>不要强迫你把过去其它语言的经验带入 Go，每个语言都是不同的，如果你是第一次接触 Go，让自己用一个全新的视角去看待它，也就是你需要尝试从语言的创作者以及社区的角度去理解它。</p>
-<p>一开始使用 Go，尽量避免使用 third party library，可能它们能简化你正在做的事情，但从长远角度来看，它们也妨碍了你对这么语言的理解。</p>
-<p>从标准库中学习如何写出更好的 Go 代码，比如你可以从 <code>net/http</code> package 中学习如何使用 concurrency，也可以去看看  Rob Pike 关于 concurrency 的视频。</p>
-<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>尝试使用 composition 而不是 inheritance，基于 OO 的 inheritance 的思维方式会妨碍你写出优雅的 Go 代码。</p>
-<p>拥抱 interface。</p>
-<p>并不是所有的都是 object。</p>
-<blockquote>
-<p>A language that doesn’t affect the way you think about programming, is not worth knowing. — Alan Perlis</p>
-</blockquote>
-<p>如果一门语言没有影响你对编程的思考，这么语言就不值得学习。</p>
-<h1 id="7"><a href="#7" class="headerlink" title="7"></a>7</h1><ul>
-<li>保持函数短小，变量名不要太长</li>
-<li>不要像写其它语言一样写 Go，Go 不是 Java，不是 Python，不是 Ruby。</li>
-<li>花点时间搞懂 named and unnamed types。</li>
-<li>学会构建完整的 Go project，并且发布它们。</li>
-<li>Interface 很重要，你应该学会使用它们，很多你遇到的问题都可以用 interface 解决。</li>
-<li>学习阅读源码是学习 Go 的一种极佳的方式。</li>
-<li>保持简洁，简洁是 Go 的一个重要特性之一，避免过度工程化。</li>
-<li>以更小的单元实现你的代码功能，然后组合它们。</li>
-</ul>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这时间上有很多朴素的道理，很多人都知道，但是这些道理并没有给知道的人带来什么改变，比如勤奋不一定能成功，还是很多人很勤奋，有了好运气也不一定能成功，还是很多人天天盼望走狗屎运，前者太勤奋了，没有时间思考，后者不知道勤奋，总是抱有幻想。</p>
-<p>学习语言也是一样，不要着急实践，要先想一想，看一看，看完之后不能太懒，还要动手练一练。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/27/go-type/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/27/go-type/" itemprop="url">理解 go 类型系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T19:57:17+08:00">
-                Jul 27 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/27/go-type/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/27/go-type/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。</p>
-<p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel，func，interface 等被称之为 <strong>composite types</strong>。</p>
-<p><strong>Composite types</strong> 由 <strong>pre-declared types</strong> 组成的复杂数据类型，常常由 type literal 构成。 </p>
-<p>Type 可以是带名称和不带名称的，称之为 named type 和 unnamed type。</p>
-<p><strong>Named Types</strong> 就是通过 type 关键字为一个已有的 type 起个别名，像这样 <code>type NewType ExistingType</code> NewType 就是名字。</p>
-<p><strong>Pre-declared types</strong> 也是 <strong>named types</strong>。</p>
-<p><strong>Unamed types</strong> 是一个 literal type，也就是没有名字，只有 type 本身，像这样 <code>[6]int</code> 没有名字。</p>
-<p>每一个类型都有自己的 <strong>Underlying type</strong> ，如果 T 是 pre-declared type 或者 type literal，它们对应的 underlying type 就是自身 T，否则 T 的 underlying type 是 T 定义时引用的类型的 underlying type。</p>
-<h2 id="underlying-type"><a href="#underlying-type" class="headerlink" title="underlying type"></a>underlying type</h2><p><strong>如果两个 type 都是 named type ，彼此之间不能相互赋值</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> NewString <span class="keyword">string</span></div><div class="line"><span class="keyword">var</span> my <span class="keyword">string</span> =<span class="string">"a"</span></div><div class="line"><span class="keyword">var</span> you NewString = my <span class="comment">//cannot use my (type string) as type NewString in assignment</span></div></pre></td></tr></table></figure>
-<p>虽然它们的 underlying type 都是 string，但 string 类型的 my 不能赋值给 NewString 类型的 you。</p>
-<p><strong>如果两个 type 其中一个是 unamed type，彼此之间可以相互赋值</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">type</span> Ptr *<span class="keyword">int</span></div><div class="line"><span class="keyword">type</span> Map <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">type</span> MapMap Map</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p *<span class="keyword">int</span></div><div class="line">    <span class="keyword">var</span> mm Map</div><div class="line">    <span class="keyword">var</span> mmm MapMap</div><div class="line">    <span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mm</div><div class="line">    <span class="keyword">var</span> m2 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = mmm</div><div class="line">    <span class="keyword">var</span> ptr Ptr = p</div><div class="line">    <span class="built_in">print</span>(ptr)</div><div class="line">    <span class="built_in">print</span>(m1)</div><div class="line">    <span class="built_in">print</span>(m2)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>为什么有这样的区分?</strong></p>
-<p>如果为一个类型起了名字，说明你想要做区分，所以两个 named types 即使 underlying name 相同也是不能相互赋值的。</p>
-<p>详见<a href="https://groups.google.com/forum/#!topic/golang-nuts/4Db2z2dEhfc" target="_blank" rel="external">Google Group Topic</a></p>
-<h2 id="Named-type-和-Unamed-type"><a href="#Named-type-和-Unamed-type" class="headerlink" title="Named type 和 Unamed type"></a>Named type 和 Unamed type</h2><p>当 named types 被作为一个 function 的 receiver 时，它就拥有了自己的方法，unamed types 则不能，这是它们的重要区别。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> NewMap <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(nm NewMap)</span> <span class="title">add</span><span class="params">(key <span class="keyword">int</span>, value <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    nm[key] = value</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p NewMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line">    p.add(<span class="number">10</span>, <span class="string">"a"</span>)</div><div class="line">    fmt.Println(p) <span class="comment">//map[10:a]</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>有个一例外是是 pre-declare types 不能拥有自己的方法。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n <span class="keyword">int</span>)</span> <span class="title">name</span><span class="params">()</span></span>&#123;   </div><div class="line">    <span class="built_in">print</span>(n)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> n <span class="keyword">int</span></div><div class="line">    n.name()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>编译器会抛出 <strong>cannot define new methods on non-local type int</strong> 错误，不能对包之外的 type 定义方法，解决这个问题就是对 pre-declared types 重新定义别名。</p>
-<h2 id="type-的属性继承一：直接继承"><a href="#type-的属性继承一：直接继承" class="headerlink" title="type 的属性继承一：直接继承"></a>type 的属性继承一：直接继承</h2><p>Declared named type 不会从它的 underlying type 或 existing type 继承 method，但是会继承 field。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Student Person</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    <span class="keyword">var</span> s Student</div><div class="line">    s.name = <span class="string">"jone"</span></div><div class="line">    fmt.Println(s.name)</div><div class="line">    <span class="comment">// s.Speak()</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Named type Student 不会继承来自 Person Speak 的方法，打开注释执行报错 <strong>s.Speak undefined (type Student has no field or method Speak)</strong>，但是 Person 的 filed name 可以被 Student 继承。</p>
-<blockquote>
-<p>The declared type does not inherit any methods bound to the existing type, but the method set of an interface type or of elements of a composite type remains unchanged:</p>
-</blockquote>
-<p>But declared named type 例外的情况之一：<strong>如果 existing type 是 interface，它的 method set 会被继承</strong>。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// existing type 是 I，I 是个接口，可以直接继承 I 的方法，II 等同于 I</span></div><div class="line"><span class="keyword">type</span> II I</div><div class="line"></div><div class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Speak</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am a person"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">Talk</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"I am talking"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> p Person</div><div class="line">    p.Speak()</div><div class="line">    p.Talk()</div><div class="line">    <span class="keyword">var</span> i I</div><div class="line">    i = &amp;p</div><div class="line">    i.Talk()</div><div class="line">    <span class="keyword">var</span> ii II</div><div class="line">    ii = &amp;p</div><div class="line">    ii.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>II</code> 继承了 <code>I</code> 的 method，所以 Person 也实现了 II。</p>
-<p>例外情况之二：如果 existing type 是 composite type，此情形根据官方所述没有看的很懂，希望有遇到之人可以交流一下。</p>
-<h2 id="type-的属性继承二：type-embedding"><a href="#type-的属性继承二：type-embedding" class="headerlink" title="type 的属性继承二：type embedding"></a>type 的属性继承二：type embedding</h2><p>如果一个 type T‘ 被嵌入另一个 type T 作为它的 filed，T’ 的所有 field 和 method 都可以在 T 中使用，这种方法称之为 type embedding。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">    &quot;fmt&quot;</div><div class="line">)</div><div class="line"></div><div class="line">type I interface &#123;</div><div class="line">    Talk()</div><div class="line">&#125;</div><div class="line"></div><div class="line">type Person struct &#123;</div><div class="line">    name string</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Speak() &#123;</div><div class="line">    fmt.Println(&quot;I am a person&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func (p *Person) Talk() &#123;</div><div class="line">    fmt.Println(&quot;I am talking&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">type People struct &#123;</div><div class="line">    Person</div><div class="line">&#125;</div><div class="line"></div><div class="line">func main()&#123;</div><div class="line">    var people People</div><div class="line">    people.name = &quot;people&quot;</div><div class="line">    people.Speak()</div><div class="line">    people.Talk()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="type-转换"><a href="#type-转换" class="headerlink" title="type 转换"></a>type 转换</h2><p>Type 之间是可以相互转换的，但要遵循一定的转换规则，详细请看官方规范 <a href="https://golang.org/ref/spec#Conversions。" target="_blank" rel="external">https://golang.org/ref/spec#Conversions。</a></p>
-<h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><p>文中部分代码</p>
-<script src="//gist.github.com/7a0ed26a6700488073e629ba28a14397.js?file=go-type-inherit.go"></script>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/26/go-make-and-new/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/26/go-make-and-new/" itemprop="url">go make 和 new 的区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T06:12:23+08:00">
-                Jul 26 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/26/go-make-and-new/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/26/go-make-and-new/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。</p>
-</blockquote>
-<h2 id="new-T-返回的是-T-的指针"><a href="#new-T-返回的是-T-的指针" class="headerlink" title="new(T) 返回的是 T 的指针"></a>new(T) 返回的是 T 的指针</h2><p>new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">p1 := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line">fmt.Printf(<span class="string">"p1 --&gt; %#v \n "</span>, p1) <span class="comment">//(*int)(0xc42000e250) </span></div><div class="line">fmt.Printf(<span class="string">"p1 point to --&gt; %#v \n "</span>, *p1) <span class="comment">//0</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> p2 *<span class="keyword">int</span></div><div class="line">i := <span class="number">0</span></div><div class="line">p2 = &amp;i</div><div class="line">fmt.Printf(<span class="string">"p2 --&gt; %#v \n "</span>, p2) <span class="comment">//(*int)(0xc42000e278) </span></div><div class="line">fmt.Printf(<span class="string">"p2 point to --&gt; %#v \n "</span>, *p2) <span class="comment">//0</span></div></pre></td></tr></table></figure>
-<p>上面的代码是等价的，new(int) 将分配的空间初始化为 int 的零值，也就是 0，并返回 int 的指针，这和直接声明指针并初始化的效果是相同的。</p>
-<h2 id="make-只能用于-slice-map-channel"><a href="#make-只能用于-slice-map-channel" class="headerlink" title="make 只能用于 slice,map,channel"></a>make 只能用于 slice,map,channel</h2><p>make 只能用于 slice，map，channel 三种类型，make(T, args) 返回的是初始化之后的 T 类型的值，这个新值并不是 T 类型的零值，也不是指针 *T，是经过初始化之后的 T 的引用。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div><div class="line"><span class="keyword">if</span> s1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s1 is nil --&gt; %#v \n "</span>, s1) <span class="comment">// []int(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line"><span class="keyword">if</span> s2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is nil --&gt; %#v \n "</span>, s2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is not nill --&gt; %#v \n "</span>, s2)<span class="comment">// []int&#123;0, 0, 0&#125;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>slice 的零值是 nil，使用 make 之后 slice 是一个初始化的 slice，即 slice 的长度、容量、底层指向的 array 都被 make 完成初始化，此时 slice 内容被类型 int 的零值填充，形式是 [0 0 0]，map 和 channel 也是类似的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> m1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> m1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m1 is nil --&gt; %#v \n "</span>, m1) <span class="comment">//map[int]string(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;&#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> c1 <span class="keyword">chan</span> <span class="keyword">string</span></div><div class="line"><span class="keyword">if</span> c1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c1 is nil --&gt; %#v \n "</span>, c1) <span class="comment">//(chan string)(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)<span class="comment">//(chan string)(0xc420016120)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="make-T-args-返回的是-T-的-引用"><a href="#make-T-args-返回的是-T-的-引用" class="headerlink" title="make(T, args) 返回的是 T 的 引用"></a>make(T, args) 返回的是 T 的 引用</h2><p>如果不特殊声明，go 的函数默认都是按值穿参，即通过函数传递的参数是值的副本，在函数内部对值修改不影响值的本身，但是 make(T, args) 返回的值通过函数传递参数之后可以直接修改，即 map，slice，channel 通过函数穿参之后在函数内部修改将影响函数外部的值。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifySlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    s[<span class="number">0</span>] = <span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;0, 0, 0&#125;</span></div><div class="line">modifySlice(s2)</div><div class="line">fmt.Printf(<span class="string">"%#v"</span>, s2) <span class="comment">//[]int&#123;1, 0, 0&#125;</span></div></pre></td></tr></table></figure>
-<p>这说明 make(T, args) 返回的是引用类型，在函数内部可以直接更改原始值，对 map 和 channel 也是如此。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m[<span class="number">0</span>] = <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    c &lt;- <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2) </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">//map[int]string&#123;&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">modifyMap(m2)</div><div class="line">fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">// map[int]string&#123;0:"string"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">go</span> modifyChan(c2)</div><div class="line">fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v "</span>, &lt;-c2) <span class="comment">//"string"</span></div></pre></td></tr></table></figure>
-<h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><p>以下代码演示了 <strong>struct 初始化的过程</strong>，可以说明不使用 new 一样可以完成 struct 的初始化工作。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//声明初始化</span></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line"><span class="comment">//struct literal 初始化</span></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line"><span class="comment">//指针初始化</span></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line"><span class="comment">//new 初始化</span></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="comment">//声明指针并用 new 初始化</span></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure></p>
-<p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。</p>
-<p>foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 *Foo。</p>
-<p><strong>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</strong></p>
-<p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
-<p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/23/go-defer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/23/go-defer/" itemprop="url">go defer 的关键特性解读和示例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T22:17:33+08:00">
-                Jul 23 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/23/go-defer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/23/go-defer/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="defer-的作用和执行时机"><a href="#defer-的作用和执行时机" class="headerlink" title="defer 的作用和执行时机"></a>defer 的作用和执行时机</h2><p>go 的 defer 语句是用来<strong>延迟执行函数的</strong>，而且延迟发生在<strong>调用函数 return 之后</strong>，比如</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">  <span class="keyword">defer</span> b()</div><div class="line">  <span class="keyword">return</span> <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>b 的执行是发生在 return 0 之后，注意 defer 的语法，关键字 defer 之后是函数的调用。</p>
-<h2 id="defer-的重要用途一：清理释放资源"><a href="#defer-的重要用途一：清理释放资源" class="headerlink" title="defer 的重要用途一：清理释放资源"></a>defer 的重要用途一：清理释放资源</h2><p>由于 defer 的延迟特性，defer 常用在函数调用结束之后清理相关的资源，比如</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f, _ := os.Open(filename)</div><div class="line"><span class="keyword">defer</span> f.Close()</div></pre></td></tr></table></figure>
-<p>文件资源的释放会在函数调用结束之后借助 defer 自动执行，不需要时刻记住哪里的资源需要释放，打开和释放必须相对应。</p>
-<p>用一个例子深刻诠释一下 defer 带来的便利和简洁。</p>
-<p>代码的主要目的是打开一个文件，然后复制内容到另一个新的文件中，没有 defer 时这样写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">func CopyFile(dstName, srcName string) (written int64, err error) &#123;</div><div class="line">    src, err := os.Open(srcName)</div><div class="line">    if err != nil &#123;</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    dst, err := os.Create(dstName)</div><div class="line">    if err != nil &#123; //1</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    written, err = io.Copy(dst, src)</div><div class="line">    dst.Close()</div><div class="line">    src.Close()</div><div class="line">    return</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>代码在 <code>#1</code> 处返回之后，src 文件没有执行关闭操作，可能会导致资源不能正确释放，改用 defer 实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">func CopyFile(dstName, srcName string) (written int64, err error) &#123;</div><div class="line">    src, err := os.Open(srcName)</div><div class="line">    if err != nil &#123;</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line">    defer src.Close()</div><div class="line"></div><div class="line">    dst, err := os.Create(dstName)</div><div class="line">    if err != nil &#123;</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line">    defer dst.Close()</div><div class="line"></div><div class="line">    return io.Copy(dst, src)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>src 和 dst 都能及时清理和释放，无论 return 在什么地方执行。</p>
-<p>鉴于 defer 的这种作用，defer 常用来释放数据库连接，文件打开句柄等释放资源的操作。</p>
-<h2 id="defer-的重要用途二：执行-recover"><a href="#defer-的重要用途二：执行-recover" class="headerlink" title="defer 的重要用途二：执行 recover"></a>defer 的重要用途二：执行 recover</h2><p>被 defer 的函数在 return 之后执行，这个时机点正好可以捕获函数抛出的 panic，因而 defer 的另一个重要用途就是执行 recover。</p>
-<p>recover 只有在 defer 中使用才更有意义，如果在其他地方使用，由于 program 已经调用结束而提前返回而无法有效捕捉错误。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">if</span> ok := <span class="built_in">recover</span>(); ok != <span class="literal">nil</span> &#123;</div><div class="line">            fmt.Println(<span class="string">"recover"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;()</div><div class="line"></div><div class="line">    <span class="built_in">panic</span>(<span class="string">"error"</span>)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>记住 defer 要放在 panic 执行之前。</p>
-<h2 id="多个-defer-的执行顺序"><a href="#多个-defer-的执行顺序" class="headerlink" title="多个 defer 的执行顺序"></a>多个 defer 的执行顺序</h2><p>defer 的作用就是把关键字之后的函数执行压入一个栈中延迟执行，多个 defer 的执行顺序是后进先出 LIFO ：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; fmt.Println(<span class="string">"1"</span>) &#125;()</div><div class="line"><span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; fmt.Println(<span class="string">"2"</span>) &#125;()</div><div class="line"><span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; fmt.Println(<span class="string">"3"</span>) &#125;()</div></pre></td></tr></table></figure>
-<p>输出顺序是 321。</p>
-<p>这个特性可以对一个 array 实现逆序操作。</p>
-<h2 id="被-deferred-函数的参数在-defer-时确定"><a href="#被-deferred-函数的参数在-defer-时确定" class="headerlink" title="被 deferred 函数的参数在 defer 时确定"></a>被 deferred 函数的参数在 defer 时确定</h2><p>这是 defer 的特点，一个函数被 defer 时，它的参数在 defer 时进行计算确定，即使 defer 之后参数发生修改，对已经 defer 的函数没有影响，什么意思？看例子：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> &#123;</div><div class="line">    i := <span class="number">0</span></div><div class="line">    <span class="keyword">defer</span> fmt.Println(i)</div><div class="line">    i++</div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>a 执行输出的是 0 而不是 1，因为 defer 时，i 的值是 0，此时被 defer 的函数参数已经进行执行计算并确定了。</p>
-<p>再看一个例子：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(index <span class="keyword">string</span>, a, b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</div><div class="line">    ret := a + b</div><div class="line">    fmt.Println(index, a, b, ret)</div><div class="line">    <span class="keyword">return</span> ret</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    a := <span class="number">1</span></div><div class="line">    b := <span class="number">2</span></div><div class="line">    <span class="keyword">defer</span> calc(<span class="string">"1"</span>, a, calc(<span class="string">"10"</span>, a, b))</div><div class="line">    a = <span class="number">0</span></div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>执行代码输出 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">10 1 2 3 </div><div class="line">1 1 3 4</div></pre></td></tr></table></figure>
-<p>defer 函数的参数 第三个参数在 defer 时就已经计算完成并确定，第二个参数 a 也是如此，无论之后 a 变量是否修改都不影响。</p>
-<h2 id="被-defer-的函数可以读取和修改带名称的返回值"><a href="#被-defer-的函数可以读取和修改带名称的返回值" class="headerlink" title="被 defer 的函数可以读取和修改带名称的返回值"></a>被 defer 的函数可以读取和修改带名称的返回值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">c</span><span class="params">()</span> <span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; i++ &#125;()</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>被 defer 的函数是在 return 之后执行，可以修改带名称的返回值，上面的函数 c 返回的是 2。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://blog.golang.org/defer-panic-and-recover" target="_blank" rel="external">https://blog.golang.org/defer-panic-and-recover</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/23/go-tutorial/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/23/go-tutorial/" itemprop="url">go 入门参考资料</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T21:56:13+08:00">
-                Jul 23 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/23/go-tutorial/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/23/go-tutorial/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>go 的入门书籍教程非常多，这里只介绍几个具有代表性的，足够初学者入门参考。</p>
-<h1 id="官方教程"><a href="#官方教程" class="headerlink" title="官方教程"></a>官方教程</h1><h2 id="Language-Specification"><a href="#Language-Specification" class="headerlink" title="Language Specification"></a><a href="https://golang.org/ref/spec" target="_blank" rel="external">Language Specification</a></h2><p>go 的语法说明以及语言的组织结构，包含大量的细节解释和说明，值得通读一遍</p>
-<h2 id="A-Tour-of-Go"><a href="#A-Tour-of-Go" class="headerlink" title="A Tour of Go"></a><a href="https://tour.golang.org/" target="_blank" rel="external">A Tour of Go</a></h2><p>go 官方在线的教程，可执行代码，对 go 语言的执行和抒写有直观的演示，首次学习 go 的练习之地</p>
-<h2 id="Go-wiki"><a href="#Go-wiki" class="headerlink" title="Go wiki"></a><a href="https://github.com/golang/go/wiki" target="_blank" rel="external">Go wiki</a></h2><p>包含大量第三方的文章和书籍来对某个特定主题的原理进行深入的解释和演示</p>
-<h2 id="Blog"><a href="#Blog" class="headerlink" title="Blog"></a><a href="https://golang.org/blog/" target="_blank" rel="external">Blog</a></h2><p>对某些特定主题进行说明和演示，以及语言自身的特性说明</p>
-<h1 id="入门-Book"><a href="#入门-Book" class="headerlink" title="入门 Book"></a>入门 Book</h1><h2 id="An-Introduction-to-Programming-in-Go"><a href="#An-Introduction-to-Programming-in-Go" class="headerlink" title="An Introduction to Programming in Go"></a><a href="https://www.golang-book.com/books/intro" target="_blank" rel="external">An Introduction to Programming in Go</a></h2><p>英文书，但是写的通俗易懂，入门非常合适</p>
-<h2 id="The-Little-Go-Book"><a href="#The-Little-Go-Book" class="headerlink" title="The Little Go Book"></a><a href="http://openmymind.net/The-Little-Go-Book/" target="_blank" rel="external">The Little Go Book</a></h2><p>英文书，入门读物，有深度有细节</p>
-<h2 id="Learning-Go"><a href="#Learning-Go" class="headerlink" title="Learning Go"></a><a href="https://www.miek.nl/go/" target="_blank" rel="external">Learning Go</a></h2><p>有一定的原理性讲解，每章附有习题可以练习</p>
-<h2 id="Go-入门指南"><a href="#Go-入门指南" class="headerlink" title="Go 入门指南"></a><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN" target="_blank" rel="external">Go 入门指南</a></h2><h2 id="build-web-application-with-golang"><a href="#build-web-application-with-golang" class="headerlink" title="build-web-application-with-golang"></a><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="external">build-web-application-with-golang</a></h2><p>Beego 作者写的，中文，除了 go 语言基础也涉及 Go web 编程。</p>
-<h1 id="实例练习"><a href="#实例练习" class="headerlink" title="实例练习"></a>实例练习</h1><h2 id="https-gowebexamples-github-io"><a href="#https-gowebexamples-github-io" class="headerlink" title="https://gowebexamples.github.io/"></a><a href="https://gowebexamples.github.io/" target="_blank" rel="external">https://gowebexamples.github.io/</a></h2><p>大量 web 示例</p>
-<h2 id="https-gobyexample-com"><a href="#https-gobyexample-com" class="headerlink" title="https://gobyexample.com/"></a><a href="https://gobyexample.com/" target="_blank" rel="external">https://gobyexample.com/</a></h2><p>大量 go 基础示例</p>
-<h1 id="项目练习"><a href="#项目练习" class="headerlink" title="项目练习"></a>项目练习</h1><h2 id="project-based-learning"><a href="#project-based-learning" class="headerlink" title="project-based-learning"></a><a href="https://github.com/tuvttran/project-based-learning#go" target="_blank" rel="external">project-based-learning</a></h2><p>包含完整教程的小项目练习</p>
-<h1 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h1><ul>
-<li><a href="https://github.com/dariubs/GoBooks" target="_blank" rel="external">https://github.com/dariubs/GoBooks</a> go 书籍</li>
-<li><a href="https://golang.org/doc/effective_go.html" target="_blank" rel="external">https://golang.org/doc/effective_go.html</a> 官方 effective go</li>
-<li><a href="https://github.com/golang/go/wiki/Learn" target="_blank" rel="external">https://github.com/golang/go/wiki/Learn</a> 官方 learn wiki</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/22/how-to-understand-go-interface/" itemprop="url">理解 go interface 的 5 个关键点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T20:48:08+08:00">
-                Jul 22 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/22/how-to-understand-go-interface/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/22/how-to-understand-go-interface/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1、interface-是一种类型"><a href="#1、interface-是一种类型" class="headerlink" title="1、interface 是一种类型"></a>1、interface 是一种类型</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</div><div class="line">    Get() <span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>首先 <strong>interface 是一种类型</strong>，从它的定义可以看出来用了 type 关键字，更准确的说 interface 是一种<strong>具有一组方法的类型</strong>，这些方法定义了 interface 的行为。</p>
-<p>go 允许不带任何方法的 interface ，这种类型的 interface 叫 <strong>empty interface</strong>。</p>
-<p><strong>如果一个类型实现了一个 interface 中所有方法，我们说类型实现了该 interface</strong>，所以所有类型都实现了 empty interface，因为任何一种类型至少实现了 0 个方法。go 没有显式的关键字用来实现 interface，只需要实现 interface 包含的方法即可。</p>
-<h2 id="2、interface-变量存储的是实现者的值"><a href="#2、interface-变量存储的是实现者的值" class="headerlink" title="2、interface 变量存储的是实现者的值"></a>2、interface 变量存储的是实现者的值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1</span></div><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;    </div><div class="line">    Get() <span class="keyword">int</span></div><div class="line">    Set(<span class="keyword">int</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//2</span></div><div class="line"><span class="keyword">type</span> S <span class="keyword">struct</span> &#123;</div><div class="line">    Age <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span><span class="params">(s S)</span> <span class="title">Get</span><span class="params">()</span><span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">return</span> s.Age</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span><span class="params">(s *S)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    s.Age = age</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//3</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i I)</span></span>&#123;</div><div class="line">    i.Set(<span class="number">10</span>)</div><div class="line">    fmt.Println(i.Get())</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    s := S&#123;&#125; </div><div class="line">    f(&amp;s)  <span class="comment">//4</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这段代码在 <code>#1</code> 定义了 interface I，在 <code>#2</code> 用 struct S 实现了 I 定义的两个方法，接着在 <code>#3</code> 定义了一个函数 f 参数类型是 I，S 实现了 I 的两个方法就说 S 是 I 的实现者，执行 <code>f(&amp;s)</code> 就完了一次 interface 类型的使用。</p>
-<p>interface 的重要用途就体现在<strong>函数 f 的参数中</strong>，如果有多种类型实现了某个 interface，<strong>这些类型的值都可以直接使用 interface 的变量存储</strong>。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">s := S&#123;&#125;</div><div class="line"><span class="keyword">var</span> i I <span class="comment">//声明 i </span></div><div class="line">i = &amp;s <span class="comment">//赋值 s 到 i</span></div><div class="line">fmt.Println(i.Get())</div></pre></td></tr></table></figure></p>
-<p>不难看出 interface 的变量中存储的是实现了 interface 的类型的对象值，这种能力是 <a href="http://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="external">duck typing</a>。在使用 interface 时不需要显式在 struct 上声明要实现哪个 interface ，只需要实现对应 interface 中的方法即可，go 会自动进行 interface 的检查，并在运行时执行从其他类型到 interface 的自动转换，即使实现了多个 interface，go 也会在使用对应 interface 时实现自动转换，这就是 interface 的魔力所在。</p>
-<h2 id="3、如何判断-interface-变量存储的是哪种类型"><a href="#3、如何判断-interface-变量存储的是哪种类型" class="headerlink" title="3、如何判断 interface 变量存储的是哪种类型"></a>3、如何判断 interface 变量存储的是哪种类型</h2><p>一个 interface 被多种类型实现时，有时候我们需要区分 interface 的变量究竟存储哪种类型的值，go 可以使用 <code>comma, ok</code> 的形式做区分 <code>value, ok := em.(T)</code>：<strong>em 是 interface 类型的变量，T代表要断言的类型，value 是 interface 变量存储的值，ok 是 bool 类型表示是否为该断言的类型 T</strong>。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> t, ok := i.(*S); ok &#123;</div><div class="line">    fmt.Println(<span class="string">"s implements I"</span>, t)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>ok 是 true 表明 i 存储的是 *S 类型的值，false 则不是，这种区分能力叫 <a href="https://tour.golang.org/methods/15" target="_blank" rel="external">Type assertions</a> (类型断言)。</p>
-<p>如果需要区分多种类型，可以使用 switch 断言，更简单直接，这种断言方式只能在 switch 语句中使用。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">switch</span> t := i.(<span class="keyword">type</span>) &#123;</div><div class="line"><span class="keyword">case</span> *S:</div><div class="line">    fmt.Println(<span class="string">"i store *S"</span>, t)</div><div class="line"><span class="keyword">case</span> *R:</div><div class="line">    fmt.Println(<span class="string">"i store *R"</span>, t)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="4、空的-interface"><a href="#4、空的-interface" class="headerlink" title="4、空的 interface"></a>4、空的 interface</h2><p><code>interface{}</code> 是一个空的 interface 类型，根据前文的定义：一个类型如果实现了一个 interface 的所有方法就说该类型实现了这个 interface，空的 interface 没有方法，所以可以认为所有的类型都实现了 <code>interface{}</code>。如果定义一个函数参数是 <code>interface{}</code> 类型，这个函数应该可以接受任何类型作为它的参数。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">doSomething</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果函数的参数  v 可以接受任何类型，那么函数被调用时在函数内部 v 是不是表示的是任何类型？并不是，虽然函数的参数可以接受任何类型，并不表示 v 就是任何类型，在函数 doSomething 内部 v 仅仅是一个 interface 类型，之所以函数可以接受任何类型是在 go 执行时传递到函数的任何类型都被自动转换成 <code>interface{}</code>。go 是如何进行转换的，以及 v 存储的值究竟是怎么做到可以接受任何类型的，感兴趣的可以看看 <a href="https://research.swtch.com/interfaces" target="_blank" rel="external">Russ Cox 关于 interface 的实现</a> 。</p>
-<p>既然空的 interface 可以接受任何类型的参数，那么一个 <code>interface{}</code>类型的 slice 是不是就可以接受任何类型的 slice ?</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAll</span><span class="params">(vals []<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123; <span class="comment">//1</span></div><div class="line">	<span class="keyword">for</span> _, val := <span class="keyword">range</span> vals &#123;</div><div class="line">		fmt.Println(val)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	names := []<span class="keyword">string</span>&#123;<span class="string">"stanley"</span>, <span class="string">"david"</span>, <span class="string">"oscar"</span>&#125;</div><div class="line">	printAll(names)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面的代码是按照我们的假设修改的，执行之后竟然会报  <code>cannot use names (type []string) as type []interface {} in argument to printAll</code>  错误，why？</p>
-<p>这个错误说明 go 没有帮助我们自动把 slice 转换成 <code>interface{}</code> 类型的 slice，所以出错了。<strong>go 不会对 类型是<code>interface{}</code> 的 slice 进行转换</strong> 。为什么 go 不帮我们自动转换，一开始我也很好奇，最后终于在 go 的 wiki 中找到了答案 <a href="https://github.com/golang/go/wiki/InterfaceSlice" target="_blank" rel="external">https://github.com/golang/go/wiki/InterfaceSlice</a> 大意是 <code>interface{}</code> 会占用两个字长的存储空间，一个是自身的 methods 数据，一个是指向其存储值的指针，也就是 interface 变量存储的值，因而 slice []interface{} 其长度是固定的<code>N*2</code>，但是 []T 的长度是<code>N*sizeof(T)</code>，两种 slice 实际存储值的大小是有区别的(文中只介绍两种 slice 的不同，至于为什么不能转换猜测可能是 runtime 转换代价比较大)。</p>
-<p>但是我们可以手动进行转换来达到我们的目的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dataSlice []<span class="keyword">int</span> = foo()</div><div class="line"><span class="keyword">var</span> interfaceSlice []<span class="keyword">interface</span>&#123;&#125; = <span class="built_in">make</span>([]<span class="keyword">interface</span>&#123;&#125;, <span class="built_in">len</span>(dataSlice))</div><div class="line"><span class="keyword">for</span> i, d := <span class="keyword">range</span> dataSlice &#123;</div><div class="line">	interfaceSlice[i] = d</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="5、interface-的实现者的-receiver-如何选择"><a href="#5、interface-的实现者的-receiver-如何选择" class="headerlink" title="5、interface 的实现者的 receiver 如何选择"></a>5、interface 的实现者的 receiver 如何选择</h2><p>在我们上文的例子中调用 f 是 <code>f(&amp;s)</code> 也就是 S 的指针类型，为什么不能是 <code>f(s)</code> 呢，如果是 s 会有什么问题？改成 f(s) 然后执行代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cannot use s (type S) as type I in argument to f:</div><div class="line">	S does not implement I (Set method has pointer receiver)</div></pre></td></tr></table></figure>
-<p>这个错误的意思是 S 没有实现 I，哪里出了问题？<strong>关键点是 S 中 set 方法的 receiver 是个 pointer *S</strong> 。</p>
-<p>interface 定义时并没有严格规定实现者的方法 receiver 是个 value receiver 还是 pointer receiver，上面代码中的 S 的 Set receiver 是 pointer，也就是实现 I 的两个方法的 receiver 一个是 value 一个是 pointer，使用 <code>f(s)</code>的形势调用，传递给 f 的是个 s 的一份拷贝，在进行 s 的拷贝到 I 的转换时，s 的拷贝不满足 Set 方法的 receiver 是个 pointer，也就没有实现 I。<strong>go 中函数都是按值传递即 passed by value</strong>。</p>
-<p>那反过来会怎样，如果 receiver 是 value，函数用 pointer 的形式调用？</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</div><div class="line">	Get() <span class="keyword">int</span></div><div class="line">	Set(<span class="keyword">int</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> SS <span class="keyword">struct</span> &#123;</div><div class="line">	Age <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Get</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> s.Age</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	s.Age = age</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i I)</span></span> &#123;</div><div class="line">	i.Set(<span class="number">10</span>)</div><div class="line">	fmt.Println(i.Get())</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">  	ss := SS&#123;&#125;</div><div class="line">	f(&amp;ss) <span class="comment">//ponter</span></div><div class="line">	f(ss)  <span class="comment">//value</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>I 的实现者 SS 的方法 receiver 都是 value receiver，执行代码可以看到无论是 pointer 还是 value 都可以正确执行。</p>
-<p>导致这一现象的原因是什么？</p>
-<p>如果是按 pointer 调用，go 会自动进行转换，因为有了指针总是能得到指针指向的值是什么，如果是 value 调用，go 将无从得知 value 的原始值是什么，因为 value 是份拷贝。<strong>go 会把指针进行隐式转换得到 value，但反过来则不行</strong>。</p>
-<p>对于 receiver 是 value 的 method，任何在 method 内部对 value 做出的改变都不影响调用者看到的 value，这就是按值传递。</p>
-<p>另一个说明上述现象的例子是这样的来自 <a href="https://play.golang.org/p/TvR758rfre" target="_blank" rel="external">https://play.golang.org/p/TvR758rfre</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> Animal <span class="keyword">interface</span> &#123;</div><div class="line">	Speak() <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Dog <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d Dog)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"Woof!"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Cat <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//1</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Cat)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"Meow!"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Llama <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l Llama)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"?????"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> JavaProgrammer <span class="keyword">struct</span> &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(j JavaProgrammer)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"Design patterns!"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	animals := []Animal&#123;Dog&#123;&#125;, Cat&#123;&#125;, Llama&#123;&#125;, JavaProgrammer&#123;&#125;&#125;</div><div class="line">	<span class="keyword">for</span> _, animal := <span class="keyword">range</span> animals &#123;</div><div class="line">		fmt.Println(animal.Speak())</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>#1</code> Cat 的 speak receiver 是 pointer，interface Animal 的 slice，Cat 的值是一个 value，同样会因为 receiver 不一致而导致无法执行。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/02.6.md" target="_blank" rel="external">https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/02.6.md</a></li>
-<li><a href="http://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go" target="_blank" rel="external">http://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go</a></li>
-<li><a href="https://tour.golang.org/methods/15" target="_blank" rel="external">https://tour.golang.org/methods/15</a></li>
-<li><a href="https://www.miek.nl/go/#interfaces" target="_blank" rel="external">https://www.miek.nl/go/#interfaces</a></li>
-<li><a href="https://github.com/golang/go/wiki/InterfaceSlice" target="_blank" rel="external">https://github.com/golang/go/wiki/InterfaceSlice</a></li>
-<li><a href="https://play.golang.org/p/TvR758rfre" target="_blank" rel="external">https://play.golang.org/p/TvR758rfre</a></li>
-<li><a href="https://golang.org/doc/effective_go.html#interfaces" target="_blank" rel="external">https://golang.org/doc/effective_go.html#interfaces</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="external">http://en.wikipedia.org/wiki/Duck_typing</a></li>
-</ul>
-<h2 id="文中用到的代码"><a href="#文中用到的代码" class="headerlink" title="文中用到的代码"></a>文中用到的代码</h2><p><a href="https://gist.github.com/zhyq0826/bda38dd5525c0157829bc574e742463c/archive/b3d1a53050dca568767b0efdb83968e67a9c6461.zip" target="_blank" rel="external">点击下载源码包</a></p>
-<script src="//gist.github.com/bda38dd5525c0157829bc574e742463c.js?file=interface.go"></script>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/06/24/chat-app-with-go-python-node/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/24/chat-app-with-go-python-node/" itemprop="url">用一个简易的 web chat 说说 Python、Golang、Nodejs 的异步</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T21:06:31+08:00">
-                Jun 24 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/24/chat-app-with-go-python-node/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/24/chat-app-with-go-python-node/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 web 编程中，经常有业务需要在处理请求时做异步操作，比如耗时太长的 IO 操作，等异步执行完成之后再结束请求返回 response 到 client，在这个过程中 client 和 server 一直保持着连接不释放，也就是当前请求在从 client 的角度看一直处于阻塞状态，直到请求结束。</p>
-<p>之所以称之为异步，最重要的特征就是 server 可以继续处理其他 request 而<strong>不被阻塞</strong>。</p>
-<p>不同语言在处理这种异步场景的方式是截然不同的，常见的处理策略有：消息共享（异步任务队列）、多线程多进程、event（linux signals，nodejs event loop）、协程 coroutine（返回 Future、Promise 代表程序执行的未来状态），其中 coroutine 是应用最广泛的，这也是今天此篇的主题。</p>
-<p>什么是 coroutine？简单来说就是一段可以在特定时刻自由被 suspend、execute、kill 的 program。程序对 coroutine 的控制就像操作系统对 process 的控制，但是代价要低廉的多。这也是很多语言都支持用 coroutine 的方式进行异步操作的一个重要原因，其中就包括 Golang、Python、JavaScript(ES6)、Erlang 等。</p>
-<p><strong>Talk is cheap, show me your code.</strong> 在此我们用一个非常简单的 web chat demo app 来一起表一表 Golang、Python、Nodejs 中的异步。</p>
-<h2 id="Chat-demo-app-的简单描述"><a href="#Chat-demo-app-的简单描述" class="headerlink" title="Chat demo app 的简单描述"></a>Chat demo app 的简单描述</h2><p>Demo 只是为了说明 coroutine 在不同语言是如何应用的，因而场景非常简单：一个内容输入框，任意 client 发送的消息都能在其他 client 显示。 </p>
-<p><img src="/images/chat-gif.gif" alt=""></p>
-<p><strong>项目地址</strong></p>
-<p><a href="https://github.com/zhyq0826/chat-app-tutorial" target="_blank" rel="external">https://github.com/zhyq0826/chat-app-tutorial</a></p>
-<h2 id="Chat-demo-app-的工作原理"><a href="#Chat-demo-app-的工作原理" class="headerlink" title="Chat demo app 的工作原理"></a>Chat demo app 的工作原理</h2><p>两个主要的 API：</p>
-<ol>
-<li><code>/a/message/new</code> 用于消息发送，在此称之为 message-new</li>
-<li><code>/a/message/updates</code> 用于消息接受，在此称之为 message-update</li>
-</ol>
-<p>Client 通过 message-update 从 server 端获取最新的消息，如果没有新消息，当次 request 就被挂起，等待新消息的发送，当有新消息来临，获取最新消息之后，断开 connection，一定间隔之后重新请求 server 继续获取新的消息，并重复之前的过程。</p>
-<p>由于 message-update 从 server 获取消息的时候有可能需要较长时间的等待，server 会一直持有 client 的连接不释放，因而要求来自 message-update client 的请求不能阻塞 server 处理其他请求，并且 message-update 在没有消息到达时需要一直挂起。</p>
-<p><strong>Server 处理 message-update 的过程就是一个异步的过程</strong>。</p>
-<h2 id="Python-的实现"><a href="#Python-的实现" class="headerlink" title="Python 的实现"></a>Python 的实现</h2><p>Python 中用 yield 来实现 coroutine，但是想要在 web 中实现 coroutine 是需要特别处理，在此我们用了 tornado 这个支持 asynchronous network 的 web framework 来实现 message-update 的处理。</p>
-<p>Tornado 中一个 Future 代表的是未来的一个结果，在一次异步请求过程中，yield 会解析 Future，如果 Future 未完成，请求就会继续等待。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@gen.coroutine   #1</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></div><div class="line">    cursor = self.get_argument(<span class="string">"cursor"</span>, <span class="keyword">None</span>)</div><div class="line">    <span class="comment"># Save the future returned by wait_for_messages so we can cancel</span></div><div class="line">    <span class="comment"># it in wait_for_messages</span></div><div class="line">    self.future = GLOBAL_MESSAGE_BUFFER.wait_for_messages(cursor=cursor)</div><div class="line">    messages = <span class="keyword">yield</span> self.future <span class="comment">#2</span></div><div class="line">    <span class="keyword">if</span> self.request.connection.stream.closed():</div><div class="line">        <span class="keyword">return</span></div><div class="line">    self.write(dict(messages=messages))</div></pre></td></tr></table></figure>
-<p><code>#1</code> 出通过 tornado 特有的 gen.coroutine 让当前请求支持 coroutine，<code>#2</code> 是当前请求等待的未来的执行结果，每个 message-update client 都通过 GLOBAL_MESSAGE_BUFFER.wait_for_messages 的调用生成一个 future，然后加入消息等待的列表，只要 future 未解析完成，请求会一直挂起，tornado 就是通过 yield 和 future 的配合来完成一次异步请求的。</p>
-<p>理解 yield 是如何等待 future 完成的过程其实就是理解 Python generator 如何解析的过程，细节我们有机会再表。</p>
-<h2 id="Golang-的实现"><a href="#Golang-的实现" class="headerlink" title="Golang 的实现"></a>Golang 的实现</h2><p>Golang 天生就在语言层面支持了 coroutine <code>go func()</code> 就可以开启 coroutine 的执行，是不是很简单，是不是很刺激，比起 tornado 必须特别处理要赏心悦目的多，而且 go 自带的 <code>net/http</code> 包实现的 http 请求又天生支持 coroutine，完全不需要类似 tornado 这种第三方 library 来支持了（此处为 Python 2 ）。Golang 比 Python 更牛逼的地方在于支持 coroutine 之间使用 channel 进行通信，是不是更刺激。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">MessageUpdatesHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</div><div class="line">	client := Client&#123;id: uuid.NewV4().String(), c: <span class="built_in">make</span>(<span class="keyword">chan</span> []<span class="keyword">byte</span>)&#125; #<span class="number">1</span></div><div class="line">	messageBuffer.NewWaiter(&amp;client) #<span class="number">2</span></div><div class="line">	msg := &lt;-client.c <span class="comment">//挂起请求等待消息来临 #3</span></div><div class="line">	w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)</div><div class="line">	w.Write(msg)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>#1</code> 为每个 client 生成 一个唯一的身份和 channel，然后 client 加入消息 <code>#2</code> 等待列表等候消息的来临，<code>#3</code> 就是挂起请求的关键点：等待 channel 的消息。Channel 的通信默认就是阻塞的，即当前 message-update 这个 coroutine 会被 <code>#3</code> 的等待而挂起不会执行，也就达到了 client 连接不能断的要求。</p>
-<h2 id="Nodejs-的实现"><a href="#Nodejs-的实现" class="headerlink" title="Nodejs 的实现"></a>Nodejs 的实现</h2><p>Nodejs 天生异步，通过 callback 来完成异步通知的接收和执行。为了演示方便我们用了 express ，在 express 中如果一个请求不主动调用 <code>res.end</code> 或 <code>res.send</code>、<code>res.json</code> 请求就不会结束。在 nodejs 中请求如何才能知道消息到达了，需要 response？Python 我们用了 <strong>Future</strong>，Golang 用了 <strong>channel</strong>，Nodejs 实现也绝不仅仅只有一种，在此我们用了<strong>事件</strong>和 <strong>Promise</strong>。</p>
-<p>Promise 类似 Future，代表的是一次未来的执行，并且在执行完成之后通过 resolve 和 reject 来完成执行结果的通知，then 或 catch 中获取执行结果。通过 Promise 能有效解决 nodejs 中回调嵌套以及异步执行错误无法外抛的问题。</p>
-<p>Promise 作为一种规范，nodejs 中有多种第三方库都做了实现，在此我们用了 bluebird 这个 library。</p>
-<p>事件是 nodejs 中常用的编程模型，熟悉 JavaScript 的同学应该很了解了，不细表。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">app.post('/a/message/updates', function(req, res)&#123;</div><div class="line">    var p = new Promise(function(resolve, reject)&#123;</div><div class="line">        messageBuffer.messageEmitter.on("newMessage", function(data)&#123;  #1</div><div class="line">            resolve(data); #2</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line">    var client = makeClient(uuidv4(), p);</div><div class="line">    messageBuffer.newWaiter(client);</div><div class="line">    p.then(function(data)&#123;  #3</div><div class="line">        res.set('Content-Type', 'application/json');</div><div class="line">        res.json(&#123;'messages': data&#125;);</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>每个 message-update client  都会生成一个 Promise，并且 Promise 在消息来临事件 newMessage <code>#1</code> 触发以后执行 Promise 的 resolve <code>#2</code> 来告知当前 client 消息来临。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>三种语言实现异步的策略是不尽相同的，其中 Golang 的最容易理解也最容易实现，这完全得意于 go 天生对 coroutine 的支持以及强大的 channel 通信。文中 Python 的实现是基于 Python 2，在 Python 3 中 coroutine 的使用有了很大的改善，但是相比 Golang 还是美中不足。Nodejs 作为天生的异步后端 JavaScript，想要完全使用 Promise 来发挥其优势还是需要很多技巧来让整个调用栈都完美支持，不过 ES6 中的 yield，ES7 中的 await/async 对异步的操作都有了很大改善，他们的处理方式神似 Python（据说 ES6 草案的实现就是一群 Python 程序员）。</p>
-<blockquote>
-<p>Python 的例子改自 tornado <a href="https://github.com/tornadoweb/tornado/tree/master/demos/chat" target="_blank" rel="external">https://github.com/tornadoweb/tornado/tree/master/demos/chat</a></p>
-<p>chat-app 地址 <a href="https://github.com/zhyq0826/chat-app-tutorial" target="_blank" rel="external">https://github.com/zhyq0826/chat-app-tutorial</a></p>
-<p>Promise Bluebird <a href="http://bluebirdjs.com/docs/getting-started.html" target="_blank" rel="external">http://bluebirdjs.com/docs/getting-started.html</a></p>
-<p>tornado <a href="https://tornado.readthedocs.io/en/stable/guide/intro.html" target="_blank" rel="external">https://tornado.readthedocs.io/en/stable/guide/intro.html</a></p>
-<p>Golang channel <a href="https://tour.golang.org/concurrency/2" target="_blank" rel="external">https://tour.golang.org/concurrency/2</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/06/11/go-nil/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/11/go-nil/" itemprop="url">如何理解 golang nil</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T20:01:41+08:00">
-                Jun 11 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/11/go-nil/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/11/go-nil/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。</p>
-<h2 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h2><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU" target="_blank" rel="external">Play</a> </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="literal">nil</span>==<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-1 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox318449491/main.go:8: invalid operation: nil == nil (operator == not defined on nil)</div></pre></td></tr></table></figure>
-<p>这点和 python 等动态语言是不同的，在 python 中，两个 None 值永远相等。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">None</span> == <span class="keyword">None</span></div><div class="line"><span class="keyword">True</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>从 go 的输出结果不难看出，<code>==</code> 对于 nil 来说是一种未定义的操作。</p>
-<h2 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h2><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Printf(<span class="string">"%T"</span>, <span class="literal">nil</span>) </div><div class="line">	<span class="built_in">print</span>(<span class="literal">nil</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-2 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox379579345/main.go:9: use of untyped nil</div></pre></td></tr></table></figure>
-<p>print 的输出时未指定类型的，因而无法输出</p>
-<h2 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h2><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%p"</span>, ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>m 和 ptr 的 address 都是 0x0</p>
-<h2 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h2><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	fmt.Printf(m == ptr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-4 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmp/sandbox618627491/main.go:10: invalid operation: m == ptr (mismatched types map[int]string and *int)</div></pre></td></tr></table></figure>
-<h2 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h2><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR" target="_blank" rel="external">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></div><div class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> sl []<span class="keyword">int</span></div><div class="line">	<span class="keyword">var</span> f <span class="function"><span class="keyword">func</span><span class="params">()</span></span></div><div class="line">	<span class="title">var</span> <span class="title">i</span> <span class="title">interface</span>&#123;&#125;</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, m)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, ptr)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, c)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, sl)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, f)</div><div class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>code-5 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">map[int]string(nil)</div><div class="line">(*int)(nil)</div><div class="line">(chan int)(nil)</div><div class="line">[]int(nil)</div><div class="line">(func())(nil)</div><div class="line">&lt;nil&gt;</div></pre></td></tr></table></figure>
-<p><a href="https://golang.org/ref/spec#The_zero_value" target="_blank" rel="external">zero value</a> 是 go 中变量在声明之后但是未初始化被赋予的该类型的一个默认值。</p>
-<blockquote>
-<p>正确理解 nil 是正确理解 go 中类型的重要一环，因而 nil 的任何细节在遇到之后都不要错过，要做到相应的记录。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/06/07/sqlalchemy-delete-synchronize-session/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/07/sqlalchemy-delete-synchronize-session/" itemprop="url">sqlalchemy session 执行 delete 时 synchronize_session 策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T11:38:37+08:00">
-                Jun 7 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SQLAlchemy/" itemprop="url" rel="index">
-                    <span itemprop="name">SQLAlchemy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/07/sqlalchemy-delete-synchronize-session/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/07/sqlalchemy-delete-synchronize-session/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3,4])).delete(synchronize_session=&apos;evaluate&apos;)</div></pre></td></tr></table></figure>
-<p>sqlalchemy 利用 session 执行 delete 时有一个 synchronize_session 参数用来说明 session 删除对象时需要执行的策略，共三个选项：</p>
-<h2 id="False"><a href="#False" class="headerlink" title="False"></a><strong>False</strong></h2><blockquote>
-<p> don’t synchronize the session. This option is the most efficient and is reliable once the session is expired, which typically occurs after a commit(), or explicitly using expire_all(). Before the expiration, objects may still remain in the session which were in fact deleted which can lead to confusing results if they are accessed via get() or already loaded collections.</p>
-</blockquote>
-<p>不同步 session，如果被删除的 objects 已经在 session 中存在，在 session commit 或者 expire_all 之前，这些被删除的对象都存在 session 中。</p>
-<p>不同步可能会导致获取被删除 objects 时出错。</p>
-<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a><strong>fetch</strong></h2><blockquote>
-<p>performs a select query before the delete to find objects that are matched by the delete query and need to be removed from the session. Matched objects are removed from the session.</p>
-</blockquote>
-<p>删除之前从 db 中匹配被删除的对象并保存在 session 中，然后再从 session 中删除，这样做是为了让 session 的对象管理 identity_map 得知被删除的对象究竟是哪些以便更新引用关系。</p>
-<h2 id="evaluate"><a href="#evaluate" class="headerlink" title="evaluate"></a><strong>evaluate</strong></h2><blockquote>
-<p> Evaluate the query’s criteria in Python straight on the objects in the session. If evaluation of the criteria isn’t implemented, an error is raised.<br>The ‘evaluate’ strategy performs a scan of all matching objects within the Session; if the contents of the Session are expired, such as via a proceeding Session.commit() call, this will result in SELECT queries emitted for every matching object.</p>
-</blockquote>
-<p>默认值。根据当前的 query criteria 扫描 session 中的 objects，如果不能正确执行则抛出错误，这句话也可以理解为，如果 session 中原本就没有这些被删除的 objects，扫描当然不会发生匹配，相当于匹配未正确执行。</p>
-<p>注意这里报错只会在特定 query criteria 时报错，比如 <code>in</code> 操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">session.query(Tag).filter(Tag.id.in_([1,2,3])).delete()</div><div class="line"></div><div class="line">sqlalchemy.exc.InvalidRequestError: Could not evaluate current criteria in Python. Specify &apos;fetch&apos; or False for the synchronize_session parameter.</div></pre></td></tr></table></figure>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/30/go-new-programmer-best-practice/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2164,7 +1932,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2175,7 +1943,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2186,7 +1954,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2250,7 +2018,7 @@
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -2334,13 +2102,6 @@
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -2360,7 +2121,24 @@
   
 
     
-      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script>
+      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
     

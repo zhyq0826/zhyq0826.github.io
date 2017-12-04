@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2016/11/18/use-makrdown-to-format-wxmp/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="可能吧的阿禅的之前写了一篇文章介绍了他是如何排版公众号文章的：思路就是用 markdown 写作，然后使用专门的工具导出为 html 文件，最后把自定义的样式应用到导出的文件，复制粘贴最终的内容到微信公众号。 在这篇文章中，我将一步步说明如何把阿禅的思路应用到时间中。 选择一款舒适的 markdown 写作工具markdown 的写作工具有很多，这里我只介绍两款 mac 下的软件，非常好用，而且免">
-<meta property="og:updated_time" content="2017-05-17T23:58:52.000Z">
+<meta property="og:updated_time" content="2017-12-03T05:55:47.713Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用 markdown 自定义排版公众号文章">
 <meta name="twitter:description" content="可能吧的阿禅的之前写了一篇文章介绍了他是如何排版公众号文章的：思路就是用 markdown 写作，然后使用专门的工具导出为 html 文件，最后把自定义的样式应用到导出的文件，复制粘贴最终的内容到微信公众号。 在这篇文章中，我将一步步说明如何把阿禅的思路应用到时间中。 选择一款舒适的 markdown 写作工具markdown 的写作工具有很多，这里我只介绍两款 mac 下的软件，非常好用，而且免">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -394,9 +404,9 @@
 <li><a href="http://www.typora.io/" target="_blank" rel="external">Typora</a> </li>
 <li><a href="https://github.com/MacDownApp/macdown" target="_blank" rel="external">macdown</a> </li>
 </ul>
+<a id="more"></a>
 <p>这两款 markdown 编辑器都支持所见即所得写作方式，支持多种主题、支持导出各种格式的文件。</p>
 <h2 id="学习-markdown-语法"><a href="#学习-markdown-语法" class="headerlink" title="学习 markdown 语法"></a>学习 markdown 语法</h2><p>markdown 的语法非常简单，对于一般性的写作，只需要记住一些常用的标记即可，markdown 的教程很多，在此推荐 <strong><a href="http://wowubuntu.com/markdown/" target="_blank" rel="external">http://wowubuntu.com/markdown/</a></strong>。</p>
-<a id="more"></a>
 <h2 id="导出不带样式的-html-文件"><a href="#导出不带样式的-html-文件" class="headerlink" title="导出不带样式的 html 文件"></a>导出不带样式的 html 文件</h2><p>借助写作工具，markdown 可以非常容易地导出 html 文件，为了可以自定义样式和排版，一定要选择<strong>无样式</strong>的导出。</p>
 <h2 id="自定义导出-html-文件的样式"><a href="#自定义导出-html-文件的样式" class="headerlink" title="自定义导出 html 文件的样式"></a>自定义导出 html 文件的样式</h2><p>为了可以完全掌控排版的效果和样式，你需要编写完整的 css 来应用到导出的文件，对此你可以选择学习编写完整的 css，或者请教你身边的程序员朋友帮你完成这一步。</p>
 <h2 id="应用样式到-html-文件"><a href="#应用样式到-html-文件" class="headerlink" title="应用样式到 html 文件"></a>应用样式到 html 文件</h2><p>想要自定义样式完全发挥作用，这些自定义样式最终应该是以<strong>内联</strong>的方式出现在导出的 html 文件中，这也是微信公众号提供的这类富文本编辑器的功能所在，为了把你在上一步编写的外部 css 变成 html 的内联样式，你需要像阿禅在文章中说的那样：写一个 replace 的函数脚本，挨个替换。为了简化这一步的操作，我编写了一个小工具 <strong>markdown-css</strong> 来完成 css 样式从外部到内联的转换。</p>
@@ -574,7 +584,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -585,7 +595,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -596,7 +606,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -676,7 +686,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -760,13 +770,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -804,7 +807,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

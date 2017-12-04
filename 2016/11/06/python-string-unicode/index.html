@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2016/11/06/python-string-unicode/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案  基础概念字符character 构成文本的最小组成单元 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB231">
-<meta property="og:updated_time" content="2017-07-22T08:14:34.000Z">
+<meta property="og:updated_time" content="2017-12-03T05:53:45.600Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python 编码错误的本质和解决方案">
 <meta name="twitter:description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案  基础概念字符character 构成文本的最小组成单元 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB231">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -396,6 +406,7 @@
 <h3 id="字符编码值"><a href="#字符编码值" class="headerlink" title="字符编码值"></a>字符编码值</h3><p>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
 <h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
 <h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>将字节流解析为字符集中的字符</p>
+<a id="more"></a>
 <hr>
 <blockquote>
 <p>文中 python 皆为 2.x 版本code</p>
@@ -405,7 +416,6 @@
 <p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></div></pre></td></tr></table></figure></p>
 <p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
 <p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
-<a id="more"></a>
 <h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p>字符串(string)其实就是一段<strong>文本序列</strong>，是由一个或多个字符组成(character)，<strong>字符是文本的最小构成单元</strong>，在 python 中可以用以下方式表示字符串:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s1 = <span class="string">'abc'</span></div><div class="line">&gt;&gt;&gt; s2 = <span class="string">"abc"</span></div><div class="line">&gt;&gt;&gt; s3 = <span class="string">""</span><span class="string">"</span></div><div class="line">  abc</div><div class="line">  "<span class="string">""</span></div><div class="line">&gt;&gt;&gt; s4 = <span class="string">'中文'</span></div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> [s1, s2, s3, s4]:</div><div class="line">        <span class="built_in">print</span> <span class="built_in">type</span>(i)</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div><div class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</div></pre></td></tr></table></figure>
 <p>这些变量在 python shell 中对应输出是:</p>
@@ -639,7 +649,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -650,7 +660,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -661,7 +671,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -741,7 +751,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -825,13 +835,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -869,7 +872,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

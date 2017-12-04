@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2016/05/28/python-module-path-find/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块 package包，包含有 __init__ 文件的文件夹 relative path相对路径，相对于某个目录的路径 absolute path绝对路径，全路径 路径查找python 解释器查找被引入的包或模块 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路">
-<meta property="og:updated_time" content="2017-07-22T08:13:33.000Z">
+<meta property="og:updated_time" content="2017-12-03T05:53:29.607Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何理解 python 的模块查找原理与方式">
 <meta name="twitter:description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块 package包，包含有 __init__ 文件的文件夹 relative path相对路径，相对于某个目录的路径 absolute path绝对路径，全路径 路径查找python 解释器查找被引入的包或模块 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -393,11 +403,11 @@
 <h3 id="absolute-path"><a href="#absolute-path" class="headerlink" title="absolute path"></a>absolute path</h3><p>绝对路径，全路径</p>
 <h3 id="路径查找"><a href="#路径查找" class="headerlink" title="路径查找"></a>路径查找</h3><p>python 解释器查找被引入的包或模块</p>
 <h2 id="Python-解释器是如何查找包和模块的"><a href="#Python-解释器是如何查找包和模块的" class="headerlink" title="Python 解释器是如何查找包和模块的"></a>Python 解释器是如何查找包和模块的</h2><p>Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。</p>
+<a id="more"></a>
 <p><strong>code-1</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#test.py</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"></div><div class="line"><span class="keyword">print</span> sys.path[<span class="number">0</span>]</div><div class="line"></div><div class="line"><span class="comment"># execute</span></div><div class="line">python test.py</div><div class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test.py</div></pre></td></tr></table></figure>
 <p>执行表明相对路径和绝对路径都输出相同的结果，而且无论哪种执行方式，test.py 所在的文件夹都会被加入 sys.path 的首位，也就是索引为0的位置。</p>
-<h2 id="Python-解释器查找包的顺序是什么"><a href="#Python-解释器查找包的顺序是什么" class="headerlink" title="Python 解释器查找包的顺序是什么"></a>Python 解释器查找包的顺序是什么</h2><a id="more"></a>
-<p>解释器查找包，首先搜索 built-in module，其次搜索 sys.path ，<strong>这样的查找顺序将会导致同名包或模块被遮蔽。</strong></p>
+<h2 id="Python-解释器查找包的顺序是什么"><a href="#Python-解释器查找包的顺序是什么" class="headerlink" title="Python 解释器查找包的顺序是什么"></a>Python 解释器查找包的顺序是什么</h2><p>解释器查找包，首先搜索 built-in module，其次搜索 sys.path ，<strong>这样的查找顺序将会导致同名包或模块被遮蔽。</strong></p>
 <p><strong>code-2</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ls</span></div><div class="line">├── os.py</div><div class="line">├── <span class="built_in">test</span>2.py</div><div class="line">├── redis.py</div><div class="line"></div><div class="line"><span class="comment">#test2.py</span></div><div class="line">import os</div><div class="line">from redis import Redis</div><div class="line"></div><div class="line"><span class="comment">#execute test2.py</span></div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"/Users/x/workspace/blog-code/p2016_05_28_python_path_find/test2.py"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    from redis import Redis</div><div class="line">ImportError: cannot import name Redis</div></pre></td></tr></table></figure>
 <p>由于 <code>os</code> 是 built-in module，即使在同目录下有同名模块，解释器依然可以找到正确的 <code>os</code> 模块，可以证实 built-in module 不会被遮蔽，而 <code>redis</code> 属于第三方模块，默认安装位置是 Python 环境变量中的 site-packages，解释器启动之后会将此目录中的内容加入 sys.path，由于当前目录会在 sys.path 的首位，当前目录的 <code>redis</code> 优先被找到，site-packages 中的 <code>redis</code> 模块被遮蔽了。</p>
@@ -405,7 +415,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import os.path</div><div class="line">&gt;&gt;&gt; import sys</div><div class="line">&gt;&gt;&gt; os.path.abspath(sys.path[0])</div><div class="line"><span class="string">'/Users/x/workspace/blog-code'</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
 <p>除此之外，其他与执行一个文件是相同的。</p>
 <h2 id="模块中的-file-变量"><a href="#模块中的-file-变量" class="headerlink" title="模块中的 __file__ 变量"></a>模块中的 <code>__file__</code> 变量</h2><blockquote>
-<p><code>__file__</code> is the pathname of the file from which the module was loaded, if it was loaded from a file. 如果一个模块是从文件加载的，<code>__file__</code> 就是该模块的路径名–<a href="https://docs.python.org/2/reference/datamodel.html" target="_blank" rel="external">Python Doc</a>: </p>
+<p><code>__file__</code> is the pathname of the file from which the module was loaded, if it was loaded from a file. 如果一个模块是从文件加载的，<code>__file__</code> 就是该模块的路径名—<a href="https://docs.python.org/2/reference/datamodel.html" target="_blank" rel="external">Python Doc</a>: </p>
 </blockquote>
 <p>顾名思义，当模块以文件的形式出现 <code>__file__</code> 指的是模块文件的路径名，以相对路径执行 <code>__file__</code> 是相对路径，以绝对路径执行 <code>__file__</code> 是绝对路径。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#test3.py</span></div><div class="line"><span class="keyword">print</span> __file__</div><div class="line"></div><div class="line"><span class="comment">#相对路径执行</span></div><div class="line"></div><div class="line">python test3.py</div><div class="line">test3.py</div><div class="line"></div><div class="line"><span class="comment">#绝对路径执行</span></div><div class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test3.py</div><div class="line">/Users/x/workspace/blog-code/p2016_05_28_python_path_find/test3.py</div></pre></td></tr></table></figure>
@@ -595,7 +605,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -606,7 +616,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -617,7 +627,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -697,7 +707,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -781,13 +791,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -825,7 +828,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

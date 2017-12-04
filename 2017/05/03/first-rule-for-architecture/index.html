@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/05/03/first-rule-for-architecture/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="概念ArchitectureArchitecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki https://en.wikipedia.org/wiki/Architecture">
-<meta property="og:updated_time" content="2017-07-07T15:01:22.000Z">
+<meta property="og:updated_time" content="2017-12-03T05:49:53.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无处不在的架构">
 <meta name="twitter:description" content="概念ArchitectureArchitecture is both the process and the product of planning, designing, and constructing buildings and other physical structures. —— From wiki https://en.wikipedia.org/wiki/Architecture">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -391,9 +401,9 @@
 <p>Architecture 意在计划、设计、构建建筑物的过程。</p>
 <h3 id="Software-architecture"><a href="#Software-architecture" class="headerlink" title="Software architecture"></a>Software architecture</h3><p>Software architecture refers to the high level structures of a software system, the discipline of creating such structures, and the documentation of these structures…..The architecture of a software system is a metaphor, analogous to the architecture of a building.—— From wiki <a href="https://en.wikipedia.org/wiki/Software_architecture" target="_blank" rel="external">https://en.wikipedia.org/wiki/Software_architecture</a></p>
 <p>software architecture 和构建一座实体建筑是非常相似的，都具有计划、设计、构建的过程。</p>
+<a id="more"></a>
 <h2 id="软件架构关注什么"><a href="#软件架构关注什么" class="headerlink" title="软件架构关注什么"></a>软件架构关注什么</h2><p><strong>Software architecture is about making fundamental structural choices which are costly to change once implemented.</strong></p>
 <p>wiki 的这句话恰如其分的解释了软件架构需要关注的：软件架构就是在做选择，而这些选择一旦实施，其改变成本相对较高。</p>
-<a id="more"></a>
 <h2 id="哪些地方需要架构"><a href="#哪些地方需要架构" class="headerlink" title="哪些地方需要架构"></a>哪些地方需要架构</h2><p>不只有那些 high level 层面的东西才需要架构，在软件的整个生命周期中，架构几乎都有体现。</p>
 <p>需求的提取和抽象，application 的部署，project package 的组织和命名，甚至到 module 、class 、function、variable 的组织命名都需要架构。</p>
 <p>可以说只要是需要做决定的地方，都需要架构。换句话说，每个程序员都是架构师，差别只在于做出的选择好坏有别，差异巨大。</p>
@@ -424,6 +434,7 @@
 <h3 id="靠事实说话的理工科思维"><a href="#靠事实说话的理工科思维" class="headerlink" title="靠事实说话的理工科思维"></a>靠事实说话的理工科思维</h3><p>理工科思维讲究有没有道理，有没有说服力。这个道理不是建立在想当然的感觉、权威、道德等缺乏可靠事实的标准之上。</p>
 <p>实验、测量、分析、数据这些带有强烈理工科思维的词汇是体现依靠事实说话的有力证明。</p>
 <p>以理工科的方式对选择的利弊进行量化分析，列依据，摆事实，如何选择将一目了然。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -466,6 +477,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>from <a href="https://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/" target="_blank" rel="external">https://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/</a></p>
 <h2 id="无处不在的架构"><a href="#无处不在的架构" class="headerlink" title="无处不在的架构"></a>无处不在的架构</h2><p>架构反应的是 program 的设计过程，考虑的是 program 的未来，何时何地开始 program 的架构？</p>
 <p>从开始给 program 起名字就应该考虑架构，好的名字是 program 核心含义的直接表达，react、jquery、docker 无一例外都有非常响亮且有意义的名字。</p>
@@ -634,7 +646,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -645,7 +657,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -656,7 +668,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -736,7 +748,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -820,13 +832,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -864,7 +869,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

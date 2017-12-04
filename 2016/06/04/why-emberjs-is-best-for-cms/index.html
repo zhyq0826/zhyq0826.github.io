@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2016/06/04/why-emberjs-is-best-for-cms/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="在开始之前，先看一组 github 数据 ember.js  star 16291 contributors 586 releases  181 issues 167 open, 4397 closed  https://github.com/emberjs/ember.js angular.js  star 49643 contributors 1476 releases 169 issues">
-<meta property="og:updated_time" content="2017-07-07T01:47:35.000Z">
+<meta property="og:updated_time" content="2017-12-03T05:56:15.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么选择 emberjs 开发 dashboard 和 CMS 类系统">
 <meta name="twitter:description" content="在开始之前，先看一组 github 数据 ember.js  star 16291 contributors 586 releases  181 issues 167 open, 4397 closed  https://github.com/emberjs/ember.js angular.js  star 49643 contributors 1476 releases 169 issues">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -433,8 +443,8 @@
 </blockquote>
 <p>emberjs 和其他同类框架一样，至少在 github 的 表现足以证明其流行度是不低的，但各个框架的诞生的场景以及解决的问题又不尽相同。</p>
 <p>emberjs 是基于 jquery 的一个全栈式前端框架，它提供了从路由层-&gt; view 层-&gt;数据和网络交互层的全部解决方案，只用 emberjs 就足以解决前端单页应用遇到的所有复杂问题，而且兼具有不俗的开发效率和开发质量。</p>
-<h2 id="emberjs-的特性"><a href="#emberjs-的特性" class="headerlink" title="emberjs 的特性"></a>emberjs 的特性</h2><h3 id="全栈式解决方案"><a href="#全栈式解决方案" class="headerlink" title="全栈式解决方案"></a>全栈式解决方案</h3><p>emberjs 是一个大而全的框架，它几乎囊括了单页应用开发所需要的方方面面: component，model，service，route，temlate<br>，ember-data。借助 emberjs 几乎可以完成任何规模的复杂应用，而不用担心它没有提供足够丰富的特性或者需要求助其他第三方库(不一定可以很好的和框架本身集成)。</p>
 <a id="more"></a>
+<h2 id="emberjs-的特性"><a href="#emberjs-的特性" class="headerlink" title="emberjs 的特性"></a>emberjs 的特性</h2><h3 id="全栈式解决方案"><a href="#全栈式解决方案" class="headerlink" title="全栈式解决方案"></a>全栈式解决方案</h3><p>emberjs 是一个大而全的框架，它几乎囊括了单页应用开发所需要的方方面面: component，model，service，route，temlate<br>，ember-data。借助 emberjs 几乎可以完成任何规模的复杂应用，而不用担心它没有提供足够丰富的特性或者需要求助其他第三方库(不一定可以很好的和框架本身集成)。</p>
 <h3 id="基于-jquery"><a href="#基于-jquery" class="headerlink" title="基于 jquery"></a>基于 jquery</h3><p>emberjs 是完全基于 jquery 的，意味着任何基于 jquery 的第三方库都可以和 ember app 集成，而这些年构建于  jquery 之上的框架和插件不计其数，在没有必要重复造轮子的地方，完全可以用丰富的第三方轮子替代，比如 bootstrap，semantic-ui 这种大而全的 UI framework，jQuery-File-Upload 这种可以兼容各种主流浏览器的文件上传组件。利用这一优势，大量现成的 jquery 插件能很快集在 ember app 中，借助 ember component 又可以很轻松达到复用的目的。</p>
 <h3 id="良好的兼容性"><a href="#良好的兼容性" class="headerlink" title="良好的兼容性"></a>良好的兼容性</h3><p>最低能够兼容到 IE 8，新版本也在逐步淘汰低版本IE的兼容。</p>
 <h3 id="约定优于配置"><a href="#约定优于配置" class="headerlink" title="约定优于配置"></a>约定优于配置</h3><p>开发、管理和维护复杂的单页应用，是一件非常考验组织架构的事情，组件的复用、网络的交互、全局状态的管理、复杂的表单数据、路由等都需要经过精心设计和严格的代码规范才能最大限度的保证在多人协同开发之下，代码仍具有良好的维护成本和高效高质的产出。emberjs 秉承约定由于配置的理念，已经在框架层面把应用的最基本结构确定了，开发者只需要顺势而为，即可保证代码的可维护性和可协作性。</p>
@@ -463,6 +473,7 @@
 <p>具有以上特点的各种复杂的 dashboard 和 内容管理应用。这类应用基本具备性能要求不高，但是需求变更频繁，表单处理复杂，由于频繁变更后端逻辑和数据结构，页面的组织结构和交互需要频繁修改。高频变更之下，要保证代码具有很强的一致性和可维护性，ember 约定优于配置的理念恰如其分得契合这样的需求。</p>
 <h2 id="emberjs-的问题"><a href="#emberjs-的问题" class="headerlink" title="emberjs 的问题"></a>emberjs 的问题</h2><p>1.体积庞大</p>
 <p>emberjs 的体积非常庞大</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -509,6 +520,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>单从体积上看，emberjs 显得过于雍正，但是在很多场景之下，体积根本不是需要考虑的因素。</p>
 <p>2.性能</p>
 <p>由于 emberjs 提供了单页应用开发所需要的几乎全部解决方案，相比于像 vuejs、reactjs、riot等这些专注于 UI 层的框架的的性能就有了一定的差距，再加上字符串模板天生特性和 emberjs 实现双向绑定的机制，性能不是很好是 emberjs 的一个问题，但是并不代表 emberjs 没有优化的空间。<a href="http://www.discourse.org/" target="_blank" rel="external">discourse</a> 就是很好的案例。点击查看 discourse 团队对 emberjs 的优化 <a href="https://eviltrout.com/" target="_blank" rel="external">eviltrout</a>。</p>
@@ -691,7 +703,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -702,7 +714,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -713,7 +725,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -793,7 +805,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -877,13 +889,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -921,7 +926,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。 使用 autoenv 自动激活 env 环境autoenv 可以在">
+<meta name="description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。">
 <meta name="keywords" content="pipenv">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 pipenv 和 autoenv 构造一键 Python Project 环境">
 <meta property="og:url" content="http://sanyuesha.com/2017/10/10/pipenv/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。 使用 autoenv 自动激活 env 环境autoenv 可以在">
-<meta property="og:updated_time" content="2017-11-12T08:34:36.699Z">
+<meta property="og:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。">
+<meta property="og:updated_time" content="2017-12-03T05:52:55.222Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 pipenv 和 autoenv 构造一键 Python Project 环境">
-<meta name="twitter:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。 使用 autoenv 自动激活 env 环境autoenv 可以在">
+<meta name="twitter:description" content="虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，autoenv 和 pipenv可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。">
 
 
 
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -388,6 +398,7 @@
 
       
         <p>虽然 Python 的 virtualenv 可以为 Python 的工程提供很好的环境支持免去了很多环境依赖上的麻烦，但是若是项目太多，还是要构建很多虚拟环境，而且每次进不同的项目都需要手动切换非常麻烦，<a href="https://pypi.org/project/autoenv/" target="_blank" rel="external">autoenv</a> 和 <a href="https://pypi.org/project/pipenv/" target="_blank" rel="external">pipenv</a>可以为 Python 的工程提供 virtualenv 自动构建、自动激活以及灵活的依赖管理。</p>
+<a id="more"></a>
 <h1 id="使用-autoenv-自动激活-env-环境"><a href="#使用-autoenv-自动激活-env-环境" class="headerlink" title="使用 autoenv 自动激活 env 环境"></a>使用 autoenv 自动激活 env 环境</h1><p>autoenv 可以在进入项目之后自动检测项目目录的 .env 文件并激活项目所需的 virtualenv 环境，这样能够保证每次切换项目都能自动进入项目自身依赖的虚拟环境。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew install autoenv</div><div class="line"><span class="built_in">echo</span> <span class="string">"source <span class="variable">$(brew --prefix autoenv)</span>/activate.sh"</span> &gt;&gt; ~/.bash_profile</div></pre></td></tr></table></figure>
 <h1 id="使用-pipenv-自动构建环境和依赖"><a href="#使用-pipenv-自动构建环境和依赖" class="headerlink" title="使用 pipenv 自动构建环境和依赖"></a>使用 pipenv 自动构建环境和依赖</h1><p>pipenv 是结合了 virtualenv 和 pip 的构建工具，这样就省去了分开使用二者的麻烦，而且 pipenv 借鉴了开源社区众多包管理工具的优秀特性，真可谓集中家之长来为 Python 提供了一个优秀的包管理工具，其作者就是大名鼎鼎 requests 的作者。</p>
@@ -441,8 +452,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/09/my-learning/" rel="next" title="认识学习的目的、本质和底层规律">
-                <i class="fa fa-chevron-left"></i> 认识学习的目的、本质和底层规律
+              <a href="/2017/10/09/my-learning/" rel="next" title="我的学习方法论">
+                <i class="fa fa-chevron-left"></i> 我的学习方法论
               </a>
             
           </div>
@@ -566,7 +577,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -577,7 +588,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -588,7 +599,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -668,7 +679,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -752,13 +763,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -796,7 +800,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   

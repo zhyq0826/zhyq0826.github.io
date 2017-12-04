@@ -5,9 +5,9 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/10/24/go-common-mistake-1/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="在 Go 常见的错误一文中 http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/ 有这么一段代码： 1234567891011121314151617181920212223242526package mainimport (      &quot;fmt&quot;    &quot;time&quot;)type field struct &amp;#">
-<meta property="og:updated_time" content="2017-10-30T00:56:26.847Z">
+<meta property="og:updated_time" content="2017-12-03T05:40:18.349Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go 常见错误之一：值拷贝和 for 循环中的单一变量">
 <meta name="twitter:description" content="在 Go 常见的错误一文中 http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/ 有这么一段代码： 1234567891011121314151617181920212223242526package mainimport (      &quot;fmt&quot;    &quot;time&quot;)type field struct &amp;#">
@@ -113,7 +113,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -154,7 +154,7 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -169,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,6 +251,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
           </a>
         </li>
       
@@ -389,6 +399,7 @@
       
         <p>在 Go 常见的错误一文中 <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/" target="_blank" rel="external">http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/</a> 有这么一段代码：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (  </div><div class="line">    <span class="string">"fmt"</span></div><div class="line">    <span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> field <span class="keyword">struct</span> &#123;  </div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *field)</span> <span class="title">print</span><span class="params">()</span></span> &#123;  </div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </div><div class="line">    data := []field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">        <span class="keyword">go</span> v.<span class="built_in">print</span>()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    time.Sleep(<span class="number">3</span> * time.Second)</div><div class="line">    <span class="comment">//goroutines print: three, three, three</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>把 field slice 的类型改为 pointer 结果又不同：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (  </div><div class="line">    <span class="string">"fmt"</span></div><div class="line">    <span class="string">"time"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="keyword">type</span> field <span class="keyword">struct</span> &#123;  </div><div class="line">    name <span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *field)</span> <span class="title">print</span><span class="params">()</span></span> &#123;  </div><div class="line">    fmt.Println(p.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </div><div class="line">    data := []*field&#123;&#123;<span class="string">"one"</span>&#125;,&#123;<span class="string">"two"</span>&#125;,&#123;<span class="string">"three"</span>&#125;&#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> data &#123;</div><div class="line">        v := v</div><div class="line">        <span class="keyword">go</span> v.<span class="built_in">print</span>()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    time.Sleep(<span class="number">3</span> * time.Second)</div><div class="line">    <span class="comment">//goroutines print: one, two, three</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这两段代码的差异究竟是如何导致结果的不同？</p>
@@ -439,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/19/mysql-online-migration-program-and-tool-compare/" rel="next" title="mysql 在线 scheme 变更方案以及三款工具评测">
-                <i class="fa fa-chevron-left"></i> mysql 在线 scheme 变更方案以及三款工具评测
+              <a href="/2017/10/19/mysql-online-migration-program-and-tool-compare/" rel="next" title="mysql 在线 scheme 变更方案以及开源工具评测">
+                <i class="fa fa-chevron-left"></i> mysql 在线 scheme 变更方案以及开源工具评测
               </a>
             
           </div>
@@ -555,7 +566,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -566,7 +577,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -577,7 +588,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -641,7 +652,7 @@ var jiathis_config={
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.2</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -725,13 +736,6 @@ var jiathis_config={
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
-
-
-
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
@@ -769,7 +773,24 @@ var jiathis_config={
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script>
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
     
 
   
