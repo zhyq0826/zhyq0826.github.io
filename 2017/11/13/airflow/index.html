@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="Airflow 是什么Airflow 是 Airbnb 开发的用于工作流管理的开源项目，自带 UI，现在 Apache 下做孵化，地址是https://github.com/apache/incubator-airflow  Airflow 解决什么问题Airflow 主要解决的问题可以参考 Airbnb 官方的博客: airflow-a-workflow-management-platform，">
 <meta property="og:image" content="http://airflow.incubator.apache.org/_images/airflow.gif">
-<meta property="og:updated_time" content="2017-12-03T05:48:33.514Z">
+<meta property="og:updated_time" content="2017-12-07T15:13:28.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 airflow 替代你的 crontab">
 <meta name="twitter:description" content="Airflow 是什么Airflow 是 Airbnb 开发的用于工作流管理的开源项目，自带 UI，现在 Apache 下做孵化，地址是https://github.com/apache/incubator-airflow  Airflow 解决什么问题Airflow 主要解决的问题可以参考 Airbnb 官方的博客: airflow-a-workflow-management-platform，">
@@ -439,6 +439,14 @@
 <h2 id="DAG-可以指定默认的参数"><a href="#DAG-可以指定默认的参数" class="headerlink" title="DAG 可以指定默认的参数"></a>DAG 可以指定默认的参数</h2><p>DAG 的默认参数会应用到所有的 operator 中。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">default_args=dict(</div><div class="line">    start_date=datetime(<span class="number">2016</span>, <span class="number">1</span>, <span class="number">1</span>),</div><div class="line">    owner=<span class="string">'Airflow'</span>)</div><div class="line"></div><div class="line">dag = DAG(<span class="string">'my_dag'</span>, default_args=default_args)</div><div class="line">op = DummyOperator(task_id=<span class="string">'dummy'</span>, dag=dag)</div><div class="line">print(op.owner) <span class="comment"># Airflow</span></div></pre></td></tr></table></figure>
 <h2 id="扩展性极强的-operator"><a href="#扩展性极强的-operator" class="headerlink" title="扩展性极强的 operator"></a>扩展性极强的 operator</h2><p>Airflow operator 很容易扩展，这也是 airflow 几乎支持任何形式 task 重要原因。虽然 Airflow 支持不同的 task 可以传输数据，但是如果你的两个 task 之间确实需要共享数据，最好的办法是把他们写在一起。</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><ol>
+<li>配置 Airflow 发送邮件</li>
+</ol>
+<p>DAG 执行失败时会可以发送邮件，需要配置好 smtp，在 airflow 配置中默认会开启 starttls，但是最新版下面会报错，如果不在乎 ssl，改成 false 即可</p>
+<ol>
+<li>Airflow 支持配置 url 前缀</li>
+</ol>
+<p>最新版已经支持配置 url 前缀，但是还有一些问题没有解决，比如很多页面的 url 都是硬编码的，如果启用配置 url 前缀，导致一些页面的 url 还是使用原来的相对路径会报 404 错误，这个可以修改页面调用的 url 路径即可</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="http://airflow.incubator.apache.org/" target="_blank" rel="external">http://airflow.incubator.apache.org/</a></li>
 <li><a href="https://github.com/apache/incubator-airflow" target="_blank" rel="external">https://github.com/apache/incubator-airflow</a></li>
@@ -608,7 +616,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -673,7 +681,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-是什么"><span class="nav-number">1.</span> <span class="nav-text">Airflow 是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-解决什么问题"><span class="nav-number">2.</span> <span class="nav-text">Airflow 解决什么问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开始使用-airflow-之前需要知道和准备的"><span class="nav-number">3.</span> <span class="nav-text">开始使用 airflow 之前需要知道和准备的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">4.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和使用"><span class="nav-number">5.</span> <span class="nav-text">安装和使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一个-DAG"><span class="nav-number">6.</span> <span class="nav-text">第一个 DAG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DAG-的实例化"><span class="nav-number">7.</span> <span class="nav-text">DAG 的实例化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task-的实例化"><span class="nav-number">8.</span> <span class="nav-text">Task 的实例化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task-的依赖"><span class="nav-number">9.</span> <span class="nav-text">Task 的依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行和测试"><span class="nav-number">10.</span> <span class="nav-text">执行和测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-的命令行"><span class="nav-number">11.</span> <span class="nav-text">Airflow 的命令行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试任务的执行"><span class="nav-number">12.</span> <span class="nav-text">测试任务的执行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行任务和并记录状态"><span class="nav-number">13.</span> <span class="nav-text">执行任务和并记录状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更多关于-DAG-和-operator"><span class="nav-number">14.</span> <span class="nav-text">更多关于 DAG 和 operator</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-的-scope"><span class="nav-number">14.1.</span> <span class="nav-text">DAG 的 scope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-可以指定默认的参数"><span class="nav-number">14.2.</span> <span class="nav-text">DAG 可以指定默认的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展性极强的-operator"><span class="nav-number">14.3.</span> <span class="nav-text">扩展性极强的 operator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">15.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-是什么"><span class="nav-number">1.</span> <span class="nav-text">Airflow 是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-解决什么问题"><span class="nav-number">2.</span> <span class="nav-text">Airflow 解决什么问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开始使用-airflow-之前需要知道和准备的"><span class="nav-number">3.</span> <span class="nav-text">开始使用 airflow 之前需要知道和准备的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">4.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和使用"><span class="nav-number">5.</span> <span class="nav-text">安装和使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一个-DAG"><span class="nav-number">6.</span> <span class="nav-text">第一个 DAG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DAG-的实例化"><span class="nav-number">7.</span> <span class="nav-text">DAG 的实例化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task-的实例化"><span class="nav-number">8.</span> <span class="nav-text">Task 的实例化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task-的依赖"><span class="nav-number">9.</span> <span class="nav-text">Task 的依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行和测试"><span class="nav-number">10.</span> <span class="nav-text">执行和测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Airflow-的命令行"><span class="nav-number">11.</span> <span class="nav-text">Airflow 的命令行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试任务的执行"><span class="nav-number">12.</span> <span class="nav-text">测试任务的执行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行任务和并记录状态"><span class="nav-number">13.</span> <span class="nav-text">执行任务和并记录状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更多关于-DAG-和-operator"><span class="nav-number">14.</span> <span class="nav-text">更多关于 DAG 和 operator</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-的-scope"><span class="nav-number">14.1.</span> <span class="nav-text">DAG 的 scope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-可以指定默认的参数"><span class="nav-number">14.2.</span> <span class="nav-text">DAG 可以指定默认的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展性极强的-operator"><span class="nav-number">14.3.</span> <span class="nav-text">扩展性极强的 operator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题"><span class="nav-number">15.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">16.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
@@ -696,7 +704,7 @@ var jiathis_config={
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

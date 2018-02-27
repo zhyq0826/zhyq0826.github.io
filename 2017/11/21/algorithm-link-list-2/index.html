@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171127-152340.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171127-152421.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171127-152508.png">
-<meta property="og:updated_time" content="2017-12-03T05:38:06.843Z">
+<meta property="og:updated_time" content="2017-12-06T15:10:04.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法-链表">
 <meta name="twitter:description" content="概念链表链表是线性表的一种，但是链表不同于顺序表，其在内存中的表示不一定是连续的地址空间，可以是任意的地址空间，基于此链表可以动态的添加任意大小的数据而不需要事先分配空间。 链表的分类链表分为：单链表、双链表、循环链表，其元素存放的地址不连续，可以随意添加任意节点。 单链表特性 节点的物理位置不一定连续，但是逻辑上通过指针实现连续 有一个头节点和一个尾节点，只有尾部节点没有后继节点 知道头部节点就">
@@ -416,7 +416,6 @@
 <p>单链表的表示（之后如果不特别说明默认都将使用 Python 来演示）:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.data = <span class="keyword">None</span></div><div class="line">        self.next = <span class="keyword">None</span></div></pre></td></tr></table></figure></p>
 <p>单链表的每个节点中都包含<strong>一个数据域和指向下一个节点的指针域</strong>，单链表通常有一个表头用来表示链表的开始，尾部节点的指针域为 null。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/ll2.gif" alt="单链表"></p>
-<a id="more"></a>
 <h2 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h2><p>插入新的节点 p</p>
 <h3 id="尾部插入"><a href="#尾部插入" class="headerlink" title="尾部插入"></a>尾部插入</h3><p>尾部插入节点，可以直接将尾部节点的指针域指向新节点 <code>tail.next = p</code>，如果尾部节点不知道需要遍历链表然后插入尾部节点</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cur = head</div><div class="line"><span class="keyword">while</span> cur.next:</div><div class="line">    cur = cur.next</div><div class="line">cur.next = p</div></pre></td></tr></table></figure>
@@ -622,7 +621,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -710,7 +709,7 @@ var jiathis_config={
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
