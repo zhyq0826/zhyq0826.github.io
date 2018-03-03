@@ -101,7 +101,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/12/29/ticket-server/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="发号器是互联网技术场景中经常需要的一种技术实践，本文将讨论几种典型的发号器的实现以及应用。 为什么需要一个发号器需要保证数据全局唯一，典型如数据库的分库分表场景中需要数据的主键始终保持唯一，因为分库分表很可能会夸物理机甚至夸机房。 大公司是如何做的flickrhttp://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-">
-<meta property="og:updated_time" content="2018-02-26T00:48:55.261Z">
+<meta property="og:updated_time" content="2018-03-03T03:45:08.681Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊 ID Generator 的实现和应用">
 <meta name="twitter:description" content="发号器是互联网技术场景中经常需要的一种技术实践，本文将讨论几种典型的发号器的实现以及应用。 为什么需要一个发号器需要保证数据全局唯一，典型如数据库的分库分表场景中需要数据的主键始终保持唯一，因为分库分表很可能会夸物理机甚至夸机房。 大公司是如何做的flickrhttp://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-">
@@ -399,7 +399,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TicketServer1:</div><div class="line">auto-increment-increment = 2</div><div class="line">auto-increment-offset = 1</div><div class="line"></div><div class="line">TicketServer2:</div><div class="line">auto-increment-increment = 2</div><div class="line">auto-increment-offset = 2</div></pre></td></tr></table></figure>
 <p>这样就保证了从不同发号器获得的号码也是唯一的，同时可防止单点，保证了高可用。</p>
 <h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>利用 MySQL 的自增主键实现的分布式发号器非常简单，但是由于步长固定容易猜测，而且不易扩展，比如</p>
-<p>如果有两台发号器，一台初始值是 2，步长是 2，一台初始值是 1 步长是 2，两台发号器分别发号对应的是双数发号器和单号发号器，如果再进行扩展</p>
+<p>如果有两台发号器，一台初始值是 2，步长是 2，一台初始值是 1 步长是 2，两台发号器分别发号对应的是双数发号器和单号发号器，如果再进行扩展就会变得比较麻烦了，因为单双号分离变得麻烦。</p>
+<h2 id="twitter"><a href="#twitter" class="headerlink" title="twitter"></a>twitter</h2><p>待续</p>
 
       
     </div>
@@ -441,6 +442,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/open-linux-standard-tcp-service/" rel="prev" title="linux 打开标准的 echo、discard 等 TCP 服务">
+                linux 打开标准的 echo、discard 等 TCP 服务 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -553,7 +558,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -564,7 +569,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -618,7 +623,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要一个发号器"><span class="nav-number">1.</span> <span class="nav-text">为什么需要一个发号器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大公司是如何做的"><span class="nav-number">2.</span> <span class="nav-text">大公司是如何做的</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#flickr"><span class="nav-number">2.1.</span> <span class="nav-text">flickr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">2.1.1.</span> <span class="nav-text">评价</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要一个发号器"><span class="nav-number">1.</span> <span class="nav-text">为什么需要一个发号器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大公司是如何做的"><span class="nav-number">2.</span> <span class="nav-text">大公司是如何做的</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#flickr"><span class="nav-number">2.1.</span> <span class="nav-text">flickr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">2.1.1.</span> <span class="nav-text">评价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#twitter"><span class="nav-number">2.2.</span> <span class="nav-text">twitter</span></a></li></ol></li></ol></div>
             
 
           </div>
