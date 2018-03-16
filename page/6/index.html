@@ -475,7 +475,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/11/06/python-string-unicode/" itemprop="url">python 编码错误的本质和解决方案</a></h1>
+                <a class="post-title-link" href="/2016/11/06/python-string-unicode/" itemprop="url">Python 编码错误的本质和解决方案</a></h1>
         
 
         <div class="post-meta">
@@ -1298,7 +1298,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/06/18/python-copy-deepcopy/" itemprop="url">如何理解 python 浅拷贝和深拷贝</a></h1>
+                <a class="post-title-link" href="/2016/06/18/python-copy-deepcopy/" itemprop="url">如何理解 Python 浅拷贝和深拷贝</a></h1>
         
 
         <div class="post-meta">
@@ -1387,7 +1387,7 @@
 <p>在 python 中，标识一个对象唯一身份的是：对象的<code>id</code>(内存地址)，对象类型，对象值，而浅拷贝就是创建一个具有相同类型，相同值但不同<code>id</code>的新对象。</p>
 <p>对可变对象而言，对象的值一样可能包含有对其他对象的引用，浅拷贝产生的新对象，虽然具有完全不同的<code>id</code>，但是其值若包含可变对象，这些对象和原始对象中的值包含同样的引用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'b'</span>:[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = copy.copy(l)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(l) == id(c)</div><div class="line"><span class="keyword">False</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="string">'a'</span>].append(<span class="string">'4'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c[<span class="string">'b'</span>].append(<span class="string">'7'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c</div><div class="line">&#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'4'</span>], <span class="string">'b'</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="string">'7'</span>]&#125;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>可见浅拷贝产生的新对象中可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
+<p>可见浅拷贝产生的新对象中，可变对象的值在发生改变时会对原对象的值产生副作用，因为这些值是同一个引用。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/06/18/python-copy-deepcopy/#more" rel="contents">
@@ -1662,7 +1662,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/05/28/python-module-path-find/" itemprop="url">如何理解 python 的模块查找原理与方式</a></h1>
+                <a class="post-title-link" href="/2016/05/28/python-module-path-find/" itemprop="url">如何理解 Python 的模块查找原理与方式</a></h1>
         
 
         <div class="post-meta">
