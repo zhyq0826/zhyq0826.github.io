@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/05/25/sqlalchemy-model-id-zero/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="SQLAlchemy 使用 session 生成新的数据根据主键的不同大致有以下几种情况，其中主键是 0 最为特殊。 测试环境  SQLAlchemy  1.0.9 mysql 5.6.27 pythonn 2.7">
-<meta property="og:updated_time" content="2017-12-03T05:54:37.917Z">
+<meta property="og:updated_time" content="2018-03-31T06:46:07.617Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如果 SQLAlchemy model 自增主键等于 0">
 <meta name="twitter:description" content="SQLAlchemy 使用 session 生成新的数据根据主键的不同大致有以下几种情况，其中主键是 0 最为特殊。 测试环境  SQLAlchemy  1.0.9 mysql 5.6.27 pythonn 2.7">
@@ -420,7 +420,7 @@
 <p>主键是 0 在提交之后再次获取 model 属性值会触发异常，这是由于已经 commit 的 model 的属性属于 expire 的状态，导致 SQLAlchemy 会从 db 中重新 load。由于 mysql 中默认情况下指定 id 是 0 或者 null 都会触发自增主键执行：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tag (<span class="keyword">id</span>, <span class="keyword">name</span>, <span class="keyword">group_id</span>)<span class="keyword">values</span>(<span class="number">0</span>, <span class="string">'a'</span>, <span class="number">1</span>)</div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tag (<span class="keyword">id</span>, <span class="keyword">name</span>, <span class="keyword">group_id</span>)<span class="keyword">values</span>(<span class="literal">null</span>, <span class="string">'a'</span>, <span class="number">1</span>)</div></pre></td></tr></table></figure>
 <p>指定主键为 0 实际生成的数据主键并不是 0，而是自增之后的主键。</p>
-<p>不同于 mysql， SQLAlchemy 在指定主键之后实际上会认为主键就是 0，并没有获取实际生成的不为 0 主键，SQLAlchemy 再次 load 数据是按照 id = 0 的主键查找，实际是不存在的。</p>
+<p><strong>不同于 mysql， SQLAlchemy 在指定主键之后实际上会认为主键就是 0，并没有获取实际生成的不为 0 主键，SQLAlchemy 再次 load 数据是按照 id = 0 的主键查找，实际是不存在的</strong>。</p>
 <p>mysql 的 <a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sqlmode_no_auto_value_on_zero" target="_blank" rel="external">no_auto_value_on_zero</a> 控制着自增主键中 id = 0 的行为，默认是关闭的，打开即表示 id = 0 不会触发自增主键的执行。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SQLAlchemy 中主键为 0 这一特殊情况导致的问题会在某些场景之下带来不必要的麻烦，解决办法就是：</p>
 <ol>
@@ -594,7 +594,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-count">70</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -605,7 +605,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -616,7 +616,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
