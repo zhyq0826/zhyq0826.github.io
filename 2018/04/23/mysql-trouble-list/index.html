@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="程序员," />
+  <meta name="keywords" content="故障," />
 
 
 
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="很显然，这是一个已经被多次提及并讨论的话题了，但今天还要再讲讲。  和朋友们聊天，经常会吐槽那些完全不懂得尊重程序员的产品经理和其他互联网从业者。这些人基本可以分为以下几类。">
-<meta name="keywords" content="程序员">
+<meta name="description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
+<meta name="keywords" content="故障">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何尊重程序员">
-<meta property="og:url" content="http://sanyuesha.com/2015/05/12/how-to-respect-programer/index.html">
+<meta property="og:title" content="MySQL 常见故障以及诊断和解决方案">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="很显然，这是一个已经被多次提及并讨论的话题了，但今天还要再讲讲。  和朋友们聊天，经常会吐槽那些完全不懂得尊重程序员的产品经理和其他互联网从业者。这些人基本可以分为以下几类。">
-<meta property="og:updated_time" content="2017-07-07T15:01:22.000Z">
+<meta property="og:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
+<meta property="og:updated_time" content="2018-04-23T16:18:47.031Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何尊重程序员">
-<meta name="twitter:description" content="很显然，这是一个已经被多次提及并讨论的话题了，但今天还要再讲讲。  和朋友们聊天，经常会吐槽那些完全不懂得尊重程序员的产品经理和其他互联网从业者。这些人基本可以分为以下几类。">
+<meta name="twitter:title" content="MySQL 常见故障以及诊断和解决方案">
+<meta name="twitter:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
 
 
 
@@ -135,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2015/05/12/how-to-respect-programer/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/23/mysql-trouble-list/"/>
 
 
 
 
 
-  <title>如何尊重程序员 | 三月沙</title>
+  <title>MySQL 常见故障以及诊断和解决方案 | 三月沙</title>
   
 
 
@@ -297,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2015/05/12/how-to-respect-programer/">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/23/mysql-trouble-list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何尊重程序员</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL 常见故障以及诊断和解决方案</h1>
         
 
         <div class="post-meta">
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-12T22:43:37+08:00">
-                May 12 2015
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T23:24:33+08:00">
+                Apr 23 2018
               </time>
             
 
@@ -349,8 +349,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/程序人生/" itemprop="url" rel="index">
-                    <span itemprop="name">程序人生</span>
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
                   </a>
                 </span>
 
@@ -367,9 +367,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2015/05/12/how-to-respect-programer/#comments" itemprop="discussionUrl">
+                <a href="/2018/04/23/mysql-trouble-list/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/05/12/how-to-respect-programer/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/04/23/mysql-trouble-list/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -397,46 +397,43 @@
       
 
       
-        <blockquote>
-<p>很显然，这是一个已经被多次提及并讨论的话题了，但今天还要再讲讲。</p>
-</blockquote>
-<p>和朋友们聊天，经常会吐槽那些完全不懂得尊重程序员的产品经理和其他互联网从业者。这些人基本可以分为以下几类。</p>
-<a id="more"></a>
-<h2 id="完全不懂技术，也不学习如何理解技术"><a href="#完全不懂技术，也不学习如何理解技术" class="headerlink" title="完全不懂技术，也不学习如何理解技术"></a>完全不懂技术，也不学习如何理解技术</h2><p>很多刚入行的产品经理不少属于此类，他们做产品有一般表现为：</p>
-<ul>
-<li>没逻辑，没直觉</li>
-<li>有直觉，但直觉背后无逻辑，经不起推敲</li>
-<li>有逻辑，但逻辑很少自己去验证，只等着产品出来再验证</li>
-<li>有直觉，有逻辑，但直觉和逻辑都是粗粒度的    ，很少能做到场景化，故事化，缺乏细节填充，显得空洞</li>
-<li>没有大局观，缺乏整体把握，很在乎细节</li>
+        <p>此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。</p>
+<h2 id="慢查询太多导致整个库性能下降"><a href="#慢查询太多导致整个库性能下降" class="headerlink" title="慢查询太多导致整个库性能下降"></a>慢查询太多导致整个库性能下降</h2><p>这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。</p>
+<h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><ul>
+<li>应用程序卡顿</li>
+<li>如果设置了最大连接数，可能会报超过最大连接数限制</li>
+<li>请求堆积，造成大量的 TIME_WAIT </li>
+<li>单位时间内慢查询明显增多</li>
+<li>服务器的连接数比平时正常流量时增多</li>
 </ul>
-<p>他们对程序员常抱这样的态度：</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li><p>查看所有慢查询语句占用的线程，找到然后 kill 掉</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>尽快禁止业务代码中的慢查询</p>
+</li>
+</ol>
+<pre><code>可以考虑暂时屏蔽相关的功能或暂时下掉相关的业务，并重启服务
+</code></pre><ol>
+<li><p>检查导致慢查询的原因</p>
+<p> 慢查询有很多原因会导致，比如更新数据太多，时间太长，没有合理使用索引，表太大等等，要根据的自己的业务情况进行分析和解决</p>
+</li>
+</ol>
+<h2 id="主从同步不一致"><a href="#主从同步不一致" class="headerlink" title="主从同步不一致"></a>主从同步不一致</h2><p>造成主从不同步的原因有很多，简单列举几个可能的原因：</p>
 <ul>
-<li>你是不是能力不行搞不定呀</li>
-<li>你在讲什么，完全搞不懂(不懂技术)</li>
-<li>原型已经准备好了，就差技术了</li>
-<li>这么简单一个页面，你竟然要三天</li>
-<li>……</li>
+<li>无意中在从库开启了写权限，导致一些数据进入了从库</li>
+<li>网络故障导致从库不能更新主库的数据，网络再次恢复时主从延迟太大</li>
+<li>其他原因</li>
 </ul>
-<p>这类人是最可怕的，几乎可以定性为程序员杀手。如果一个程序员不懂拒绝，不去仔细推敲对方给出的产品方案，常会导致返工或浪费时间验证了一个完全错误的方案，而且还需要花费大量的精力向对方解释难以理解的技术可行性，这类人还喜欢纠缠于细节而不注重大局，比如UI的颜色，一像素的差异(还远未到像素级别的考究)，很小的交互，无指导意义的统计等等。</p>
-<p>应避免与这类人合作，没有必要浪费任何时间教会他们什么是正确的，什么是错误的。如果是创业，这样的人更应该警惕。</p>
-<h2 id="懂点技术，但是感觉自己什么都明白了"><a href="#懂点技术，但是感觉自己什么都明白了" class="headerlink" title="懂点技术，但是感觉自己什么都明白了"></a>懂点技术，但是感觉自己什么都明白了</h2><p>大部分程序员都清楚，很多事情表面上看上去很简单，实际往往很复杂。那些略懂技术<br>的产品经理或项目经理最容易陷入这样的误区。他们对着程序员指手划脚，那种感觉就好象<br>他们已经知道用技术怎么实现了，只是恰巧他们不懂编程而已，原来写代码也挺简单的，没什么大不了的。</p>
-<p>的确，程序员这个职业与其他很多职业一样，都很普通，而且很多程序员还自嘲是码农，互联网民工，甚至是 x 丝。可是这并不代表任何一个人都有资格对程序员指指点点。</p>
-<p>这类人的特点就是，从来不懂如何尊重沟通的另一方，即程序员。</p>
-<p>沟通，本质上是为了表达观点，交流情感或达成共识，但是当这类人开始把和程序员的沟通变成对程序员的批评或指教，沟通就变成了对程序员专业程度的质疑。有这种质疑资格的，只能是更资深的程序员，或者程序员眼中那些值得尊敬的懂行的人。</p>
-<p>遇到了这样的人，不必对他客气，或者根本不去理会他，随便他说什么，该是什么还是什么。</p>
-<h2 id="老板"><a href="#老板" class="headerlink" title="老板"></a>老板</h2><p>老板是程序员绕不过去的一个坎。如果碰上一个喜欢脑袋一热，拍一下就做决定的老板，个中滋味只有自己最能领悟，这种领悟是多么得痛。</p>
-<p>面对这样的老板，只有一条路可走：坚持自己认为是正确的事情，然后，顺其自然。</p>
-<p><strong>如何才是尊重程序员</strong></p>
-<ul>
-<li>不要随便称呼程序员为码农或 x 丝</li>
-<li>任何看上去简单的事情都不一定会简单，明白这个理的人多半做过不简单的事</li>
-<li>学习点技术，不要浪费程序员的时间去解释一些非常简单的概念</li>
-<li>学会沟通，提意见和指指点点有本质的区别，不同的声音可以有，指点需要资格</li>
-<li>一起吐槽产品经理:)</li>
+<h3 id="问题现象-1"><a href="#问题现象-1" class="headerlink" title="问题现象"></a>问题现象</h3><p>从库的数据和主库不一致</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>解决主从不一致的一种最好的办法是暂时先下掉从库，并从某一时间点恢复从库，然后再接入主库进行更新。这里有一个问题是暂时下掉从节点会导致其他节点压力骤增，从而导致整个服务有可能崩溃的风险，为了防止这样的问题出现，在设计数据库架构之初就要考虑预留一定的量来处理某个节点故障的问题。</p>
+<h2 id="在线对大表进行-DDL-导致表锁死"><a href="#在线对大表进行-DDL-导致表锁死" class="headerlink" title="在线对大表进行 DDL 导致表锁死"></a>在线对大表进行 DDL 导致表锁死</h2><p>更改表结构在业务不稳定时进行的非常频繁，但是对 online 表结构进行变更要非常小心谨慎，尤其是表的数据量比较大，业务比较复杂，即可能导致业务功能无法使用等严重现象，一般来说超过百万以上的数据都要小心进行表结构变更。</p>
+<h3 id="问题现象-2"><a href="#问题现象-2" class="headerlink" title="问题现象"></a>问题现象</h3><p>在线变更表结构导致使用该表的业务假死 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table add colum1 string not null default &apos;&apos;;</div></pre></td></tr></table></figure>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>如果数据量比较小（百万以下），数据变更不频繁，可以直接变更</li>
+<li>大表可以考虑采用成熟的开源解决方案，详见<a href="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/">mysql 在线 scheme 变更方案以及</a></li>
 </ul>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>尊重是相互的，要想他人尊重自己，首先要自尊。互联网民工，x 丝这样的词不要随随便便拿来自嘲，一旦有了这样的自嘲，就会给了别人嘲讽的机会。</p>
-<p>程序员虽然不伟大，但绝不简单。</p>
 
       
     </div>
@@ -462,7 +459,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/程序员/" rel="tag"># 程序员</a>
+            <a href="/tags/故障/" rel="tag"># 故障</a>
           
         </div>
       
@@ -475,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/04/25/wechat-product-opinion/" rel="next" title="我的产品记第一记">
-                <i class="fa fa-chevron-left"></i> 我的产品记第一记
+              <a href="/2018/04/23/mysql-lost-connection-error/" rel="next" title="MySQL 2013 lost connection error 详解">
+                <i class="fa fa-chevron-left"></i> MySQL 2013 lost connection error 详解
               </a>
             
           </div>
@@ -484,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/12/first-art-for-my-life/" rel="prev" title="程序人生的第一件艺术品">
-                程序人生的第一件艺术品 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -665,7 +658,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#完全不懂技术，也不学习如何理解技术"><span class="nav-number">1.</span> <span class="nav-text">完全不懂技术，也不学习如何理解技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#懂点技术，但是感觉自己什么都明白了"><span class="nav-number">2.</span> <span class="nav-text">懂点技术，但是感觉自己什么都明白了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#老板"><span class="nav-number">3.</span> <span class="nav-text">老板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#慢查询太多导致整个库性能下降"><span class="nav-number">1.</span> <span class="nav-text">慢查询太多导致整个库性能下降</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题现象"><span class="nav-number">1.1.</span> <span class="nav-text">问题现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">1.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主从同步不一致"><span class="nav-number">2.</span> <span class="nav-text">主从同步不一致</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题现象-1"><span class="nav-number">2.1.</span> <span class="nav-text">问题现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案-1"><span class="nav-number">2.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在线对大表进行-DDL-导致表锁死"><span class="nav-number">3.</span> <span class="nav-text">在线对大表进行 DDL 导致表锁死</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题现象-2"><span class="nav-number">3.1.</span> <span class="nav-text">问题现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案-2"><span class="nav-number">3.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -815,9 +808,9 @@ var jiathis_config={
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://sanyuesha.com/2015/05/12/how-to-respect-programer/';
-          this.page.identifier = '2015/05/12/how-to-respect-programer/';
-          this.page.title = '如何尊重程序员';
+          this.page.url = 'http://sanyuesha.com/2018/04/23/mysql-trouble-list/';
+          this.page.identifier = '2018/04/23/mysql-trouble-list/';
+          this.page.title = 'MySQL 常见故障以及诊断和解决方案';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-lost-connection-error/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="MySQL 在线上的一个新的部署的服务中报： 1pymysql.err.OperationalError (2013, &amp;apos;Lost connection to MySQL server during query&amp;apos;) 翻阅官方文档解释了这么几种可能性问题，详见：https://dev.mysql.com/doc/refman/5.7/en/error-lost-connectio">
-<meta property="og:updated_time" content="2018-04-23T15:21:05.324Z">
+<meta property="og:updated_time" content="2018-04-23T15:23:40.065Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 2013 lost connection error 详解">
 <meta name="twitter:description" content="MySQL 在线上的一个新的部署的服务中报： 1pymysql.err.OperationalError (2013, &amp;apos;Lost connection to MySQL server during query&amp;apos;) 翻阅官方文档解释了这么几种可能性问题，详见：https://dev.mysql.com/doc/refman/5.7/en/error-lost-connectio">
@@ -423,7 +423,8 @@
 <p>依次对照每个超时参数的含义最后锁定了<strong>wait_timeout</strong> 这个参数，其含义是：<strong>The number of seconds the server waits for activity on a noninteractive connection before closing it</strong>. </p>
 <p><strong>由于在应用程序中数据库连接池配置的连接回收时间是 600s，MySQL 配置的是 300s，也就是应用程序中认为一个连接还没有到回收的时间，但是 MySQL 自己判断需要强制回收了。</strong></p>
 <p><strong>解决方案</strong>：尝试把 MySQL 的 <strong>wait_timeout</strong> 调至比应用程序高一些，观察应用程序行为。结果不再报错了，至此就找到了 MySQL 报 <code>Lost connection to MySQL server during query</code> 的问题了。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>MySQL 的这个错误除了官方说的几种 case ，还需要针对自己的业务场景进行适当探索和甄别，具体情况具体分析，也应了那句话<strong>大胆猜想，小心求证</strong>。</p>
+<p><strong>小结</strong></p>
+<p>MySQL 的这个错误除了官方说的几种 case ，还需要针对自己的业务场景进行适当探索和甄别，具体情况具体分析，也应了那句话<strong>大胆猜想，小心求证</strong>。</p>
 
       
     </div>
@@ -471,6 +472,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/23/mysql-trouble-list/" rel="prev" title="MySQL 常见故障以及诊断和解决方案">
+                MySQL 常见故障以及诊断和解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -555,17 +560,8 @@ var jiathis_config={
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
             <img class="site-author-image" itemprop="image"
@@ -583,7 +579,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">76</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -605,7 +601,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -638,22 +634,6 @@ var jiathis_config={
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.</span> <span class="nav-text">小结</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
