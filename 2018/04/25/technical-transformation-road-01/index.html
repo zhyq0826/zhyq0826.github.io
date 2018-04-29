@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术转型之路一：现状和治理思路">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台">
+<meta property="og:updated_time" content="2018-04-29T08:32:35.590Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="技术转型之路一：现状和治理思路">
+<meta name="twitter:description" content="自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/"/>
+
+
+
+
+
+  <title>技术转型之路一：现状和治理思路 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            我的书单
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">技术转型之路一：现状和治理思路</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T11:31:46+08:00">
+                Apr 25 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/25/technical-transformation-road-01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/25/technical-transformation-road-01/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。</p>
+<p>在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。</p>
+<h2 id="现状描述"><a href="#现状描述" class="headerlink" title="现状描述"></a>现状描述</h2><p>整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台，还包括一部分线下订单业务，涉及支付。现在面临的<strong>外部状况</strong>是：</p>
+<ul>
+<li>服务突发故障导致线下交易受阻，用户投诉</li>
+<li>业务需求压力过大，开发人员缺少，业务需求难以快速消化</li>
+</ul>
+<p><strong>内部状况</strong>是：</p>
+<ul>
+<li>数百台服务资源利用和管理不善，忙的忙死，闲的闲死</li>
+<li>架构设计几乎是透明，导致新人无从摸索，出故障不能快速定位和解决</li>
+<li>cache 服务、proxy 服务、nginx 服务、rpc 服务、注册和发现服务、异步任务服务、数据库服务彼此耦合严重，调用依赖非常混乱，变更困难，升级困难</li>
+<li>服务监控使用了多种监控手段，包括 glance、zabbix、munich </li>
+<li>异步任务存在多种技术选型，rq、beanstalkd、celery</li>
+<li>缓存集群使用多种技术选型，twproxy、codis、sentinel</li>
+<li>数据统计和存储使用多种技术选型，MySQL、MongoDB、hadoop、influxdb</li>
+<li>部署环境存在多种技术选型，walle、fabric、ansible</li>
+<li>服务以单体应用存在，无降级措施，无限流措施，一损俱损</li>
+<li>数十个 worker 单台机器部署，CPU 经常超负载</li>
+<li>几百个 crontab 任务</li>
+<li>同一业务代码散落的多个代码仓库改动升级困难</li>
+<li>等…..</li>
+</ul>
+<h2 id="治理思路"><a href="#治理思路" class="headerlink" title="治理思路"></a>治理思路</h2><p>思维决定了行动，无思不行，行辅助思，从行中总结提升思维的高度和境界，思维反过来指导行为时间</p>
+<h3 id="从上之下"><a href="#从上之下" class="headerlink" title="从上之下"></a>从上之下</h3><p>公司业务使用的是云服务器，购买、新建、管理相对来说都非常方便，云厂商提供了类似业务<strong>分组、标签、名称</strong>等管理手段来管理服务器。为了让业务服务部署清晰，划分明了，首先从机器名称功能分组开始梳理，<strong>保证机器的具有单一职责，方便动态扩容和管理</strong>。</p>
+<p>功能和名称划分清晰之后保证业务开发人员能以上帝视角审视所有服务以及它们之间的联系。</p>
+<h3 id="开放权限，人人参与"><a href="#开放权限，人人参与" class="headerlink" title="开放权限，人人参与"></a>开放权限，人人参与</h3><p>为了让每一个开发者都能透彻了解它们开发、部署的服务以及运行状态，放开所有监控工具权限，放开云厂商的机器管理权限，让每一个人都能快速了解到部署的机器，也可以通过云厂商提供的监控及时了解机器的状态。</p>
+<p>开发者要能做运维，会做运维，运维必须要有开发者参与，此举才能保证 devops 理念的实践和落地</p>
+<h3 id="定位问题，各个击破"><a href="#定位问题，各个击破" class="headerlink" title="定位问题，各个击破"></a>定位问题，各个击破</h3><p>整理和梳理技术团队现在面临的每一个问题，按照优先级排序，逐个投入资源彻底解决，与其不断救火，不如集中力量完全消灭一处火源，逐步降低故障率。</p>
+<h3 id="系统化所有日常工作"><a href="#系统化所有日常工作" class="headerlink" title="系统化所有日常工作"></a>系统化所有日常工作</h3><p><a href="http://www.duokan.com/book/62892" target="_blank" rel="external">用系统来工作</a> 这本书的作者详细阐述了如何自己从救火队长变成了每天只需工作一两个小时的高效能人士，作者的基本理念就是<strong>把你所有的工作都系统化，让它们自己运转</strong>，也就是把自动化上升到了一个新的高度，<strong>系统化</strong>。</p>
+<p>为了能最大效率的提升技术团队的效率和产出，在找到每一个问题并击破之后，就要想办法如何让每一个问题都演变成可以自己工作的小系统，小系统彼此联合形成一个更大的系统。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/23/mysql-trouble-list/" rel="next" title="MySQL 常见故障以及诊断和解决方案">
+                <i class="fa fa-chevron-left"></i> MySQL 常见故障以及诊断和解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/26/technical-transformation-road-02/" rel="prev" title="技术转型之路二：机器的群组划分">
+                技术转型之路二：机器的群组划分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="三月沙" />
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">79</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">63</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#现状描述"><span class="nav-number">1.</span> <span class="nav-text">现状描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#治理思路"><span class="nav-number">2.</span> <span class="nav-text">治理思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从上之下"><span class="nav-number">2.1.</span> <span class="nav-text">从上之下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放权限，人人参与"><span class="nav-number">2.2.</span> <span class="nav-text">开放权限，人人参与</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位问题，各个击破"><span class="nav-number">2.3.</span> <span class="nav-text">定位问题，各个击破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统化所有日常工作"><span class="nav-number">2.4.</span> <span class="nav-text">系统化所有日常工作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/25/technical-transformation-road-01/';
+          this.page.identifier = '2018/04/25/technical-transformation-road-01/';
+          this.page.title = '技术转型之路一：现状和治理思路';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

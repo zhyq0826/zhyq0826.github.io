@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
-<meta property="og:updated_time" content="2018-04-23T16:18:47.031Z">
+<meta property="og:updated_time" content="2018-04-25T15:22:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 常见故障以及诊断和解决方案">
 <meta name="twitter:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
@@ -411,10 +411,8 @@
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</div></pre></td></tr></table></figure>
 </li>
 <li><p>尽快禁止业务代码中的慢查询</p>
+<p> 可以考虑暂时屏蔽相关的功能或暂时下掉相关的业务，并重启服务</p>
 </li>
-</ol>
-<pre><code>可以考虑暂时屏蔽相关的功能或暂时下掉相关的业务，并重启服务
-</code></pre><ol>
 <li><p>检查导致慢查询的原因</p>
 <p> 慢查询有很多原因会导致，比如更新数据太多，时间太长，没有合理使用索引，表太大等等，要根据的自己的业务情况进行分析和解决</p>
 </li>
@@ -481,6 +479,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/technical-transformation-road-01/" rel="prev" title="技术转型之路一：现状和治理思路">
+                技术转型之路一：现状和治理思路 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -593,7 +595,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-count">79</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -615,7 +617,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">63</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
