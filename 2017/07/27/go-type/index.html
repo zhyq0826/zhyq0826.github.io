@@ -98,13 +98,13 @@
 <meta name="description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
 <meta name="keywords" content="type">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解 go 类型系统">
+<meta property="og:title" content="Go 类型系统">
 <meta property="og:url" content="http://sanyuesha.com/2017/07/27/go-type/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
-<meta property="og:updated_time" content="2017-12-03T05:51:19.338Z">
+<meta property="og:updated_time" content="2018-05-07T14:47:06.471Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解 go 类型系统">
+<meta name="twitter:title" content="Go 类型系统">
 <meta name="twitter:description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>理解 go 类型系统 | 三月沙</title>
+  <title>Go 类型系统 | 三月沙</title>
   
 
 
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">理解 go 类型系统</h1>
+          <h1 class="post-title" itemprop="name headline">Go 类型系统</h1>
         
 
         <div class="post-meta">
@@ -400,7 +400,6 @@
         <h2 id="type-的分类"><a href="#type-的分类" class="headerlink" title="type 的分类"></a>type 的分类</h2><p>在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。</p>
 <p>和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 <strong>pre-declarered types</strong>，这些基础的数据又可以进一步构成更复杂的类型 array，struct，map，slice，channel，func，interface 等被称之为 <strong>composite types</strong>。</p>
 <p><strong>Composite types</strong> 由 <strong>pre-declared types</strong> 组成的复杂数据类型，常常由 type literal 构成。 </p>
-<a id="more"></a>
 <p>Type 可以是带名称和不带名称的，称之为 named type 和 unnamed type。</p>
 <p><strong>Named Types</strong> 就是通过 type 关键字为一个已有的 type 起个别名，像这样 <code>type NewType ExistingType</code> NewType 就是名字。</p>
 <p><strong>Pre-declared types</strong> 也是 <strong>named types</strong>。</p>
@@ -472,8 +471,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/26/go-make-and-new/" rel="next" title="go make 和 new 的区别">
-                <i class="fa fa-chevron-left"></i> go make 和 new 的区别
+              <a href="/2017/07/26/go-make-and-new/" rel="next" title="Go make 和 new 的区别">
+                <i class="fa fa-chevron-left"></i> Go make 和 new 的区别
               </a>
             
           </div>
@@ -482,8 +481,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/30/go-new-programmer-best-practice/" rel="prev" title="新手 go 程序员的最佳实践">
-                新手 go 程序员的最佳实践 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/30/go-new-programmer-best-practice/" rel="prev" title="新手 Go 程序员的最佳实践">
+                新手 Go 程序员的最佳实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -597,7 +596,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">85</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -608,7 +607,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -619,7 +618,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -814,7 +813,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/07/27/go-type/';
           this.page.identifier = '2017/07/27/go-type/';
-          this.page.title = '理解 go 类型系统';
+          this.page.title = 'Go 类型系统';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

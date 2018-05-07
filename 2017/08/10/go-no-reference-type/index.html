@@ -98,13 +98,13 @@
 <meta name="description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
 <meta name="keywords" content="引用类型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="严格来说 go 没有引用类型">
+<meta property="og:title" content="严格来说 Go 没有引用类型">
 <meta property="og:url" content="http://sanyuesha.com/2017/08/10/go-no-reference-type/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
-<meta property="og:updated_time" content="2017-12-03T05:51:04.890Z">
+<meta property="og:updated_time" content="2018-05-07T14:47:06.471Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="严格来说 go 没有引用类型">
+<meta name="twitter:title" content="严格来说 Go 没有引用类型">
 <meta name="twitter:description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>严格来说 go 没有引用类型 | 三月沙</title>
+  <title>严格来说 Go 没有引用类型 | 三月沙</title>
   
 
 
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">严格来说 go 没有引用类型</h1>
+          <h1 class="post-title" itemprop="name headline">严格来说 Go 没有引用类型</h1>
         
 
         <div class="post-meta">
@@ -400,7 +400,6 @@
         <h2 id="什么是引用类型"><a href="#什么是引用类型" class="headerlink" title="什么是引用类型"></a>什么是引用类型</h2><p>简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。</p>
 <p><strong>code-1</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>dd = dict()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(c)</div><div class="line"><span class="number">4476836672</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>id(dd)</div><div class="line"><span class="number">4476836672</span></div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
 <p><code>code-1</code> 中的 Python 代码显示 c 和 dd 两个变量的内存地址都是一样的。</p>
-<a id="more"></a>
 <h2 id="Immutable-type-不是引用类型"><a href="#Immutable-type-不是引用类型" class="headerlink" title="Immutable type 不是引用类型"></a>Immutable type 不是引用类型</h2><p>Int，string，bool 这些 immutable 类型不会有引用类型</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> a, b, c = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></div><div class="line">    fmt.Println(&amp;a) <span class="comment">//0xc420072188</span></div><div class="line">    fmt.Println(&amp;b) <span class="comment">//0xc4200721b0</span></div><div class="line">    fmt.Println(&amp;c) <span class="comment">//0xc4200721b8</span></div><div class="line">    d := a</div><div class="line">    fmt.Println(&amp;d) <span class="comment">//0xc4200721d0</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> s = <span class="string">"a"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">    s += <span class="string">"b"</span></div><div class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>变量 a 赋值给 d ，d 和 a 的地址不同，字符串 s 二次赋值之后地址没有改变，在 immutable type 中不存在两个变量内存地址是一样的。</p>
@@ -452,8 +451,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/03/go-channel/" rel="next" title="go channel 的基础特性">
-                <i class="fa fa-chevron-left"></i> go channel 的基础特性
+              <a href="/2017/08/03/go-channel/" rel="next" title="Go channel 的基础特性">
+                <i class="fa fa-chevron-left"></i> Go channel 的基础特性
               </a>
             
           </div>
@@ -462,8 +461,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/17/go-o-o/" rel="prev" title="go 中的面向对象">
-                go 中的面向对象 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/17/go-o-o/" rel="prev" title="Go 中的面向对象">
+                Go 中的面向对象 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -577,7 +576,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">85</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -588,7 +587,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -599,7 +598,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -794,7 +793,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/08/10/go-no-reference-type/';
           this.page.identifier = '2017/08/10/go-no-reference-type/';
-          this.page.title = '严格来说 go 没有引用类型';
+          this.page.title = '严格来说 Go 没有引用类型';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

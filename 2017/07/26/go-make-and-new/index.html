@@ -98,13 +98,13 @@
 <meta name="description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
 <meta name="keywords" content="make,new">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go make 和 new 的区别">
+<meta property="og:title" content="Go make 和 new 的区别">
 <meta property="og:url" content="http://sanyuesha.com/2017/07/26/go-make-and-new/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
-<meta property="og:updated_time" content="2017-12-03T05:41:23.904Z">
+<meta property="og:updated_time" content="2018-05-07T14:47:06.469Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go make 和 new 的区别">
+<meta name="twitter:title" content="Go make 和 new 的区别">
 <meta name="twitter:description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>go make 和 new 的区别 | 三月沙</title>
+  <title>Go make 和 new 的区别 | 三月沙</title>
   
 
 
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go make 和 new 的区别</h1>
+          <h1 class="post-title" itemprop="name headline">Go make 和 new 的区别</h1>
         
 
         <div class="post-meta">
@@ -403,7 +403,6 @@
 <h2 id="new-T-返回的是-T-的指针"><a href="#new-T-返回的是-T-的指针" class="headerlink" title="new(T) 返回的是 T 的指针"></a>new(T) 返回的是 T 的指针</h2><p>new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">p1 := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line">fmt.Printf(<span class="string">"p1 --&gt; %#v \n "</span>, p1) <span class="comment">//(*int)(0xc42000e250) </span></div><div class="line">fmt.Printf(<span class="string">"p1 point to --&gt; %#v \n "</span>, *p1) <span class="comment">//0</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> p2 *<span class="keyword">int</span></div><div class="line">i := <span class="number">0</span></div><div class="line">p2 = &amp;i</div><div class="line">fmt.Printf(<span class="string">"p2 --&gt; %#v \n "</span>, p2) <span class="comment">//(*int)(0xc42000e278) </span></div><div class="line">fmt.Printf(<span class="string">"p2 point to --&gt; %#v \n "</span>, *p2) <span class="comment">//0</span></div></pre></td></tr></table></figure>
 <p>上面的代码是等价的，new(int) 将分配的空间初始化为 int 的零值，也就是 0，并返回 int 的指针，这和直接声明指针并初始化的效果是相同的。</p>
-<a id="more"></a>
 <h2 id="make-只能用于-slice-map-channel"><a href="#make-只能用于-slice-map-channel" class="headerlink" title="make 只能用于 slice,map,channel"></a>make 只能用于 slice,map,channel</h2><p>make 只能用于 slice，map，channel 三种类型，make(T, args) 返回的是初始化之后的 T 类型的值，这个新值并不是 T 类型的零值，也不是指针 *T，是经过初始化之后的 T 的引用。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div><div class="line"><span class="keyword">if</span> s1 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s1 is nil --&gt; %#v \n "</span>, s1) <span class="comment">// []int(nil)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>)</div><div class="line"><span class="keyword">if</span> s2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is nil --&gt; %#v \n "</span>, s2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"s2 is not nill --&gt; %#v \n "</span>, s2)<span class="comment">// []int&#123;0, 0, 0&#125;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>slice 的零值是 nil，使用 make 之后 slice 是一个初始化的 slice，即 slice 的长度、容量、底层指向的 array 都被 make 完成初始化，此时 slice 内容被类型 int 的零值填充，形式是 [0 0 0]，map 和 channel 也是类似的。</p>
@@ -413,9 +412,7 @@
 <p>这说明 make(T, args) 返回的是引用类型，在函数内部可以直接更改原始值，对 map 和 channel 也是如此。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    m[<span class="number">0</span>] = <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</div><div class="line">    c &lt;- <span class="string">"string"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> m2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is nil --&gt; %#v \n "</span>, m2) </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">//map[int]string&#123;&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">modifyMap(m2)</div><div class="line">fmt.Printf(<span class="string">"m2 is not nill --&gt; %#v \n "</span>, m2) <span class="comment">// map[int]string&#123;0:"string"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line">c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</div><div class="line"><span class="keyword">if</span> c2 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is nil --&gt; %#v \n "</span>, c2)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v \n "</span>, c2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">go</span> modifyChan(c2)</div><div class="line">fmt.Printf(<span class="string">"c2 is not nill --&gt; %#v "</span>, &lt;-c2) <span class="comment">//"string"</span></div></pre></td></tr></table></figure>
 <h2 id="很少需要使用-new"><a href="#很少需要使用-new" class="headerlink" title="很少需要使用 new"></a>很少需要使用 new</h2><p>以下代码演示了 <strong>struct 初始化的过程</strong>，可以说明不使用 new 一样可以完成 struct 的初始化工作。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</div><div class="line">    name <span class="keyword">string</span></div><div class="line">    age  <span class="keyword">int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//声明初始化</span></div><div class="line"><span class="keyword">var</span> foo1 Foo</div><div class="line">fmt.Printf(<span class="string">"foo1 --&gt; %#v\n "</span>, foo1) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo1.age = <span class="number">1</span></div><div class="line">fmt.Println(foo1.age)</div><div class="line"></div><div class="line"><span class="comment">//struct literal 初始化</span></div><div class="line">foo2 := Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo2 --&gt; %#v\n "</span>, foo2) <span class="comment">//main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo2.age = <span class="number">2</span></div><div class="line">fmt.Println(foo2.age)</div><div class="line"></div><div class="line"><span class="comment">//指针初始化</span></div><div class="line">foo3 := &amp;Foo&#123;&#125;</div><div class="line">fmt.Printf(<span class="string">"foo3 --&gt; %#v\n "</span>, foo3) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo3.age = <span class="number">3</span></div><div class="line">fmt.Println(foo3.age)</div><div class="line"></div><div class="line"><span class="comment">//new 初始化</span></div><div class="line">foo4 := <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo4 --&gt; %#v\n "</span>, foo4) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo4.age = <span class="number">4</span></div><div class="line">fmt.Println(foo4.age)</div><div class="line"></div><div class="line"><span class="comment">//声明指针并用 new 初始化</span></div><div class="line"><span class="keyword">var</span> foo5 *Foo = <span class="built_in">new</span>(Foo)</div><div class="line">fmt.Printf(<span class="string">"foo5 --&gt; %#v\n "</span>, foo5) <span class="comment">//&amp;main.Foo&#123;age:0, name:""&#125;</span></div><div class="line">foo5.age = <span class="number">5</span></div><div class="line">fmt.Println(foo5.age)</div></pre></td></tr></table></figure></p>
-<p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。</p>
-<p>foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 *Foo。</p>
-<p><strong>但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</strong></p>
+<p>foo1 和 foo2 是同样的类型，都是 Foo 类型的值，foo1 是通过 var 声明，Foo 的 filed 自动初始化为每个类型的零值，foo2 是通过字面量的完成初始化。foo3，foo4 和 foo5 是一样的类型，都是 Foo 的指针 <em>Foo。<em>*但是所有 foo 都可以直接使用 Foo 的 filed，读取或修改，为什么？</em></em></p>
 <p>如果 x 是可寻址的，&amp;x 的 filed 集合包含 m，x.m 和 (&amp;x).m 是等同的，go 自动做转换，也就是 foo1.age 和 foo3.age 调用是等价的，go 在下面自动做了转换。</p>
 <p>因而可以直接使用 struct literal 的方式创建对象，能达到和 new 创建是一样的情况而不需要使用 new。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>new(T) 返回 T 的指针 *T 并指向 T 的零值。<br>make(T) 返回的初始化的 T，只能用于 slice，map，channel。</p>
@@ -459,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/23/go-defer/" rel="next" title="go defer 的关键特性解读和示例">
-                <i class="fa fa-chevron-left"></i> go defer 的关键特性解读和示例
+              <a href="/2017/07/23/go-defer/" rel="next" title="Go defer 的关键特性解读和示例">
+                <i class="fa fa-chevron-left"></i> Go defer 的关键特性解读和示例
               </a>
             
           </div>
@@ -469,8 +466,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/27/go-type/" rel="prev" title="理解 go 类型系统">
-                理解 go 类型系统 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/27/go-type/" rel="prev" title="Go 类型系统">
+                Go 类型系统 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -584,7 +581,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">85</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -595,7 +592,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -606,7 +603,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -801,7 +798,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/07/26/go-make-and-new/';
           this.page.identifier = '2017/07/26/go-make-and-new/';
-          this.page.title = 'go make 和 new 的区别';
+          this.page.title = 'Go make 和 new 的区别';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
