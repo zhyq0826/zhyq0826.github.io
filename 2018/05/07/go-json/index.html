@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+  <meta name="keywords" content="json," />
 
 
 
@@ -95,16 +95,17 @@
 
 
 
-<meta name="description" content="JSON 是一种轻量级的数据交换格式，常用作前后端进行数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下">
+<meta name="description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
+<meta name="keywords" content="json">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 Go 中的 JSON">
 <meta property="og:url" content="http://sanyuesha.com/2018/05/07/go-json/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端进行数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下">
-<meta property="og:updated_time" content="2018-05-07T15:52:11.573Z">
+<meta property="og:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
+<meta property="og:updated_time" content="2018-05-08T14:27:51.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 Go 中的 JSON">
-<meta name="twitter:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端进行数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下">
+<meta name="twitter:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
 
 
 
@@ -336,6 +337,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -374,7 +397,7 @@
       
 
       
-        <p>JSON 是一种轻量级的数据交换格式，常用作前后端进行数据交换，Go 在 <a href="https://golang.org/pkg/encoding/json/" target="_blank" rel="external">encoding/json</a> 包中提供了对 JSON 的支持。</p>
+        <p>JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 <a href="https://golang.org/pkg/encoding/json/" target="_blank" rel="external">encoding/json</a> 包中提供了对 JSON 的支持。</p>
 <h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><p>把 Go struct 序列化成 JSON 对象，Go 提供了 <a href="https://golang.org/pkg/encoding/json/#Marshal" target="_blank" rel="external">Marshal</a> 方法，正如其含义所示表示编排序列化，函数签名如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Marshal</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span></div></pre></td></tr></table></figure>
 <p>举例来说，比如下面的 Go struct：</p>
@@ -385,26 +408,26 @@
 <ul>
 <li>JSON object key 只支持 string</li>
 <li>Channel、complex、function 等 type 无法进行序列化</li>
-<li>数据中如果存在循环引用，则不能进行序列化</li>
-<li>Pointer 序列之后是其指向的值或者是 nil</li>
+<li>数据中如果存在循环引用，则不能进行序列化，因为序列化时会进行递归</li>
+<li>Pointer 序列化之后是其指向的值或者是 nil</li>
 </ul>
-<p><strong>还需要注意的是</strong>：只有 struct 中支持导出的 field 才能被 JSON package 序列化，即首字母大写的 field。</p>
+<p><strong>还需要注意的是</strong>：只有 struct 中支持导出的 field 才能被 JSON package 序列化，即<strong>首字母大写的 field</strong>。</p>
 <h2 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h2><p>反序列化函数是 <a href="https://golang.org/pkg/encoding/json/#Unmarshal" target="_blank" rel="external">Unmarshal</a> ，其函数签名如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Unmarshal</span><span class="params">(data []<span class="keyword">byte</span>, v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span></div></pre></td></tr></table></figure>
 <p>如果要进行反序列化，我们首先需要创建一个可以接受序列化数据的 Go struct：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> m Message</div><div class="line">err := json.Unmarshal(b, &amp;m)</div></pre></td></tr></table></figure>
-<p>JSON 对象一般都是小写表示，Marshal 之后 JSON 对象的首字母依然是大写，如果序列化之后名称想要改变又该如何实现，答案就是 <strong>struct tags</strong>。</p>
+<p>JSON 对象一般都是小写表示，Marshal 之后 JSON 对象的首字母依然是大写，如果序列化之后名称想要改变如何实现，答案就是 <strong>struct tags</strong>。</p>
 <h2 id="Struct-Tag"><a href="#Struct-Tag" class="headerlink" title="Struct Tag"></a>Struct Tag</h2><p>Struct tag 可以决定 Marshal 和 Unmarshal 函数如何序列化和反序列化数据。</p>
 <h3 id="指定-JSON-filed-name"><a href="#指定-JSON-filed-name" class="headerlink" title="指定 JSON filed name"></a>指定 JSON filed name</h3><p>JSON object 中的 name 一般都是小写，我们可以通过 struct tag 来实现：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;</div><div class="line">    SomeField <span class="keyword">string</span> <span class="string">`json:"some_field"`</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>SomeField 序列化之后会变成 some_field。</p>
-<h3 id="指定-field-是-empty-时的行为"><a href="#指定-field-是-empty-时的行为" class="headerlink" title="指定 field 是 empty 时的行为"></a>指定 field 是 empty 时的行为</h3><p>使用  omitempty 可以告诉 Marshal 函数如果 field 的值是对应类型的 zero-value，那么序列化之后的 JSON object 中不包含此 field：</p>
+<h3 id="指定-field-是-empty-时的行为"><a href="#指定-field-是-empty-时的行为" class="headerlink" title="指定 field 是 empty 时的行为"></a>指定 field 是 empty 时的行为</h3><p>使用 <code>omitempty</code> 可以告诉 Marshal 函数如果 field 的值是对应类型的 zero-value，那么序列化之后的 JSON object 中不包含此 field：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;</div><div class="line">    SomeField <span class="keyword">string</span> <span class="string">`json:"some_field,omitempty"`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">m := MyStruct&#123;&#125;</div><div class="line">b, err := json.Marshal(m) <span class="comment">//&#123;&#125;</span></div></pre></td></tr></table></figure>
-<p>如果 SomeField == “” ，序列化之后的对象就是 {}。</p>
+<p>如果 <code>SomeField == “”</code> ，序列化之后的对象就是 <code>{}</code>。</p>
 <h3 id="跳过-field"><a href="#跳过-field" class="headerlink" title="跳过 field"></a>跳过 field</h3><p>Struct tag “-” 表示跳过指定的 filed：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;</div><div class="line">    SomeField <span class="keyword">string</span> <span class="string">`json:"some_field"`</span></div><div class="line">    Passwd <span class="keyword">string</span> <span class="string">`json:"-"`</span></div><div class="line">&#125;</div><div class="line">m := MyStruct&#123;&#125;</div><div class="line">b, err := json.Marshal(m) <span class="comment">//&#123;“some_feild”:""&#125;</span></div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> MyStruct <span class="keyword">struct</span> &#123;</div><div class="line">    SomeField <span class="keyword">string</span> <span class="string">`json:"some_field"`</span></div><div class="line">    Passwd <span class="keyword">string</span> <span class="string">`json:"-"`</span></div><div class="line">&#125;</div><div class="line">m := MyStruct&#123;&#125;</div><div class="line">b, err := json.Marshal(m) <span class="comment">//&#123;"some_feild":""&#125;</span></div></pre></td></tr></table></figure>
 <p>即序列化的时候不输出，这样可以有效保护需要保护的字段不被序列化。</p>
-<h2 id="序列化支持的对象类型"><a href="#序列化支持的对象类型" class="headerlink" title="序列化支持的对象类型"></a>序列化支持的对象类型</h2><p>默认的 JSON 只支持以下几种 Go 类型：</p>
+<h2 id="反序列化任意-JSON-数据"><a href="#反序列化任意-JSON-数据" class="headerlink" title="反序列化任意 JSON 数据"></a>反序列化任意 JSON 数据</h2><p>默认的 JSON 只支持以下几种 Go 类型：</p>
 <ul>
 <li><p><code>bool</code> for JSON booleans</p>
 </li>
@@ -415,7 +438,29 @@
 <li><p><code>nil</code> for JSON null</p>
 </li>
 </ul>
-<p>如果需要泛型支持，我们使用 interface{} </p>
+<p>在序列化之前如果不知道 JSON 数据格式，我们使用 <code>interface{}</code> 来存储。<code>interface {}</code> 的作用详见本博的其他文章。</p>
+<p>有如下的数据格式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">b := []<span class="keyword">byte</span>(<span class="string">`&#123;"Name":"Wednesday","Age":6,"Parents":["Gomez","Morticia"]&#125;`</span>)</div></pre></td></tr></table></figure>
+<p>如果我们序列化之前不知道其数据格式，我们可以使用 <code>interface{}</code> 来存储我们的 decode 之后的数据：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> f <span class="keyword">interface</span>&#123;&#125;</div><div class="line">err := json.Unmarshal(b, &amp;f)</div></pre></td></tr></table></figure>
+<p>反序列化之后 f 应该是像下面这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">f = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</div><div class="line">    <span class="string">"Name"</span>: <span class="string">"Wednesday"</span>,</div><div class="line">    <span class="string">"Age"</span>:  <span class="number">6</span>,</div><div class="line">    <span class="string">"Parents"</span>: []<span class="keyword">interface</span>&#123;&#125;&#123;</div><div class="line">        <span class="string">"Gomez"</span>,</div><div class="line">        <span class="string">"Morticia"</span>,</div><div class="line">    &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>key 是 string，value 是存储在 interface{} 内的。想要获得 f 中的数据，我们首先需要进行 type assertion，然后通过 range 迭代获得 f 中所有的 key ：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">m := f.(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;)</div><div class="line"><span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123;</div><div class="line">    <span class="keyword">switch</span> vv := v.(<span class="keyword">type</span>) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="keyword">string</span>:</div><div class="line">        fmt.Println(k, <span class="string">"is string"</span>, vv)</div><div class="line">    <span class="keyword">case</span> <span class="keyword">float64</span>:</div><div class="line">        fmt.Println(k, <span class="string">"is float64"</span>, vv)</div><div class="line">    <span class="keyword">case</span> []<span class="keyword">interface</span>&#123;&#125;:</div><div class="line">        fmt.Println(k, <span class="string">"is an array:"</span>)</div><div class="line">        <span class="keyword">for</span> i, u := <span class="keyword">range</span> vv &#123;</div><div class="line">            fmt.Println(i, u)</div><div class="line">        &#125;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        fmt.Println(k, <span class="string">"is of a type I don't know how to handle"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="反序列化对-slice、map、pointer-的处理"><a href="#反序列化对-slice、map、pointer-的处理" class="headerlink" title="反序列化对 slice、map、pointer 的处理"></a>反序列化对 slice、map、pointer 的处理</h2><p>我们定义一个 struct 继续对上面例子中的 <code>b</code> 进行反序列化：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> FamilyMember <span class="keyword">struct</span> &#123;</div><div class="line">    Name    <span class="keyword">string</span></div><div class="line">    Age     <span class="keyword">int</span></div><div class="line">    Parents []<span class="keyword">string</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> m FamilyMember</div><div class="line">err := json.Unmarshal(b, &amp;m)</div></pre></td></tr></table></figure>
+<p>这个例子是能够正常工作的，你一定也注意到了，struct 中包含一个 slice <code>Parents</code> ，slice 默认是 nil，之所以反序列化可以正常进行就是因为 Unmarshal 在序列化时进行了对 slice <code>Parents</code> 做了初始化，同理，对 map 和 pointer 都会做类似的工作，比如序列化如果 Pointer 不是 nil 首先进行 dereference 获得其指向的值，然后再进行序列化，反序列化时首先对 nil pointer 进行初始化</p>
+<h2 id="Stream-JSON"><a href="#Stream-JSON" class="headerlink" title="Stream JSON"></a>Stream JSON</h2><p>除了 marshal 和 unmarshal 函数，Go 还提供了 Decoder 和 Encoder 对 stream JSON 进行处理，常见 request 中的 Body、文件等：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">jsonFile, err := os.Open(<span class="string">"post.json"</span>)</div><div class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Println(<span class="string">"Error opening json file:"</span>, err)</div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">defer</span> jsonFile.Close()</div><div class="line">jsonData, err := ioutil.ReadAll(jsonFile)</div><div class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Println(<span class="string">"error reading json Data:"</span>, err)</div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> post Post</div><div class="line">json.Unmarshal(jsonData, &amp;post)</div><div class="line">fmt.Println(post)</div></pre></td></tr></table></figure>
+<h2 id="嵌入式-struct-的序列化"><a href="#嵌入式-struct-的序列化" class="headerlink" title="嵌入式 struct 的序列化"></a>嵌入式 struct 的序列化</h2><p>Go 支持对 nested struct 进行序列化和反序列化:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">type</span> App <span class="keyword">struct</span> &#123;</div><div class="line">	Id <span class="keyword">string</span> <span class="string">`json:"id"`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> Org <span class="keyword">struct</span> &#123;</div><div class="line">	Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> AppWithOrg <span class="keyword">struct</span> &#123;</div><div class="line">	App</div><div class="line">	Org</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	data := []<span class="keyword">byte</span>(<span class="string">`</span></div><div class="line">        &#123;</div><div class="line">            "id": "k34rAT4",</div><div class="line">            "name": "My Awesome Org"</div><div class="line">        &#125;</div><div class="line">    `)</div><div class="line"></div><div class="line">	<span class="keyword">var</span> b AppWithOrg</div><div class="line"></div><div class="line">	json.Unmarshal(data, &amp;b)</div><div class="line">	fmt.Printf(<span class="string">"%#v"</span>, b)</div><div class="line"></div><div class="line">	a := AppWithOrg&#123;</div><div class="line">		App: App&#123;</div><div class="line">			Id: <span class="string">"k34rAT4"</span>,</div><div class="line">		&#125;,</div><div class="line">		Org: Org&#123;</div><div class="line">			Name: <span class="string">"My Awesome Org"</span>,</div><div class="line">		&#125;,</div><div class="line">	&#125;</div><div class="line">	data, _ = json.Marshal(a)</div><div class="line">	fmt.Println(<span class="keyword">string</span>(data))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Nested struct 虽然看起来有点怪异，有些时候它将非常有用。</p>
+<h2 id="自定义序列化函数"><a href="#自定义序列化函数" class="headerlink" title="自定义序列化函数"></a>自定义序列化函数</h2><p>Go JSON package 中定了两个 Interface <a href="http://golang.org/pkg/encoding/json/#Marshaler" target="_blank" rel="external">Marshaler</a> 和 <a href="http://golang.org/pkg/encoding/json/#Unmarshaler" target="_blank" rel="external">Unmarshaler</a> ，实现这两个 Interface 可以让你定义的 type 支持序列化操作。</p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>总是记得检查序列或反序列化的错误，可以让你的程序更健壮，而不是在出错之后带着错误继续执行下去。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.golang.org/json-and-go" target="_blank" rel="external">https://blog.golang.org/json-and-go</a></li>
+<li><a href="https://eager.io/blog/go-and-json/" target="_blank" rel="external">https://eager.io/blog/go-and-json/</a></li>
+</ul>
 
       
     </div>
@@ -438,6 +483,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/json/" rel="tag"># json</a>
+          
+        </div>
       
 
       
@@ -591,7 +642,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">66</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -634,7 +685,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化"><span class="nav-number">1.</span> <span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反序列化"><span class="nav-number">2.</span> <span class="nav-text">反序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Struct-Tag"><span class="nav-number">3.</span> <span class="nav-text">Struct Tag</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-JSON-filed-name"><span class="nav-number">3.1.</span> <span class="nav-text">指定 JSON filed name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-field-是-empty-时的行为"><span class="nav-number">3.2.</span> <span class="nav-text">指定 field 是 empty 时的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳过-field"><span class="nav-number">3.3.</span> <span class="nav-text">跳过 field</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化支持的对象类型"><span class="nav-number">4.</span> <span class="nav-text">序列化支持的对象类型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化"><span class="nav-number">1.</span> <span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反序列化"><span class="nav-number">2.</span> <span class="nav-text">反序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Struct-Tag"><span class="nav-number">3.</span> <span class="nav-text">Struct Tag</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-JSON-filed-name"><span class="nav-number">3.1.</span> <span class="nav-text">指定 JSON filed name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-field-是-empty-时的行为"><span class="nav-number">3.2.</span> <span class="nav-text">指定 field 是 empty 时的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳过-field"><span class="nav-number">3.3.</span> <span class="nav-text">跳过 field</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反序列化任意-JSON-数据"><span class="nav-number">4.</span> <span class="nav-text">反序列化任意 JSON 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反序列化对-slice、map、pointer-的处理"><span class="nav-number">5.</span> <span class="nav-text">反序列化对 slice、map、pointer 的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stream-JSON"><span class="nav-number">6.</span> <span class="nav-text">Stream JSON</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌入式-struct-的序列化"><span class="nav-number">7.</span> <span class="nav-text">嵌入式 struct 的序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义序列化函数"><span class="nav-number">8.</span> <span class="nav-text">自定义序列化函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理"><span class="nav-number">9.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
