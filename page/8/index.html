@@ -264,7 +264,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-skill"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -289,6 +289,335 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/16/mongodb-practice-for-four-years-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/16/mongodb-practice-for-four-years-md/" itemprop="url">创业三年，使用 mongodb 的实践教训</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-16T16:49:14+08:00">
+                Feb 16 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mongodb/" itemprop="url" rel="index">
+                    <span itemprop="name">mongodb</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/16/mongodb-practice-for-four-years-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/02/16/mongodb-practice-for-four-years-md/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
+<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
+<blockquote>
+<p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/16/mongodb-practice-for-four-years-md/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/08/tornado-async-style/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/08/tornado-async-style/" itemprop="url">tornado 中的异步调用模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T07:18:17+08:00">
+                Feb 8 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/08/tornado-async-style/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/02/08/tornado-async-style/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>调用者等待调用结果的返回</p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>调用方式影响后续指令的执行</p>
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><p>调用方式不影响后续指令的执行</p>
+<hr>
+<p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
+<p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="external">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
+<blockquote>
+<p><a href="http://www.tornadoweb.org/" target="_blank" rel="external">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/" target="_blank" rel="external">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling" target="_blank" rel="external">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="external">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
+</blockquote>
+<p>在 tornado 中异步和非阻塞是通过 ioloop 和 Future 实现的，Future 是借助 python 的协程来实现非阻塞调用。tornado 提供了不同的异步调用形式来适配不同的调用场景，本文的目的就是为了说明不同形式是如何使用的以及它们的差别。</p>
+<p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/08/tornado-async-style/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1610,370 +1939,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/06/04/why-emberjs-is-best-for-cms/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/04/why-emberjs-is-best-for-cms/" itemprop="url">为什么选择 emberjs 开发 dashboard 和 CMS 类系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-04T18:35:35+08:00">
-                Jun 4 2016
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/06/04/why-emberjs-is-best-for-cms/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/06/04/why-emberjs-is-best-for-cms/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在开始之前，先看一组 github 数据</p>
-<p><strong>ember.js</strong></p>
-<ul>
-<li>star 16291</li>
-<li>contributors 586</li>
-<li>releases  181</li>
-<li>issues 167 open, 4397 closed</li>
-</ul>
-<p><a href="https://github.com/emberjs/ember.js" target="_blank" rel="external">https://github.com/emberjs/ember.js</a></p>
-<p><strong>angular.js</strong></p>
-<ul>
-<li>star 49643</li>
-<li>contributors 1476</li>
-<li>releases 169</li>
-<li>issues 817 open, 6992 closed</li>
-</ul>
-<p><a href="https://github.com/angular/angular.js" target="_blank" rel="external">https://github.com/angular/angular.js</a></p>
-<p><strong>vue.js</strong></p>
-<ul>
-<li>star 19883</li>
-<li>contributors 69</li>
-<li>releases 137</li>
-<li>issues 27 open, 2252 closed</li>
-</ul>
-<p><a href="https://github.com/vuejs/vue" target="_blank" rel="external">https://github.com/vuejs/vue</a></p>
-<p><strong>react.js</strong></p>
-<ul>
-<li>star 43026</li>
-<li>contributors 713</li>
-<li>releases 46</li>
-<li>issues 480 open, 2843 closed</li>
-</ul>
-<p><a href="https://github.com/facebook/react" target="_blank" rel="external">https://github.com/facebook/react</a></p>
-<p><strong>riot.js</strong></p>
-<ul>
-<li>star 9565</li>
-<li>contributors 138</li>
-<li>releases 137</li>
-<li>issues 96 open, 1089 closed</li>
-</ul>
-<p><a href="https://github.com/riot/riot" target="_blank" rel="external">https://github.com/riot/riot</a></p>
-<blockquote>
-<p>注: 统计时间为本文编写之时</p>
-</blockquote>
-<p>emberjs 和其他同类框架一样，至少在 github 的 表现足以证明其流行度是不低的，但各个框架的诞生的场景以及解决的问题又不尽相同。</p>
-<p>emberjs 是基于 jquery 的一个全栈式前端框架，它提供了从路由层-&gt; view 层-&gt;数据和网络交互层的全部解决方案，只用 emberjs 就足以解决前端单页应用遇到的所有复杂问题，而且兼具有不俗的开发效率和开发质量。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/06/04/why-emberjs-is-best-for-cms/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/05/28/python-module-path-find/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/28/python-module-path-find/" itemprop="url">如何理解 Python 的模块查找原理与方式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-28T11:27:22+08:00">
-                May 28 2016
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/05/28/python-module-path-find/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/05/28/python-module-path-find/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
-<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>包，包含有 <code>__init__</code> 文件的文件夹</p>
-<h3 id="relative-path"><a href="#relative-path" class="headerlink" title="relative path"></a>relative path</h3><p>相对路径，相对于某个目录的路径</p>
-<h3 id="absolute-path"><a href="#absolute-path" class="headerlink" title="absolute path"></a>absolute path</h3><p>绝对路径，全路径</p>
-<h3 id="路径查找"><a href="#路径查找" class="headerlink" title="路径查找"></a>路径查找</h3><p>python 解释器查找被引入的包或模块</p>
-<h2 id="Python-解释器是如何查找包和模块的"><a href="#Python-解释器是如何查找包和模块的" class="headerlink" title="Python 解释器是如何查找包和模块的"></a>Python 解释器是如何查找包和模块的</h2><p>Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/05/28/python-module-path-find/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2027,7 +1992,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">89</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2049,7 +2014,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

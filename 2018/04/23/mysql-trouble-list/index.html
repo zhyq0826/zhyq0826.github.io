@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
-<meta property="og:updated_time" content="2018-04-25T15:22:11.000Z">
+<meta property="og:updated_time" content="2018-05-16T15:40:39.208Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 常见故障以及诊断和解决方案">
 <meta name="twitter:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
@@ -268,7 +268,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-skill"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -412,21 +412,22 @@
 <h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><ul>
 <li>应用程序卡顿</li>
 <li>如果设置了最大连接数，可能会报超过最大连接数限制</li>
-<li>请求堆积，造成大量的 TIME_WAIT </li>
+<li>应用服务器请求堆积，造成大量的 TIME_WAIT </li>
 <li>单位时间内慢查询明显增多</li>
 <li>服务器的连接数比平时正常流量时增多</li>
 </ul>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
-<li><p>查看所有慢查询语句占用的线程，找到然后 kill 掉</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</div></pre></td></tr></table></figure>
-</li>
-<li><p>尽快禁止业务代码中的慢查询</p>
-<p> 可以考虑暂时屏蔽相关的功能或暂时下掉相关的业务，并重启服务</p>
-</li>
-<li><p>检查导致慢查询的原因</p>
-<p> 慢查询有很多原因会导致，比如更新数据太多，时间太长，没有合理使用索引，表太大等等，要根据的自己的业务情况进行分析和解决</p>
-</li>
+<li>查看所有慢查询语句占用的线程，找到然后 kill 掉</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</div></pre></td></tr></table></figure>
+<ol>
+<li>尽快禁止业务代码中的慢查询</li>
+</ol>
+<p>可以考虑暂时屏蔽相关的功能或暂时下掉相关的业务，并重启服务</p>
+<ol>
+<li>检查导致慢查询的原因</li>
+</ol>
+<p>慢查询有很多原因会导致，比如更新数据太多，时间太长，没有合理使用索引，表太大等等，要根据的自己的业务情况进行分析和解决</p>
 <h2 id="主从同步不一致"><a href="#主从同步不一致" class="headerlink" title="主从同步不一致"></a>主从同步不一致</h2><p>造成主从不同步的原因有很多，简单列举几个可能的原因：</p>
 <ul>
 <li>无意中在从库开启了写权限，导致一些数据进入了从库</li>
@@ -605,7 +606,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">89</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -627,7 +628,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

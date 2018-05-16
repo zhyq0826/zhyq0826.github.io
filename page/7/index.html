@@ -264,7 +264,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-skill"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -289,6 +289,330 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/26/go-make-and-new/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/26/go-make-and-new/" itemprop="url">Go make 和 new 的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T06:12:23+08:00">
+                Jul 26 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/26/go-make-and-new/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/26/go-make-and-new/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。
+
+new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。
+123456789p1 := 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/26/go-make-and-new/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/23/go-defer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/23/go-defer/" itemprop="url">Go defer 的关键特性解读和示例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T22:17:33+08:00">
+                Jul 23 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/23/go-defer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/23/go-defer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          defer 的作用和执行时机go 的 defer 语句是用来延迟执行函数的，而且延迟发生在调用函数 return 之后，比如
+1234func a() int &#123;  defer b()  return 0&#125;
+b 的执行是发生在 return 0 之后，注意 defer 的语法，关
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/23/go-defer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1580,335 +1904,6 @@ sqlalchemy 利用 session 执行 delete 时有一个 synchronize_se
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/16/mongodb-practice-for-four-years-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/16/mongodb-practice-for-four-years-md/" itemprop="url">创业三年，使用 mongodb 的实践教训</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-16T16:49:14+08:00">
-                Feb 16 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mongodb/" itemprop="url" rel="index">
-                    <span itemprop="name">mongodb</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/16/mongodb-practice-for-four-years-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/02/16/mongodb-practice-for-four-years-md/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在生产环境中使用 mongodb 始于 2012 年左右，从最初的 master-slave 模式到后来的 master-replication，到评估 mongodb-sharding 并放弃在生产环境中使用，使用 mongodb 作为基础数据库已经服务了上亿用户。在 4 年的 mongodb 生产环境使用当中，踩了很多坑也走了不少弯路，在此记录，与君共享。</p>
-<h2 id="No-schema-并不代表没有一致性"><a href="#No-schema-并不代表没有一致性" class="headerlink" title="No schema 并不代表没有一致性"></a>No schema 并不代表没有一致性</h2><p>mongodb 是 nosql 数据库，强调 schema 的灵活性和强大的集群功能，以及牺牲事务带来的巨大性能提升。如果只是用 mongodb 记录日志，一致性并不是很重要，相反如果是关键性业务，鉴于 schema 极强的灵活性，经常会造成 collection 数据结构被变更而且不易察觉，表现的结果是应用程序常会出现诡异而无法深入跟踪原因的 bug 和异常。业务越庞大，这样的改变越是灾难性的。</p>
-<blockquote>
-<p>设计之初就对一致性做出非常严格的校验和控制，好消息是 mongodb 3.2 开始已经从数据库层面支持对 collection 结构的校验。每次表结构调整，都要对<strong>历史数据进行相应的变更</strong>。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/02/16/mongodb-practice-for-four-years-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/08/tornado-async-style/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/08/tornado-async-style/" itemprop="url">tornado 中的异步调用模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T07:18:17+08:00">
-                Feb 8 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tornado/" itemprop="url" rel="index">
-                    <span itemprop="name">tornado</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/08/tornado-async-style/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/02/08/tornado-async-style/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>调用者等待调用结果的返回</p>
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
-<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>调用方式影响后续指令的执行</p>
-<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><p>调用方式不影响后续指令的执行</p>
-<hr>
-<p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
-<p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="external">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
-<blockquote>
-<p><a href="http://www.tornadoweb.org/" target="_blank" rel="external">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/" target="_blank" rel="external">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling" target="_blank" rel="external">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="external">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
-</blockquote>
-<p>在 tornado 中异步和非阻塞是通过 ioloop 和 Future 实现的，Future 是借助 python 的协程来实现非阻塞调用。tornado 提供了不同的异步调用形式来适配不同的调用场景，本文的目的就是为了说明不同形式是如何使用的以及它们的差别。</p>
-<p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/02/08/tornado-async-style/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1962,7 +1957,7 @@ sqlalchemy 利用 session 执行 delete 时有一个 synchronize_se
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">89</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1984,7 +1979,7 @@ sqlalchemy 利用 session 执行 delete 时有一个 synchronize_se
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
