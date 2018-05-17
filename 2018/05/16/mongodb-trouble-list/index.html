@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
-<meta property="og:updated_time" content="2018-05-16T23:38:47.982Z">
+<meta property="og:updated_time" content="2018-05-17T15:21:02.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MongoDB 常见故障以及诊断和解决方案">
 <meta name="twitter:description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
@@ -413,7 +413,7 @@
 <h2 id="内存不够"><a href="#内存不够" class="headerlink" title="内存不够"></a>内存不够</h2><p>MongoDB 为了性能几乎把所有热点数据都加载到内存了，很吃内存，早期我们对 MongoDB 不了解，机器都是自建的同样也是为了省钱机器配置都是 8CPU x 16G 的，用户量大时候莫名其妙 MongoDB 进程被操作系统 kill 掉，回顾日志发现大部分原因是 MongoDB 吃了太多内存。后来我们升级到 64G 之后再也没有出现过类似的问题。</p>
 <p><strong>MongoDB 的非常吃内存，如果生产环境大量使用 MongoDB 建议对重点业务机器配置高内存</strong>。</p>
 <h2 id="索引使用不合理"><a href="#索引使用不合理" class="headerlink" title="索引使用不合理"></a>索引使用不合理</h2><p>同 MySQL 一样，如果 MongoDB 的索引使用不合理，会导致大量的慢查询，从而过快消耗完数据库连接，服务器 CPU load 非常高，数据库响应缓慢。MongoDB 的索引的最佳实践官方说的非常透彻，建议好好学习，认真实践：<a href="https://docs.mongodb.com/manual/indexes/" target="_blank" rel="external">https://docs.mongodb.com/manual/indexes/</a> 。</p>
-<p>除此之外，我也写过一篇关于 MongoDB 索引的文章：[Mongodb 中的索引]<a href="http://sanyuesha.com/2018/03/21/mongodb-index/">http://sanyuesha.com/2018/03/21/mongodb-index/</a> 读者可参考借鉴。</p>
+<p>除此之外，我也写过一篇关于 MongoDB 索引的文章：<a href="http://sanyuesha.com/2018/03/21/mongodb-index/">Mongodb 中的索引</a> 读者可参考借鉴。</p>
 <p><strong>什么时候使用索引？</strong></p>
 <p>最好索引在建表之初就设计好，不要等到数据量大到一定程度把问题暴露出来了再去创建索引，那个时候出问题可能就是个大问题了。</p>
 <h2 id="行记录太大"><a href="#行记录太大" class="headerlink" title="行记录太大"></a>行记录太大</h2><p>在一次定位线上应用程序莫名卡顿时，发现了 MongoDB 中一个慢查询，最后诊断下来发现由于开发人员的粗心大意，一条 MongoDB 的 record 竟然达 10m 左右，导致 MongoDB client 在查询和传输数据时都非常的慢。</p>
@@ -477,6 +477,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/17/consul-kv/" rel="prev" title="Consul KV 存储">
+                Consul KV 存储 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -589,7 +593,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -611,7 +615,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

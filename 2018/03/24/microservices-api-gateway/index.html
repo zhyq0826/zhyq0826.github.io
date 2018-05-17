@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+  <meta name="keywords" content="api gateway," />
 
 
 
@@ -95,22 +95,23 @@
 
 
 
-<meta name="description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制 API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 G">
+<meta name="description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 Ga">
+<meta name="keywords" content="api gateway">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务 API Gateway 介绍">
 <meta property="og:url" content="http://sanyuesha.com/2018/03/24/microservices-api-gateway/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制 API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 G">
+<meta property="og:description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 Ga">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-1.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-entrypoint-1.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-evolutinary-design.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-auth-1.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-aggregation-1.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-format-2.png">
-<meta property="og:updated_time" content="2018-03-24T08:21:32.517Z">
+<meta property="og:updated_time" content="2018-05-17T15:21:18.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务 API Gateway 介绍">
-<meta name="twitter:description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制 API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 G">
+<meta name="twitter:description" content="什么是 API Gateway?API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。 一个系统可以有一个或多个 API Gateway，例如  Gateway 职责之1: 请求路由和版本控制API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 Ga">
 <meta name="twitter:image" content="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-1.png">
 
 
@@ -416,42 +417,46 @@
         <h2 id="什么是-API-Gateway"><a href="#什么是-API-Gateway" class="headerlink" title="什么是 API Gateway?"></a><strong>什么是 API Gateway?</strong></h2><p>API Gateway 是微服务架构体系中的一类型特殊服务，它是所有微服务的入口，它的职责是执行路由请求、协议转换、聚合数据、认证、限流、熔断等。</p>
 <p>一个系统可以有一个或多个 API Gateway，例如</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-1.png" alt=""></p>
-<p><strong>Gateway 职责之1: 请求路由和版本控制</strong></p>
-<p>API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 Gateway 上进行路由的版本控制，这样即使后端 microservice 发生了变化，Gateway 的路径依然可以不改变。</p>
+<h3 id="Gateway-职责之1-请求路由和版本控制"><a href="#Gateway-职责之1-请求路由和版本控制" class="headerlink" title="Gateway 职责之1: 请求路由和版本控制"></a>Gateway 职责之1: 请求路由和版本控制</h3><p>API Gateway 是微服务的入口，可以根据不同的请求路由到不同的 microservice 上，也可以在 Gateway 上进行路由的版本控制，这样即使后端 microservice 发生了变化，Gateway 的路径依然可以不改变。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-entrypoint-1.png" alt=""></p>
-<p><strong>Gateway 职责之2: 方便单体应用到微服务的过渡</strong></p>
-<p>借助 Gateway 你可以很方便的在 Gateway 之后部署不同的服务，也就是可以同时存在两种不同的服务，这样可以帮助单体应用向微服务渐进式的演化。</p>
+<h3 id="Gateway-职责之2-方便单体应用到微服务的过渡"><a href="#Gateway-职责之2-方便单体应用到微服务的过渡" class="headerlink" title="Gateway 职责之2: 方便单体应用到微服务的过渡"></a>Gateway 职责之2: 方便单体应用到微服务的过渡</h3><p>借助 Gateway 你可以很方便的在 Gateway 之后部署不同的服务，也就是可以同时存在两种不同的服务，这样可以帮助单体应用向微服务渐进式的演化。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-evolutinary-design.png" alt=""></p>
-<p><strong>Gateway 职责之3: 权限认证</strong></p>
-<p>不同的服务之间常常有一些共有的逻辑需要处理，比如权限认证，由于 Gateway 恰巧在各个微服务的前端，可以在 Gateway 实现权限的认证，比如可以在 Gateway 层实现 cookie 或 token 的认证。</p>
+<h3 id="Gateway-职责之3-权限认证"><a href="#Gateway-职责之3-权限认证" class="headerlink" title="Gateway 职责之3: 权限认证"></a>Gateway 职责之3: 权限认证</h3><p>不同的服务之间常常有一些共有的逻辑需要处理，比如权限认证，由于 Gateway 恰巧在各个微服务的前端，可以在 Gateway 实现权限的认证，比如可以在 Gateway 层实现 cookie 或 token 的认证。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-auth-1.png" alt=""></p>
-<p><strong>Gateway 职责之4: 数据聚合</strong></p>
-<p>由于不同的客户端往往需要的数据完全不同，而这些数据又是不同的 service 提供的，借助 Gateway 我们可以方便完成来自不同 service 的数据聚合，以达到根据不同 client 进行数据定制的目的</p>
+<h3 id="Gateway-职责之4-数据聚合"><a href="#Gateway-职责之4-数据聚合" class="headerlink" title="Gateway 职责之4: 数据聚合"></a>Gateway 职责之4: 数据聚合</h3><p>由于不同的客户端往往需要的数据完全不同，而这些数据又是不同的 service 提供的，借助 Gateway 我们可以方便完成来自不同 service 的数据聚合，以达到根据不同 client 进行数据定制的目的</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-aggregation-1.png" alt=""></p>
-<p><strong>Gateway 职责之5: 协议转换</strong></p>
-<p>鉴于不同的团队采用的数据协议可能完全不同，Gateway 可以根据场景需要对不同的微服务之间进行协议转换。</p>
+<h3 id="Gateway-职责之5-协议转换"><a href="#Gateway-职责之5-协议转换" class="headerlink" title="Gateway 职责之5: 协议转换"></a>Gateway 职责之5: 协议转换</h3><p>鉴于不同的团队采用的数据协议可能完全不同，Gateway 可以根据场景需要对不同的微服务之间进行协议转换。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/api-gateway-format-2.png" alt=""></p>
-<p><strong>Gateway 职责之6: 缓存和限流</strong></p>
-<p>Gateway 可以做限流和缓存</p>
-<h2 id="常见的-API-Gateway-开源解决方案"><a href="#常见的-API-Gateway-开源解决方案" class="headerlink" title="常见的 API Gateway 开源解决方案"></a><strong>常见的 API Gateway 开源解决方案</strong></h2><p>转载自 <a href="http://www.do1618.com/archives/783/" target="_blank" rel="external">http://www.do1618.com/archives/783/</a></p>
-<p><strong>Tyk</strong></p>
-<p><a href="https://github.com/TykTechnologies/tyk" target="_blank" rel="external">Github地址</a> go 有企业版和社区版</p>
+<h3 id="Gateway-职责之6-缓存和限流"><a href="#Gateway-职责之6-缓存和限流" class="headerlink" title="Gateway 职责之6: 缓存和限流"></a>Gateway 职责之6: 缓存和限流</h3><p>Gateway 可以做限流和缓存</p>
+<h2 id="常见的-API-Gateway-开源解决方案"><a href="#常见的-API-Gateway-开源解决方案" class="headerlink" title="常见的 API Gateway 开源解决方案"></a>常见的 API Gateway 开源解决方案</h2><p>转载自 <a href="http://www.do1618.com/archives/783/" target="_blank" rel="external">http://www.do1618.com/archives/783/</a></p>
+<h3 id="Tyk"><a href="#Tyk" class="headerlink" title="Tyk"></a>Tyk</h3><p><a href="https://github.com/TykTechnologies/tyk" target="_blank" rel="external">Github地址</a> </p>
+<blockquote>
+<p>Go 实现，有企业版和社区版</p>
+</blockquote>
 <p><a href="https://tyk.io/tyk-documentation/get-started/with-tyk-on-premise/installation/docker/docker-quickstart/" target="_blank" rel="external">Docker安装测试</a></p>
-<p><strong>kong</strong></p>
-<p><a href="https://github.com/Mashape/kong" target="_blank" rel="external">Github地址</a> nginx + lua (openresty)</p>
+<h3 id="kong"><a href="#kong" class="headerlink" title="kong"></a>kong</h3><p><a href="https://github.com/Mashape/kong" target="_blank" rel="external">Github地址</a> nginx + lua (openresty)</p>
+<blockquote>
 <p>当前版本：Kong 0.9.5 <a href="https://getkong.org/docs/" target="_blank" rel="external">文档</a></p>
-<p><strong>api-umbrella</strong></p>
-<p><a href="https://apiumbrella.io/" target="_blank" rel="external">官网</a> nginx + lua (openresty)</p>
+</blockquote>
+<h3 id="api-umbrella"><a href="#api-umbrella" class="headerlink" title="api-umbrella"></a>api-umbrella</h3><p><a href="https://apiumbrella.io/" target="_blank" rel="external">官网</a> </p>
+<blockquote>
+<p>nginx + lua (openresty)</p>
+</blockquote>
 <p><a href="https://github.com/NREL/api-umbrella" target="_blank" rel="external">Github地址</a></p>
-<p><a href="https://github.com/NREL/api-umbrella/issues/86" target="_blank" rel="external">apiumbrella分析—Revisiting, speeding up, and simplifying API Umbrella’s architecture</a></p>
-<p><a href="https://github.com/NREL/api-umbrella/issues/159" target="_blank" rel="external">apiumbralla同类产品分析</a></p>
-<p><strong>apiaxle</strong></p>
-<p><a href="http://apiaxle.com/" target="_blank" rel="external">官网</a> node.js</p>
+<ul>
+<li><a href="https://github.com/NREL/api-umbrella/issues/86" target="_blank" rel="external">apiumbrella分析—Revisiting, speeding up, and simplifying API Umbrella’s architecture</a></li>
+<li><a href="https://github.com/NREL/api-umbrella/issues/159" target="_blank" rel="external">apiumbralla同类产品分析</a></li>
+</ul>
+<h3 id="apiaxle"><a href="#apiaxle" class="headerlink" title="apiaxle"></a>apiaxle</h3><p><a href="http://apiaxle.com/" target="_blank" rel="external">官网</a> </p>
+<blockquote>
+<p>Node.js  实现</p>
+</blockquote>
 <p><a href="https://github.com/apiaxle/apiaxle" target="_blank" rel="external">Github地址</a></p>
-<p><strong>Netflix zuul</strong></p>
-<p><a href="https://github.com/Netflix/zuul" target="_blank" rel="external">GitHub地址</a></p>
-<p><strong>WSO2 API Manager</strong></p>
-<p><a href="http://wso2.com/products/api-manager/" target="_blank" rel="external">官网</a> OpenSource， Java</p>
+<h3 id="Netflix-zuul"><a href="#Netflix-zuul" class="headerlink" title="Netflix zuul"></a><strong>Netflix zuul</strong></h3><p><a href="https://github.com/Netflix/zuul" target="_blank" rel="external">GitHub地址</a></p>
+<h3 id="WSO2-API-Manager"><a href="#WSO2-API-Manager" class="headerlink" title="WSO2 API Manager"></a><strong>WSO2 API Manager</strong></h3><p><a href="http://wso2.com/products/api-manager/" target="_blank" rel="external">官网</a> </p>
+<blockquote>
+<p>OpenSource， Java</p>
+</blockquote>
 
       
     </div>
@@ -474,6 +479,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/api-gateway/" rel="tag"># api gateway</a>
+          
+        </div>
       
 
       
@@ -609,7 +620,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -631,7 +642,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -674,7 +685,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-API-Gateway"><span class="nav-number">1.</span> <span class="nav-text">什么是 API Gateway?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的-API-Gateway-开源解决方案"><span class="nav-number">2.</span> <span class="nav-text">常见的 API Gateway 开源解决方案</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-API-Gateway"><span class="nav-number">1.</span> <span class="nav-text">什么是 API Gateway?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之1-请求路由和版本控制"><span class="nav-number">1.1.</span> <span class="nav-text">Gateway 职责之1: 请求路由和版本控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之2-方便单体应用到微服务的过渡"><span class="nav-number">1.2.</span> <span class="nav-text">Gateway 职责之2: 方便单体应用到微服务的过渡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之3-权限认证"><span class="nav-number">1.3.</span> <span class="nav-text">Gateway 职责之3: 权限认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之4-数据聚合"><span class="nav-number">1.4.</span> <span class="nav-text">Gateway 职责之4: 数据聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之5-协议转换"><span class="nav-number">1.5.</span> <span class="nav-text">Gateway 职责之5: 协议转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gateway-职责之6-缓存和限流"><span class="nav-number">1.6.</span> <span class="nav-text">Gateway 职责之6: 缓存和限流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的-API-Gateway-开源解决方案"><span class="nav-number">2.</span> <span class="nav-text">常见的 API Gateway 开源解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tyk"><span class="nav-number">2.1.</span> <span class="nav-text">Tyk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kong"><span class="nav-number">2.2.</span> <span class="nav-text">kong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-umbrella"><span class="nav-number">2.3.</span> <span class="nav-text">api-umbrella</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apiaxle"><span class="nav-number">2.4.</span> <span class="nav-text">apiaxle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netflix-zuul"><span class="nav-number">2.5.</span> <span class="nav-text">Netflix zuul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSO2-API-Manager"><span class="nav-number">2.6.</span> <span class="nav-text">WSO2 API Manager</span></a></li></ol></li></ol></div>
             
 
           </div>
