@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://docs.mongodb.com/manual/_images/index-for-sort.bakedsvg.svg">
 <meta property="og:image" content="https://docs.mongodb.com/manual/_images/index-ascending.bakedsvg.svg">
 <meta property="og:image" content="https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg">
-<meta property="og:updated_time" content="2018-05-05T07:45:42.626Z">
+<meta property="og:updated_time" content="2018-05-18T14:56:39.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mongodb 中的索引">
 <meta name="twitter:description" content="在 Mongodb 典型的数据库查询场景中，索引 index 扮演着非常重要的作用，如果没有索引，MongoDB 需要为了找到一个匹配的文档而扫描整个 collection，代价非常高昂。 Mongodb 的索引使用的 B-tree 这一特殊的数据结构，借助索引 Mongodb 可以高效的匹配到需要查询的数据，以下图来为例(来自官方)：  score 索引不但可以高效的支持 range 查询，此外">
@@ -188,7 +188,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <h1 class="site-subtitle" itemprop="description"></h1>
       
   </div>
 
@@ -327,7 +327,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mongodb 中的索引</h1>
+          <h2 class="post-title" itemprop="name headline">Mongodb 中的索引</h2>
         
 
         <div class="post-meta">
@@ -413,60 +413,47 @@
         <p>在 Mongodb 典型的数据库查询场景中，索引 index 扮演着非常重要的作用，如果没有索引，MongoDB 需要为了找到一个匹配的文档而扫描整个 collection，代价非常高昂。</p>
 <p>Mongodb 的索引使用的 B-tree 这一特殊的数据结构，借助索引 Mongodb 可以高效的匹配到需要查询的数据，以下图来为例(来自官方)：</p>
 <p><img src="https://docs.mongodb.com/manual/_images/index-for-sort.bakedsvg.svg" alt=""></p>
-<p>score 索引不但可以高效的支持 range 查询，此外也可以让 MongoDB 高效地返回排序之后的数据。</p>
-<p>Mongodb 的索引同其它数据库系统很相似，Mongodb 的索引是定义在 collection 级别的，支持对任何单个 field 以及任何 sub-field 建立索引。</p>
+<p>score 索引不但可以高效的支持 range 查询，此外也可以让 MongoDB 高效地返回排序之后的数据，Mongodb 的索引同其它数据库系统很相似，Mongodb 的索引是定义在 collection 级别的，支持对任何单个 field 以及任何 sub-field 建立索引。</p>
 <h2 id="默认的-id-index"><a href="#默认的-id-index" class="headerlink" title="默认的 _id index"></a>默认的 <code>_id</code> index</h2><p>Mongodb 在 collection 创建时会默认建立一个基于<code>_id</code>的唯一性索引作为 document 的 primary key，这个 index 无法被删除。</p>
 <p>Mongodb 支持多种方式创建索引，具体创建方式见官方文档 <a href="https://docs.mongodb.com/manual/indexes/#create-an-index" target="_blank" rel="external">https://docs.mongodb.com/manual/indexes/#create-an-index</a></p>
-<h2 id="Single-field-index"><a href="#Single-field-index" class="headerlink" title="Single field index"></a>Single field index</h2><p>Single field index 是 Mongodb 最简单的索引类型，不同于 MySQL，MongoDB 的索引是有顺序 ascending或 descending。</p>
+<h2 id="Single-field-index-单索引"><a href="#Single-field-index-单索引" class="headerlink" title="Single field index - 单索引"></a>Single field index - 单索引</h2><p>Single field index 是 Mongodb 最简单的索引类型，不同于 MySQL，MongoDB 的索引是有序的  ascending 或 descending。</p>
 <p><img src="https://docs.mongodb.com/manual/_images/index-ascending.bakedsvg.svg" alt=""></p>
 <p>但是对于 single field index 来说，索引的顺序无关紧要，因为 MongoDB 支持任意顺序遍历 single field index。</p>
 <p>在此创建一个 records collection：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;_id&quot;: ObjectId(&quot;570c04a4ad233577f97dc459&quot;),</div><div class="line">  &quot;score&quot;: 1034,</div><div class="line">  &quot;location&quot;: &#123; state: &quot;NY&quot;, city: &quot;New York&quot; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p> 然后创建一个 single field index：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.createIndex( &#123; score: 1 &#125; )</div></pre></td></tr></table></figure>
-<p>上面的语句在 collection 的 score field 上创建了一个 ascending 索引，这个索引支持以下查询：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.records.find( &#123; score: 2 &#125; )</div><div class="line">db.records.find( &#123; score: &#123; $gt: 10 &#125; &#125; )</div></pre></td></tr></table></figure>
-<p>可以使用 MongoDB 的 explain 来对以上两个查询进行分析：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.find(&#123;score:2&#125;).explain(&apos;executionStats&apos;)</div></pre></td></tr></table></figure>
-<h3 id="single-index-on-embedded-field"><a href="#single-index-on-embedded-field" class="headerlink" title="single index on embedded field"></a>single index on embedded field</h3><p>此外 MongoDB 还支持对 embedded field 进行索引创建：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.createIndex( &#123; &quot;location.state&quot;: 1 &#125; )</div></pre></td></tr></table></figure>
-<p>上面的 embedded index 支持以下查询：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.records.find( &#123; &quot;location.state&quot;: &quot;CA&quot; &#125; )</div><div class="line">db.records.find( &#123; &quot;location.city&quot;: &quot;Albany&quot;, &quot;location.state&quot;: &quot;NY&quot; &#125; )</div></pre></td></tr></table></figure>
-<h3 id="sort-on-single-index"><a href="#sort-on-single-index" class="headerlink" title="sort on single index"></a>sort on single index</h3><p>对于 single index 来说，由于 MongoDB index 本身支持顺序查找，所以对于single index 来说</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.records.find().sort( &#123; score: 1 &#125; )</div><div class="line">db.records.find().sort( &#123; score: -1 &#125; )</div><div class="line">db.records.find(&#123;score:&#123;$lte:100&#125;&#125;).sort( &#123; score: -1 &#125; )</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"_id"</span>: ObjectId(<span class="string">"570c04a4ad233577f97dc459"</span>),</div><div class="line">  <span class="string">"score"</span>: <span class="number">1034</span>,</div><div class="line">  <span class="string">"location"</span>: &#123; <span class="attr">state</span>: <span class="string">"NY"</span>, <span class="attr">city</span>: <span class="string">"New York"</span> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后创建一个 single field index：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.createIndex( &#123; <span class="attr">score</span>: <span class="number">1</span> &#125; )</div></pre></td></tr></table></figure>
+<p>上面的语句在 collection 的 score field 上创建了一个 ascending 索引，这个索引支持以下查询：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.records.find( &#123; <span class="attr">score</span>: <span class="number">2</span> &#125; )</div><div class="line">db.records.find( &#123; <span class="attr">score</span>: &#123; <span class="attr">$gt</span>: <span class="number">10</span> &#125; &#125; )</div></pre></td></tr></table></figure></p>
+<p>可以使用 MongoDB 的 explain 来对以上两个查询进行分析：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.find(&#123;<span class="attr">score</span>:<span class="number">2</span>&#125;).explain(<span class="string">'executionStats'</span>)</div></pre></td></tr></table></figure></p>
+<h3 id="single-index-on-embedded-field-内嵌字段上的单索引"><a href="#single-index-on-embedded-field-内嵌字段上的单索引" class="headerlink" title="single index on embedded field - 内嵌字段上的单索引"></a>single index on embedded field - 内嵌字段上的单索引</h3><p>此外 MongoDB 还支持对 embedded field 进行索引创建：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.records.createIndex( &#123; <span class="string">"location.state"</span>: <span class="number">1</span> &#125; )</div></pre></td></tr></table></figure>
+<p>上面的 embedded index 支持以下查询：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.records.find( &#123; <span class="string">"location.state"</span>: <span class="string">"CA"</span> &#125; )</div><div class="line">db.records.find( &#123; <span class="string">"location.city"</span>: <span class="string">"Albany"</span>, <span class="string">"location.state"</span>: <span class="string">"NY"</span> &#125; )</div></pre></td></tr></table></figure></p>
+<h3 id="sort-on-single-index-单索引的排序"><a href="#sort-on-single-index-单索引的排序" class="headerlink" title="sort on single index - 单索引的排序"></a>sort on single index - 单索引的排序</h3><p>对于 single index 来说，由于 MongoDB index 本身支持顺序查找，所以对于single index 来说<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.records.find().sort( &#123; score: 1 &#125; )</div><div class="line">db.records.find().sort( &#123; score: -1 &#125; )</div><div class="line">db.records.find(&#123;score:&#123;$lte:100&#125;&#125;).sort( &#123; score: -1 &#125; )</div></pre></td></tr></table></figure></p>
 <p>这些查询语句都是满足使用 index 的。</p>
-<h2 id="Compound-index"><a href="#Compound-index" class="headerlink" title="Compound index"></a>Compound index</h2><p>Mongodb 支持对多个 field 建立索引，称之为 compound index。Compound index 中 field 的顺序对索引的性能有至关重要的影响，比如索引 {userid:1, score:-1} 首先根据 userid 排序，然后再在每个 userid 中根据 score 排序。</p>
+<h2 id="Compound-index-组合索引"><a href="#Compound-index-组合索引" class="headerlink" title="Compound index - 组合索引"></a>Compound index - 组合索引</h2><p>Mongodb 支持对多个 field 建立索引，称之为 compound index。Compound index 中 field 的顺序对索引的性能有至关重要的影响，比如索引 {userid:1, score:-1} 首先根据 userid 排序，然后再在每个 userid 中根据 score 排序。</p>
 <p><img src="https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg" alt=""></p>
 <h3 id="创建-Compound-index"><a href="#创建-Compound-index" class="headerlink" title="创建 Compound index"></a>创建 Compound index</h3><p>在此创建一个 products collection：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> &quot;_id&quot;: ObjectId(...),</div><div class="line"> &quot;item&quot;: &quot;Banana&quot;,</div><div class="line"> &quot;category&quot;: [&quot;food&quot;, &quot;produce&quot;, &quot;grocery&quot;],</div><div class="line"> &quot;location&quot;: &quot;4th Street Store&quot;,</div><div class="line"> &quot;stock&quot;: 4,</div><div class="line"> &quot;type&quot;: &quot;cases&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后创建一个 compound index：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.products.createIndex( &#123; &quot;item&quot;: 1, &quot;stock&quot;: 1 &#125; )</div></pre></td></tr></table></figure>
-<p>这个 index 引用的 document 首先会根据 item 排序，然后在 每个 item 中，又会根据 stock 排序，以下语句都满足该索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.products.find( &#123; item: &quot;Banana&quot; &#125; )</div><div class="line">db.products.find( &#123; item: &quot;Banana&quot;, stock: &#123; $gt: 5 &#125; &#125; )</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> <span class="string">"_id"</span>: ObjectId(...),</div><div class="line"> <span class="string">"item"</span>: <span class="string">"Banana"</span>,</div><div class="line"> <span class="string">"category"</span>: [<span class="string">"food"</span>, <span class="string">"produce"</span>, <span class="string">"grocery"</span>],</div><div class="line"> <span class="string">"location"</span>: <span class="string">"4th Street Store"</span>,</div><div class="line"> <span class="string">"stock"</span>: <span class="number">4</span>,</div><div class="line"> <span class="string">"type"</span>: <span class="string">"cases"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后创建一个 compound index：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.products.createIndex( &#123; <span class="string">"item"</span>: <span class="number">1</span>, <span class="string">"stock"</span>: <span class="number">1</span> &#125; )</div></pre></td></tr></table></figure></p>
+<p>这个 index 引用的 document 首先会根据 item 排序，然后在 每个 item 中，又会根据 stock 排序，以下语句都满足该索引：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.products.find( &#123; <span class="attr">item</span>: <span class="string">"Banana"</span> &#125; )</div><div class="line">db.products.find( &#123; <span class="attr">item</span>: <span class="string">"Banana"</span>, <span class="attr">stock</span>: &#123; <span class="attr">$gt</span>: <span class="number">5</span> &#125; &#125; )</div></pre></td></tr></table></figure></p>
 <p>条件 {item: “Banana”} 满足是因为这个 query 满足 prefix 原则。</p>
-<h3 id="使用-compound-索引需要满足-prefix-原则"><a href="#使用-compound-索引需要满足-prefix-原则" class="headerlink" title="使用 compound 索引需要满足 prefix 原则"></a>使用 compound 索引需要满足 prefix 原则</h3><p>Index prefix 是指 index fields 的左前缀子集，考虑以下索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; &quot;item&quot;: 1, &quot;location&quot;: 1, &quot;stock&quot;: 1 &#125;</div></pre></td></tr></table></figure>
-<p>这个索引包含以下 index prefix：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123; item: 1 &#125;</div><div class="line">&#123; item: 1, location: 1 &#125;</div></pre></td></tr></table></figure>
-<p>所以只要语句满足 index prefix 原则都是可以支持使用 compound index 的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.products.find( &#123; item: &quot;Banana&quot; &#125; )</div><div class="line">db.products.find( &#123; item: &quot;Banana&quot;,location:&quot;4th Street Store&quot;&#125; )</div><div class="line">db.products.find( &#123; item: &quot;Banana&quot;,location:&quot;4th Street Store&quot;,stock:4&#125;)</div></pre></td></tr></table></figure>
+<h3 id="使用-compound-index-需要满足-prefix-原则"><a href="#使用-compound-index-需要满足-prefix-原则" class="headerlink" title="使用 compound index 需要满足 prefix 原则"></a>使用 compound index 需要满足 prefix 原则</h3><p>Index prefix 是指 index fields 的左前缀子集，考虑以下索引：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="string">"item"</span>: <span class="number">1</span>, <span class="string">"location"</span>: <span class="number">1</span>, <span class="string">"stock"</span>: <span class="number">1</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>这个索引包含以下 index prefix：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="attr">item</span>: <span class="number">1</span> &#125;</div><div class="line">&#123; <span class="attr">item</span>: <span class="number">1</span>, <span class="attr">location</span>: <span class="number">1</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>所以只要语句满足 index prefix 原则都是可以支持使用 compound index ：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.products.find( &#123; <span class="attr">item</span>: <span class="string">"Banana"</span> &#125; )</div><div class="line">db.products.find( &#123; <span class="attr">item</span>: <span class="string">"Banana"</span>,<span class="attr">location</span>:<span class="string">"4th Street Store"</span>&#125; )</div><div class="line">db.products.find( &#123; <span class="attr">item</span>: <span class="string">"Banana"</span>,<span class="attr">location</span>:<span class="string">"4th Street Store"</span>,<span class="attr">stock</span>:<span class="number">4</span>&#125;)</div></pre></td></tr></table></figure></p>
 <p>相反如果不满足 index prefix 则无法使用索引，比如以下 field 的查询：</p>
 <ul>
 <li>the <strong>location</strong> field</li>
 <li>the <strong>stock</strong> field</li>
 <li>the <strong>location</strong> and <strong>stock</strong> fields</li>
 </ul>
-<p>由于 index prefix 的存在，如果一个 collection 既有 <strong>{a:1, b:1}</strong> 索引 ，也有 <strong>{a:1}</strong> 索引，如果二者没有稀疏或者唯一性的要求，single index 是可以移除的。</p>
-<h3 id="Sort-on-Compound-index"><a href="#Sort-on-Compound-index" class="headerlink" title="Sort on Compound index"></a>Sort on Compound index</h3><p>前文说过 single index 的 sort 顺序无关紧要，但是 compound index 则完全不同。</p>
-<p>考虑有如下场景：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; username: 1, date: -1 &#125; )</div></pre></td></tr></table></figure>
-<p>events collection 有一个上面的查询，首先结果根据 username 进行 ascending 排序，然后再对结果进行 date descending 排序，或者是下面的查询：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; username: -1, date: 1 &#125; )</div></pre></td></tr></table></figure>
-<p>根据 username 进行 descending 排序，然后再对 date 进行 ascending 排序，索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.createIndex( &#123; &quot;username&quot; : 1, &quot;date&quot; : -1 &#125; ）</div></pre></td></tr></table></figure>
-<p>  可以支持这两种查询，但是下面的查询不支持：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; username: 1, date: 1 &#125;)</div></pre></td></tr></table></figure>
-<p>也就是说 sort 的顺序必须要和创建索引的顺序是一致的，一致的意思是不一定非要一样，总结起来大致如下</p>
+<p>由于 index prefix 的存在，如果一个 collection 既有 <strong>{a:1, b:1}</strong> 索引 ，也有 <strong>{a:1}</strong> 索引，如果二者没有稀疏或者唯一性的要求，single index 可以移除。</p>
+<h3 id="Sort-on-Compound-index-复合索引的排序"><a href="#Sort-on-Compound-index-复合索引的排序" class="headerlink" title="Sort on Compound index - 复合索引的排序"></a>Sort on Compound index - 复合索引的排序</h3><p>前文说过 single index 的 sort 顺序无关紧要，但是 compound index 则完全不同，考虑有如下场景：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; <span class="attr">username</span>: <span class="number">1</span>, <span class="attr">date</span>: <span class="number">-1</span> &#125; )</div></pre></td></tr></table></figure></p>
+<p>上面的查询首先根据 username 进行 ascending 排序，然后再对结果进行 date descending 。</p>
+<p>下面的查询：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; <span class="attr">username</span>: <span class="number">-1</span>, <span class="attr">date</span>: <span class="number">1</span> &#125; )</div></pre></td></tr></table></figure></p>
+<p>则是首先根据 username 进行 descending 排序，然后再对 date 进行 ascending 排序。</p>
+<p>如果想要索引满足以上两种查询和排序，索引类型需要满足如下条件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.createIndex( &#123; <span class="string">"username"</span> : <span class="number">1</span>, <span class="string">"date"</span> : <span class="number">-1</span> &#125; ）</div></pre></td></tr></table></figure></p>
+<p>也就是 <strong>username 和 date 的顺序不同</strong>，如果顺序相同则没有办法满足以上查询，比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.events.find().sort( &#123; <span class="attr">username</span>: <span class="number">1</span>, <span class="attr">date</span>: <span class="number">1</span> &#125;)</div></pre></td></tr></table></figure></p>
+<p>也就是说 sort 的顺序必须要和创建索引的顺序是一致的，一致的意思是不一定非要一样，总结起来大致如下：</p>
 <div class="table-container">
 <table>
 <thead>
@@ -537,6 +524,7 @@
 </tbody>
 </table>
 </div>
+<p><strong>即排序的 filed 也要满足 index prefix 原则</strong>。</p>
 <h4 id="非-index-prefix-的排序"><a href="#非-index-prefix-的排序" class="headerlink" title="非 index prefix 的排序"></a>非 index prefix 的排序</h4><p>考虑索引 { a: 1, b: 1, c: 1, d: 1 }，即使排序的 field 不满足 index prefix 也是可以的，但前提条件是<strong>排序 field 之前的 index field 必须是等值条件</strong>，</p>
 <div class="table-container">
 <table>
@@ -570,7 +558,7 @@
 <h2 id="如何建立正确索引"><a href="#如何建立正确索引" class="headerlink" title="如何建立正确索引"></a>如何建立正确索引</h2><p>前文基本覆盖了日常使用 MongoDB 所需要的主要索引知识，但是如何才建立正确的索引？</p>
 <h3 id="使用-explain-分析查询语句"><a href="#使用-explain-分析查询语句" class="headerlink" title="使用 explain 分析查询语句"></a>使用 explain 分析查询语句</h3><p>MongoDB 默认提供了类似 MySQL explain 的语句来分析查询语句的来对我们正确建立索引提供帮助，在建立索引时我们需要对照 explain 对各种查询条件进行分析。</p>
 <h3 id="理解-field-顺序对索引的影响"><a href="#理解-field-顺序对索引的影响" class="headerlink" title="理解 field 顺序对索引的影响"></a>理解 field 顺序对索引的影响</h3><p>索引的真正作用是帮助我们限制数据的选择范围，比如 Compound index 多个 feild 的顺序如何决定，应该首选可以最大化的缩小数据查找范围的 field，这样如果第一个 field 可以迅速缩小数据的查找范围，那么后续的 feild 匹配的行就会变少很多。考虑语句：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&apos;online_time&apos;: &#123;&apos;$lte&apos;: present&#125;, &apos;offline_time&apos;: &#123;&apos;$gt&apos;: present&#125;, &apos;online&apos;: 1, &apos;orientation&apos;: &apos;quality&apos;, &apos;id&apos;: &#123;&apos;$gt&apos;: max_id&#125;&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'online_time'</span>: &#123;<span class="string">'$lte'</span>: present&#125;, <span class="string">'offline_time'</span>: &#123;<span class="string">'$gt'</span>: present&#125;, <span class="string">'online'</span>: <span class="number">1</span>, <span class="string">'orientation'</span>: <span class="string">'quality'</span>, <span class="string">'id'</span>: &#123;<span class="string">'$gt'</span>: max_id&#125;&#125;</div></pre></td></tr></table></figure>
 <p>考虑如下索引</p>
 <div class="table-container">
 <table>
@@ -597,6 +585,10 @@
 </div>
 <p>由于 field <code>id</code> 和 <code>orientation</code> 的顺序不同会导致需要扫描的 documents 数量差异巨大，说明二者对对数据的限制范围差别很大，优先考虑能够最大化限制数据范围的索引顺序。</p>
 <h3 id="监控慢查询"><a href="#监控慢查询" class="headerlink" title="监控慢查询"></a>监控慢查询</h3><p>始终对生成环境产生的慢查询进行第一时间分析，提早发现问题并解决。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://docs.mongodb.com/manual/core/index-compound/" target="_blank" rel="external">https://docs.mongodb.com/manual/core/index-compound/</a></li>
+<li><a href="http://www.infoq.com/cn/articles/improve-find-performance-in-mongo" target="_blank" rel="external">http://www.infoq.com/cn/articles/improve-find-performance-in-mongo</a></li>
+</ul>
 
       
     </div>
@@ -754,7 +746,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">94</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -776,7 +768,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-count">74</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -819,7 +811,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#默认的-id-index"><span class="nav-number">1.</span> <span class="nav-text">默认的 _id index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Single-field-index"><span class="nav-number">2.</span> <span class="nav-text">Single field index</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#single-index-on-embedded-field"><span class="nav-number">2.1.</span> <span class="nav-text">single index on embedded field</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort-on-single-index"><span class="nav-number">2.2.</span> <span class="nav-text">sort on single index</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compound-index"><span class="nav-number">3.</span> <span class="nav-text">Compound index</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-Compound-index"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Compound index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-compound-索引需要满足-prefix-原则"><span class="nav-number">3.2.</span> <span class="nav-text">使用 compound 索引需要满足 prefix 原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sort-on-Compound-index"><span class="nav-number">3.3.</span> <span class="nav-text">Sort on Compound index</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非-index-prefix-的排序"><span class="nav-number">3.3.1.</span> <span class="nav-text">非 index prefix 的排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何建立正确索引"><span class="nav-number">4.</span> <span class="nav-text">如何建立正确索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-explain-分析查询语句"><span class="nav-number">4.1.</span> <span class="nav-text">使用 explain 分析查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解-field-顺序对索引的影响"><span class="nav-number">4.2.</span> <span class="nav-text">理解 field 顺序对索引的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控慢查询"><span class="nav-number">4.3.</span> <span class="nav-text">监控慢查询</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#默认的-id-index"><span class="nav-number">1.</span> <span class="nav-text">默认的 _id index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Single-field-index-单索引"><span class="nav-number">2.</span> <span class="nav-text">Single field index - 单索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#single-index-on-embedded-field-内嵌字段上的单索引"><span class="nav-number">2.1.</span> <span class="nav-text">single index on embedded field - 内嵌字段上的单索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort-on-single-index-单索引的排序"><span class="nav-number">2.2.</span> <span class="nav-text">sort on single index - 单索引的排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compound-index-组合索引"><span class="nav-number">3.</span> <span class="nav-text">Compound index - 组合索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-Compound-index"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Compound index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-compound-index-需要满足-prefix-原则"><span class="nav-number">3.2.</span> <span class="nav-text">使用 compound index 需要满足 prefix 原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sort-on-Compound-index-复合索引的排序"><span class="nav-number">3.3.</span> <span class="nav-text">Sort on Compound index - 复合索引的排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非-index-prefix-的排序"><span class="nav-number">3.3.1.</span> <span class="nav-text">非 index prefix 的排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何建立正确索引"><span class="nav-number">4.</span> <span class="nav-text">如何建立正确索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-explain-分析查询语句"><span class="nav-number">4.1.</span> <span class="nav-text">使用 explain 分析查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解-field-顺序对索引的影响"><span class="nav-number">4.2.</span> <span class="nav-text">理解 field 顺序对索引的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控慢查询"><span class="nav-number">4.3.</span> <span class="nav-text">监控慢查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
