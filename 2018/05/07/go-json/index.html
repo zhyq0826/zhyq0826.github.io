@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
+<meta name="description" content="本文是基于 Go 官方和 https://eager.io/blog/go-and-json/ 进行翻译整理的  JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func M">
 <meta name="keywords" content="json">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 Go 中的 JSON">
 <meta property="og:url" content="http://sanyuesha.com/2018/05/07/go-json/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
-<meta property="og:updated_time" content="2018-05-11T15:10:45.717Z">
+<meta property="og:description" content="本文是基于 Go 官方和 https://eager.io/blog/go-and-json/ 进行翻译整理的  JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func M">
+<meta property="og:updated_time" content="2018-05-20T14:57:40.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 Go 中的 JSON">
-<meta name="twitter:description" content="JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func Marshal(v interface&amp;#123;&amp;#125;) ([]byte, error) 举例来说，比如下面的">
+<meta name="twitter:description" content="本文是基于 Go 官方和 https://eager.io/blog/go-and-json/ 进行翻译整理的  JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 encoding/json 包中提供了对 JSON 的支持。 序列化把 Go struct 序列化成 JSON 对象，Go 提供了 Marshal 方法，正如其含义所示表示编排序列化，函数签名如下： 1func M">
 
 
 
@@ -407,7 +407,10 @@
       
 
       
-        <p>JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 <a href="https://golang.org/pkg/encoding/json/" target="_blank" rel="external">encoding/json</a> 包中提供了对 JSON 的支持。</p>
+        <blockquote>
+<p>本文是基于 Go 官方和 <a href="https://eager.io/blog/go-and-json/" target="_blank" rel="external">https://eager.io/blog/go-and-json/</a> 进行翻译整理的</p>
+</blockquote>
+<p>JSON 是一种轻量级的数据交换格式，常用作前后端数据交换，Go 在 <a href="https://golang.org/pkg/encoding/json/" target="_blank" rel="external">encoding/json</a> 包中提供了对 JSON 的支持。</p>
 <h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><p>把 Go struct 序列化成 JSON 对象，Go 提供了 <a href="https://golang.org/pkg/encoding/json/#Marshal" target="_blank" rel="external">Marshal</a> 方法，正如其含义所示表示编排序列化，函数签名如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Marshal</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span></div></pre></td></tr></table></figure>
 <p>举例来说，比如下面的 Go struct：</p>
