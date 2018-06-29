@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/02/05/understand-semantic-ui-grid/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="semantic-ui 是一套类似于 bootstrap 的 ui framework，相比 bootstrap 有如下优点：  组件采用语义化的组织方式，容易理解，容易记忆 组件库非常丰富，几乎不需要引入第三方的组件，统一性强 由于采用语义化的方式命名，所有组件都有自己的命名空间，相互不受干扰，侵入性弱，对自定义 css 干扰小，bootstrap 则改写了很多元素的默认样式，复写困难 自定义容">
-<meta property="og:updated_time" content="2017-05-17T23:58:37.000Z">
+<meta property="og:updated_time" content="2018-06-29T15:42:58.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 semantic-ui grid 的使用">
 <meta name="twitter:description" content="semantic-ui 是一套类似于 bootstrap 的 ui framework，相比 bootstrap 有如下优点：  组件采用语义化的组织方式，容易理解，容易记忆 组件库非常丰富，几乎不需要引入第三方的组件，统一性强 由于采用语义化的方式命名，所有组件都有自己的命名空间，相互不受干扰，侵入性弱，对自定义 css 干扰小，bootstrap 则改写了很多元素的默认样式，复写困难 自定义容">
@@ -449,6 +449,13 @@
 <p><strong>codepen sample</strong></p>
 <p></p><p data-height="265" data-theme-id="0" data-slug-hash="oByPyE" data-default-tab="result" data-user="zhyq0826" data-embed-version="2" data-pen-title="oByPyE" class="codepen">See the Pen <a href="http://codepen.io/zhyq0826/pen/oByPyE/" target="_blank" rel="external">oByPyE</a> by 三月沙 (<a href="http://codepen.io/zhyq0826" target="_blank" rel="external">@zhyq0826</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>2.3.2 中，column 的子元素不能直接是 row，如果要在 column 下使用 row 必须嵌套在 grid 中</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fourteen wide column"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ui grid"</span>&gt;</span></div><div class="line">      <span class="comment">&lt;!-- 必须要嵌套在 新的 grid 中 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> &gt;</span> </div><div class="line"></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -613,7 +620,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -678,7 +685,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fundamental-concepts"><span class="nav-number">1.</span> <span class="nav-text">fundamental concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#固定宽度居中布局"><span class="nav-number">2.</span> <span class="nav-text">固定宽度居中布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grid-布局"><span class="nav-number">3.</span> <span class="nav-text">grid 布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动换行"><span class="nav-number">3.1.</span> <span class="nav-text">自动换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动换行"><span class="nav-number">3.2.</span> <span class="nav-text">手动换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-grid-的-column-count"><span class="nav-number">3.3.</span> <span class="nav-text">指定 grid 的 column count</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#row-内的-column-默认没有高度"><span class="nav-number">3.4.</span> <span class="nav-text">row 内的 column 默认没有高度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-column-的宽度"><span class="nav-number">3.5.</span> <span class="nav-text">指定 column 的宽度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特定-grid-必须要有-row"><span class="nav-number">3.6.</span> <span class="nav-text">特定 grid 必须要有 row</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#居中-column"><span class="nav-number">3.7.</span> <span class="nav-text">居中 column</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浮动-column"><span class="nav-number">3.8.</span> <span class="nav-text">浮动 column</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以在任意级别-grid-row-column-指定文本的对齐方式"><span class="nav-number">3.9.</span> <span class="nav-text">可以在任意级别 grid, row, column 指定文本的对齐方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#均分-column-width"><span class="nav-number">3.10.</span> <span class="nav-text">均分 column width</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fundamental-concepts"><span class="nav-number">1.</span> <span class="nav-text">fundamental concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#固定宽度居中布局"><span class="nav-number">2.</span> <span class="nav-text">固定宽度居中布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grid-布局"><span class="nav-number">3.</span> <span class="nav-text">grid 布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动换行"><span class="nav-number">3.1.</span> <span class="nav-text">自动换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动换行"><span class="nav-number">3.2.</span> <span class="nav-text">手动换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-grid-的-column-count"><span class="nav-number">3.3.</span> <span class="nav-text">指定 grid 的 column count</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#row-内的-column-默认没有高度"><span class="nav-number">3.4.</span> <span class="nav-text">row 内的 column 默认没有高度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定-column-的宽度"><span class="nav-number">3.5.</span> <span class="nav-text">指定 column 的宽度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特定-grid-必须要有-row"><span class="nav-number">3.6.</span> <span class="nav-text">特定 grid 必须要有 row</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#居中-column"><span class="nav-number">3.7.</span> <span class="nav-text">居中 column</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浮动-column"><span class="nav-number">3.8.</span> <span class="nav-text">浮动 column</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以在任意级别-grid-row-column-指定文本的对齐方式"><span class="nav-number">3.9.</span> <span class="nav-text">可以在任意级别 grid, row, column 指定文本的对齐方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#均分-column-width"><span class="nav-number">3.10.</span> <span class="nav-text">均分 column width</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">4.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
             
 
           </div>
