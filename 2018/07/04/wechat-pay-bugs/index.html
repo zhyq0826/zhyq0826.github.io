@@ -95,13 +95,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="http://sanyuesha.com/categories/index.html">
+<meta name="description" content="微信支付爆出安全漏洞，详见 http://www.techweb.com.cn/digitallife/2018-07-04/2682206.shtml，具体原理是微信支付的回调是 xml，这个漏洞的就是利用 xml 可以自定义文档结构来调用外部实体的能力来注入不安全信息，漏洞全称是 XML External Entity Injection ，简称 XXE，微信官方已经在给出漏洞修复的具体实践，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 中如何修复微信支付漏洞">
+<meta property="og:url" content="http://sanyuesha.com/2018/07/04/wechat-pay-bugs/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:updated_time" content="2017-09-11T22:54:11.000Z">
+<meta property="og:description" content="微信支付爆出安全漏洞，详见 http://www.techweb.com.cn/digitallife/2018-07-04/2682206.shtml，具体原理是微信支付的回调是 xml，这个漏洞的就是利用 xml 可以自定义文档结构来调用外部实体的能力来注入不安全信息，漏洞全称是 XML External Entity Injection ，简称 XXE，微信官方已经在给出漏洞修复的具体实践，">
+<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20180704-120452.png">
+<meta property="og:updated_time" content="2018-07-31T23:40:19.830Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分类">
+<meta name="twitter:title" content="Python 中如何修复微信支付漏洞">
+<meta name="twitter:description" content="微信支付爆出安全漏洞，详见 http://www.techweb.com.cn/digitallife/2018-07-04/2682206.shtml，具体原理是微信支付的回调是 xml，这个漏洞的就是利用 xml 可以自定义文档结构来调用外部实体的能力来注入不安全信息，漏洞全称是 XML External Entity Injection ，简称 XXE，微信官方已经在给出漏洞修复的具体实践，">
+<meta name="twitter:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20180704-120452.png">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/categories/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/07/04/wechat-pay-bugs/"/>
 
 
 
 
 
-  <title>分类 | 三月沙</title>
+  <title>Python 中如何修复微信支付漏洞 | 三月沙</title>
   
 
 
@@ -291,40 +296,189 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/07/04/wechat-pay-bugs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">分类</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 24 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQLAlchemy/">SQLAlchemy</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TCP/">TCP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/consul/">consul</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/markdown/">markdown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mongodb/">mongodb</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/semantic-ui/">semantic-ui</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tornado/">tornado</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/turbo/">turbo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/大数据/">大数据</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术周刊/">技术周刊</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/方法论/">方法论</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序人生/">程序人生</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li></ul>
-            </div>
-          </div>
+          <h2 class="post-title" itemprop="name headline">Python 中如何修复微信支付漏洞</h2>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T11:55:54+08:00">
+                Jul 4 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/04/wechat-pay-bugs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/04/wechat-pay-bugs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>微信支付爆出安全漏洞，详见 <a href="http://www.techweb.com.cn/digitallife/2018-07-04/2682206.shtml，具体原理是微信支付的回调是" target="_blank" rel="external">http://www.techweb.com.cn/digitallife/2018-07-04/2682206.shtml，具体原理是微信支付的回调是</a> xml，这个漏洞的就是利用 xml 可以自定义文档结构来调用外部实体的能力来注入不安全信息，漏洞全称是 XML External Entity Injection ，简称 XXE，微信官方已经在给出漏洞修复的具体实践，参见  <a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=23_5" target="_blank" rel="external">https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=23_5</a> 。</p>
+<p>Python 中的 xml 解析一般使用 xml 这个标准库，Python 官方对标准库的安全使用有具体建议，参见 <a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities" target="_blank" rel="external">https://docs.python.org/2/library/xml.html#xml-vulnerabilities</a>   :</p>
+<p><img src="http://ozoxs1p4r.bkt.clouddn.com/WX20180704-120452.png" alt=""></p>
+<p>上述表格详细列举了各个标准模块的安全性，请仔细检查相关支付回调业务中 xml 的使用情况。</p>
+<p>除此之外，Python 有一个非常著名的库 xmltodict ( <a href="https://github.com/martinblech/xmltodict" target="_blank" rel="external">https://github.com/martinblech/xmltodict</a>) 用以解析 xml，这个库的最新版本修复了 XXE 见 <a href="https://github.com/martinblech/xmltodict/issues/174" target="_blank" rel="external">https://github.com/martinblech/xmltodict/issues/174</a> ，xmltodict 依赖于 <a href="https://pypi.org/project/defusedexpat/" target="_blank" rel="external">https://pypi.org/project/defusedexpat/</a> 这个包，默认情况下需要手动安装，所以需要在你的应用程序依赖中显式写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">defusedexpat==0.4.0</div><div class="line">xmltodict==0.11.0</div></pre></td></tr></table></figure>
+<p><strong>一切工作做好之后，请仔细进行测试你的代码，确保它们对 xml 的解析是安全的</strong>。</p>
+
       
     </div>
     
     
     
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/01/weekly-0005/" rel="next" title="本周值得读第 5 期">
+                <i class="fa fa-chevron-left"></i> 本周值得读第 5 期
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
   </div>
 
 
@@ -333,6 +487,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -547,6 +712,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
 
   
 
@@ -561,7 +730,21 @@
   
 
     
-      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+      <script id="dsq-count-scr" src="https://sanyuesha-com.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/07/04/wechat-pay-bugs/';
+          this.page.identifier = '2018/07/04/wechat-pay-bugs/';
+          this.page.title = 'Python 中如何修复微信支付漏洞';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -579,8 +762,6 @@
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
-    
-
     
 
   
