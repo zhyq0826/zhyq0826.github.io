@@ -104,8 +104,7 @@
 <meta property="og:description" content="什么是 sliceSlice 是一种变长的序列，其所有的元素具有相同的数据类型，表达式为 []T ，看上去很像没有 size 的数组。 Slice 是一种和数组相关联的轻量的数据结构，其包含三部分：一个指向底层数组的指针，一个 length，一个 capacity。指针指向的是底层数组中 slice 的第一个元素，length 是 slice 拥有元素的个数，capacity 是底层数组中 sli">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/go-slices-usage-and-internals_slice-struct.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20180801-082445@2x_meitu_1.jpg">
-<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/QQ20180807-000054@2x.png">
-<meta property="og:updated_time" content="2018-08-07T00:36:40.239Z">
+<meta property="og:updated_time" content="2018-08-13T15:11:05.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 Go 中的 Slice">
 <meta name="twitter:description" content="什么是 sliceSlice 是一种变长的序列，其所有的元素具有相同的数据类型，表达式为 []T ，看上去很像没有 size 的数组。 Slice 是一种和数组相关联的轻量的数据结构，其包含三部分：一个指向底层数组的指针，一个 length，一个 capacity。指针指向的是底层数组中 slice 的第一个元素，length 是 slice 拥有元素的个数，capacity 是底层数组中 sli">
@@ -414,7 +413,8 @@
         <h2 id="什么是-slice"><a href="#什么是-slice" class="headerlink" title="什么是 slice"></a>什么是 slice</h2><p>Slice 是一种变长的序列，其所有的元素具有相同的数据类型，表达式为 <code>[]T</code> ，看上去很像没有 size 的数组。</p>
 <p>Slice 是一种和数组相关联的轻量的数据结构，其包含三部分：一个指向底层数组的指针，一个 length，一个 capacity。指针指向的是底层数组中 slice 的第一个元素，<strong>length 是 slice 拥有元素的个数，capacity 是底层数组中 slice 的第一个元素到数组末尾的长度</strong>。</p>
 <p><img src="http://ozoxs1p4r.bkt.clouddn.com/go-slices-usage-and-internals_slice-struct.png" alt=""></p>
-<p><strong>Slice 的结构会导致多个 slice 实际引用的是同一个数组</strong>。</p>
+<p><strong>Slice 的结构会导致多个 slice 实际引用的是同一个数组</strong>。Slice 的这种结构决定了如果一个函数的参数是 slice，那么可以在函数的内部对 slice 进行修改，所以 slice 同 map、chan 一样可以被调用者修改。</p>
+<p>注意，如果一个函数的参数是 slice，在函数内部要避免对 slice 进行修改操作。</p>
 <h2 id="slice-初始化"><a href="#slice-初始化" class="headerlink" title="slice 初始化"></a>slice 初始化</h2><p>声明一个 slice 形式如：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s []<span class="keyword">int</span></div></pre></td></tr></table></figure>
 <p>一个未被初始化的 slice 其值是 nil，此时 slice 的 length 和 capacity 都是 0。初始化 slice 有两种方式：</p>
@@ -448,8 +448,10 @@
 <h2 id="slice-的比较操作"><a href="#slice-的比较操作" class="headerlink" title="slice 的比较操作"></a>slice 的比较操作</h2><p>两个 slice 是不能相互比较的，slice 唯一能够比较的操作时 nil<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> s == <span class="literal">nil</span> &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>但是这个操作很少用到，判断一个没有任何元素的 slice 可以用 len(s) == 0，即使 s 是一个未初始化的 slice，值为 nil 也不影响。</p>
 <h2 id="append-操作"><a href="#append-操作" class="headerlink" title="append 操作"></a>append 操作</h2><p>内建的 append 函数把一个元素添加到 slice 的末尾，由于 slice 底层是一个数组，有可能发生数组的长度不够使用的情况，append 会在此时创建一个新的数组并且 double 数组的长度，把新元素添加之后返回新的 slice，下面的代码返回结果可以证明此观点:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> y []<span class="keyword">int</span></div><div class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</div><div class="line">        y = <span class="built_in">append</span>(x, i)</div><div class="line">        fmt.Printf(<span class="string">"%d cap=%d\t%v\n"</span>, i, <span class="built_in">cap</span>(y), y)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://ozoxs1p4r.bkt.clouddn.com/QQ20180807-000054@2x.png" alt=""></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> y []<span class="keyword">int</span></div><div class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</div><div class="line">        y = <span class="built_in">append</span>(y, i)</div><div class="line">        fmt.Printf(<span class="string">"%d cap=%d\t%v\n"</span>, i, <span class="built_in">cap</span>(y), y)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//out</span></div><div class="line"><span class="number">0</span> <span class="built_in">cap</span>=<span class="number">1</span> [<span class="number">0</span>]</div><div class="line"><span class="number">1</span> <span class="built_in">cap</span>=<span class="number">2</span> [<span class="number">0</span> <span class="number">1</span>]</div><div class="line"><span class="number">2</span> <span class="built_in">cap</span>=<span class="number">4</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>]</div><div class="line"><span class="number">3</span> <span class="built_in">cap</span>=<span class="number">4</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line"><span class="number">4</span> <span class="built_in">cap</span>=<span class="number">8</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</div><div class="line"><span class="number">5</span> <span class="built_in">cap</span>=<span class="number">8</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>]</div><div class="line"><span class="number">6</span> <span class="built_in">cap</span>=<span class="number">8</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</div><div class="line"><span class="number">7</span> <span class="built_in">cap</span>=<span class="number">8</span> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>]</div><div class="line"><span class="number">8</span> <span class="built_in">cap</span>=<span class="number">16</span>        [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span>]</div><div class="line"><span class="number">9</span> <span class="built_in">cap</span>=<span class="number">16</span>        [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</div></pre></td></tr></table></figure>
+<p>实际中 go slice 的增长策略会比这个要更复杂。</p>
+<p>由于 append 会自动创建新的 slice，所以如果 slice 是 nil 也支持使用 append 操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x []<span class="keyword">int</span></div><div class="line">x = <span class="built_in">append</span>(x, <span class="number">10</span>)</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -497,6 +499,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/14/go-goroutine-channel-3/" rel="prev" title="Go goroutine 和 channel 详解 (三) ：Unbuffered channel">
+                Go goroutine 和 channel 详解 (三) ：Unbuffered channel <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -609,7 +615,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -631,7 +637,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-count">84</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -98,16 +98,14 @@
 <meta name="description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
 <meta name="keywords" content="goroutine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go goroutine 和 channel 详解 (二) ：channel">
+<meta property="og:title" content="Go goroutine 和 channel 详解 (二) ：Channel">
 <meta property="og:url" content="http://sanyuesha.com/2017/12/01/go-goroutine-channel-2/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
-<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png">
-<meta property="og:updated_time" content="2018-05-07T00:08:57.966Z">
+<meta property="og:updated_time" content="2018-08-13T16:14:36.973Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go goroutine 和 channel 详解 (二) ：channel">
+<meta name="twitter:title" content="Go goroutine 和 channel 详解 (二) ：Channel">
 <meta name="twitter:description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
-<meta name="twitter:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png">
 
 
 
@@ -143,7 +141,7 @@
 
 
 
-  <title>Go goroutine 和 channel 详解 (二) ：channel | 三月沙</title>
+  <title>Go goroutine 和 channel 详解 (二) ：Channel | 三月沙</title>
   
 
 
@@ -326,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Go goroutine 和 channel 详解 (二) ：channel</h2>
+          <h2 class="post-title" itemprop="name headline">Go goroutine 和 channel 详解 (二) ：Channel</h2>
         
 
         <div class="post-meta">
@@ -409,21 +407,20 @@
       
 
       
-        <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 <code>chan int</code>。</p>
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 <code>chan int</code>。</p>
 <p>Go 使用 make 内建函数创建 channel。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div></pre></td></tr></table></figure></p>
 <p>同 map 一样，一个 channel 引用着 make 创建的底层数据结构上，当把 channel 当做函数参数传递时，实际上是拷贝一份 reference，也就是说函数内部和外部引用的是相同的数据结构，所以在函数内部可以直接修改 channel 的值。同其它 reference type 一样，<strong>channel 的 zero value 是 nil</strong>。</p>
-<p><strong>Channel 是可比较的，如果两个 channel 的类型相同，它们可以彼此相互比较</strong>，当然 channel 也可以和 nil 比较。</p>
-<h1 id="基本操作-send、receive、close"><a href="#基本操作-send、receive、close" class="headerlink" title="基本操作: send、receive、close"></a>基本操作: send、receive、close</h1><p>Channel 有两种主要的操作：send 和 receive，综合来讲就是 communication。Go 使用 <code>&lt;-</code> 操作符来实现 send 和 receive。Send 操作 <code>&lt;-</code> 在 channel 右侧，receive 操作 <code>&lt;-</code> 在左侧。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ch &lt;- x <span class="comment">//send</span></div><div class="line">x = &lt;- ch <span class="comment">//receive</span></div><div class="line">&lt;- ch <span class="comment">//receive</span></div></pre></td></tr></table></figure>
-<p>Channel 还支持第三种操作 <code>close</code>，如果 channel 被 close，表明 channel 不会再 send 任何值了，如果还继续对 channel 执行 receive 操作，等 channel 中的值消耗完毕之后，之后返回的是对应 element type 的 zero value，如果对 channel 执行 send 操作，将会引起 panic。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="built_in">close</span>(ch)</div></pre></td></tr></table></figure></p>
-<h1 id="Unbuffered-channel"><a href="#Unbuffered-channel" class="headerlink" title="Unbuffered channel"></a>Unbuffered channel</h1><p>在创建 channel 时可以指定 channel 的容量，如果不指定默认是 0，我们称这种 channel 是 unbuffered channel。</p>
-<p>如果在一个 goroutine 中对 unbuffered channel 执行 send 操作将会一直阻塞，直到有另一个不同的 goroutine 对同样的 channel 开始执行 receive 为止，此时通过 channel send 的值会发送到接收端，之后两个 goroutine 才会各自继续执行。</p>
-<p>相似地，如果是 receive 操作先执行，也是类似的过程。</p>
-<p><strong>正是因为 unbuffered channel 的这种特性，unbuffered channel 也称之为 synchronous channel</strong>。</p>
-<h1 id="Channel-实践之一：synchronous"><a href="#Channel-实践之一：synchronous" class="headerlink" title="Channel 实践之一：synchronous"></a>Channel 实践之一：synchronous</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</div><div class="line">        c &lt;- <span class="number">1</span></div><div class="line">    &#125;</div><div class="line">    &lt;-c</div><div class="line">    fmt.Println(<span class="string">"main goroutine finish "</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面的代码展示了利用 unbuffered channel 完成同步的能力，main goroutine 会一直等待直到满足特定条件时才会结束。</p>
-<h1 id="Channel-的实践之二：pipeline"><a href="#Channel-的实践之二：pipeline" class="headerlink" title="Channel 的实践之二：pipeline"></a>Channel 的实践之二：pipeline</h1><p>Channel 是用来连接 goroutine 的通道，借此通道可以达到一个 goroutine 负责输入，另一个 goroutine 负责输出，这样的形式称之为 pipeline。</p>
-<p><img src="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png" alt="pipeline"></p>
+<h2 id="Channel-是可比较的"><a href="#Channel-是可比较的" class="headerlink" title="Channel 是可比较的"></a>Channel 是可比较的</h2><p><strong>Channel 是可比较的，如果两个 channel 的类型相同，它们可以彼此相互比较</strong>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ch01 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">ch02 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line"><span class="keyword">if</span> ch01 == ch02 &#123;</div><div class="line">    fmt.Println(<span class="string">"ch01 == ch02"</span>)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    fmt.Println(<span class="string">"ch01 != ch02"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>两个不是 nil 的 channel 比较实际上比较的他们的 reference 是否相同，如果他们都引用同一个 channel，则他们相同:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    ch01 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    func02(ch01, ch01)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">func02</span><span class="params">(a <span class="keyword">chan</span> <span class="keyword">int</span>, b <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> a == b &#123;</div><div class="line">        fmt.Println(<span class="string">"a == b"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然 channel 也可以和 nil 比较，没有初始化的 channel 就是 nil:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ch02 <span class="keyword">chan</span> <span class="keyword">int</span></div><div class="line"><span class="keyword">if</span> ch02 == <span class="literal">nil</span> &#123;</div><div class="line">    fmt.Println(<span class="string">"ch02 is nil"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="Channel-的基本操作"><a href="#Channel-的基本操作" class="headerlink" title="Channel 的基本操作"></a>Channel 的基本操作</h2><p>Channel 有三种基本的操作 send、receive、close。</p>
+<h3 id="send"><a href="#send" class="headerlink" title="send"></a>send</h3><p>Channel 支持 send 操作，意思是向 channel 中发送数据，Go 使用 <code>&lt;-</code> 操作符来实现 send：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ch &lt;- x <span class="comment">//send</span></div></pre></td></tr></table></figure></p>
+<p>Send 时 <code>&lt;-</code> 在 channel 右侧。</p>
+<h3 id="receive"><a href="#receive" class="headerlink" title="receive"></a>receive</h3><p>Channel 还支持 receive 操作，意思是从 channel 中取出数据，Go 也是使用 <code>&lt;-</code> 操作符来实现 receive：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">x := &lt;- ch <span class="comment">//receive</span></div><div class="line"><span class="string">``</span><span class="string">` </span></div><div class="line">Receive 时 `&lt;-<span class="string">` 在左侧，如果一个执行 receive 时没有用任何变量来赋值，则该值被抛弃，receive 的这个操作常常被用来做状态同步：</span></div><div class="line">`<span class="string">``</span><span class="keyword">go</span></div><div class="line">&lt;- ch</div></pre></td></tr></table></figure></p>
+<h3 id="close"><a href="#close" class="headerlink" title="close"></a>close</h3><p>Channel 还支持第三种操作 <code>close</code>，如果 channel 被 close，表明 channel 不会再 send 任何值了，如果还继续对 channel 执行 receive 操作，当 channel 中的值消耗完毕之后，之后返回的是对应 element type 的 zero value，如果对 channel 执行 send 操作，将会引起 panic：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">close</span>(ch)</div><div class="line">ch &lt;- x  <span class="comment">// panic</span></div></pre></td></tr></table></figure></p>
+<p>Close 操作常常和 for 语句配合使用，表示一个 channel 不再产生新的值：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">for</span> x := <span class="keyword">range</span> ch &#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -462,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/01/go-goroutine-channel-1/" rel="next" title="Go goroutine 和 channel 详解 (一) ：介绍">
-                <i class="fa fa-chevron-left"></i> Go goroutine 和 channel 详解 (一) ：介绍
+              <a href="/2017/12/01/go-interface-4/" rel="next" title="Go interface 详解 (四) ：type assertion">
+                <i class="fa fa-chevron-left"></i> Go interface 详解 (四) ：type assertion
               </a>
             
           </div>
@@ -472,8 +469,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/07/mysql-benchmark/" rel="prev" title="mysql-benchmark">
-                mysql-benchmark <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/01/go-goroutine-channel-1/" rel="prev" title="Go goroutine 和 channel 详解 (一) ：Goroutine">
+                Go goroutine 和 channel 详解 (一) ：Goroutine <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -587,7 +584,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -609,7 +606,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-count">84</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -652,7 +649,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本操作-send、receive、close"><span class="nav-number">2.</span> <span class="nav-text">基本操作: send、receive、close</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unbuffered-channel"><span class="nav-number">3.</span> <span class="nav-text">Unbuffered channel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Channel-实践之一：synchronous"><span class="nav-number">4.</span> <span class="nav-text">Channel 实践之一：synchronous</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Channel-的实践之二：pipeline"><span class="nav-number">5.</span> <span class="nav-text">Channel 的实践之二：pipeline</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel-是可比较的"><span class="nav-number">2.</span> <span class="nav-text">Channel 是可比较的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel-的基本操作"><span class="nav-number">3.</span> <span class="nav-text">Channel 的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#send"><span class="nav-number">3.1.</span> <span class="nav-text">send</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#receive"><span class="nav-number">3.2.</span> <span class="nav-text">receive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close"><span class="nav-number">3.3.</span> <span class="nav-text">close</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -804,7 +801,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/12/01/go-goroutine-channel-2/';
           this.page.identifier = '2017/12/01/go-goroutine-channel-2/';
-          this.page.title = 'Go goroutine 和 channel 详解 (二) ：channel';
+          this.page.title = 'Go goroutine 和 channel 详解 (二) ：Channel';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
