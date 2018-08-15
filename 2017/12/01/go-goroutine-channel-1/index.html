@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="goroutine," />
+  <meta name="keywords" content="golang,goroutine," />
 
 
 
@@ -96,15 +96,15 @@
 
 
 <meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Go 支持两种方式的并发模型: communicating sequential processes(CSP) 和 shared memory multithreading，前者是 goroutine 和 channel 并发模型实现的基础，后者是传统的共享内存的方式，也就是多线程模型。 如何理解 CSP">
-<meta name="keywords" content="goroutine">
+<meta name="keywords" content="golang,goroutine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go goroutine 和 channel 详解 (一) ：Goroutine">
+<meta property="og:title" content="Go goroutine 和 channel 详解 (一) ：goroutine">
 <meta property="og:url" content="http://sanyuesha.com/2017/12/01/go-goroutine-channel-1/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Go 支持两种方式的并发模型: communicating sequential processes(CSP) 和 shared memory multithreading，前者是 goroutine 和 channel 并发模型实现的基础，后者是传统的共享内存的方式，也就是多线程模型。 如何理解 CSP">
-<meta property="og:updated_time" content="2018-08-15T13:13:34.948Z">
+<meta property="og:updated_time" content="2018-08-15T13:33:36.218Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go goroutine 和 channel 详解 (一) ：Goroutine">
+<meta name="twitter:title" content="Go goroutine 和 channel 详解 (一) ：goroutine">
 <meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Go 支持两种方式的并发模型: communicating sequential processes(CSP) 和 shared memory multithreading，前者是 goroutine 和 channel 并发模型实现的基础，后者是传统的共享内存的方式，也就是多线程模型。 如何理解 CSP">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Go goroutine 和 channel 详解 (一) ：Goroutine | 三月沙</title>
+  <title>Go goroutine 和 channel 详解 (一) ：goroutine | 三月沙</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Go goroutine 和 channel 详解 (一) ：Goroutine</h2>
+          <h2 class="post-title" itemprop="name headline">Go goroutine 和 channel 详解 (一) ：goroutine</h2>
         
 
         <div class="post-meta">
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
+                  <a href="/categories/Go-读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Go 读书笔记</span>
                   </a>
                 </span>
 
@@ -460,6 +460,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
             <a href="/tags/goroutine/" rel="tag"># goroutine</a>
           
         </div>
@@ -473,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/28/algorithm-two-tree-1/" rel="next" title="算法-二叉树">
-                <i class="fa fa-chevron-left"></i> 算法-二叉树
+              <a href="/2017/12/01/go-interface-4/" rel="next" title="Go interface 详解 (四) ：类型断言">
+                <i class="fa fa-chevron-left"></i> Go interface 详解 (四) ：类型断言
               </a>
             
           </div>
@@ -483,8 +485,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/01/go-interface-4/" rel="prev" title="Go interface 详解 (四) ：type assertion">
-                Go interface 详解 (四) ：type assertion <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/01/go-goroutine-channel-2/" rel="prev" title="Go goroutine 和 channel 详解 (二) ：channel">
+                Go goroutine 和 channel 详解 (二) ：channel <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -609,7 +611,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -815,7 +817,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/12/01/go-goroutine-channel-1/';
           this.page.identifier = '2017/12/01/go-goroutine-channel-1/';
-          this.page.title = 'Go goroutine 和 channel 详解 (一) ：Goroutine';
+          this.page.title = 'Go goroutine 和 channel 详解 (一) ：goroutine';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

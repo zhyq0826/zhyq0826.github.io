@@ -98,13 +98,13 @@
 <meta name="description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
 <meta name="keywords" content="type">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go 类型系统">
+<meta property="og:title" content="理解 Go 类型系统">
 <meta property="og:url" content="http://sanyuesha.com/2017/07/27/go-type/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
-<meta property="og:updated_time" content="2018-05-07T14:47:06.471Z">
+<meta property="og:updated_time" content="2018-08-15T13:30:33.889Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go 类型系统">
+<meta name="twitter:title" content="理解 Go 类型系统">
 <meta name="twitter:description" content="type 的分类在 Go 中所有需要被定义和声明的对象都是 type：int，string，function，pointer，interface，map，struct 等等。 和大多数计算机语言一样，Go type 默认包含常用的基础数据类型，boolean，numeric and string，这些类型称为 pre-declarered types，这些基础的数据又可以进一步构成更复杂的类型 a">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Go 类型系统 | 三月沙</title>
+  <title>理解 Go 类型系统 | 三月沙</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Go 类型系统</h2>
+          <h2 class="post-title" itemprop="name headline">理解 Go 类型系统</h2>
         
 
         <div class="post-meta">
@@ -443,6 +443,12 @@
 <h2 id="type-转换"><a href="#type-转换" class="headerlink" title="type 转换"></a>type 转换</h2><p>Type 之间是可以相互转换的，但要遵循一定的转换规则，详细请看官方规范 <a href="https://golang.org/ref/spec#Conversions。" target="_blank" rel="external">https://golang.org/ref/spec#Conversions。</a></p>
 <h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><p>文中部分代码</p>
 <script src="//gist.github.com/7a0ed26a6700488073e629ba28a14397.js?file=go-type-inherit.go"></script>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://golang.org/ref/spec#Types" target="_blank" rel="external">https://golang.org/ref/spec#Types</a></li>
+<li><a href="http://www.laktek.com/2012/01/27/learning-go-types/" target="_blank" rel="external">http://www.laktek.com/2012/01/27/learning-go-types/</a></li>
+<li><a href="http://www.tapirgames.com/blog/golang-type-system" target="_blank" rel="external">http://www.tapirgames.com/blog/golang-type-system</a></li>
+<li><a href="https://dave.cheney.net/2014/05/24/on-declaring-variables" target="_blank" rel="external">https://dave.cheney.net/2014/05/24/on-declaring-variables</a></li>
+</ul>
 
       
     </div>
@@ -481,8 +487,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/26/go-make-and-new/" rel="next" title="Go make 和 new 的区别">
-                <i class="fa fa-chevron-left"></i> Go make 和 new 的区别
+              <a href="/2017/07/26/go-make-and-new/" rel="next" title="理解 Go make 和 new 的区别">
+                <i class="fa fa-chevron-left"></i> 理解 Go make 和 new 的区别
               </a>
             
           </div>
@@ -617,7 +623,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -671,7 +677,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的分类"><span class="nav-number">1.</span> <span class="nav-text">type 的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#underlying-type"><span class="nav-number">2.</span> <span class="nav-text">underlying type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Named-type-和-Unamed-type"><span class="nav-number">3.</span> <span class="nav-text">Named type 和 Unamed type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的属性继承一：直接继承"><span class="nav-number">4.</span> <span class="nav-text">type 的属性继承一：直接继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的属性继承二：type-embedding"><span class="nav-number">5.</span> <span class="nav-text">type 的属性继承二：type embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-转换"><span class="nav-number">6.</span> <span class="nav-text">type 转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考代码"><span class="nav-number">7.</span> <span class="nav-text">参考代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的分类"><span class="nav-number">1.</span> <span class="nav-text">type 的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#underlying-type"><span class="nav-number">2.</span> <span class="nav-text">underlying type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Named-type-和-Unamed-type"><span class="nav-number">3.</span> <span class="nav-text">Named type 和 Unamed type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的属性继承一：直接继承"><span class="nav-number">4.</span> <span class="nav-text">type 的属性继承一：直接继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的属性继承二：type-embedding"><span class="nav-number">5.</span> <span class="nav-text">type 的属性继承二：type embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-转换"><span class="nav-number">6.</span> <span class="nav-text">type 转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考代码"><span class="nav-number">7.</span> <span class="nav-text">参考代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
@@ -823,7 +829,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/07/27/go-type/';
           this.page.identifier = '2017/07/27/go-type/';
-          this.page.title = 'Go 类型系统';
+          this.page.title = '理解 Go 类型系统';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

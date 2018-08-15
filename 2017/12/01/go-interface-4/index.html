@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="interface," />
+  <meta name="keywords" content="golang,interface," />
 
 
 
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景:如果 asserted type 是一个 c">
-<meta name="keywords" content="interface">
+<meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景: 如果 asserted type 是一个">
+<meta name="keywords" content="golang,interface">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go interface 详解 (四) ：type assertion">
+<meta property="og:title" content="Go interface 详解 (四) ：类型断言">
 <meta property="og:url" content="http://sanyuesha.com/2017/12/01/go-interface-4/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景:如果 asserted type 是一个 c">
-<meta property="og:updated_time" content="2018-05-07T14:47:06.469Z">
+<meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景: 如果 asserted type 是一个">
+<meta property="og:updated_time" content="2018-08-15T13:35:42.745Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go interface 详解 (四) ：type assertion">
-<meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景:如果 asserted type 是一个 c">
+<meta name="twitter:title" content="Go interface 详解 (四) ：类型断言">
+<meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。 断言的使用主要有两种情景: 如果 asserted type 是一个">
 
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Go interface 详解 (四) ：type assertion | 三月沙</title>
+  <title>Go interface 详解 (四) ：类型断言 | 三月沙</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Go interface 详解 (四) ：type assertion</h2>
+          <h2 class="post-title" itemprop="name headline">Go interface 详解 (四) ：类型断言</h2>
         
 
         <div class="post-meta">
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/golang/" itemprop="url" rel="index">
-                    <span itemprop="name">golang</span>
+                  <a href="/categories/Go-读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Go 读书笔记</span>
                   </a>
                 </span>
 
@@ -411,8 +411,9 @@
 <p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
 </blockquote>
 <h2 id="Type-Assertion"><a href="#Type-Assertion" class="headerlink" title="Type Assertion"></a>Type Assertion</h2><p>Type assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assertd type，被断言的类型。</p>
-<p>断言的使用主要有两种情景:<br>如果 asserted type 是一个 concrete type，一个实例类 type，断言会检查 x 的 dynamic type 是否和 T 相同，如果相同，断言的结果是 x 的 dynamic value，当然 dynamic value 的 type 就是 T 了。换句话说，对 concrete type 的断言实际上是获取 x 的 dynamic value。</p>
-<p>如果 asserted type 是一个 interface type，断言的目的是为了检测 x 的 dynamic type 是否满足 T，如果满足，断言的结果是满足 T 的表达式，但是其 dynamic type 和 dynamic value 与 x 是一样的。换句话说，对 interface type 的断言实际上改变了 x 的 type，通常是一个更大 method set 的 interface type，但是保留原来的 dynamic type 和 dynamic value。</p>
+<p>断言的使用主要有两种情景:</p>
+<p><strong>如果 asserted type 是一个 concrete type，一个实例类 type，断言会检查 x 的 dynamic type 是否和 T 相同，如果相同，断言的结果是 x 的 dynamic value</strong>，当然 dynamic value 的 type 就是 T 了。换句话说，对 concrete type 的断言实际上是获取 x 的 dynamic value。</p>
+<p><strong>如果 asserted type 是一个 interface type，断言的目的是为了检测 x 的 dynamic type 是否满足 T，如果满足，断言的结果是满足 T 的表达式，但是其 dynamic type 和 dynamic value 与 x 是一样的</strong>。换句话说，对 interface type 的断言实际上改变了 x 的 type，通常是一个更大 method set 的 interface type，但是保留原来的 dynamic type 和 dynamic value。</p>
 <p>我们来看两个例子。</p>
 <p><strong>case 1</strong></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">    <span class="string">"io"</span></div><div class="line">    <span class="string">"os"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> w io.Writer</div><div class="line">    w = os.Stdout</div><div class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"hello Go!"</span>))</div><div class="line">    fmt.Printf(<span class="string">"%T\n"</span>, w)</div><div class="line">    fw := w.(*os.File)</div><div class="line">    fmt.Printf(<span class="string">"%T\n"</span>, fw)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -427,7 +428,7 @@
 <p>OK 表达式经常用在 if 语句中：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> f, ok := w.(*os.File); ok &#123;</div><div class="line"><span class="comment">// ...use f...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="Type-Switches"><a href="#Type-Switches" class="headerlink" title="Type Switches"></a>Type Switches</h2><p>Interface 一般被用在这两种场合，一种是像 io.Reader, io.Writer 那样，一个 interface 的 method 真正含义是表达了实现这个 interface 的不同 concrete type 的相似性，意味着这里充分发挥的是 interface method 的表现力。重点在 method，而不是 concrete type。</p>
 <p>一种是利用 interface 可以存储不同 concrete type 的能力，在必要的时候根据不同的 concrete type 做不同的处理，这样的用法就是利用 interface 的 assertion 来判断 dynamic type 的类型来做出具体的判断。重点在 concrete type，而不是 method。</p>
-<p>Type switch 就是利用 interface 存储不同 concrete type 的能力来实现的 assertion。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span> x.(<span class="keyword">type</span>) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="literal">nil</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">int</span>, <span class="keyword">uint</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">bool</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">string</span>:</div><div class="line"><span class="keyword">default</span>:</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>Type switch 就是利用 interface 存储不同 concrete type 的能力来实现的 assertion</strong>。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span> x.(<span class="keyword">type</span>) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="literal">nil</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">int</span>, <span class="keyword">uint</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">bool</span>:</div><div class="line"><span class="keyword">case</span> <span class="keyword">string</span>:</div><div class="line"><span class="keyword">default</span>:</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>这种类型的语句叫 type switch，其中 x 是 interface expression，asserted type 是 type 字面量，每个 case 语句可以有一种或多种 types，nil case 匹配的是 x == nil 的情况，default case 匹配的是没有类型匹配的情况。</p>
 <p>有时候在 type switch 中我们需要使用 dynamic value，这就需要 type assertion 可以提取 interface 的 dynamic value，同样有这样的语法可以支持这一操作 <code>switch x := x.(type){}</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> x1 <span class="keyword">interface</span>&#123;&#125;</div><div class="line">    <span class="keyword">var</span> x2 <span class="keyword">int</span></div><div class="line">    <span class="keyword">var</span> x3 <span class="keyword">string</span></div><div class="line">    <span class="keyword">var</span> x4 <span class="keyword">bool</span></div><div class="line"></div><div class="line">    fmt.Println(sqlQuote(x1))</div><div class="line">    fmt.Println(sqlQuote(x2))</div><div class="line">    fmt.Println(sqlQuote(x3))</div><div class="line">    fmt.Println(sqlQuote(x4))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">sqlQuote</span><span class="params">(x <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</div><div class="line">    <span class="keyword">switch</span> x := x.(<span class="keyword">type</span>) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="literal">nil</span>:</div><div class="line">        <span class="keyword">return</span> <span class="string">"null"</span></div><div class="line">    <span class="keyword">case</span> <span class="keyword">int</span>, <span class="keyword">uint</span>:</div><div class="line">        <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%d"</span>, x)</div><div class="line">    <span class="keyword">case</span> <span class="keyword">bool</span>:</div><div class="line">        <span class="keyword">if</span> x &#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"true"</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="string">"false"</span></div><div class="line">    <span class="keyword">case</span> <span class="keyword">string</span>:</div><div class="line">        <span class="keyword">return</span> <span class="string">"string"</span></div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        <span class="built_in">panic</span>(<span class="string">"no match case"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>在上面的例子中被提取的 value 赋值给 x，这在 switch block 中会遮蔽断言表达式 x，但是不会影响 x 在 function 中的使用，因为 switch 和 for 一样也是 block scope。</p>
@@ -456,6 +457,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
             <a href="/tags/interface/" rel="tag"># interface</a>
           
         </div>
@@ -469,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/01/go-goroutine-channel-1/" rel="next" title="Go goroutine 和 channel 详解 (一) ：Goroutine">
-                <i class="fa fa-chevron-left"></i> Go goroutine 和 channel 详解 (一) ：Goroutine
+              <a href="/2017/11/28/algorithm-two-tree-1/" rel="next" title="算法-二叉树">
+                <i class="fa fa-chevron-left"></i> 算法-二叉树
               </a>
             
           </div>
@@ -479,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/01/go-goroutine-channel-2/" rel="prev" title="Go goroutine 和 channel 详解 (二) ：Channel">
-                Go goroutine 和 channel 详解 (二) ：Channel <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/01/go-goroutine-channel-1/" rel="prev" title="Go goroutine 和 channel 详解 (一) ：goroutine">
+                Go goroutine 和 channel 详解 (一) ：goroutine <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -605,7 +608,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -811,7 +814,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/12/01/go-interface-4/';
           this.page.identifier = '2017/12/01/go-interface-4/';
-          this.page.title = 'Go interface 详解 (四) ：type assertion';
+          this.page.title = 'Go interface 详解 (四) ：类型断言';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

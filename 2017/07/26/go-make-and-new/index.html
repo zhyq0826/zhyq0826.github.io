@@ -98,13 +98,13 @@
 <meta name="description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
 <meta name="keywords" content="make,new">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go make 和 new 的区别">
+<meta property="og:title" content="理解 Go make 和 new 的区别">
 <meta property="og:url" content="http://sanyuesha.com/2017/07/26/go-make-and-new/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
-<meta property="og:updated_time" content="2018-05-07T14:47:06.469Z">
+<meta property="og:updated_time" content="2018-08-15T13:36:26.817Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go make 和 new 的区别">
+<meta name="twitter:title" content="理解 Go make 和 new 的区别">
 <meta name="twitter:description" content="new 和 make 都可以用来分配空间，初始化类型，但是它们确有不同。  new(T) 返回的是 T 的指针new(T) 为一个 T 类型新值分配空间并将此空间初始化为 T 的零值，返回的是新值的地址，也就是 T 类型的指针 *T，该指针指向 T 的新分配的零值。 123456789p1 := new(int)fmt.Printf(&quot;p1 --&amp;gt; %#v \n &quot;, p1) //(*in">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Go make 和 new 的区别 | 三月沙</title>
+  <title>理解 Go make 和 new 的区别 | 三月沙</title>
   
 
 
@@ -324,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Go make 和 new 的区别</h2>
+          <h2 class="post-title" itemprop="name headline">理解 Go make 和 new 的区别</h2>
         
 
         <div class="post-meta">
@@ -466,8 +466,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/23/go-defer/" rel="next" title="Go defer 的关键特性解读和示例">
-                <i class="fa fa-chevron-left"></i> Go defer 的关键特性解读和示例
+              <a href="/2017/07/23/go-defer/" rel="next" title="理解 Go defer">
+                <i class="fa fa-chevron-left"></i> 理解 Go defer
               </a>
             
           </div>
@@ -476,8 +476,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/27/go-type/" rel="prev" title="Go 类型系统">
-                Go 类型系统 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/27/go-type/" rel="prev" title="理解 Go 类型系统">
+                理解 Go 类型系统 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -602,7 +602,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -808,7 +808,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://sanyuesha.com/2017/07/26/go-make-and-new/';
           this.page.identifier = '2017/07/26/go-make-and-new/';
-          this.page.title = 'Go make 和 new 的区别';
+          this.page.title = '理解 Go make 和 new 的区别';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
