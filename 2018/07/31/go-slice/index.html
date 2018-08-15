@@ -104,7 +104,7 @@
 <meta property="og:description" content="什么是 sliceSlice 是一种变长的序列，其所有的元素具有相同的数据类型，表达式为 []T ，看上去很像没有 size 的数组。 Slice 是一种和数组相关联的轻量的数据结构，其包含三部分：一个指向底层数组的指针，一个 length，一个 capacity。指针指向的是底层数组中 slice 的第一个元素，length 是 slice 拥有元素的个数，capacity 是底层数组中 sli">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/go-slices-usage-and-internals_slice-struct.png">
 <meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20180801-082445@2x_meitu_1.jpg">
-<meta property="og:updated_time" content="2018-08-13T15:11:05.196Z">
+<meta property="og:updated_time" content="2018-08-15T13:13:34.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 Go 中的 Slice">
 <meta name="twitter:description" content="什么是 sliceSlice 是一种变长的序列，其所有的元素具有相同的数据类型，表达式为 []T ，看上去很像没有 size 的数组。 Slice 是一种和数组相关联的轻量的数据结构，其包含三部分：一个指向底层数组的指针，一个 length，一个 capacity。指针指向的是底层数组中 slice 的第一个元素，length 是 slice 拥有元素的个数，capacity 是底层数组中 sli">
@@ -452,6 +452,10 @@
 <p>实际中 go slice 的增长策略会比这个要更复杂。</p>
 <p>由于 append 会自动创建新的 slice，所以如果 slice 是 nil 也支持使用 append 操作：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x []<span class="keyword">int</span></div><div class="line">x = <span class="built_in">append</span>(x, <span class="number">10</span>)</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>The Go Programming Language</li>
+<li><a href="https://blog.golang.org/go-slices-usage-and-internals" target="_blank" rel="external">https://blog.golang.org/go-slices-usage-and-internals</a></li>
+</ul>
 
       
     </div>
@@ -680,7 +684,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-slice"><span class="nav-number">1.</span> <span class="nav-text">什么是 slice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-初始化"><span class="nav-number">2.</span> <span class="nav-text">slice 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-的切片操作"><span class="nav-number">3.</span> <span class="nav-text">slice 的切片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-切片操作边界范围"><span class="nav-number">4.</span> <span class="nav-text">slice 切片操作边界范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-的比较操作"><span class="nav-number">5.</span> <span class="nav-text">slice 的比较操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#append-操作"><span class="nav-number">6.</span> <span class="nav-text">append 操作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-slice"><span class="nav-number">1.</span> <span class="nav-text">什么是 slice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-初始化"><span class="nav-number">2.</span> <span class="nav-text">slice 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-的切片操作"><span class="nav-number">3.</span> <span class="nav-text">slice 的切片操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-切片操作边界范围"><span class="nav-number">4.</span> <span class="nav-text">slice 切片操作边界范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slice-的比较操作"><span class="nav-number">5.</span> <span class="nav-text">slice 的比较操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#append-操作"><span class="nav-number">6.</span> <span class="nav-text">append 操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

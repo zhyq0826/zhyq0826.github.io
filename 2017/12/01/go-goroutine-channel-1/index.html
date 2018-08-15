@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/12/01/go-goroutine-channel-1/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Go 支持两种方式的并发模型: communicating sequential processes(CSP) 和 shared memory multithreading，前者是 goroutine 和 channel 并发模型实现的基础，后者是传统的共享内存的方式，也就是多线程模型。 如何理解 CSP">
-<meta property="og:updated_time" content="2018-08-14T15:02:51.771Z">
+<meta property="og:updated_time" content="2018-08-15T13:13:34.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go goroutine 和 channel 详解 (一) ：Goroutine">
 <meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Go 支持两种方式的并发模型: communicating sequential processes(CSP) 和 shared memory multithreading，前者是 goroutine 和 channel 并发模型实现的基础，后者是传统的共享内存的方式，也就是多线程模型。 如何理解 CSP">
@@ -432,6 +432,9 @@
 <p>在现实世界的回声中，如果同时有多个回声存在应该会有交错出现的现象，但是我们的 client 有两个回声出现时不是交错出现，而是依次返回完一个才继续下一个，为了模拟真实的回声我们还需要一个 goroutine 用来实现回声的交错显现，像这样 <code>go echo(conn, input.Text(), 1*time.Second)</code>。</p>
 <p><strong>Goroutine 的参数是在 go 语句执行之后确定的，所以 input.Text() 值是在 go 语句开启之后就确定的</strong>，也就是执行 go 语句时 input.Text() 如果返回消息 a，即使同一个 connection 后来又有消息 b，goroutine 函数的参数依然是 a，这样即使同一个 client 的 connection 会有多个 msg 也会按照我们的要求回显。</p>
 <p>对于上面的 Go 程序来说，想要实现一个 server 同时处理多个 connection，而且甚至在同一个 connection 中实现并发需要的仅仅是两个简单的 go 关键字。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>The Go Programming Language</li>
+</ul>
 
       
     </div>
@@ -470,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/01/go-goroutine-channel-2/" rel="next" title="Go goroutine 和 channel 详解 (二) ：Channel">
-                <i class="fa fa-chevron-left"></i> Go goroutine 和 channel 详解 (二) ：Channel
+              <a href="/2017/11/28/algorithm-two-tree-1/" rel="next" title="算法-二叉树">
+                <i class="fa fa-chevron-left"></i> 算法-二叉树
               </a>
             
           </div>
@@ -480,8 +483,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/07/mysql-benchmark/" rel="prev" title="mysql-benchmark">
-                mysql-benchmark <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/01/go-interface-4/" rel="prev" title="Go interface 详解 (四) ：type assertion">
+                Go interface 详解 (四) ：type assertion <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -660,7 +663,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：并发的时钟-server"><span class="nav-number">2.</span> <span class="nav-text">例子：并发的时钟 server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：echo-server"><span class="nav-number">3.</span> <span class="nav-text">例子：echo server</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：并发的时钟-server"><span class="nav-number">2.</span> <span class="nav-text">例子：并发的时钟 server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：echo-server"><span class="nav-number">3.</span> <span class="nav-text">例子：echo server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
