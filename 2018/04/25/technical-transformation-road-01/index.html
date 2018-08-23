@@ -101,7 +101,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台">
-<meta property="og:updated_time" content="2018-04-29T08:32:35.590Z">
+<meta property="og:updated_time" content="2018-08-16T15:40:09.947Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="技术转型之路一：现状和治理思路">
 <meta name="twitter:description" content="自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台">
@@ -429,9 +429,9 @@
 <li>同一业务代码散落的多个代码仓库改动升级困难</li>
 <li>等…..</li>
 </ul>
-<h2 id="治理思路"><a href="#治理思路" class="headerlink" title="治理思路"></a>治理思路</h2><p>思维决定了行动，无思不行，行辅助思，从行中总结提升思维的高度和境界，思维反过来指导行为时间</p>
-<h3 id="从上之下"><a href="#从上之下" class="headerlink" title="从上之下"></a>从上之下</h3><p>公司业务使用的是云服务器，购买、新建、管理相对来说都非常方便，云厂商提供了类似业务<strong>分组、标签、名称</strong>等管理手段来管理服务器。为了让业务服务部署清晰，划分明了，首先从机器名称功能分组开始梳理，<strong>保证机器的具有单一职责，方便动态扩容和管理</strong>。</p>
-<p>功能和名称划分清晰之后保证业务开发人员能以上帝视角审视所有服务以及它们之间的联系。</p>
+<h2 id="治理思路"><a href="#治理思路" class="headerlink" title="治理思路"></a>治理思路</h2><p>思维决定了行动，无思不行，行辅助思，从行中总结提升思维的高度和境界，思维反过来指导行为实践</p>
+<h3 id="治理方式-from-top-to-down"><a href="#治理方式-from-top-to-down" class="headerlink" title="治理方式 from top to down"></a>治理方式 from top to down</h3><p>公司业务使用的是云服务器，购买、新建、管理相对来说都非常方便，云厂商提供了类似业务<strong>分组、标签、名称</strong>等管理手段来管理服务器。为了让业务服务部署清晰，划分明了，首先从机器名称功能分组开始梳理，<strong>保证机器的具有单一职责，方便动态扩容和管理</strong>。</p>
+<p>功能和名称划分清晰之后保证业务开发人员能以<strong>上帝视角审视所有服务以及它们之间的联系</strong>。</p>
 <h3 id="开放权限，人人参与"><a href="#开放权限，人人参与" class="headerlink" title="开放权限，人人参与"></a>开放权限，人人参与</h3><p>为了让每一个开发者都能透彻了解它们开发、部署的服务以及运行状态，放开所有监控工具权限，放开云厂商的机器管理权限，让每一个人都能快速了解到部署的机器，也可以通过云厂商提供的监控及时了解机器的状态。</p>
 <p>开发者要能做运维，会做运维，运维必须要有开发者参与，此举才能保证 devops 理念的实践和落地</p>
 <h3 id="定位问题，各个击破"><a href="#定位问题，各个击破" class="headerlink" title="定位问题，各个击破"></a>定位问题，各个击破</h3><p>整理和梳理技术团队现在面临的每一个问题，按照优先级排序，逐个投入资源彻底解决，与其不断救火，不如集中力量完全消灭一处火源，逐步降低故障率。</p>
@@ -594,7 +594,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">105</span>
+                <span class="site-state-item-count">108</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -616,7 +616,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">86</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -659,7 +659,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#现状描述"><span class="nav-number">1.</span> <span class="nav-text">现状描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#治理思路"><span class="nav-number">2.</span> <span class="nav-text">治理思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从上之下"><span class="nav-number">2.1.</span> <span class="nav-text">从上之下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放权限，人人参与"><span class="nav-number">2.2.</span> <span class="nav-text">开放权限，人人参与</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位问题，各个击破"><span class="nav-number">2.3.</span> <span class="nav-text">定位问题，各个击破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统化所有日常工作"><span class="nav-number">2.4.</span> <span class="nav-text">系统化所有日常工作</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#现状描述"><span class="nav-number">1.</span> <span class="nav-text">现状描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#治理思路"><span class="nav-number">2.</span> <span class="nav-text">治理思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#治理方式-from-top-to-down"><span class="nav-number">2.1.</span> <span class="nav-text">治理方式 from top to down</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放权限，人人参与"><span class="nav-number">2.2.</span> <span class="nav-text">开放权限，人人参与</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位问题，各个击破"><span class="nav-number">2.3.</span> <span class="nav-text">定位问题，各个击破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统化所有日常工作"><span class="nav-number">2.4.</span> <span class="nav-text">系统化所有日常工作</span></a></li></ol></li></ol></div>
             
 
           </div>

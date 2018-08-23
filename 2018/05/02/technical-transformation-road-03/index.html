@@ -102,7 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/02/technical-transformation-road-03/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="为什么执行域名拆分现在的团队支撑的所有业务都是通过同一个域名服务的，根据 URL PATH 的不同最终路由到不同的后端 APP     URL 业务 备注     api.host.com/v1 business logic 1 第一个版本 涉及支付，核心链路   api.host.com/v2 business logic 1 第二个版本 涉及支付，核心链路   api.host.com/v3">
-<meta property="og:updated_time" content="2018-05-03T15:23:44.202Z">
+<meta property="og:updated_time" content="2018-08-16T15:40:09.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="技术转型之路三：资源隔离之域名拆分">
 <meta name="twitter:description" content="为什么执行域名拆分现在的团队支撑的所有业务都是通过同一个域名服务的，根据 URL PATH 的不同最终路由到不同的后端 APP     URL 业务 备注     api.host.com/v1 business logic 1 第一个版本 涉及支付，核心链路   api.host.com/v2 business logic 1 第二个版本 涉及支付，核心链路   api.host.com/v3">
@@ -446,7 +446,7 @@
 <p>为了能够保证核心业务始终高可用，采取如下几个措施：</p>
 <p>第一，需要把各个业务<strong>从域名开始彻底拆分，部署不同的网关</strong>，由于核心业务带宽稳定，可以使用较高的基础带宽来保证业务的高可用，辅助以动态调整带宽预防突发情况。</p>
 <p>第二，非核心业务依然采用动态调整的带宽的方式，观测和预估流量的走向，在业务高峰发生之前提前调整，比如在推送发生时触发流量调整事件，在业务高峰的早 9 点和晚 9 点前后提前调整流量。</p>
-<h2 id="划分域名的原则"><a href="#划分域名的原则" class="headerlink" title="划分域名的原则"></a>划分域名的原则</h2><p><strong>域名拆分的原则是把具有相同功能 API 划分到同一域名之下，区分核心业务（支付、交易等）和非核心业务（资讯、用户消息、评论等），始终保证非核心域名的网关可用。</strong></p>
+<h2 id="划分域名的原则"><a href="#划分域名的原则" class="headerlink" title="划分域名的原则"></a>划分域名的原则</h2><p><strong>域名拆分的原则是把具有相同功能 API 划分到同一域名之下，区分核心业务（支付、交易等）和非核心业务（资讯、用户消息、评论等），始终保证核心域名的网关可用。</strong></p>
 <p>为了保证域名拆分可以顺利推动和落地实践，需要 API 的使用方和制作方严格遵守同一套规范，即<strong>对应功能要部署在对应的域名之下，对应的 API 的调用要使用对应的域名</strong>。</p>
 <p>注意，同类型服务（比如服务于同一个客户端 APP）不要引入过多域名，过多域名不利于维护，根据自己的业务场景酌情划分。</p>
 <p>命名规则可以参考类似 consul 的域名命名规则：NAME.TAG.host.com，name 表示业务功能，tag 表示具体的应用，例如 order.app.host.com 和 news.app.host.com 。</p>
@@ -613,7 +613,7 @@ var jiathis_config={
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">105</span>
+                <span class="site-state-item-count">108</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -635,7 +635,7 @@ var jiathis_config={
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">86</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
