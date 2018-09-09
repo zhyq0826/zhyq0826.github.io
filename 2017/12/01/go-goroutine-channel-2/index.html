@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
+<meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为">
 <meta name="keywords" content="golang,goroutine">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go goroutine 和 channel 详解 (二) ：channel">
 <meta property="og:url" content="http://sanyuesha.com/2017/12/01/go-goroutine-channel-2/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
-<meta property="og:updated_time" content="2018-08-15T13:34:00.618Z">
+<meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为">
+<meta property="og:updated_time" content="2018-09-09T04:30:45.003Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go goroutine 和 channel 详解 (二) ：channel">
-<meta name="twitter:description" content="定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 chan int。 Go 使用 make 内建函数创建 channel。1ch := mak">
+<meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为">
 
 
 
@@ -396,7 +396,10 @@
       
 
       
-        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 <code>chan int</code>。</p>
+        <blockquote>
+<p>本系列是阅读 “The Go Programming Language” 理解和记录。</p>
+</blockquote>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 中使用的 type 称之为 element type，比如 int 类型的 channel 写作为 <code>chan int</code>。</p>
 <p>Go 使用 make 内建函数创建 channel。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div></pre></td></tr></table></figure></p>
 <p>同 map 一样，一个 channel 引用着 make 创建的底层数据结构上，当把 channel 当做函数参数传递时，实际上是拷贝一份 reference，也就是说函数内部和外部引用的是相同的数据结构，所以在函数内部可以直接修改 channel 的值。同其它 reference type 一样，<strong>channel 的 zero value 是 nil</strong>。</p>
 <h2 id="Channel-是可比较的"><a href="#Channel-是可比较的" class="headerlink" title="Channel 是可比较的"></a>Channel 是可比较的</h2><p><strong>Channel 是可比较的，如果两个 channel 的类型相同，它们可以彼此相互比较</strong>：</p>
