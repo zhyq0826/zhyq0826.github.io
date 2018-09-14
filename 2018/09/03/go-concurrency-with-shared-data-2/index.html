@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="race condition,concurrency," />
+  <meta name="keywords" content="锁,concurrency," />
 
 
 
@@ -96,13 +96,13 @@
 
 
 <meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  上一节我们提到了避免 data race 的一种方法是使用 lock，而 Go 的 Mutex type 正好就提供了能够满足需要的 lock，直接看例子： 1234567891011121314151617181920import &quot;sync&quot;var (    mu    sync.Mutex    ba">
-<meta name="keywords" content="race condition,concurrency">
+<meta name="keywords" content="锁,concurrency">
 <meta property="og:type" content="article">
 <meta property="og:title" content="并发 Go 程序中的共享变量 (二)：锁">
 <meta property="og:url" content="http://sanyuesha.com/2018/09/03/go-concurrency-with-shared-data-2/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  上一节我们提到了避免 data race 的一种方法是使用 lock，而 Go 的 Mutex type 正好就提供了能够满足需要的 lock，直接看例子： 1234567891011121314151617181920import &quot;sync&quot;var (    mu    sync.Mutex    ba">
-<meta property="og:updated_time" content="2018-09-09T04:30:27.293Z">
+<meta property="og:updated_time" content="2018-09-14T14:26:41.225Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发 Go 程序中的共享变量 (二)：锁">
 <meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  上一节我们提到了避免 data race 的一种方法是使用 lock，而 Go 的 Mutex type 正好就提供了能够满足需要的 lock，直接看例子： 1234567891011121314151617181920import &quot;sync&quot;var (    mu    sync.Mutex    ba">
@@ -437,7 +437,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/race-condition/" rel="tag"># race condition</a>
+            <a href="/tags/锁/" rel="tag"># 锁</a>
           
             <a href="/tags/concurrency/" rel="tag"># concurrency</a>
           
@@ -461,6 +461,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/11/go-concurrency-with-shared-data-3/" rel="prev" title="并发 Go 程序中的共享变量 (三)：读写锁">
+                并发 Go 程序中的共享变量 (三)：读写锁 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -538,7 +542,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">111</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -560,7 +564,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">88</span>
+                <span class="site-state-item-count">89</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
