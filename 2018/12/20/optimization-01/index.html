@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="标准化," />
+  <meta name="keywords" content="性能优化," />
 
 
 
@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="标准化就是引入约束和规范，把各种流程借助对应的制度、工具等进规范化和自动化，尽量减少人为因素造成的故障或错误。  Git 仓库的标准化收缩权限，统一各个项目的 owner 杜绝以私人身份建立仓库并上线，所有线上项目必须交由各自统一的 owner 进行建立、权限分配、部署和销毁。 统一分支开发模型 根据团队的实际情况采用合适的分支开发模型，强制所有成员必须严格按照分支模型进行仓库的管理，降低多人协">
-<meta name="keywords" content="标准化">
+<meta name="description" content="最近业务推送越来越频繁，导致瞬时压力非常大，虽然以前的代码确实很多地方像一坨 shit，实在无法下手从代码重构业务优化了，但是还是从其他方面做了一些调整来把性能提升了。 第一，升级了一下 MongoDB 从 2.4 到 3.2，换成了 wt 引擎以及 ssd 盘 线上 MongoDB 集群由于云厂商的原因最近总是挂，而且由于使用的 2.4 的版本，导致配置如果出现变动还需要重启实例，之前的资源最早">
+<meta name="keywords" content="性能优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="技术转型之路五：标准化">
-<meta property="og:url" content="http://sanyuesha.com/2018/08/16/technical-transformation-road-05/index.html">
+<meta property="og:title" content="后端性能优化 01">
+<meta property="og:url" content="http://sanyuesha.com/2018/12/20/optimization-01/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="标准化就是引入约束和规范，把各种流程借助对应的制度、工具等进规范化和自动化，尽量减少人为因素造成的故障或错误。  Git 仓库的标准化收缩权限，统一各个项目的 owner 杜绝以私人身份建立仓库并上线，所有线上项目必须交由各自统一的 owner 进行建立、权限分配、部署和销毁。 统一分支开发模型 根据团队的实际情况采用合适的分支开发模型，强制所有成员必须严格按照分支模型进行仓库的管理，降低多人协">
-<meta property="og:updated_time" content="2018-08-23T14:49:14.546Z">
+<meta property="og:description" content="最近业务推送越来越频繁，导致瞬时压力非常大，虽然以前的代码确实很多地方像一坨 shit，实在无法下手从代码重构业务优化了，但是还是从其他方面做了一些调整来把性能提升了。 第一，升级了一下 MongoDB 从 2.4 到 3.2，换成了 wt 引擎以及 ssd 盘 线上 MongoDB 集群由于云厂商的原因最近总是挂，而且由于使用的 2.4 的版本，导致配置如果出现变动还需要重启实例，之前的资源最早">
+<meta property="og:updated_time" content="2018-12-29T15:10:44.839Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="技术转型之路五：标准化">
-<meta name="twitter:description" content="标准化就是引入约束和规范，把各种流程借助对应的制度、工具等进规范化和自动化，尽量减少人为因素造成的故障或错误。  Git 仓库的标准化收缩权限，统一各个项目的 owner 杜绝以私人身份建立仓库并上线，所有线上项目必须交由各自统一的 owner 进行建立、权限分配、部署和销毁。 统一分支开发模型 根据团队的实际情况采用合适的分支开发模型，强制所有成员必须严格按照分支模型进行仓库的管理，降低多人协">
+<meta name="twitter:title" content="后端性能优化 01">
+<meta name="twitter:description" content="最近业务推送越来越频繁，导致瞬时压力非常大，虽然以前的代码确实很多地方像一坨 shit，实在无法下手从代码重构业务优化了，但是还是从其他方面做了一些调整来把性能提升了。 第一，升级了一下 MongoDB 从 2.4 到 3.2，换成了 wt 引擎以及 ssd 盘 线上 MongoDB 集群由于云厂商的原因最近总是挂，而且由于使用的 2.4 的版本，导致配置如果出现变动还需要重启实例，之前的资源最早">
 
 
 
@@ -135,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/08/16/technical-transformation-road-05/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/12/20/optimization-01/"/>
 
 
 
 
 
-  <title>技术转型之路五：标准化 | 三月沙</title>
+  <title>后端性能优化 01 | 三月沙</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/08/16/technical-transformation-road-05/">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/12/20/optimization-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
@@ -324,7 +324,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">技术转型之路五：标准化</h2>
+          <h2 class="post-title" itemprop="name headline">后端性能优化 01</h2>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T13:08:30+08:00">
-                Aug 16 2018
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T15:23:24+08:00">
+                Dec 20 2018
               </time>
             
 
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/程序人生/" itemprop="url" rel="index">
-                    <span itemprop="name">程序人生</span>
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -396,29 +396,26 @@
       
 
       
-        <blockquote>
-<p>标准化就是引入约束和规范，把各种流程借助对应的制度、工具等进规范化和自动化，尽量减少人为因素造成的故障或错误。</p>
-</blockquote>
-<h2 id="Git-仓库的标准化"><a href="#Git-仓库的标准化" class="headerlink" title="Git 仓库的标准化"></a>Git 仓库的标准化</h2><p><strong>收缩权限，统一各个项目的 owner</strong></p>
-<p>杜绝以私人身份建立仓库并上线，所有线上项目必须交由各自统一的 owner 进行建立、权限分配、部署和销毁。</p>
-<p><strong>统一分支开发模型</strong></p>
-<p>根据团队的实际情况采用合适的分支开发模型，强制所有成员必须严格按照分支模型进行仓库的管理，降低多人协作造成的混乱。</p>
-<p><strong>统一开发流程</strong></p>
-<p>核心项目全部采用 fork and pull request 开发流程，严格进行代码审核和测试、上线和回滚。</p>
-<h2 id="环境的标准化"><a href="#环境的标准化" class="headerlink" title="环境的标准化"></a>环境的标准化</h2><p>为解决本地开发环境依赖服务过多的问题，搭建专有的 VPN 服务，使得可以在本地连接任意线上测试环境服务,并且统一线上环境、测试环境、本地环境的配置，能够非常轻松对本地任何项目进行开发和调试。</p>
-<h2 id="部署流程的标准化"><a href="#部署流程的标准化" class="headerlink" title="部署流程的标准化"></a>部署流程的标准化</h2><p>简单项目采用 walle 等第三方部署工具部署，复杂项目使用 fabric 完成，为每一个 APP 统一部署流程：</p>
-<ul>
-<li>SQL 检查</li>
-<li>表更新</li>
-<li>创建 release tag</li>
-<li>更新代码</li>
-<li>更新依赖</li>
-<li>执行 build</li>
-<li>重启服务 </li>
-<li>服务检测</li>
-</ul>
-<h2 id="团队知识标准化"><a href="#团队知识标准化" class="headerlink" title="团队知识标准化"></a>团队知识标准化</h2><p>建立团队知识体系，并且以工具形势进行落地，建立团队内部使用的 wiki 、技术业务文档等，方便新人快速熟悉业务和快速查找。</p>
-<h2 id="故障定位标准化"><a href="#故障定位标准化" class="headerlink" title="故障定位标准化"></a>故障定位标准化</h2><p>建立故障 checklist，方便任何不熟悉整套服务体系的人快速定位故障和解决问题</p>
+        <p>最近业务推送越来越频繁，导致瞬时压力非常大，虽然以前的代码确实很多地方像一坨 shit，实在无法下手从代码重构业务优化了，但是还是从其他方面做了一些调整来把性能提升了。</p>
+<p><strong>第一，升级了一下 MongoDB 从 2.4 到 3.2，换成了 wt 引擎以及 ssd 盘</strong></p>
+<p>线上 MongoDB 集群由于云厂商的原因最近总是挂，而且由于使用的 2.4 的版本，导致配置如果出现变动还需要重启实例，之前的资源最早用的是普通云盘，性能确实也一般，平时推送瞬时压力上来，单台 MongoDB 实例连接数能够飙到最高 5000，当然这里面肯定有慢查询的功劳，但是有些数据量其实很小，按照 MongoDB 的脾气，就是全部加载到内存中访问也不是个事，ssd 其实就可以充当一个低配版本的内存了。</p>
+<p><strong>第二，使用 openresty，启用了 nginx 缓存</strong></p>
+<p>虽然我已经懒得吐槽产品为啥非要在 feed 流的页面狂加状态，导致每个人的列表都不一样，缓存很难做，还是直到某一天推送压力实在太大，后端服务出现短时不可用，当然只是 feed 流业务，于是我们果断上了对部分单页上了 nginx 缓存，暂时也不理会各种状态的事情了，效果确实很好，部分压力大的接口基本不会穿透到后端 APP。</p>
+<p><strong>第三，优化了后端 APP 和 nginx 的连接配置</strong></p>
+<p>在巡查 nginx 日志发现，部分后端 APP 和 nginx 的连接频繁连接断开，造成没有复用的现象，查了一遍 nginx 发现 keepalive 该配的都配了，然后又怀疑是 gunicorn 的问题，最后发现 gunicorn 在 keep-alive 时默认等待时间是 2s 就会关闭连接，实在是太短了，手动调整了一下，后端 APP 和 nginx 的 time_wait 明显变少了，连接建立起来之后断的情况变少了。</p>
+<p><strong>第四，优化了部分 MySQL 的连接</strong></p>
+<p>Feed 流部分业务对某些 MySQL 连接的特别频繁，让负责业务的程序员看了看之前的代码，发现有些老的需求频繁使用 MySQL 连接，完全没有必要，部分数据可以做全局变量共享，却写了局部的，导致 MySQL 会受到大量请求，于是开始优化提升这些变量称为全局，做缓存，减少 MySQL 连接次数。</p>
+<p><strong>第五，升级 MySQL 硬件配置</strong></p>
+<p>MySQL 虽然实例不少，也做了主从结构，在某些耗时的 join 计算以及推送时，有时候还是很慢，于是对部分业务做了升级，把原来的 6G 内存调到了 12G，并且优化了 InnoDB_pool_buffer 的大小，确实解决了不少慢的查询和计算。</p>
+<p><strong>第六，改造升级了 rpc proxy</strong></p>
+<p>RPC proxy 是一个类似 nginx 的代理层，用 tornado 实现，主要做 rpc client 和 后端 server 的中转和负载均衡，单台请求最高能到 1 万 qps，但是不支持容错，导致部分后端节点挂了之后，还是会收到来自 proxy 的请求，于是做了升级改造，支持故障节点自动下线、自动释放故障节点连接池，待节点恢复之后，自动上线供 client 层调用。</p>
+<p>升级改造用 tornado 提供的周期性检测特性，也就是在 ioloop 循环时不断检查定时器是否满足条件而去调用，由于 tornado 是个单线程，proxy 内部也没有开启过多线程，所有操作基本无锁，开销很小。</p>
+<p><strong>第七，替换 twemproxy 为 codis</strong></p>
+<p>twemproxy 最大的痛点就是无法平滑扩容，如果 redis 内从不足，需要水平扩容，就需要对原来 redis 中的数据进行手动迁移，比较麻烦，而且 twemproxy 单节点相比 redis 单节点来说性能不足，由于 twemproxy 是单进程的，单节点如果达到 1w qps 已经很卡了，为了解决 twemproxy 的性能问题，必须不断的加机器，或多开进程，然后不断的修改内网域名配置。</p>
+<p>codis 扩容是半自动的，运维手动点点可以完成，而且 codis 的单机性能确实要好于 twemproxy。</p>
+<p><strong>第八，用 Go 做了一个内部用的发布系统</strong></p>
+<p>现在的团队发布用的 walle 和 fabric，用 fabric 写好远程部署脚本，然后再通过 walle 调用，walle 这个工具对于整个团队来说太透明了，出错不容易查看，不知道哪里出问题，必须要运维介入，而且部署日志不友好，于是用 Go 写了一个发布系统替换 walle。</p>
+<p>新的部署系统是根据自身业务定制的，支持部署日志回传以及上传到第三方云平台，能够非常方便的查看部署日志，而且通过一个友好的 web 页面可以实时知道当前的部署进度，具体到任意一台主机。</p>
 
       
     </div>
@@ -444,7 +441,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/标准化/" rel="tag"># 标准化</a>
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
           
         </div>
       
@@ -457,8 +454,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/16/programmer-must-know-number/" rel="next" title="程序员必须知道的数字">
-                <i class="fa fa-chevron-left"></i> 程序员必须知道的数字
+              <a href="/2018/11/16/mongodb-server-selection/" rel="next" title="可容错的 server proxy 实现">
+                <i class="fa fa-chevron-left"></i> 可容错的 server proxy 实现
               </a>
             
           </div>
@@ -467,8 +464,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/18/weekly-0006/" rel="prev" title="本周值得读第6期">
-                本周值得读第6期 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/26/go-project-best-practice/" rel="prev" title="Go 项目最佳实践">
+                Go 项目最佳实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,17 +525,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
             <img class="site-author-image" itemprop="image"
@@ -556,7 +544,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-count">114</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -567,7 +555,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -578,7 +566,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -612,22 +600,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-仓库的标准化"><span class="nav-number">1.</span> <span class="nav-text">Git 仓库的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境的标准化"><span class="nav-number">2.</span> <span class="nav-text">环境的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署流程的标准化"><span class="nav-number">3.</span> <span class="nav-text">部署流程的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#团队知识标准化"><span class="nav-number">4.</span> <span class="nav-text">团队知识标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障定位标准化"><span class="nav-number">5.</span> <span class="nav-text">故障定位标准化</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
 
       
 
@@ -644,7 +616,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -769,9 +741,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://sanyuesha.com/2018/08/16/technical-transformation-road-05/';
-          this.page.identifier = '2018/08/16/technical-transformation-road-05/';
-          this.page.title = '技术转型之路五：标准化';
+          this.page.url = 'http://sanyuesha.com/2018/12/20/optimization-01/';
+          this.page.identifier = '2018/12/20/optimization-01/';
+          this.page.title = '后端性能优化 01';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';

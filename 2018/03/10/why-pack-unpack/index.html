@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+  <meta name="keywords" content="network," />
 
 
 
@@ -96,12 +96,13 @@
 
 
 <meta name="description" content="为什么要进行 pack 操作和 unpack 操作不同类型的语言支持不同的数据类型，比如 Go 有 int32、int64、uint32、uint64 等不同的数据类型，这些类型占用的字节大小不同，而同样的数据类型在其他语言中比如 Python 中，又是完全不同的处理方式，比如 Python 的 int 既可以是有符号的，也可以是无符号的，这样一来 Python 和 Go 在处理同样大小的数字时存">
+<meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python 中的 pack 和 unpack">
 <meta property="og:url" content="http://sanyuesha.com/2018/03/10/why-pack-unpack/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="为什么要进行 pack 操作和 unpack 操作不同类型的语言支持不同的数据类型，比如 Go 有 int32、int64、uint32、uint64 等不同的数据类型，这些类型占用的字节大小不同，而同样的数据类型在其他语言中比如 Python 中，又是完全不同的处理方式，比如 Python 的 int 既可以是有符号的，也可以是无符号的，这样一来 Python 和 Go 在处理同样大小的数字时存">
-<meta property="og:updated_time" content="2018-03-11T15:01:11.149Z">
+<meta property="og:updated_time" content="2018-12-29T15:10:44.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 中的 pack 和 unpack">
 <meta name="twitter:description" content="为什么要进行 pack 操作和 unpack 操作不同类型的语言支持不同的数据类型，比如 Go 有 int32、int64、uint32、uint64 等不同的数据类型，这些类型占用的字节大小不同，而同样的数据类型在其他语言中比如 Python 中，又是完全不同的处理方式，比如 Python 的 int 既可以是有符号的，也可以是无符号的，这样一来 Python 和 Go 在处理同样大小的数字时存">
@@ -346,6 +347,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -376,6 +399,7 @@
         <h2 id="为什么要进行-pack-操作和-unpack-操作"><a href="#为什么要进行-pack-操作和-unpack-操作" class="headerlink" title="为什么要进行 pack 操作和 unpack 操作"></a>为什么要进行 pack 操作和 unpack 操作</h2><p>不同类型的语言支持不同的数据类型，比如 Go 有 int32、int64、uint32、uint64 等不同的数据类型，这些类型占用的字节大小不同，而同样的数据类型在其他语言中比如 Python 中，又是完全不同的处理方式，比如 Python 的 int 既可以是有符号的，也可以是无符号的，这样一来 Python 和 Go 在处理同样大小的数字时存储方式就有了差异。</p>
 <p>除了语言之间的差别，不同的计算机硬件存储数据的方式也有很大的差异，有的 32 bit 是一个 word，有的 64 bit 是一个 word，而且他们存储数据的方式或多或少都有些差异。</p>
 <p>当这些不同的语言以及不同的机器之间进行数据交换，比如通过 network 进行数据交换，他们需要对彼此发送和接受的字节流数据进行 pack 和 unpack 操作，以便数据可以正确的解析和存储。</p>
+<p>也就是说 pack 和 unpack 是用来在计算机之间以及不同语言之间进行网络交流时的对数据数据格式翻译和转换操作的。</p>
 <h2 id="计算机如何存储整型"><a href="#计算机如何存储整型" class="headerlink" title="计算机如何存储整型"></a>计算机如何存储整型</h2><p>可以把计算机的内存看做是一个很大的字节数组，一个字节包含 8 bit 信息可以表示 0-255 的无符号整型，以及 -128—127 的有符号整型。当存储一个大于 8 bit 的值到内存时，这个值常常会被切分成多个 8 bit 的 segment 存储在一个连续的内存空间，一个 segment 一个字节。有些处理器会把高位存储在内存这个字节数组的头部，把低位存储在尾部，这种处理方式叫 <strong>big-endian</strong>，有些处理器则相反，低位存储在头部，高位存储在尾部，称之为 <strong>little-endian</strong>。</p>
 <p>假设一个寄存器想要存储 0x12345678 到内存中，big-endian 和 little-endian 分别存储到内存 1000 的地址表示如下</p>
 <div class="table-container">
@@ -407,6 +431,51 @@
 <td>1003</td>
 <td>0x78</td>
 <td>0x12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Python 中字节在机器中存储的字节顺序用字母表示如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Character</th>
+<th>Byte order</th>
+<th>Size</th>
+<th>Alignment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@</code></td>
+<td>native</td>
+<td>native</td>
+<td>native</td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td>native</td>
+<td>standard</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>little-endian</td>
+<td>standard</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>big-endian</td>
+<td>standard</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>network (= big-endian)</td>
+<td>standard</td>
+<td>none</td>
 </tr>
 </tbody>
 </table>
@@ -603,6 +672,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+        </div>
+      
 
       
       
@@ -711,7 +786,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-count">114</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -722,7 +797,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -733,7 +808,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -799,7 +874,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
