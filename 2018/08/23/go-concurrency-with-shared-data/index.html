@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="concurrency,race condition," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="concurrency,race condition,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,7 +102,8 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/08/23/go-concurrency-with-shared-data/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  在 Go 的程序中，如果只有一个 goroutine 也就是只有一个 main goroutine 存在时，所有代码都是顺序执行的，也就是说程序的执行步骤就是它们的逻辑顺序，一个步骤是否能在另一个步骤之前或者之后发生时非常确定的。然而如果一个 Go 程序有两个或者多个 goroutine 存在，我们就很难确">
-<meta property="og:updated_time" content="2018-08-26T09:34:55.110Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-26T09:34:55.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发 Go 程序中的共享变量 (一)：data race">
 <meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  在 Go 的程序中，如果只有一个 goroutine 也就是只有一个 main goroutine 存在时，所有代码都是顺序执行的，也就是说程序的执行步骤就是它们的逻辑顺序，一个步骤是否能在另一个步骤之前或者之后发生时非常确定的。然而如果一个 Go 程序有两个或者多个 goroutine 存在，我们就很难确">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/08/23/go-concurrency-with-shared-data/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/08/23/go-concurrency-with-shared-data/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -404,8 +405,8 @@
 <p>我们在编写一个 Go 程序时并不需要保证所有的使用的 type 都是 concurrency safe 的，只在需要对某个 type 进行并发操作的情况下保证 type 是 concurrency safe 的，大多数情况下我们应该尽量保证对程序 variable 的访问都尽量在单个 goroutine 完成或者使用互斥锁来保护我们需要访问的程序区域。</p>
 <p>在继续探讨我们的话题之前，我们必须要知道 Go 中 <strong>race condition</strong> 就是说程序在多个 goroutine 交互执行的情况下可能会给出不正确的结果。理解 race condition 讲的是什么，是理解并发程序的关键所在。</p>
 <p>下面我们用一个简单的例子来说明 race condition 可能会带来的问题，这个例子展示了读取账户余额和向账户中存钱的这两个操作。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Package bank implements a bank with only one account.</span></div><div class="line"><span class="keyword">package</span> bank</div><div class="line"><span class="keyword">var</span> balance <span class="keyword">int</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Deposit</span><span class="params">(amount <span class="keyword">int</span>)</span></span> &#123; balance = balance + amount &#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Balance</span><span class="params">()</span> <span class="title">int</span></span> &#123; <span class="keyword">return</span> balance &#125;</div></pre></td></tr></table></figure>
-<p>如果这两个操作是以下面的形式发生在两个 goroutine 中：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Alice:</span></div><div class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">    bank.Deposit(<span class="number">200</span>)                <span class="comment">// A1</span></div><div class="line">    fmt.Println(<span class="string">"="</span>, bank.Balance()) <span class="comment">// A2</span></div><div class="line">&#125;()</div><div class="line"></div><div class="line"> <span class="comment">// Bob:</span></div><div class="line"><span class="keyword">go</span> bank.Deposit(<span class="number">100</span>)                 <span class="comment">// B</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Package bank implements a bank with only one account.</span></span><br><span class="line"><span class="keyword">package</span> bank</span><br><span class="line"><span class="keyword">var</span> balance <span class="keyword">int</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Deposit</span><span class="params">(amount <span class="keyword">int</span>)</span></span> &#123; balance = balance + amount &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Balance</span><span class="params">()</span> <span class="title">int</span></span> &#123; <span class="keyword">return</span> balance &#125;</span><br></pre></td></tr></table></figure>
+<p>如果这两个操作是以下面的形式发生在两个 goroutine 中：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Alice:</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    bank.Deposit(<span class="number">200</span>)                <span class="comment">// A1</span></span><br><span class="line">    fmt.Println(<span class="string">"="</span>, bank.Balance()) <span class="comment">// A2</span></span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"> <span class="comment">// Bob:</span></span><br><span class="line"><span class="keyword">go</span> bank.Deposit(<span class="number">100</span>)                 <span class="comment">// B</span></span><br></pre></td></tr></table></figure></p>
 <p>最终结果可能会有以下几种形式：</p>
 <div class="table-container">
 <table>
@@ -485,7 +486,7 @@
 <p><strong>如何避免 data race？</strong></p>
 <p>第一种方式是<strong>避免对共享 variable 进行写操作</strong></p>
 <p>Go 中 map 不是 concurrency safe，如果在多个 goroutine 中不加锁而直接对 map 操作就很难避免错误的结果出现：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> icons = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]image.Image)</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadIcon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span></span></div><div class="line">     // <span class="title">NOTE</span>: <span class="title">not</span> <span class="title">concurrency</span>-<span class="title">safe</span>!</div><div class="line"><span class="title">func</span> <span class="title">Icon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span> </div><div class="line">&#123;</div><div class="line">    icon, ok := icons[name]</div><div class="line">    <span class="keyword">if</span> !ok &#123;</div><div class="line">        icon = loadIcon(name)</div><div class="line">        icons[name] = icon</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> icon</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> icons = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]image.Image)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadIcon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span></span></span><br><span class="line"><span class="function">     // <span class="title">NOTE</span>: <span class="title">not</span> <span class="title">concurrency</span>-<span class="title">safe</span>!</span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="title">Icon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    icon, ok := icons[name]</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        icon = loadIcon(name)</span><br><span class="line">        icons[name] = icon</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> icon</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的例子中对 icons 的操作不是 concurrency safe。</p>
 <p>第二种方式是<strong>避免在多个 goroutine 中存取变量</strong></p>
 <p>Go 中这样的操作很常见，为了保证数据的准确性，只在一个 goroutine 中执行对 variable 的所有操作，其他 goroutine 通过 channel 向该 goroutine 进行请求来实现对 variable 的存取和更新，这样保证了 variable 的存取都只在一个 goroutine 中进行，这也充分对 Go 的理念进行阐释：<strong>Do not communicate by sharing memory; instead, share memory by communicating</strong>。</p>
@@ -501,7 +502,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -606,9 +607,7 @@
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -621,7 +620,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -690,7 +689,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

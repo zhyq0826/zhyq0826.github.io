@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="连接池," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="连接池,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,12 +102,13 @@
 <meta property="og:url" content="http://sanyuesha.com/2019/01/02/sqlalchemy-pool-mechanism/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="SQLAlchemy 自身提供了连接池来管理所有和 database 的连接，pacakge 是 sqlalchemy.pool ，简单来说 connection pool 就是一种复用连接的机制，工作流程如下：  从 pool 中获取新的连接，如果没有就创建一个新的连接并返回，在调用连接的 close 之后，连接不会真正的关闭而是返回 pool 供下次使用，过程比较简单，但是在实际实现 pool">
-<meta property="og:image" content="https://martin-upload.wcar.net.cn/web/2019/01/a0b501e5016ede9ad1ff0a2bb23036a0.jpg">
-<meta property="og:updated_time" content="2019-01-03T15:27:26.192Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.git-star.com/a0b501e5016ede9ad1ff0a2bb23036a0.jpg">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQLAlchemy 的连接池机制">
 <meta name="twitter:description" content="SQLAlchemy 自身提供了连接池来管理所有和 database 的连接，pacakge 是 sqlalchemy.pool ，简单来说 connection pool 就是一种复用连接的机制，工作流程如下：  从 pool 中获取新的连接，如果没有就创建一个新的连接并返回，在调用连接的 close 之后，连接不会真正的关闭而是返回 pool 供下次使用，过程比较简单，但是在实际实现 pool">
-<meta name="twitter:image" content="https://martin-upload.wcar.net.cn/web/2019/01/a0b501e5016ede9ad1ff0a2bb23036a0.jpg">
+<meta name="twitter:image" content="http://static.git-star.com/a0b501e5016ede9ad1ff0a2bb23036a0.jpg">
 
 
 
@@ -137,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2019/01/02/sqlalchemy-pool-mechanism/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2019/01/02/sqlalchemy-pool-mechanism/">
 
 
 
@@ -180,7 +181,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -210,7 +211,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -220,7 +221,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -230,7 +231,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -240,7 +241,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -250,7 +251,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -260,7 +261,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -270,7 +271,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -313,7 +314,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -349,7 +350,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -399,9 +400,9 @@
 
       
         <p>SQLAlchemy 自身提供了连接池来管理所有和 database 的连接，pacakge 是 <code>sqlalchemy.pool</code> ，简单来说 connection pool 就是一种复用连接的机制，工作流程如下：</p>
-<p><img src="https://martin-upload.wcar.net.cn/web/2019/01/a0b501e5016ede9ad1ff0a2bb23036a0.jpg" alt=""></p>
+<p><img src="http://static.git-star.com/a0b501e5016ede9ad1ff0a2bb23036a0.jpg" alt></p>
 <p>从 pool 中获取新的连接，如果没有就创建一个新的连接并返回，在调用连接的 close 之后，连接不会真正的关闭而是返回 pool 供下次使用，过程比较简单，但是在实际实现 pool 的过程中需要考虑很多细节性的东西，下面我们一一来说说 sqlalchemy 的 pool 机制。</p>
-<h2 id="Pool-的使用"><a href="#Pool-的使用" class="headerlink" title="Pool 的使用"></a>Pool 的使用</h2><p>SQLAlchemy 默认在使用 create_engine 创建新的 engine 时提供了一个 QueuePool，而且可以指定 Pool 的一些属性，包括 pool_size、max_overflow、pool_recycle 等：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">engine = create_engine(<span class="string">'postgresql://me@localhost/mydb'</span>,</div><div class="line">                       pool_size=<span class="number">20</span>, max_overflow=<span class="number">0</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="Pool-的使用"><a href="#Pool-的使用" class="headerlink" title="Pool 的使用"></a>Pool 的使用</h2><p>SQLAlchemy 默认在使用 create_engine 创建新的 engine 时提供了一个 QueuePool，而且可以指定 Pool 的一些属性，包括 pool_size、max_overflow、pool_recycle 等：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">engine = create_engine(<span class="string">'postgresql://me@localhost/mydb'</span>,</span><br><span class="line">                       pool_size=<span class="number">20</span>, max_overflow=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>pool_size pool 的大小</li>
 <li>max_overflow 允许超过 pool_size 多少</li>
@@ -409,20 +410,20 @@
 <li>pool_timeout 从 pool 中获取新的连接等待时间，一般是指等待 pool 中连接可用的时间</li>
 </ul>
 <p>除了指定 pool 的一些属性之外，create_engine 允许自定义 pool 的实现，只要接口符合 <code>lib/sqlalchemy/pool/base.py</code> 中规定的 Pool 即可，这个参数是 create_engine 的 poolclass。</p>
-<p>从 pool 中获取一个新的 connection：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conn = engine.connect()</div></pre></td></tr></table></figure></p>
-<p>归还 connection 到 pool 中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conn.close()</div></pre></td></tr></table></figure></p>
+<p>从 pool 中获取一个新的 connection：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn = engine.connect()</span><br></pre></td></tr></table></figure></p>
+<p>归还 connection 到 pool 中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn.close()</span><br></pre></td></tr></table></figure></p>
 <p><code>conn</code> 是一个实现了 proxy 模式的对象，目的是在 close 时不是真正关闭 connection 而是归还到 pool 中，而且即使没有调用 close 方法，conn 对象在进行 garbage collected 时也会归还到 pool 中。</p>
 <p>在执行 close 方法时，需要对该连接进行一些清理工作以保证该连接下次能够正确工作，比如是否 connection 上的锁等等，</p>
-<h2 id="Pool-的事件"><a href="#Pool-的事件" class="headerlink" title="Pool 的事件"></a>Pool 的事件</h2><p>SQLAlchemy 默认提供了一些列的 hook 用于处理 connection 在创建时、获取 connection 时、归还 connection 时等等，见<a href="https://docs.sqlalchemy.org/en/latest/core/events.html#sqlalchemy.events.PoolEvents" target="_blank" rel="external">PoolEvents</a>。</p>
+<h2 id="Pool-的事件"><a href="#Pool-的事件" class="headerlink" title="Pool 的事件"></a>Pool 的事件</h2><p>SQLAlchemy 默认提供了一些列的 hook 用于处理 connection 在创建时、获取 connection 时、归还 connection 时等等，见<a href="https://docs.sqlalchemy.org/en/latest/core/events.html#sqlalchemy.events.PoolEvents" target="_blank" rel="noopener">PoolEvents</a>。</p>
 <h2 id="处理失效-connection-的机制"><a href="#处理失效-connection-的机制" class="headerlink" title="处理失效 connection 的机制"></a>处理失效 connection 的机制</h2><p>SQLAlchemy 提供了两种处理连接失效的机制，一种是悲观的，一种是乐观的。</p>
 <h3 id="悲观机制"><a href="#悲观机制" class="headerlink" title="悲观机制"></a>悲观机制</h3><p>悲观机制是指在每次获取新的 connection 供 application 使用之前，都在 connection 上进行一个简单的测试，比如发送一条简单的 <code>select 1</code> 语句以测试当前 database 是否可用，虽然该检测机制会造成一些额外的开销，但确实一种简单可靠能并且能及时发现 database 可用性的机制。</p>
 <p>需要注意的是即使采用了预检测机制，也没有办法杜绝在 transaction 执行当中由于 database 发生故障造成的影响，也就是说如果一个 transaction 正在执行过程中，此时由于 database 故障了，transaction 可能会丢失，这类错误还是需要依靠 application 来解决。</p>
-<p>Pool 的预检测发生在获取新的 connection 时，通过配置 <code>Pool.pre_ping</code> 来实现，体现在 create_engine 上是 <code>pool_pre_ping</code> 参数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">engine = create_engine(<span class="string">"mysql+pymysql://user:pw@host/db"</span>, pool_pre_ping=<span class="keyword">True</span>)</div></pre></td></tr></table></figure></p>
+<p>Pool 的预检测发生在获取新的 connection 时，通过配置 <code>Pool.pre_ping</code> 来实现，体现在 create_engine 上是 <code>pool_pre_ping</code> 参数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">engine = create_engine(<span class="string">"mysql+pymysql://user:pw@host/db"</span>, pool_pre_ping=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></p>
 <p>如果预检测发现 connection 不可用，当前 connection 会立马被回收，而且在 pool 中创建时间小于当前 connection 的所有 connection 都会被回收。</p>
 <h3 id="乐观机制"><a href="#乐观机制" class="headerlink" title="乐观机制"></a>乐观机制</h3><p>不同于悲观机制，乐观机制是指只在 connection 执行过程中检测 database 是否故障，如果 connection 在执行 transaction 过程中 raise 出 <code>disconnect</code> 事件，则会调用 <code>Pool.recreate()</code> 把 pool 中所有还未被使用的 connection 全部失效，并且从新的 pool 中创建一个新的 connection 并返回。</p>
 <p>同样的，application 需要自己去处理事务执行过程中 connection 中断的情况。</p>
 <h3 id="另一个回收连接的选择-recycle"><a href="#另一个回收连接的选择-recycle" class="headerlink" title="另一个回收连接的选择 recycle"></a>另一个回收连接的选择 recycle</h3><p>此外 SQLAlchemy 还提供了 recyle 的机制来处理连接过久的 connection，如果一个 connection 占用时间太长超过了 pool_recyle 设置的时间，pool 会自动失效该连接。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine</div><div class="line">e = create_engine(<span class="string">"mysql://scott:tiger@localhost/test"</span>, pool_recycle=<span class="number">3600</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine</span><br><span class="line">e = create_engine(<span class="string">"mysql://scott:tiger@localhost/test"</span>, pool_recycle=<span class="number">3600</span>)</span><br></pre></td></tr></table></figure>
 <p><strong>需要注意的是 pool 根据 pool_recyle 设置失效时间只会发生在获取新的 connection 的时候。</strong></p>
 <h2 id="允许应用程序真正关闭连接"><a href="#允许应用程序真正关闭连接" class="headerlink" title="允许应用程序真正关闭连接"></a>允许应用程序真正关闭连接</h2><p>不论是 Session 还是 engine，以及 engine 创建的 Connection，都提供了一个 <code>invalidate</code> 方法用来关闭底层 DBAPI 的 connection 的机制，也就是说应用程序有权决定是否真正关闭底层连接的权利。</p>
 
@@ -435,7 +436,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -472,6 +473,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/12/architecture-evolution-process/" rel="prev" title="互联网后端架构的演化">
+                互联网后端架构的演化 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -531,7 +536,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -543,9 +548,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -558,7 +561,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -643,7 +646,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

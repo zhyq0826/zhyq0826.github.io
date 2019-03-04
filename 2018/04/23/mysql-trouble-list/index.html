@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="故障," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="故障,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,7 +102,8 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
-<meta property="og:updated_time" content="2018-05-16T15:40:39.208Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.302Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 常见故障以及诊断和解决方案">
 <meta name="twitter:description" content="此篇是我在生产环境中遇到 MySQL 的一些问题的总结和思考，希望能够帮助更多的人快速定位和解决线上生产环境中遇到的问题。 慢查询太多导致整个库性能下降这是最常见的一个问题，尤其是在团队开发人员水平参差不齐，对 MySQL 的使用不规范，SQL 语句在代码中乱飞，缺乏严格约束和检验时很容易写出在某些情况下演变成灾难性质的慢查询。 问题现象 应用程序卡顿 如果设置了最大连接数，可能会报超过最大连接数">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/04/23/mysql-trouble-list/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/23/mysql-trouble-list/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -408,7 +409,7 @@
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
 <li>查看所有慢查询语句占用的线程，找到然后 kill 掉</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id,&apos;;&apos; from `information_schema`.PROCESSLIST where info like &apos;%table_name%&apos;;</span><br></pre></td></tr></table></figure>
 <ol>
 <li>尽快禁止业务代码中的慢查询</li>
 </ol>
@@ -427,7 +428,7 @@
 <h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>解决主从不一致的一种最好的办法是暂时先下掉从库，并从某一时间点恢复从库，然后再接入主库进行更新。这里有一个问题是暂时下掉从节点会导致其他节点压力骤增，从而导致整个服务有可能崩溃的风险，为了防止这样的问题出现，在设计数据库架构之初就要考虑预留一定的量来处理某个节点故障的问题。</p>
 <h2 id="在线对大表进行-DDL-导致表锁死"><a href="#在线对大表进行-DDL-导致表锁死" class="headerlink" title="在线对大表进行 DDL 导致表锁死"></a>在线对大表进行 DDL 导致表锁死</h2><p>更改表结构在业务不稳定时进行的非常频繁，但是对 online 表结构进行变更要非常小心谨慎，尤其是表的数据量比较大，业务比较复杂，即可能导致业务功能无法使用等严重现象，一般来说超过百万以上的数据都要小心进行表结构变更。</p>
 <h3 id="问题现象-2"><a href="#问题现象-2" class="headerlink" title="问题现象"></a>问题现象</h3><p>在线变更表结构导致使用该表的业务假死 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table add colum1 string not null default &apos;&apos;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table add colum1 string not null default &apos;&apos;;</span><br></pre></td></tr></table></figure>
 <h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
 <li>如果数据量比较小（百万以下），数据变更不频繁，可以直接变更</li>
 <li>大表可以考虑采用成熟的开源解决方案，详见<a href="http://sanyuesha.com/2017/10/19/mysql-online-migration-program-and-tool-compare/">mysql 在线 scheme 变更方案以及</a></li>
@@ -442,7 +443,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -542,7 +543,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -554,9 +555,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -569,7 +568,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -654,7 +653,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

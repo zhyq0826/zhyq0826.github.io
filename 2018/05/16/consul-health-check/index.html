@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="consul,health check," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="consul,health check,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,6 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/16/consul-health-check/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="之前的文章已经让我们知道搭建 consul 的集群比较简单，今天我们来继续我们的系列，使用 consul 进行 health check。 开始之前，你需要准备我们在前面文章中已经搭建好的 cluster。 定义 checks同定义 service 一样，定义 checks 可以通过配置或者调用 HTTP API 来实现，在此我们之前一样使用配置文件来实现，这是最通用的做法。 在 consul 0">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-05-17T15:21:02.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Consul 健康检查">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/16/consul-health-check/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/16/consul-health-check/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -400,16 +401,16 @@
 <p>开始之前，你需要准备我们在前面文章中已经搭建好的 cluster。</p>
 <h2 id="定义-checks"><a href="#定义-checks" class="headerlink" title="定义 checks"></a>定义 checks</h2><p>同定义 service 一样，定义 checks 可以通过配置或者调用 HTTP API 来实现，在此我们之前一样使用配置文件来实现，这是最通用的做法。</p>
 <p>在 consul 0.9 之后，agent 必须配置 <code>enable_script_checks</code> 为 true 来允许 script checks。</p>
-<p>在第二个节点上创建两个定义文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vagrant@n2:~$ echo &apos;&#123;&quot;check&quot;: &#123;&quot;name&quot;: &quot;ping&quot;,</div><div class="line">  &quot;args&quot;: [&quot;ping&quot;, &quot;-c1&quot;, &quot;google.com&quot;], &quot;interval&quot;: &quot;30s&quot;&#125;&#125;&apos; \</div><div class="line">  &gt;/etc/consul.d/ping.json</div><div class="line"></div><div class="line">vagrant@n2:~$ echo &apos;&#123;&quot;service&quot;: &#123;&quot;name&quot;: &quot;web&quot;, &quot;tags&quot;: [&quot;rails&quot;], &quot;port&quot;: 80,</div><div class="line">  &quot;check&quot;: &#123;&quot;args&quot;: [&quot;curl&quot;, &quot;localhost&quot;], &quot;interval&quot;: &quot;10s&quot;&#125;&#125;&#125;&apos; \</div><div class="line">  &gt;/etc/consul.d/web.json</div></pre></td></tr></table></figure></p>
+<p>在第二个节点上创建两个定义文件：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n2:~$ echo '&#123;"check": &#123;"name": "ping",</span><br><span class="line">  "args": ["ping", "-c1", "google.com"], "interval": "30s"&#125;&#125;' \</span><br><span class="line"><span class="meta">  &gt;</span><span class="bash">/etc/consul.d/ping.json</span></span><br><span class="line"></span><br><span class="line">vagrant@n2:~$ echo '&#123;"service": &#123;"name": "web", "tags": ["rails"], "port": 80,</span><br><span class="line">  "check": &#123;"args": ["curl", "localhost"], "interval": "10s"&#125;&#125;&#125;' \</span><br><span class="line"><span class="meta">  &gt;</span><span class="bash">/etc/consul.d/web.json</span></span><br></pre></td></tr></table></figure></p>
 <p>这里我们定义了一个 ping 的 host check，这个 check 每 30s 执行一次 <code>ping -c1 google.com</code>命令。基于 script 的 health check 执行命令时的 user 和 开启 consul 进程是同一个。如果检测程序退出时的 code &gt;= 2，这次检测会被标记为 failing，这个服务也被认为是不健康的 unhealthy。<strong>这个规则适用任何 script-base 的 health check</strong>。</p>
 <p>第二个命令定义了一个服务 web，并且每 10s 进行一次 curl 检查来确保服务仍然可用。</p>
-<p>重新启动 consul 来加载刚才的定义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2018/05/16 11:32:16 [INFO] agent: Synced check &quot;ping&quot;</div><div class="line">2018/05/16 11:32:22 [WARN] agent: Check &quot;service:web&quot; is now critical</div><div class="line">2018/05/16 11:32:32 [WARN] agent: Check &quot;service:web&quot; is now critical</div><div class="line">2018/05/16 11:32:35 [WARN] agent: Check &quot;ping&quot; is now warning</div><div class="line">2018/05/16 11:32:35 [INFO] agent: Synced check &quot;ping&quot;</div></pre></td></tr></table></figure></p>
+<p>重新启动 consul 来加载刚才的定义：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2018/05/16 11:32:16 [INFO] agent: Synced check "ping"</span><br><span class="line">2018/05/16 11:32:22 [WARN] agent: Check "service:web" is now critical</span><br><span class="line">2018/05/16 11:32:32 [WARN] agent: Check "service:web" is now critical</span><br><span class="line">2018/05/16 11:32:35 [WARN] agent: Check "ping" is now warning</span><br><span class="line">2018/05/16 11:32:35 [INFO] agent: Synced check "ping"</span><br></pre></td></tr></table></figure></p>
 <p>从输出结果我们不难看出，ping 现在是警告状态，service:web 报严重错误，由于 google 被墙所以 ping 会超时，端口在 80 的 web 服务我们本地根本没有开启。</p>
-<h2 id="获取-checking-状态"><a href="#获取-checking-状态" class="headerlink" title="获取 checking 状态"></a>获取 checking 状态</h2><p>可以通过 API 来获取有关 health check 的运行状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">vagrant@n1:~$ curl http://localhost:8500/v1/health/state/critical</div><div class="line">[&#123;</div><div class="line">    &quot;Node&quot;: &quot;agent-two&quot;,</div><div class="line">    &quot;CheckID&quot;: &quot;service:web&quot;,</div><div class="line">    &quot;Name&quot;: &quot;Service &apos;web&apos; check&quot;,</div><div class="line">    &quot;Status&quot;: &quot;critical&quot;,</div><div class="line">    &quot;Notes&quot;: &quot;&quot;,</div><div class="line">    &quot;Output&quot;: &quot;  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to localhost port 80: Connection refused\n&quot;,</div><div class="line">    &quot;ServiceID&quot;: &quot;web&quot;,</div><div class="line">    &quot;ServiceName&quot;: &quot;web&quot;,</div><div class="line">    &quot;ServiceTags&quot;: [&quot;rails&quot;],</div><div class="line">    &quot;Definition&quot;: &#123;&#125;,</div><div class="line">    &quot;CreateIndex&quot;: 557,</div><div class="line">    &quot;ModifyIndex&quot;: 594</div><div class="line">&#125;]</div></pre></td></tr></table></figure></p>
-<p>为了证实我们获取的结果，可以使用 DNS 查询查看 web 服务的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">vagrant@n1:~$ dig @127.0.0.1 -p 8600 web.service.consul</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.9.5-9+deb8u14-Debian &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 web.service.consul</div><div class="line">; (1 server found)</div><div class="line">;; global options: +cmd</div><div class="line">;; Got answer:</div><div class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NXDOMAIN, id: 63358</div><div class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1</div><div class="line">;; WARNING: recursion requested but not available</div><div class="line"></div><div class="line">;; OPT PSEUDOSECTION:</div><div class="line">; EDNS: version: 0, flags:; udp: 4096</div><div class="line">;; QUESTION SECTION:</div><div class="line">;web.service.consul.        IN  A</div><div class="line"></div><div class="line">;; AUTHORITY SECTION:</div><div class="line">consul.         0   IN  SOA ns.consul. hostmaster.consul. 1526471396 3600 600 86400 0</div><div class="line"></div><div class="line">;; Query time: 0 msec</div><div class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</div><div class="line">;; WHEN: Wed May 16 11:49:55 GMT 2018</div><div class="line">;; MSG SIZE  rcvd: 97</div></pre></td></tr></table></figure></p>
+<h2 id="获取-checking-状态"><a href="#获取-checking-状态" class="headerlink" title="获取 checking 状态"></a>获取 checking 状态</h2><p>可以通过 API 来获取有关 health check 的运行状态：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n1:~$ curl http://localhost:8500/v1/health/state/critical</span><br><span class="line">[&#123;</span><br><span class="line">    "Node": "agent-two",</span><br><span class="line">    "CheckID": "service:web",</span><br><span class="line">    "Name": "Service 'web' check",</span><br><span class="line">    "Status": "critical",</span><br><span class="line">    "Notes": "",</span><br><span class="line">    "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to localhost port 80: Connection refused\n",</span><br><span class="line">    "ServiceID": "web",</span><br><span class="line">    "ServiceName": "web",</span><br><span class="line">    "ServiceTags": ["rails"],</span><br><span class="line">    "Definition": &#123;&#125;,</span><br><span class="line">    "CreateIndex": 557,</span><br><span class="line">    "ModifyIndex": 594</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure></p>
+<p>为了证实我们获取的结果，可以使用 DNS 查询查看 web 服务的：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n1:~$ dig @127.0.0.1 -p 8600 web.service.consul</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.9.5-9+deb8u14-Debian &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 web.service.consul</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NXDOMAIN, id: 63358</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;web.service.consul.        IN  A</span><br><span class="line"></span><br><span class="line">;; AUTHORITY SECTION:</span><br><span class="line">consul.         0   IN  SOA ns.consul. hostmaster.consul. 1526471396 3600 600 86400 0</span><br><span class="line"></span><br><span class="line">;; Query time: 0 msec</span><br><span class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</span><br><span class="line">;; WHEN: Wed May 16 11:49:55 GMT 2018</span><br><span class="line">;; MSG SIZE  rcvd: 97</span><br></pre></td></tr></table></figure></p>
 <p>可以看到没有返回正确的状态，因为服务已经不可用了。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.consul.io/intro/getting-started/checks.html" target="_blank" rel="external">https://www.consul.io/intro/getting-started/checks.html</a></li>
+<li><a href="https://www.consul.io/intro/getting-started/checks.html" target="_blank" rel="noopener">https://www.consul.io/intro/getting-started/checks.html</a></li>
 </ul>
 
       
@@ -421,7 +422,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -523,7 +524,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -535,9 +536,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -550,7 +549,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -635,7 +634,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

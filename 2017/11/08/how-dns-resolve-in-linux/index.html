@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="dns," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="dns,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,7 +102,8 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/11/08/how-dns-resolve-in-linux/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="我在用 linux 桌面环境有 2 年了，做服务端开发大部分时候都在和 linux 打交道，后来转投 mac，其实本质都是一样的，好奇 linux 下的 dns 解析的过程，看了很多资料发现过程还是比我想象的要复杂，虽然想好好写一写但投入时间还是挺大的，此篇我也许会慢慢更新直到完整，也许可能就写这么一些了。  什么是 DNSDNS 全称是 Domain Name System，大意是域名解析系统">
-<meta property="og:updated_time" content="2017-12-03T05:42:13.295Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.294Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 中的 dns 解析">
 <meta name="twitter:description" content="我在用 linux 桌面环境有 2 年了，做服务端开发大部分时候都在和 linux 打交道，后来转投 mac，其实本质都是一样的，好奇 linux 下的 dns 解析的过程，看了很多资料发现过程还是比我想象的要复杂，虽然想好好写一写但投入时间还是挺大的，此篇我也许会慢慢更新直到完整，也许可能就写这么一些了。  什么是 DNSDNS 全称是 Domain Name System，大意是域名解析系统">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/11/08/how-dns-resolve-in-linux/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2017/11/08/how-dns-resolve-in-linux/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -408,19 +409,19 @@
 </ul>
 <p><code>/etc/hosts</code> 的存在是早期网络并不是特别发达，仅仅在 hosts 中保存主机名和 ip 地址的对应关系即可满足需要，随着网络的发展逐渐出现分布式 DNS 服务，但是 <code>/etc/hosts</code> 形式保留下来了。</p>
 <p><code>/etc/resolv.conf</code> 是配置DNS 域名和 ip 地址的，网上有很多资料可以参考一下。</p>
-<h1 id="一个域名是如何被解析的"><a href="#一个域名是如何被解析的" class="headerlink" title="一个域名是如何被解析的"></a>一个域名是如何被解析的</h1><p><a href="https://www.verisign.com/en_US/website-presence/online/how-dns-works/index.xhtml" target="_blank" rel="external">How the Domain Name System (DNS) Works
+<h1 id="一个域名是如何被解析的"><a href="#一个域名是如何被解析的" class="headerlink" title="一个域名是如何被解析的"></a>一个域名是如何被解析的</h1><p><a href="https://www.verisign.com/en_US/website-presence/online/how-dns-works/index.xhtml" target="_blank" rel="noopener">How the Domain Name System (DNS) Works
 </a> 这篇大致解释了域名被解析的过程，基本可以分为：</p>
 <ul>
 <li>向根域名服务请求顶级域名所在所在域名服务</li>
 <li>向顶级域名服务请求二级域名服务</li>
 <li>向二级域名服务请求具体的 ip 地址</li>
 </ul>
-<p>真实的解析过程是要更复杂的，参考 <a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="external">linux下DNS解析（nslookup、dig、host）</a></p>
+<p>真实的解析过程是要更复杂的，参考 <a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="noopener">linux下DNS解析（nslookup、dig、host）</a></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="external">http://122269875.blog.51cto.com/1660536/1713947</a></li>
-<li><a href="https://www.nslookuptool.com/chs/" target="_blank" rel="external">https://www.nslookuptool.com/chs/</a></li>
-<li><a href="http://roclinux.cn/?p=1820" target="_blank" rel="external">http://roclinux.cn/?p=1820</a></li>
-<li><a href="http://www.steves-internet-guide.com/dns-guide-beginners/" target="_blank" rel="external">http://www.steves-internet-guide.com/dns-guide-beginners/</a></li>
+<li><a href="http://122269875.blog.51cto.com/1660536/1713947" target="_blank" rel="noopener">http://122269875.blog.51cto.com/1660536/1713947</a></li>
+<li><a href="https://www.nslookuptool.com/chs/" target="_blank" rel="noopener">https://www.nslookuptool.com/chs/</a></li>
+<li><a href="http://roclinux.cn/?p=1820" target="_blank" rel="noopener">http://roclinux.cn/?p=1820</a></li>
+<li><a href="http://www.steves-internet-guide.com/dns-guide-beginners/" target="_blank" rel="noopener">http://www.steves-internet-guide.com/dns-guide-beginners/</a></li>
 </ul>
 
       
@@ -432,7 +433,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -532,7 +533,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -544,9 +545,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -559,7 +558,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -644,7 +643,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

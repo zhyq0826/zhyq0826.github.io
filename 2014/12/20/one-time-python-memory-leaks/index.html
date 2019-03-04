@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="内存泄露,memory link," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="内存泄露,memory link,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,6 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2014/12/20/one-time-python-memory-leaks/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="python 内存异常的几种情况 代码内出现循环引用 全局变量数据太多 进程加载大量数据，长久持有不释放  现象线上生产环境一些 tornado 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。 观察分析1.确定是否是个别进程的特有现象 在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。 2.利用linux top 等命令">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-16T03:40:17.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 内存泄漏排查与分析">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2014/12/20/one-time-python-memory-leaks/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2014/12/20/one-time-python-memory-leaks/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -401,7 +402,7 @@
 <li>全局变量数据太多</li>
 <li>进程加载大量数据，长久持有不释放</li>
 </ul>
-<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado" target="_blank" rel="external">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>线上生产环境一些 <a href="https://readthedocs.org/projects/tornado" target="_blank" rel="noopener">tornado</a> 服务(主要提供rest服务)进程占用内存过大：百兆到1G ，测试环境的同样服务未出现异常。</p>
 <h2 id="观察分析"><a href="#观察分析" class="headerlink" title="观察分析"></a>观察分析</h2><p>1.确定是否是个别进程的特有现象</p>
 <p>在一套环境中部署不同的tornado的服务，排除了tornado和第三方库的可能性。</p>
 <p>2.利用linux top 等命令观察异常服务进程内存的增长情况</p>
@@ -415,8 +416,8 @@
 </ul>
 <p><strong>对代码进行静态分析和检查, 排除了全局变量和循环引用的问题。</strong></p>
 <h2 id="侦测线上api调用前后对进程内存的影响"><a href="#侦测线上api调用前后对进程内存的影响" class="headerlink" title="侦测线上api调用前后对进程内存的影响"></a>侦测线上api调用前后对进程内存的影响</h2><p>为了能够非常细致的观测到线上api调用前后的进程内存占用率，在api调用的入口记录了当前进程的内存占用，并对日志以进程的id来区分，由于tornado的单进程特性，也可以用端口号来区分，这样日志的划分更稳定，毕竟进程id是个变数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">def log_memory(self):</div><div class="line">     import psutil</div><div class="line">     import os</div><div class="line">     logger_name = (&apos;app_%s&apos;%self.application.settings.get(&apos;port&apos;))</div><div class="line">     m_logger = loggers.getLogger(logger_name, &apos;/var/log/app_%s.log&apos;%logger_name)</div><div class="line">     process = psutil.Process(os.getpid())</div><div class="line">     m_logger.info(&apos;%s  %s MB&apos;%(self.request.path, process.memory_info()[0]/(1024*1024)))</div><div class="line">     m_logger.info(self.request.arguments)</div></pre></td></tr></table></figure>
-<p><a href="http://pythonhosted.org/psutil/index.html" target="_blank" rel="external">psutil</a> 提供了获取进程资源占用如内存，cpu，磁盘，网络等的api。为了能查看api调用的上下文环境，日志中还记录了api的请求参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">def log_memory(self):</span><br><span class="line">     import psutil</span><br><span class="line">     import os</span><br><span class="line">     logger_name = (&apos;app_%s&apos;%self.application.settings.get(&apos;port&apos;))</span><br><span class="line">     m_logger = loggers.getLogger(logger_name, &apos;/var/log/app_%s.log&apos;%logger_name)</span><br><span class="line">     process = psutil.Process(os.getpid())</span><br><span class="line">     m_logger.info(&apos;%s  %s MB&apos;%(self.request.path, process.memory_info()[0]/(1024*1024)))</span><br><span class="line">     m_logger.info(self.request.arguments)</span><br></pre></td></tr></table></figure>
+<p><a href="http://pythonhosted.org/psutil/index.html" target="_blank" rel="noopener">psutil</a> 提供了获取进程资源占用如内存，cpu，磁盘，网络等的api。为了能查看api调用的上下文环境，日志中还记录了api的请求参数。</p>
 <h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>通过的日志分析发现，一个api在某些参数的边界未做处理时，会导致一部分很大的数据被加载到内存中。至此，这个问题的根源终于被找到了。</p>
 <p><strong>不过一个疑问是：python的进程内存增大之后，是否会让python解释器认为，该进程使用的峰值内存就是如此而不愿意交换给os呢</strong></p>
 
@@ -429,7 +430,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -531,7 +532,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -543,9 +544,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -558,7 +557,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -643,7 +642,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

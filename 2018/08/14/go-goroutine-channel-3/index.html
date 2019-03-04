@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="golang,synchronous," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="golang,synchronous,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,12 +102,13 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/08/14/go-goroutine-channel-3/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Channel 的分类Channel 根据 capacity 的大小，分为 unbuffered channel 和 buffered channel，在创建 channel 时可以指定 channel 的容量，如果不指定默认是 0，我们称这种 channel 是 unbuffered channel。 U">
-<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png">
-<meta property="og:updated_time" content="2018-09-09T04:30:50.521Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.git-star.com/WX20171229-170322.png">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.291Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go goroutine 和 channel 详解 (三) ：unbuffered channel">
 <meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Channel 的分类Channel 根据 capacity 的大小，分为 unbuffered channel 和 buffered channel，在创建 channel 时可以指定 channel 的容量，如果不指定默认是 0，我们称这种 channel 是 unbuffered channel。 U">
-<meta name="twitter:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png">
+<meta name="twitter:image" content="http://static.git-star.com/WX20171229-170322.png">
 
 
 
@@ -137,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/08/14/go-goroutine-channel-3/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/08/14/go-goroutine-channel-3/">
 
 
 
@@ -180,7 +181,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -210,7 +211,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -220,7 +221,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -230,7 +231,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -240,7 +241,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -250,7 +251,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -260,7 +261,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -270,7 +271,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -313,7 +314,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -349,7 +350,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -404,11 +405,11 @@
 <h2 id="Channel-的分类"><a href="#Channel-的分类" class="headerlink" title="Channel 的分类"></a>Channel 的分类</h2><p>Channel 根据 capacity 的大小，分为 unbuffered channel 和 buffered channel，在创建 channel 时可以指定 channel 的容量，如果不指定默认是 0，我们称这种 channel 是 unbuffered channel。</p>
 <h2 id="Unbuffered-channel-同步特性"><a href="#Unbuffered-channel-同步特性" class="headerlink" title="Unbuffered channel 同步特性"></a>Unbuffered channel 同步特性</h2><p>在一个 unbuffered channel 上执行 send 操作会阻塞当前的 goroutine 直到另一个 goroutine 对这个 channel 执行 receive 操作，此时发送的 value 通过 channel 进行传递，两个 goroutine 继续后续的执行。相反如果是 receive 操作先执行，则 receive 的 goroutine 阻塞直到有另一个 goroutine 对 channel 执行 send 操作。</p>
 <p><strong>正是因为 unbuffered channel 的这种特性，unbuffered channel 也称之为 synchronous channel</strong>。</p>
-<h2 id="Unbuffered-channel-实践之一：同步"><a href="#Unbuffered-channel-实践之一：同步" class="headerlink" title="Unbuffered channel 实践之一：同步"></a>Unbuffered channel 实践之一：同步</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</div><div class="line">        c &lt;- <span class="number">1</span></div><div class="line">    &#125;</div><div class="line">    &lt;-c</div><div class="line">    fmt.Println(<span class="string">"main goroutine finish "</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Unbuffered-channel-实践之一：同步"><a href="#Unbuffered-channel-实践之一：同步" class="headerlink" title="Unbuffered channel 实践之一：同步"></a>Unbuffered channel 实践之一：同步</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">        c &lt;- <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    &lt;-c</span><br><span class="line">    fmt.Println(<span class="string">"main goroutine finish "</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的代码展示了利用 unbuffered channel 完成同步的能力，main goroutine 会一直等待直到满足特定条件时才会结束。</p>
 <h2 id="Unbuffered-channel-实践之二：pipeline"><a href="#Unbuffered-channel-实践之二：pipeline" class="headerlink" title="Unbuffered channel 实践之二：pipeline"></a>Unbuffered channel 实践之二：pipeline</h2><p>在 pipeline 的应用场景中，channel 是不同 goroutine 之间传递消息的通道，而且一个 goroutine 输出作为另一个 goroutine 的输入：</p>
-<p><img src="http://ozoxs1p4r.bkt.clouddn.com/WX20171229-170322.png" alt="pipeline"></p>
-<p>以下代码展示了其用法：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    naturals := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    squares := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</div><div class="line">    <span class="comment">// Counter</span></div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">for</span> x := <span class="number">0</span>; ; x++ &#123;</div><div class="line">            naturals &lt;- x</div><div class="line">        &#125;</div><div class="line">    &#125;()</div><div class="line">    <span class="comment">// Squarer</span></div><div class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">for</span> &#123;</div><div class="line">            x := &lt;-naturals</div><div class="line">            squares &lt;- x * x</div><div class="line">        &#125;</div><div class="line">    &#125;()</div><div class="line">    <span class="comment">// Printer (in main goroutine)</span></div><div class="line">    <span class="keyword">for</span> &#123;</div><div class="line">        fmt.Println(&lt;-squares)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://static.git-star.com/WX20171229-170322.png" alt="pipeline"></p>
+<p>以下代码展示了其用法：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    naturals := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    squares := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    <span class="comment">// Counter</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> x := <span class="number">0</span>; ; x++ &#123;</span><br><span class="line">            naturals &lt;- x</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="comment">// Squarer</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line">            x := &lt;-naturals</span><br><span class="line">            squares &lt;- x * x</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="comment">// Printer (in main goroutine)</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        fmt.Println(&lt;-squares)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>naturals 是 Counter 的输出，是 Squarer 的输入，一个 goroutine 的结果作为另一个的输入，各个 goroutine 使用 channel 形成了一个流水线，由于是同步的 channel，一个 goroutine 想要产生输出，必须等待另一个 goroutine，goroutine 之间形成了同步等待关系。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li>The Go Programming Language</li>
@@ -423,7 +424,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -525,7 +526,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -537,9 +538,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -552,7 +551,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -637,7 +636,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="sql," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="sql,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,8 +102,9 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/18/sql-where-parse/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="此文是阿里数据库内核研发专家何登成的文章 http://hedengcheng.com/?p=577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg">
-<meta property="og:updated_time" content="2018-05-18T15:25:47.357Z">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL中的where条件，在数据库中提取与应用浅析">
 <meta name="twitter:description" content="此文是阿里数据库内核研发专家何登成的文章 http://hedengcheng.com/?p=577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
@@ -137,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/sql-where-parse/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/sql-where-parse/">
 
 
 
@@ -180,7 +181,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -210,7 +211,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -220,7 +221,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -230,7 +231,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -240,7 +241,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -250,7 +251,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -260,7 +261,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -270,7 +271,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -313,7 +314,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -349,7 +350,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -399,7 +400,7 @@
 
       
         <blockquote>
-<p> 此文是阿里数据库内核研发专家何登成的文章 <a href="http://hedengcheng.com/?p=577" target="_blank" rel="external">http://hedengcheng.com/?p=577</a> 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论</p>
+<p> 此文是阿里数据库内核研发专家何登成的文章 <a href="http://hedengcheng.com/?p=577" target="_blank" rel="noopener">http://hedengcheng.com/?p=577</a> 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论</p>
 </blockquote>
 <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个非常巨大的问题，涵盖了SQL的词法解析、语法解析、权限检查、查询优化、SQL执行等一系列的步骤，简短的篇幅是绝对无能为力的。因此，本文挑选了其中的部分内容，也是我一直都想写的一个内容，做重点介绍：</p>
 <p><strong>给定一条SQL，如何提取其中的where条件？where条件中的每个子条件，在SQL执行的过程中有分别起着什么样的作用？</strong></p>
@@ -412,12 +413,12 @@
 </ol>
 <h2 id="关系型数据库中的数据组织"><a href="#关系型数据库中的数据组织" class="headerlink" title="关系型数据库中的数据组织"></a>关系型数据库中的数据组织</h2><p>关系型数据库中，数据组织涉及到两个最基本的结构：表与索引。表中存储的是完整记录，一般有两种组织形式：堆表(所有的记录无序存储)，或者是聚簇索引表(所有的记录，按照记录主键进行排序存储)。索引中存储的是完整记录的一个子集，用于加速记录的查询速度，索引的组织形式，一般均为B+树结构。 </p>
 <p>有了这些基本知识之后，接下来让我们创建一张测试表，为表新增几个索引，然后插入几条记录，最后看看表的完整数据组织、存储结构式怎么样的。(注意：下面的实例，使用的表的结构为堆表形式，这也是Oracle/DB2/PostgreSQL等数据库采用的表组织形式，而不是InnoDB引擎所采用的聚簇索引表。其实，表结构采用何种形式并不重要，最重要的是理解下面章节的核心，在任何表结构中均适用) </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">create table t1 (a int primary key, b int, c int, d int, e varchar(20));</div><div class="line"></div><div class="line">create index idx_t1_bcd on t1(b, c, d); </div><div class="line"></div><div class="line">insert into t1 values (4,3,1,1,’d’);</div><div class="line"></div><div class="line">insert into t1 values (1,1,1,1,’a’);</div><div class="line"></div><div class="line">insert into t1 values (8,8,8,8,’h’):</div><div class="line"></div><div class="line">insert into t1 values (2,2,2,2,’b’);</div><div class="line"></div><div class="line">insert into t1 values (5,2,3,5,’e’);</div><div class="line"></div><div class="line">insert into t1 values (3,3,2,2,’c’);</div><div class="line"></div><div class="line">insert into t1 values (7,4,5,5,’g’);</div><div class="line"></div><div class="line">insert into t1 values (6,6,4,4,’f’);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">create table t1 (a int primary key, b int, c int, d int, e varchar(20));</span><br><span class="line"></span><br><span class="line">create index idx_t1_bcd on t1(b, c, d); </span><br><span class="line"></span><br><span class="line">insert into t1 values (4,3,1,1,’d’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (1,1,1,1,’a’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (8,8,8,8,’h’):</span><br><span class="line"></span><br><span class="line">insert into t1 values (2,2,2,2,’b’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (5,2,3,5,’e’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (3,3,2,2,’c’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (7,4,5,5,’g’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (6,6,4,4,’f’);</span><br></pre></td></tr></table></figure>
 <p>t1表的存储结构如下图所示(只画出了idx_t1_bcd索引与t1表结构，没有包括t1表的主键索引)：</p>
-<p><a href="http://www.yupoo.com/photos/hedengcheng/87929304/" target="_blank" rel="external"><img src="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg" alt="t1表的组织结构图"></a></p>
+<p><a href="http://www.yupoo.com/photos/hedengcheng/87929304/" target="_blank" rel="noopener"><img src="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg" alt="t1表的组织结构图"></a></p>
 <p>简单分析一下上图，idx_t1_bcd索引上有[b,c,d]三个字段(注意：若是InnoDB类的聚簇索引表，idx_t1_bcd上还会包括主键a字段)，不包括[a,e]字段。idx_t1_bcd索引，首先按照b字段排序，b字段相同，则按照c字段排序，以此类推。记录在索引中按照[b,c,d]排序，但是在堆表上是乱序的，不按照任何字段排序。</p>
 <h2 id="SQL的where条件提取"><a href="#SQL的where条件提取" class="headerlink" title="SQL的where条件提取"></a>SQL的where条件提取</h2><p>在有了以上的t1表之后，接下来就可以在此表上进行SQL查询了，获取自己想要的数据。例如，考虑以下的一条SQL：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from t1 where b &gt;= 2 and b &lt; 8 and c &gt; 1 and d != 4 and e != ‘a’;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1 where b &gt;= 2 and b &lt; 8 and c &gt; 1 and d != 4 and e != ‘a’;</span><br></pre></td></tr></table></figure>
 <p>一条比较简单的SQL，一目了然就可以发现where条件使用到了[b,c,d,e]四个字段，而t1表的idx_t1_bcd索引，恰好使用了[b,c,d]这三个字段，那么走idx_t1_bcd索引进行条件过滤，应该是一个不错的选择。接下来，让我们抛弃数据库的思想，直接思考这条SQL的几个关键性问题： </p>
 <h2 id="此SQL，覆盖索引idx-t1-bcd上的哪个范围？"><a href="#此SQL，覆盖索引idx-t1-bcd上的哪个范围？" class="headerlink" title="此SQL，覆盖索引idx_t1_bcd上的哪个范围？"></a>此SQL，覆盖索引idx_t1_bcd上的哪个范围？</h2><p>起始范围：记录[2,2,2]是第一个需要检查的索引项。索引起始查找范围由b &gt;= 2，c &gt; 1决定。</p>
 <p>终止范围：记录[8,8,8]是第一个不需要检查的记录，而之前的记录均需要判断。索引的终止查找范围由b &lt; 8决定；</p>
@@ -454,7 +455,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -554,7 +555,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -566,9 +567,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -581,7 +580,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -666,7 +665,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -101,7 +101,8 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/12/29/ticket-server/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="发号器是互联网技术场景中经常需要的一种技术实践，本文将讨论几种典型的发号器的实现以及应用。 为什么需要一个发号器需要保证数据全局唯一，典型如数据库的分库分表场景中需要数据的主键始终保持唯一，因为分库分表很可能会夸物理机甚至夸机房。 大公司是如何做的flickrhttp://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-">
-<meta property="og:updated_time" content="2018-11-21T14:36:20.985Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-21T14:36:20.986Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊 ID Generator 的实现和应用">
 <meta name="twitter:description" content="发号器是互联网技术场景中经常需要的一种技术实践，本文将讨论几种典型的发号器的实现以及应用。 为什么需要一个发号器需要保证数据全局唯一，典型如数据库的分库分表场景中需要数据的主键始终保持唯一，因为分库分表很可能会夸物理机甚至夸机房。 大公司是如何做的flickrhttp://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-">
@@ -134,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/12/29/ticket-server/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2017/12/29/ticket-server/">
 
 
 
@@ -177,7 +178,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -207,7 +208,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -217,7 +218,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -227,7 +228,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -237,7 +238,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -247,7 +248,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -257,7 +258,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -267,7 +268,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -310,7 +311,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -346,7 +347,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -397,10 +398,10 @@
       
         <p>发号器是互联网技术场景中经常需要的一种技术实践，本文将讨论几种典型的发号器的实现以及应用。</p>
 <h1 id="为什么需要一个发号器"><a href="#为什么需要一个发号器" class="headerlink" title="为什么需要一个发号器"></a>为什么需要一个发号器</h1><p>需要保证数据全局唯一，典型如数据库的分库分表场景中需要数据的<strong>主键始终保持唯一</strong>，因为分库分表很可能会夸物理机甚至夸机房。</p>
-<h1 id="大公司是如何做的"><a href="#大公司是如何做的" class="headerlink" title="大公司是如何做的"></a>大公司是如何做的</h1><h2 id="flickr"><a href="#flickr" class="headerlink" title="flickr"></a>flickr</h2><p><a href="http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="external">http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/</a></p>
-<p>flickr 在自己的数据库业务场景中设计了一个centralized 发号器，这个发号器利用了 mysql 的 auto increment 和 <a href="https://dev.mysql.com/doc/refman/5.7/en/replace.html" target="_blank" rel="external">replace</a> :</p>
+<h1 id="大公司是如何做的"><a href="#大公司是如何做的" class="headerlink" title="大公司是如何做的"></a>大公司是如何做的</h1><h2 id="flickr"><a href="#flickr" class="headerlink" title="flickr"></a>flickr</h2><p><a href="http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="noopener">http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/</a></p>
+<p>flickr 在自己的数据库业务场景中设计了一个centralized 发号器，这个发号器利用了 mysql 的 auto increment 和 <a href="https://dev.mysql.com/doc/refman/5.7/en/replace.html" target="_blank" rel="noopener">replace</a> :</p>
 <blockquote>
-<p>MySQL uses the following algorithm for <a href="https://dev.mysql.com/doc/refman/5.7/en/replace.html" target="_blank" rel="external"><code>REPLACE</code></a> (and <code>LOAD DATA ... REPLACE</code>):</p>
+<p>MySQL uses the following algorithm for <a href="https://dev.mysql.com/doc/refman/5.7/en/replace.html" target="_blank" rel="noopener"><code>REPLACE</code></a> (and <code>LOAD DATA ... REPLACE</code>):</p>
 <ol>
 <li>Try to insert the new row into the table</li>
 <li>While the insertion fails because a duplicate-key error occurs for a primary key or unique index:<ol>
@@ -410,14 +411,14 @@
 </li>
 </ol>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPLACE into tag (id, name) values (2, &apos;aaaa&apos;);</div></pre></td></tr></table></figure>
-<p>再结合 <a href="https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_last-insert-id" target="_blank" rel="external">LAST_INSERT_ID</a> 函数就能取得<strong>一个自增的全局唯一的 id</strong> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE into tag (id, name) values (2, &apos;aaaa&apos;);</span><br></pre></td></tr></table></figure>
+<p>再结合 <a href="https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_last-insert-id" target="_blank" rel="noopener">LAST_INSERT_ID</a> 函数就能取得<strong>一个自增的全局唯一的 id</strong> 。</p>
 <p>具体执行先建立一个只有一条记录的 ticket table</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE `tickets64` (</div><div class="line">  `id` bigint(20) unsigned NOT NULL auto_increment,</div><div class="line">  `stub` char(1) NOT NULL default &apos;&apos;,</div><div class="line">  PRIMARY KEY  (`id`),</div><div class="line">  UNIQUE KEY `stub` (`stub`)</div><div class="line">) ENGINE=MyISAM</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `tickets64` (</span><br><span class="line">  `id` bigint(20) unsigned NOT NULL auto_increment,</span><br><span class="line">  `stub` char(1) NOT NULL default &apos;&apos;,</span><br><span class="line">  PRIMARY KEY  (`id`),</span><br><span class="line">  UNIQUE KEY `stub` (`stub`)</span><br><span class="line">) ENGINE=MyISAM</span><br></pre></td></tr></table></figure>
 <p>在需要号码时执行下列语句：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">REPLACE INTO tickets64 (stub) VALUES (&apos;a&apos;);</div><div class="line">SELECT LAST_INSERT_ID();</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPLACE INTO tickets64 (stub) VALUES (&apos;a&apos;);</span><br><span class="line">SELECT LAST_INSERT_ID();</span><br></pre></td></tr></table></figure>
 <p>为了防止单点故障，flickr 在设计中使用了两台独立的 database 实例作为发号器，分布设置不同步长</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">TicketServer1:</div><div class="line">auto-increment-increment = 2</div><div class="line">auto-increment-offset = 1</div><div class="line"></div><div class="line">TicketServer2:</div><div class="line">auto-increment-increment = 2</div><div class="line">auto-increment-offset = 2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TicketServer1:</span><br><span class="line">auto-increment-increment = 2</span><br><span class="line">auto-increment-offset = 1</span><br><span class="line"></span><br><span class="line">TicketServer2:</span><br><span class="line">auto-increment-increment = 2</span><br><span class="line">auto-increment-offset = 2</span><br></pre></td></tr></table></figure>
 <p>这样就保证了从不同发号器获得的号码也是唯一的，同时可防止单点，保证了高可用。</p>
 <h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>利用 MySQL 的自增主键实现的分布式发号器非常简单，但是由于步长固定容易猜测，而且不易扩展，比如</p>
 <p>如果有两台发号器，一台初始值是 2，步长是 2，一台初始值是 1 步长是 2，两台发号器分别发号对应的是双数发号器和单号发号器，如果再进行扩展就会变得比较麻烦了，因为单双号分离变得麻烦。</p>
@@ -432,7 +433,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -526,7 +527,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -538,9 +539,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -553,7 +552,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -638,7 +637,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

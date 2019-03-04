@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="故障," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="故障,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -102,6 +102,7 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-05-17T15:21:02.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MongoDB 常见故障以及诊断和解决方案">
@@ -135,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/">
 
 
 
@@ -178,7 +179,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,7 +209,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -218,7 +219,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -228,7 +229,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -238,7 +239,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -248,7 +249,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -258,7 +259,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -268,7 +269,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -311,7 +312,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -347,7 +348,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -401,7 +402,7 @@
 <p><strong>有些钱省不得，省了之后总是会带来更大的麻烦，如果你生成环境用 MongoDB 建议直接 SSD，再说现在都云了，非常容易更换，不像我们当年，扛着磁盘去机房换，累死累活</strong>。</p>
 <h2 id="内存不够"><a href="#内存不够" class="headerlink" title="内存不够"></a>内存不够</h2><p>MongoDB 为了性能几乎把所有热点数据都加载到内存了，很吃内存，早期我们对 MongoDB 不了解，机器都是自建的同样也是为了省钱机器配置都是 8CPU x 16G 的，用户量大时候莫名其妙 MongoDB 进程被操作系统 kill 掉，回顾日志发现大部分原因是 MongoDB 吃了太多内存。后来我们升级到 64G 之后再也没有出现过类似的问题。</p>
 <p><strong>MongoDB 的非常吃内存，如果生产环境大量使用 MongoDB 建议对重点业务机器配置高内存</strong>。</p>
-<h2 id="索引使用不合理"><a href="#索引使用不合理" class="headerlink" title="索引使用不合理"></a>索引使用不合理</h2><p>同 MySQL 一样，如果 MongoDB 的索引使用不合理，会导致大量的慢查询，从而过快消耗完数据库连接，服务器 CPU load 非常高，数据库响应缓慢。MongoDB 的索引的最佳实践官方说的非常透彻，建议好好学习，认真实践：<a href="https://docs.mongodb.com/manual/indexes/" target="_blank" rel="external">https://docs.mongodb.com/manual/indexes/</a> 。</p>
+<h2 id="索引使用不合理"><a href="#索引使用不合理" class="headerlink" title="索引使用不合理"></a>索引使用不合理</h2><p>同 MySQL 一样，如果 MongoDB 的索引使用不合理，会导致大量的慢查询，从而过快消耗完数据库连接，服务器 CPU load 非常高，数据库响应缓慢。MongoDB 的索引的最佳实践官方说的非常透彻，建议好好学习，认真实践：<a href="https://docs.mongodb.com/manual/indexes/" target="_blank" rel="noopener">https://docs.mongodb.com/manual/indexes/</a> 。</p>
 <p>除此之外，我也写过一篇关于 MongoDB 索引的文章：<a href="http://sanyuesha.com/2018/03/21/mongodb-index/">Mongodb 中的索引</a> 读者可参考借鉴。</p>
 <p><strong>什么时候使用索引？</strong></p>
 <p>最好索引在建表之初就设计好，不要等到数据量大到一定程度把问题暴露出来了再去创建索引，那个时候出问题可能就是个大问题了。</p>
@@ -409,7 +410,7 @@
 <p><strong>MongoDB 单条数据最大不超过 16m，如果再大官方建议使用 gridfs 或者其他文件存储系统，显然 MongoDB 有自己不擅长的地方，在使用时要注意</strong>。</p>
 <h2 id="collection-数据量太大"><a href="#collection-数据量太大" class="headerlink" title="collection 数据量太大"></a>collection 数据量太大</h2><p>MongoDB 单节点单表数据达数亿级别时在大并发写入时会变慢，此时可以考虑拆表，如果业务数据量不是很大，可以直接在原有集群上进行。MongoDB 官方提供了 sharding 方案，但是对于一般性业务来说显得过于复杂，可以根据自身的业务特性选择合适的方案实践。</p>
 <h2 id="日常-MongoDB-的诊断"><a href="#日常-MongoDB-的诊断" class="headerlink" title="日常 MongoDB 的诊断"></a>日常 MongoDB 的诊断</h2><blockquote>
-<p><a href="https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/" target="_blank" rel="external">https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/</a></p>
+<p><a href="https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/" target="_blank" rel="noopener">https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/</a></p>
 </blockquote>
 <p>MongoDB 提供了慢查询日志和错误日志来帮助定位和解决问题，慢查询日志可以通过 <code>db.setProfilingLevel</code> 设置，共有3个级别分别是：</p>
 <ul>
@@ -429,7 +430,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -529,7 +530,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -541,9 +542,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -556,7 +555,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -641,7 +640,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>

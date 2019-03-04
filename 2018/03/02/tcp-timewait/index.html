@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Python,Go,Devops,algorithm" />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
 
 
 
@@ -101,13 +101,14 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/03/02/tcp-timewait/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="keep-alive 连接在 http 1.0 中，如果客户端在发起请求时加入 Connection:keep-alive 首部，服务端在响应的时候也加入 Connection:keep-alive 首部，则此次 http 请求将使用持久连接，即请求结束之后 TCP 连接不会关闭以供后续请求继续使用。不难看出，持久连接必须是客户端和服务器都同时支持才可能会发生，因为 TCP 协议是双向通信。 实现">
-<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/d36251e.jpg">
-<meta property="og:image" content="http://ozoxs1p4r.bkt.clouddn.com/WX20180302-165435.png">
-<meta property="og:updated_time" content="2018-11-21T14:36:20.985Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.git-star.com/d36251e.jpg">
+<meta property="og:image" content="http://static.git-star.com/WX20180302-165435.png">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.309Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从一次 TIME_WAIT 调优说起">
 <meta name="twitter:description" content="keep-alive 连接在 http 1.0 中，如果客户端在发起请求时加入 Connection:keep-alive 首部，服务端在响应的时候也加入 Connection:keep-alive 首部，则此次 http 请求将使用持久连接，即请求结束之后 TCP 连接不会关闭以供后续请求继续使用。不难看出，持久连接必须是客户端和服务器都同时支持才可能会发生，因为 TCP 协议是双向通信。 实现">
-<meta name="twitter:image" content="http://ozoxs1p4r.bkt.clouddn.com/d36251e.jpg">
+<meta name="twitter:image" content="http://static.git-star.com/d36251e.jpg">
 
 
 
@@ -137,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/03/02/tcp-timewait/"/>
+  <link rel="canonical" href="http://sanyuesha.com/2018/03/02/tcp-timewait/">
 
 
 
@@ -180,7 +181,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -210,7 +211,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -220,7 +221,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -230,7 +231,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -240,7 +241,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -250,7 +251,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -260,7 +261,7 @@
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             我的书单
           </a>
@@ -270,7 +271,7 @@
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
             
             技术编年史
           </a>
@@ -313,7 +314,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -349,7 +350,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -399,28 +400,28 @@
 
       
         <h2 id="keep-alive-连接"><a href="#keep-alive-连接" class="headerlink" title="keep-alive 连接"></a>keep-alive 连接</h2><p>在 http 1.0 中，如果客户端在发起请求时加入 <code>Connection:keep-alive</code> 首部，服务端在响应的时候也加入 <code>Connection:keep-alive</code> 首部，则此次 http 请求将使用持久连接，即请求结束之后 TCP 连接不会关闭以供后续请求继续使用。不难看出，持久连接必须是客户端和服务器都同时支持才可能会发生，因为 TCP 协议是双向通信。</p>
-<p>实现持久连接的 http 请求必须要保证报文可以正确判断起始和结束，这在 http 中是通过 content-length 首部以及 chunk 传输来保证的，具体可以参见《http 权威指南》“连接管理”章节，文章 <a href="https://www.byvoid.com/zhs/blog/http-keep-alive-header" target="_blank" rel="external">HTTP协议头部与Keep-Alive模式详解</a> 也对 keep-alive 作用和意义有详细介绍。</p>
+<p>实现持久连接的 http 请求必须要保证报文可以正确判断起始和结束，这在 http 中是通过 content-length 首部以及 chunk 传输来保证的，具体可以参见《http 权威指南》“连接管理”章节，文章 <a href="https://www.byvoid.com/zhs/blog/http-keep-alive-header" target="_blank" rel="noopener">HTTP协议头部与Keep-Alive模式详解</a> 也对 keep-alive 作用和意义有详细介绍。</p>
 <p>总得来说利用 keep-alive 可有效利用 TCP 连接来提高 web 请求的性能。</p>
 <h2 id="一般-web-服务的架构"><a href="#一般-web-服务的架构" class="headerlink" title="一般 web 服务的架构"></a>一般 web 服务的架构</h2><p>以简单的 Python web 服务为例，其架构组织如下：</p>
-<p><img src="http://ozoxs1p4r.bkt.clouddn.com/d36251e.jpg" alt=""></p>
+<p><img src="http://static.git-star.com/d36251e.jpg" alt></p>
 <p>其中 Python app 大多数是 web framework + gunicorn 的组合，gunicorn 是一个 web server。</p>
 <p>一个来自 user 的请求会经过如下处理用户最终才能获得响应：</p>
-<p><img src="http://ozoxs1p4r.bkt.clouddn.com/WX20180302-165435.png" alt=""></p>
+<p><img src="http://static.git-star.com/WX20180302-165435.png" alt></p>
 <p>其中 user 连接 nginx 的 TCP 和 nginx 连接 app 的 TCP 是不同的连接，也就是说要完成一个完整的请求 nginx 必须维系着自身与 user 和 app 两端的连接，nginx 作为代理会负责对 user 的请求进行中转处理然后发起与 app 的新的 TCP 连接，这就是 nginx 的角色。</p>
 <h2 id="从线上后端-app-服务大量的-TIME-WAIT-说起"><a href="#从线上后端-app-服务大量的-TIME-WAIT-说起" class="headerlink" title="从线上后端 app 服务大量的 TIME_WAIT 说起"></a>从线上后端 app 服务大量的 TIME_WAIT 说起</h2><p>默认情况下的，大多数现代浏览器以及其他 web 终端与 nginx 的连接默认都会开启 keep-alive，但是 nginx 与后端 app 则不一定。</p>
 <p>以我遇到的场景为例，在后端 app 服务所在的服务器，通过查看其和 nginx 端的连接通过 netstat 查看能够看到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -n | grep 10.10.93.110   | grep TIME_WAIT | wc -l</div></pre></td></tr></table></figure>
-<p>处于 TIME_WAIT 的 TCP 是 1000 多个，但处于 ESTABLISHED 是 20 多个，按照 TCP 协议的描述，具体见 <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="external">Transmission Control Protocol</a>，处于 TIME_WAIT 的 TCP 连接在等待 2MSL 时间之后才会真正关闭，但是关闭之前其所占用端口和内存资源都不会释放，也就是说 TIME_WAIT 的变多说明服务器的处理能力会受到影响，甚至在极端情况下不响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n | grep 10.10.93.110   | grep TIME_WAIT | wc -l</span><br></pre></td></tr></table></figure>
+<p>处于 TIME_WAIT 的 TCP 是 1000 多个，但处于 ESTABLISHED 是 20 多个，按照 TCP 协议的描述，具体见 <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" target="_blank" rel="noopener">Transmission Control Protocol</a>，处于 TIME_WAIT 的 TCP 连接在等待 2MSL 时间之后才会真正关闭，但是关闭之前其所占用端口和内存资源都不会释放，也就是说 TIME_WAIT 的变多说明服务器的处理能力会受到影响，甚至在极端情况下不响应。</p>
 <p>linux 内核 MSL 是 60s，2MSL 就是 120s，每秒有 20 TCP 连接，假设响应时间很短，断开之后等待 2MSL，则 120s 之后差不多会有 1000 多个 TIME_WAIT，基本符合 TCP 的状态变迁。</p>
 <p>为什么后端 app 和 nginx 的连接会有如此多的 TIME_WAIT？</p>
 <h2 id="nginx-和-gunicorn-的默认配置"><a href="#nginx-和-gunicorn-的默认配置" class="headerlink" title="nginx 和 gunicorn 的默认配置"></a>nginx 和 gunicorn 的默认配置</h2><p>默认 nginx 和后端 APP 的连接是短连接，即请求结束之后就会关闭，无论是 nginx 主动关闭还是后端 APP 主动关闭都会产生大量的 TIME_WAIT。</p>
 <p>Gunicorn 作为一个 web server 已经很早就开始支持 keep-alive 了，在本文开始说过要保持持久连接，连接的两端都必须支持 keep-alive，所以这里我们主要修改 nginx 和上游 upstream 的连接来支持 keep-alive。</p>
 <h2 id="修改-nginx-让-upstream-keep-alive"><a href="#修改-nginx-让-upstream-keep-alive" class="headerlink" title="修改 nginx 让 upstream  keep-alive"></a>修改 nginx 让 upstream  keep-alive</h2><p>在未修改 nginx 之前可以很明显看到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -n | grep 10.10.18.126 | grep ESTABLISHED | sort</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n | grep 10.10.18.126 | grep ESTABLISHED | sort</span><br></pre></td></tr></table></figure>
 <p>后端 app 和 nginx 的连接中端口 nginx server 的端口一直在改变，修改 nginx 支持 upstream 的 keep-alive 之后，端口改变的频率降低，甚至一段时间内都不在变化，说明请求复用了连接。</p>
-<p>nginx 的 keep-alive 的支持需要在 upstream 配置 <code>keepalive 300;</code> 指令，并且在 location 中配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /  &#123;</div><div class="line">    proxy_http_version 1.1;</div><div class="line">    proxy_set_header Connection &quot;&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>nginx 的 keep-alive 的支持需要在 upstream 配置 <code>keepalive 300;</code> 指令，并且在 location 中配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location /  &#123;</span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line">    proxy_set_header Connection &quot;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>告诉后端 app 请求支持 keep-alive。</p>
-<p>具体 keepalive 指令的理解详见<a href="https://skyao.gitbooks.io/learning-nginx/content/documentation/keep_alive.html" target="_blank" rel="external">支持keep alive长连接
+<p>具体 keepalive 指令的理解详见<a href="https://skyao.gitbooks.io/learning-nginx/content/documentation/keep_alive.html" target="_blank" rel="noopener">支持keep alive长连接
 </a> ，尤其是需要注意对 keepalive 指令数量的控制，需要对 keepalive 有非常详细的了解。</p>
 <h2 id="内核参数对-TIME-WAIT-的影响"><a href="#内核参数对-TIME-WAIT-的影响" class="headerlink" title="内核参数对 TIME_WAIT 的影响"></a>内核参数对 TIME_WAIT 的影响</h2><p>有很多内核参数决定了服务器 TIME_WAIT 在单位时间内产生的数量，比如</p>
 <ul>
@@ -432,12 +433,12 @@
 <p>在配置服务器需要对不同内核参数进行特定场景的优化，为此就需要理解当前服务器的服务在整个 TCP 链接的角色和位置，比如是作为 client 还是 server。举例来说 nginx 对于下游用户来说是个 server，但是对于后端 app 来说是一个 client，nginx 扮演的角色的不同对其配置差异也很大。</p>
 <p>优化内核参数需要认真研读理论部分，仔细就行测验，在结合他人的实践经验针对自己的业务调整。详见</p>
 <ul>
-<li><a href="https://www.cnblogs.com/sunxucool/p/3449068.html" target="_blank" rel="external">服务器TIME_WAIT和CLOSE_WAIT详解和解决办法</a></li>
-<li><a href="https://huoding.com/2013/12/31/316" target="_blank" rel="external">再叙TIME_WAIT</a></li>
-<li><a href="http://blog.sina.com.cn/s/blog_781b0c850100znjd.html" target="_blank" rel="external">tcp_tw_recycle和tcp_timestamps导致connect失败问题</a></li>
-<li><a href="http://www.litrin.net/2013/03/01/android%E4%B9%8B%E7%BD%91%E7%BB%9C%E4%B8%A2%E5%8C%85%E4%BA%8B%E4%BB%B6/" target="_blank" rel="external">Android之网络丢包事件</a></li>
-<li><a href="http://jaminzhang.github.io/linux/understand-Linux-backlog-and-somaxconn-kernel-arguments/" target="_blank" rel="external">理解 Linux backlog/somaxconn 内核参数</a></li>
-<li><a href="http://perthcharles.github.io/2015/08/27/timestamp-intro/" target="_blank" rel="external">TCP timestamp</a></li>
+<li><a href="https://www.cnblogs.com/sunxucool/p/3449068.html" target="_blank" rel="noopener">服务器TIME_WAIT和CLOSE_WAIT详解和解决办法</a></li>
+<li><a href="https://huoding.com/2013/12/31/316" target="_blank" rel="noopener">再叙TIME_WAIT</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_781b0c850100znjd.html" target="_blank" rel="noopener">tcp_tw_recycle和tcp_timestamps导致connect失败问题</a></li>
+<li><a href="http://www.litrin.net/2013/03/01/android%E4%B9%8B%E7%BD%91%E7%BB%9C%E4%B8%A2%E5%8C%85%E4%BA%8B%E4%BB%B6/" target="_blank" rel="noopener">Android之网络丢包事件</a></li>
+<li><a href="http://jaminzhang.github.io/linux/understand-Linux-backlog-and-somaxconn-kernel-arguments/" target="_blank" rel="noopener">理解 Linux backlog/somaxconn 内核参数</a></li>
+<li><a href="http://perthcharles.github.io/2015/08/27/timestamp-intro/" target="_blank" rel="noopener">TCP timestamp</a></li>
 </ul>
 
       
@@ -449,7 +450,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;"/>
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -543,7 +544,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -555,9 +556,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image"
-              src="/images/logo.jpg"
-              alt="三月沙" />
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
           
             <p class="site-author-name" itemprop="name">三月沙</p>
             <p class="site-description motion-element" itemprop="description"></p>
@@ -570,7 +569,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -655,7 +654,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2019</span>
