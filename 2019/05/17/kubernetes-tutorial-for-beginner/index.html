@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://static.git-star.com/k8s-app-tutorial-architecture.png">
 <meta property="og:image" content="http://static.git-star.com/k8s-tutorial-app-service.png">
 <meta property="og:image" content="http://static.git-star.com/k8s-tutorial-app-show.gif?a=aaa">
-<meta property="og:updated_time" content="2019-05-19T06:42:25.673Z">
+<meta property="og:updated_time" content="2019-07-07T14:39:30.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个小时学会搭建和使用 kubernetes">
 <meta name="twitter:description" content="本文是一个面向 kubernetes 初学者的教程，是我作为一名开发者在开始使用和理解 kubernetes 一点经验总结，它包含两部分，第一部分介绍使用 kubeadm 搭建一个 kubernetes 集群，第二部分使用 kubernetes 部署一个包含多个组件的应用程序，通过这两部分初学者基本能够理解 kubernetes 的组成以及应用。 作为一个开发者，为什么要了解 kubernetes">
@@ -409,7 +409,14 @@
 <p>由于 docker 官方镜像在国内访问特别的慢，docker 环境准备完成之后请配置国内的加速镜像：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tee /etc/docker/daemon.json &lt;&lt;-<span class="string">'EOF'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"registry-mirrors"</span>: [<span class="string">"https://registry.docker-cn.co"</span>]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 <p>如果提示权限不足，请使用 sudo 命令或 root 用户。</p>
-<h2 id="3-安装-k8s-的基础组件"><a href="#3-安装-k8s-的基础组件" class="headerlink" title="3. 安装 k8s 的基础组件"></a>3. 安装 k8s 的基础组件</h2><p>任选一台机器作 k8s master 节点，后面所有的安装如果没有特殊标明都在 master 上执行，使用 sudo 命令或 root 用户依次执行下面的命令完成以下各个组件的安装，这里我们使用阿里云的 k8s 源进行安装:</p>
+<h2 id="3-安装-k8s-的基础组件"><a href="#3-安装-k8s-的基础组件" class="headerlink" title="3. 安装 k8s 的基础组件"></a>3. 安装 k8s 的基础组件</h2><p>安装 k8s 的最低要求见 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin</a> :</p>
+<ul>
+<li>要求 2CPU 和 2 GB</li>
+<li>不能启用 swap</li>
+<li>外网可通</li>
+<li>…</li>
+</ul>
+<p>任选一台机器作 k8s master 节点，后面所有的安装如果没有特殊标明都在 master 上执行，使用 sudo 命令或 root 用户依次执行下面的命令完成以下各个组件的安装，这里我们使用阿里云的 k8s 源进行安装:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install -y apt-transport-https</span><br><span class="line">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - </span><br><span class="line">cat &lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list</span><br><span class="line">deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main</span><br><span class="line">EOF</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y kubelet kubeadm kubectl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
 <p>这里简单介绍一下这三个组件的作用：</p>
 <ul>
@@ -686,7 +693,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -708,7 +715,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -304,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/12/01/go-interface-4/">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/12/01/go-goroutine-channel-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="三月沙">
@@ -323,7 +323,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/01/go-interface-4/" itemprop="url">Go interface 详解 (四) ：类型断言</a></h2>
+                <a class="post-title-link" href="/2017/12/01/go-goroutine-channel-2/" itemprop="url">Go goroutine 和 channel 详解 (二) ：channel</a></h2>
         
 
         <div class="post-meta">
@@ -335,7 +335,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T13:08:19+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T14:08:19+08:00">
                 Dec 1 2017
               </time>
             
@@ -400,11 +400,11 @@
           
 本系列是阅读 “The Go Programming Language” 理解和记录。
 
-Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assert
+定义如果说 goroutine 是并发执行的一个 Go program， channel 就是它们之间的连接通道，它提供了 goroutine 之间相互通信的机制。Channel 是有类型的，channel 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/01/go-interface-4/#more" rel="contents">
+            <a class="btn" href="/2017/12/01/go-goroutine-channel-2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -556,6 +556,157 @@ Go 支持两种方式的并发模型: communicating sequential processes(CSP) �
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/12/01/go-goroutine-channel-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/12/01/go-interface-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/01/go-interface-4/" itemprop="url">Go interface 详解 (四) ：类型断言</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T13:08:19+08:00">
+                Dec 1 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go-读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Go 读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本系列是阅读 “The Go Programming Language” 理解和记录。
+
+Type AssertionType assertion(断言)是用于 interface value 的一种操作，语法是 x.(T)，x 是 interface type 的表达式，而 T 是 assert
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/01/go-interface-4/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1647,158 +1798,6 @@ KV 存
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/14/superset/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="三月沙">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/14/superset/" itemprop="url">可视化数据平台 superset ：安装和使用</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T20:50:20+08:00">
-                Nov 14 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          什么是 supersetSuperset 是 Airbnb 开源的大数据可视化平台，其特性包括：
-
-backend 支持几乎所有主流的数据库
-支持复杂的权限控制和管理(OpenId, OAuth 等)，满足企业内部不同部门人员对数据的权限要求
-丰富的可视化展示，支持自定义创建 dashboard，可
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/14/superset/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1850,7 +1849,7 @@ backend 支持几乎所有主流的数据库
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1872,7 +1871,7 @@ backend 支持几乎所有主流的数据库
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
