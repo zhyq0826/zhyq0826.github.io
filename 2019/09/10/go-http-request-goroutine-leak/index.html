@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="问题回放线上一个 Go 服务内存一直持续增长，使用 Go ppof 分析之后发现 net/http.(*persistConn).writeLoop 和 net/http.(*persistConn).readLoop goroutine 数目多达数万个，很明显发生了 goroutine 泄漏。 初步定位既然是 net/http 相关的代码，一定和 http 请求有关，扫了一下服务中用到的所有 h">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-11T00:36:28.006Z">
+<meta property="og:updated_time" content="2019-09-19T14:27:31.662Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go http request 引起的 goroutine 泄漏">
 <meta name="twitter:description" content="问题回放线上一个 Go 服务内存一直持续增长，使用 Go ppof 分析之后发现 net/http.(*persistConn).writeLoop 和 net/http.(*persistConn).readLoop goroutine 数目多达数万个，很明显发生了 goroutine 泄漏。 初步定位既然是 net/http 相关的代码，一定和 http 请求有关，扫了一下服务中用到的所有 h">
@@ -452,6 +452,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/10/22/envoy-503/" rel="prev" title="istio 网关 envoy 503 问题总结">
+                istio 网关 envoy 503 问题总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -543,7 +547,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">126</span>
+                <span class="site-state-item-count">127</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
