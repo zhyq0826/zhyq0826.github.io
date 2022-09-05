@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="架构,设计模式,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="本文节选自 Software Architecture Patterns  概念最常用的架构设计模式就是分层架构，也叫层次架构，在分层架构中，具有相似功能的组件被组织在同一层，不同的层次负责不同的角色。虽然在这种架构模式中没有明确规定有多少层，一般来说分层架构都包含：presentation、business、persistence、database。在有些场景，persistence 和 da">
+<meta name="keywords" content="架构,设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="架构的设计模式：层次架构">
+<meta property="og:url" content="http://sanyuesha.com/2020/06/27/architecture-pattern/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="本文节选自 Software Architecture Patterns  概念最常用的架构设计模式就是分层架构，也叫层次架构，在分层架构中，具有相似功能的组件被组织在同一层，不同的层次负责不同的角色。虽然在这种架构模式中没有明确规定有多少层，一般来说分层架构都包含：presentation、business、persistence、database。在有些场景，persistence 和 da">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/sapr_0101.png">
+<meta property="og:image" content="https://static.git-star.com/sapr_0102.png">
+<meta property="og:image" content="https://static.git-star.com/sapr_0103.png">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="架构的设计模式：层次架构">
+<meta name="twitter:description" content="本文节选自 Software Architecture Patterns  概念最常用的架构设计模式就是分层架构，也叫层次架构，在分层架构中，具有相似功能的组件被组织在同一层，不同的层次负责不同的角色。虽然在这种架构模式中没有明确规定有多少层，一般来说分层架构都包含：presentation、business、persistence、database。在有些场景，persistence 和 da">
+<meta name="twitter:image" content="https://static.git-star.com/sapr_0101.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2020/06/27/architecture-pattern/">
+
+
+
+
+
+  <title>架构的设计模式：层次架构 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2020/06/27/architecture-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">架构的设计模式：层次架构</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-27T08:31:10+08:00">
+                Jun 27 2020
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文节选自 Software Architecture Patterns</p>
+</blockquote>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>最常用的架构设计模式就是<strong>分层架构</strong>，也叫<strong>层次架构</strong>，在分层架构中，具有相似功能的组件被组织在同一层，不同的层次负责不同的角色。虽然在这种架构模式中没有明确规定有多少层，一般来说分层架构都包含：presentation、business、persistence、database。在有些场景，persistence 和 database 有时候会合并成一层。</p>
+<p>在分层架构中，每个层次在负责扮演自己的角色的同时，还需要提供一层抽象来满足来自其他层的请求，比如 presentation 在负责展示数据的同时，不需要知道数据取自于哪里，数据的提取、聚合工作是有他的下一层 business 抽象提供的。显然易见，这种分层的一个优势就是，<strong>功能分明，职责清晰</strong>。</p>
+<p><img src="https://static.git-star.com/sapr_0101.png" style="zoom:50%;"></p>
+<h3 id="分层架构中的数据流动"><a href="#分层架构中的数据流动" class="headerlink" title="分层架构中的数据流动"></a>分层架构中的数据流动</h3><p><img src="https://static.git-star.com/sapr_0102.png" style="zoom:50%;"></p>
+<p>在分层架构中，数据的流向是有严格规定的，默认的情况下，数据必须经过指定的层才能到达另一个层，也就是不能跨层流动，图中 <strong>closed</strong> 标志就是在表达这样的含义。为什么数据不能跨层流动，即使某些场景下数据跨层流动显然有更好的性能，很重要的一个原因就是为了保持<strong>层的隔离性</strong>。层隔离可以让每层的变动都只影响和他直接交互的层次，而其他层则不需要做出变更，以此达到<strong>高内聚，低耦合</strong>的架构目的。</p>
+<h4 id="例外情况"><a href="#例外情况" class="headerlink" title="例外情况"></a>例外情况</h4><p>生活总是有例外的情况，同样架构也是如此，虽然层的隔离性能够限制层次变化影响的范围，但是有些时候又需要取消这种隔离。</p>
+<p><img src="https://static.git-star.com/sapr_0103.png" style="zoom:50%;"></p>
+<p>比如图中需要为 business 层提供具有通用功能的 service layer 来提供类似数据转换，日志等不带业务逻辑的工具功能，这个层次在架构中位于 business 层之下，也就是他是为 business 层服务的，presentation 不能直接访问他，但是按照上文 closed 的原则，意味着所有来自于 business 的请求必须要先经过 service 层才能到达 persistence，但是作为一个提供通用工具功能的层次，如果强制让所有来自 business 的请求都经过他显得多次一举，没有意义，因为并不是所有的数据都必须要进行转换或者需要日志功能，因而在这个场景之下，service 变成 <strong>open</strong>，即可以让来自 business 的请求跨过 service 访问 persistence。</p>
+<p>层次的 open and close 是为定义层次之间的关系服务的，也决定了层次之间的数据流向，因而如果使用层次架构，架构师的职责之一就是权衡每个层次的开放性。</p>
+<h3 id="警惕"><a href="#警惕" class="headerlink" title="警惕"></a>警惕</h3><p>分层架构如此简单通用，以至于在没有找到合适的架构的时候总是可以考虑分层架构。但是这里需要值得警惕的是<strong>无意义的分层</strong>。无意义的分层就是说层次非常单薄，层次中的业务逻辑非常少或者几乎没有，导致数据的流动仅仅是为了层次的划分而必须要经过这些无意义的层。如何决定一个层是必须的？<strong>二八原则</strong>，也就是 80% 的 request 决定了这个层次存在的必要性和开闭原则，如果 80% 的request 都是简单的经过，这个层次可以考虑开放或者取消。</p>
+<h3 id="分层架构的度量"><a href="#分层架构的度量" class="headerlink" title="分层架构的度量"></a>分层架构的度量</h3><p><strong>agility</strong></p>
+<p>敏捷性意味着能轻松应对变化，但是分层架构显然在这方面做的做的不够 ，如果你只是在一个层次中做出改变，可能还稍微好点，但是如果变化发生在多个层次，所耗费的精力和时间都非常多，因为分层架构一般都是单体应用，单体应用的一个显著问题就是应对变化显得耦合过重。</p>
+<p><strong>deployment</strong></p>
+<p>对一个层次中的组件进行变更通常都意味着整个层次或者整个应用必须要重新部署。  </p>
+<p><strong>testability</strong>    </p>
+<p>每个层次的依赖都是可预测的，也就是数据流进的层次和数据流出的层次，这也意味着可以很容易实现各个层次的 mock。</p>
+<p><strong>performance</strong></p>
+<p>如果是单体应用中的分层架构，整体性能不会太低，考虑到每个数据请求都要经过多个层次，极端情况下对于那些不需要经过多个层次的数据可能会显得性能低下</p>
+<p><strong>scalability</strong></p>
+<p>由于层次的限制，如果单纯的伸缩整个应用，可能会导致某些层次有性能问题，比如单体应用横向扩展可能会导致 database 的 connection 暴涨，从而引起 db 的性能问题，此时可以考虑把 database 层单独伸缩，但是层次之间的数据交互又成了问题。</p>
+<p><strong>development</strong></p>
+<p>由于分层架构简单易实施，开发入门容易</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/22/envoy-503/" rel="next" title="istio 网关 envoy 503 问题总结">
+                <i class="fa fa-chevron-left"></i> istio 网关 envoy 503 问题总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/29/architecture-event-pattern/" rel="prev" title="架构的设计模式：事件驱动">
+                架构的设计模式：事件驱动 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分层架构中的数据流动"><span class="nav-number">2.</span> <span class="nav-text">分层架构中的数据流动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例外情况"><span class="nav-number">2.1.</span> <span class="nav-text">例外情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#警惕"><span class="nav-number">3.</span> <span class="nav-text">警惕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分层架构的度量"><span class="nav-number">4.</span> <span class="nav-text">分层架构的度量</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2020/06/27/architecture-pattern/';
+          this.page.identifier = '2020/06/27/architecture-pattern/';
+          this.page.title = '架构的设计模式：层次架构';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

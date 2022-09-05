@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="interface,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="1、interface 是一种类型1234type I interface &amp;#123;    Get() int&amp;#125; 首先 interface 是一种类型，从它的定义可以看出来用了 type 关键字，更准确的说 interface 是一种具有一组方法的类型，这些方法定义了 interface 的行为。 go 允许不带任何方法的 interface ，这种类型的 interface 叫 e">
+<meta name="keywords" content="interface">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 Go interface 的 5 个关键点">
+<meta property="og:url" content="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="1、interface 是一种类型1234type I interface &amp;#123;    Get() int&amp;#125; 首先 interface 是一种类型，从它的定义可以看出来用了 type 关键字，更准确的说 interface 是一种具有一组方法的类型，这些方法定义了 interface 的行为。 go 允许不带任何方法的 interface ，这种类型的 interface 叫 e">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-14T15:07:50.791Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解 Go interface 的 5 个关键点">
+<meta name="twitter:description" content="1、interface 是一种类型1234type I interface &amp;#123;    Get() int&amp;#125; 首先 interface 是一种类型，从它的定义可以看出来用了 type 关键字，更准确的说 interface 是一种具有一组方法的类型，这些方法定义了 interface 的行为。 go 允许不带任何方法的 interface ，这种类型的 interface 叫 e">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/">
+
+
+
+
+
+  <title>理解 Go interface 的 5 个关键点 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">理解 Go interface 的 5 个关键点</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T20:48:08+08:00">
+                Jul 22 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1、interface-是一种类型"><a href="#1、interface-是一种类型" class="headerlink" title="1、interface 是一种类型"></a>1、interface 是一种类型</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</span><br><span class="line">    Get() <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先 <strong>interface 是一种类型</strong>，从它的定义可以看出来用了 type 关键字，更准确的说 interface 是一种<strong>具有一组方法的类型</strong>，这些方法定义了 interface 的行为。</p>
+<p>go 允许不带任何方法的 interface ，这种类型的 interface 叫 <strong>empty interface</strong>。</p>
+<p><strong>如果一个类型实现了一个 interface 中所有方法，我们说类型实现了该 interface</strong>，所以所有类型都实现了 empty interface，因为任何一种类型至少实现了 0 个方法。go 没有显式的关键字用来实现 interface，只需要实现 interface 包含的方法即可。</p>
+<a id="more"></a>
+<h2 id="2、interface-变量存储的是实现者的值"><a href="#2、interface-变量存储的是实现者的值" class="headerlink" title="2、interface 变量存储的是实现者的值"></a>2、interface 变量存储的是实现者的值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;    </span><br><span class="line">    Get() <span class="keyword">int</span></span><br><span class="line">    Set(<span class="keyword">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2</span></span><br><span class="line"><span class="keyword">type</span> S <span class="keyword">struct</span> &#123;</span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(s S)</span> <span class="title">Get</span><span class="params">()</span><span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s.Age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(s *S)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    s.Age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i I)</span></span>&#123;</span><br><span class="line">    i.Set(<span class="number">10</span>)</span><br><span class="line">    fmt.Println(i.Get())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := S&#123;&#125; </span><br><span class="line">    f(&amp;s)  <span class="comment">//4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码在 <code>#1</code> 定义了 interface I，在 <code>#2</code> 用 struct S 实现了 I 定义的两个方法，接着在 <code>#3</code> 定义了一个函数 f 参数类型是 I，S 实现了 I 的两个方法就说 S 是 I 的实现者，执行 <code>f(&amp;s)</code> 就完了一次 interface 类型的使用。</p>
+<p>interface 的重要用途就体现在<strong>函数 f 的参数中</strong>，如果有多种类型实现了某个 interface，<strong>这些类型的值都可以直接使用 interface 的变量存储</strong>。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s := S&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> i I <span class="comment">//声明 i </span></span><br><span class="line">i = &amp;s <span class="comment">//赋值 s 到 i</span></span><br><span class="line">fmt.Println(i.Get())</span><br></pre></td></tr></table></figure></p>
+<p>不难看出 interface 的变量中存储的是实现了 interface 的类型的对象值，这种能力是 <a href="http://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="noopener">duck typing</a>。在使用 interface 时不需要显式在 struct 上声明要实现哪个 interface ，只需要实现对应 interface 中的方法即可，go 会自动进行 interface 的检查，并在运行时执行从其他类型到 interface 的自动转换，即使实现了多个 interface，go 也会在使用对应 interface 时实现自动转换，这就是 interface 的魔力所在。</p>
+<h2 id="3、如何判断-interface-变量存储的是哪种类型"><a href="#3、如何判断-interface-变量存储的是哪种类型" class="headerlink" title="3、如何判断 interface 变量存储的是哪种类型"></a>3、如何判断 interface 变量存储的是哪种类型</h2><p>一个 interface 被多种类型实现时，有时候我们需要区分 interface 的变量究竟存储哪种类型的值，go 可以使用 <code>comma, ok</code> 的形式做区分 <code>value, ok := em.(T)</code>：<strong>em 是 interface 类型的变量，T代表要断言的类型，value 是 interface 变量存储的值，ok 是 bool 类型表示是否为该断言的类型 T</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> t, ok := i.(*S); ok &#123;</span><br><span class="line">    fmt.Println(<span class="string">"s implements I"</span>, t)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ok 是 true 表明 i 存储的是 *S 类型的值，false 则不是，这种区分能力叫 <a href="https://tour.golang.org/methods/15" target="_blank" rel="noopener">Type assertions</a> (类型断言)。</p>
+<p>如果需要区分多种类型，可以使用 switch 断言，更简单直接，这种断言方式只能在 switch 语句中使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">switch</span> t := i.(<span class="keyword">type</span>) &#123;</span><br><span class="line"><span class="keyword">case</span> *S:</span><br><span class="line">    fmt.Println(<span class="string">"i store *S"</span>, t)</span><br><span class="line"><span class="keyword">case</span> *R:</span><br><span class="line">    fmt.Println(<span class="string">"i store *R"</span>, t)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4、空的-interface"><a href="#4、空的-interface" class="headerlink" title="4、空的 interface"></a>4、空的 interface</h2><p><code>interface{}</code> 是一个空的 interface 类型，根据前文的定义：一个类型如果实现了一个 interface 的所有方法就说该类型实现了这个 interface，空的 interface 没有方法，所以可以认为所有的类型都实现了 <code>interface{}</code>。如果定义一个函数参数是 <code>interface{}</code> 类型，这个函数应该可以接受任何类型作为它的参数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doSomething</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span>&#123;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果函数的参数  v 可以接受任何类型，那么函数被调用时在函数内部 v 是不是表示的是任何类型？并不是，虽然函数的参数可以接受任何类型，并不表示 v 就是任何类型，在函数 doSomething 内部 v 仅仅是一个 interface 类型，之所以函数可以接受任何类型是在 go 执行时传递到函数的任何类型都被自动转换成 <code>interface{}</code>。go 是如何进行转换的，以及 v 存储的值究竟是怎么做到可以接受任何类型的，感兴趣的可以看看 <a href="https://research.swtch.com/interfaces" target="_blank" rel="noopener">Russ Cox 关于 interface 的实现</a> 。</p>
+<p>既然空的 interface 可以接受任何类型的参数，那么一个 <code>interface{}</code>类型的 slice 是不是就可以接受任何类型的 slice ?</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAll</span><span class="params">(vals []<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123; <span class="comment">//1</span></span><br><span class="line">	<span class="keyword">for</span> _, val := <span class="keyword">range</span> vals &#123;</span><br><span class="line">		fmt.Println(val)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	names := []<span class="keyword">string</span>&#123;<span class="string">"stanley"</span>, <span class="string">"david"</span>, <span class="string">"oscar"</span>&#125;</span><br><span class="line">	printAll(names)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码是按照我们的假设修改的，执行之后竟然会报  <code>cannot use names (type []string) as type []interface {} in argument to printAll</code>  错误，why？</p>
+<p>这个错误说明 go 没有帮助我们自动把 slice 转换成 <code>interface{}</code> 类型的 slice，所以出错了。<strong>go 不会对 类型是<code>interface{}</code> 的 slice 进行转换</strong> 。为什么 go 不帮我们自动转换，一开始我也很好奇，最后终于在 go 的 wiki 中找到了答案 <a href="https://github.com/golang/go/wiki/InterfaceSlice" target="_blank" rel="noopener">https://github.com/golang/go/wiki/InterfaceSlice</a> 大意是 <code>interface{}</code> 会占用两个字长的存储空间，一个是自身的 methods 数据，一个是指向其存储值的指针，也就是 interface 变量存储的值，因而 slice []interface{} 其长度是固定的<code>N*2</code>，但是 []T 的长度是<code>N*sizeof(T)</code>，两种 slice 实际存储值的大小是有区别的(文中只介绍两种 slice 的不同，至于为什么不能转换猜测可能是 runtime 转换代价比较大)。</p>
+<p>但是我们可以手动进行转换来达到我们的目的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dataSlice []<span class="keyword">int</span> = foo()</span><br><span class="line"><span class="keyword">var</span> interfaceSlice []<span class="keyword">interface</span>&#123;&#125; = <span class="built_in">make</span>([]<span class="keyword">interface</span>&#123;&#125;, <span class="built_in">len</span>(dataSlice))</span><br><span class="line"><span class="keyword">for</span> i, d := <span class="keyword">range</span> dataSlice &#123;</span><br><span class="line">	interfaceSlice[i] = d</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5、interface-的实现者的-receiver-如何选择"><a href="#5、interface-的实现者的-receiver-如何选择" class="headerlink" title="5、interface 的实现者的 receiver 如何选择"></a>5、interface 的实现者的 receiver 如何选择</h2><p>在我们上文的例子中调用 f 是 <code>f(&amp;s)</code> 也就是 S 的指针类型，为什么不能是 <code>f(s)</code> 呢，如果是 s 会有什么问题？改成 f(s) 然后执行代码。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cannot use s (type S) as type I in argument to f:</span><br><span class="line">	S does not implement I (Set method has pointer receiver)</span><br></pre></td></tr></table></figure>
+<p>这个错误的意思是 S 没有实现 I，哪里出了问题？<strong>关键点是 S 中 set 方法的 receiver 是个 pointer *S</strong> 。</p>
+<p>interface 定义时并没有严格规定实现者的方法 receiver 是个 value receiver 还是 pointer receiver，上面代码中的 S 的 Set receiver 是 pointer，也就是实现 I 的两个方法的 receiver 一个是 value 一个是 pointer，使用 <code>f(s)</code>的形势调用，传递给 f 的是个 s 的一份拷贝，在进行 s 的拷贝到 I 的转换时，s 的拷贝不满足 Set 方法的 receiver 是个 pointer，也就没有实现 I。<strong>go 中函数都是按值传递即 passed by value</strong>。</p>
+<p>那反过来会怎样，如果 receiver 是 value，函数用 pointer 的形式调用？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</span><br><span class="line">	Get() <span class="keyword">int</span></span><br><span class="line">	Set(<span class="keyword">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> SS <span class="keyword">struct</span> &#123;</span><br><span class="line">	Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Get</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> s.Age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	s.Age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i I)</span></span> &#123;</span><br><span class="line">	i.Set(<span class="number">10</span>)</span><br><span class="line">	fmt.Println(i.Get())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  	ss := SS&#123;&#125;</span><br><span class="line">	f(&amp;ss) <span class="comment">//ponter</span></span><br><span class="line">	f(ss)  <span class="comment">//value</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>I 的实现者 SS 的方法 receiver 都是 value receiver，执行代码可以看到无论是 pointer 还是 value 都可以正确执行。</p>
+<p>导致这一现象的原因是什么？</p>
+<p>如果是按 pointer 调用，go 会自动进行转换，因为有了指针总是能得到指针指向的值是什么，如果是 value 调用，go 将无从得知 value 的原始值是什么，因为 value 是份拷贝。<strong>go 会把指针进行隐式转换得到 value，但反过来则不行</strong>。</p>
+<p>对于 receiver 是 value 的 method，任何在 method 内部对 value 做出的改变都不影响调用者看到的 value，这就是按值传递。</p>
+<p>另一个说明上述现象的例子是这样的来自 <a href="https://play.golang.org/p/TvR758rfre" target="_blank" rel="noopener">https://play.golang.org/p/TvR758rfre</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">interface</span> &#123;</span><br><span class="line">	Speak() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Dog <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d Dog)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Woof!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Cat <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Cat)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Meow!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Llama <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l Llama)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"?????"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> JavaProgrammer <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(j JavaProgrammer)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Design patterns!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	animals := []Animal&#123;Dog&#123;&#125;, Cat&#123;&#125;, Llama&#123;&#125;, JavaProgrammer&#123;&#125;&#125;</span><br><span class="line">	<span class="keyword">for</span> _, animal := <span class="keyword">range</span> animals &#123;</span><br><span class="line">		fmt.Println(animal.Speak())</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>#1</code> Cat 的 speak receiver 是 pointer，interface Animal 的 slice，Cat 的值是一个 value，同样会因为 receiver 不一致而导致无法执行。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/02.6.md" target="_blank" rel="noopener">https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/02.6.md</a></li>
+<li><a href="http://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go" target="_blank" rel="noopener">http://jordanorelli.com/post/32665860244/how-to-use-interfaces-in-go</a></li>
+<li><a href="https://tour.golang.org/methods/15" target="_blank" rel="noopener">https://tour.golang.org/methods/15</a></li>
+<li><a href="https://www.miek.nl/go/#interfaces" target="_blank" rel="noopener">https://www.miek.nl/go/#interfaces</a></li>
+<li><a href="https://github.com/golang/go/wiki/InterfaceSlice" target="_blank" rel="noopener">https://github.com/golang/go/wiki/InterfaceSlice</a></li>
+<li><a href="https://play.golang.org/p/TvR758rfre" target="_blank" rel="noopener">https://play.golang.org/p/TvR758rfre</a></li>
+<li><a href="https://golang.org/doc/effective_go.html#interfaces" target="_blank" rel="noopener">https://golang.org/doc/effective_go.html#interfaces</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Duck_typing</a></li>
+</ul>
+<h2 id="文中用到的代码"><a href="#文中用到的代码" class="headerlink" title="文中用到的代码"></a>文中用到的代码</h2><p><a href="https://gist.github.com/zhyq0826/bda38dd5525c0157829bc574e742463c/archive/b3d1a53050dca568767b0efdb83968e67a9c6461.zip" target="_blank" rel="noopener">点击下载源码包</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</span><br><span class="line">    Get() <span class="keyword">int</span></span><br><span class="line">    Set(<span class="keyword">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2</span></span><br><span class="line"><span class="keyword">type</span> S <span class="keyword">struct</span> &#123;</span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s S)</span> <span class="title">Get</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s.Age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *S)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    s.Age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> SS <span class="keyword">struct</span> &#123;</span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Get</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s.Age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s SS)</span> <span class="title">Set</span><span class="params">(age <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    s.Age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i I)</span></span> &#123;</span><br><span class="line">    i.Set(<span class="number">10</span>)</span><br><span class="line">    fmt.Println(i.Get())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> R <span class="keyword">struct</span>&#123; i <span class="keyword">int</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *R)</span> <span class="title">Get</span><span class="params">()</span> <span class="title">int</span></span>  &#123; <span class="keyword">return</span> p.i &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *R)</span> <span class="title">Set</span><span class="params">(v <span class="keyword">int</span>)</span></span> &#123; p.i = v &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doSomething</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"doSomething called"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAll</span><span class="params">(vals []<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> _, val := <span class="keyword">range</span> vals &#123;</span><br><span class="line">        fmt.Println(val)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">interface</span> &#123;</span><br><span class="line">    Speak() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Dog <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d Dog)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Woof!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Cat <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Cat)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Meow!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Llama <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l Llama)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"?????"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> JavaProgrammer <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(j JavaProgrammer)</span> <span class="title">Speak</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Design patterns!"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := S&#123;&#125;</span><br><span class="line">    f(&amp;s) <span class="comment">//4</span></span><br><span class="line"></span><br><span class="line">    ss := SS&#123;&#125;</span><br><span class="line">    f(&amp;ss) <span class="comment">//ponter</span></span><br><span class="line">    f(ss)  <span class="comment">//value</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> i I</span><br><span class="line">    i = &amp;s</span><br><span class="line">    fmt.Println(i.Get())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> _, ok := i.(*S); ok &#123;</span><br><span class="line">        fmt.Println(<span class="string">"i store *S"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> t := i.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> *S:</span><br><span class="line">        fmt.Println(<span class="string">"i store *S"</span>, t)</span><br><span class="line">    <span class="keyword">case</span> *R:</span><br><span class="line">        fmt.Println(<span class="string">"i store *R"</span>, t)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    doSomething(&amp;s)</span><br><span class="line"></span><br><span class="line">    names := []<span class="keyword">string</span>&#123;<span class="string">"stanley"</span>, <span class="string">"david"</span>, <span class="string">"oscar"</span>&#125;</span><br><span class="line">    vals := <span class="built_in">make</span>([]<span class="keyword">interface</span>&#123;&#125;, <span class="built_in">len</span>(names))</span><br><span class="line">    <span class="keyword">for</span> index, value := <span class="keyword">range</span> names &#123;</span><br><span class="line">        vals[index] = value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// printAll(names)</span></span><br><span class="line">    printAll(vals)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//cannot use Cat literal (type Cat) as type Animal in array or slice literal:</span></span><br><span class="line">    <span class="comment">// Cat does not implement Animal (Speak method has pointer receiver)</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// animals := []Animal&#123;Dog&#123;&#125;, Cat&#123;&#125;, Llama&#123;&#125;, JavaProgrammer&#123;&#125;&#125;</span></span><br><span class="line">    <span class="comment">// for _, animal := range animals &#123;</span></span><br><span class="line">    <span class="comment">//  fmt.Println(animal.Speak())</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>更多阅读</strong></p>
+<p>详解 Go interface 系列</p>
+<ul>
+<li><a href="/2017/10/10/go-interface-1/" title="Go interface 详解(一) ：介绍">Go interface 详解(一) ：介绍</a></li>
+<li><a href="/2017/10/12/go-interface-2/" title="Go interface 详解(二) ：定义和使用">Go interface 详解(二) ：定义和使用</a></li>
+<li><a href="/2017/10/18/go-interface-3/" title="Go interface 详解 (三) ：interface 的值">Go interface 详解 (三) ：interface 的值</a></li>
+<li><a href="/2017/12/01/go-interface-4/" title="Go interface 详解 (四) ：类型断言">Go interface 详解 (四) ：类型断言</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/interface/" rel="tag"># interface</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/24/chat-app-with-go-python-node/" rel="next" title="用一个简易的 web chat 说说 Python、Golang、Nodejs 的异步">
+                <i class="fa fa-chevron-left"></i> 用一个简易的 web chat 说说 Python、Golang、Nodejs 的异步
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/23/go-tutorial/" rel="prev" title="Go 入门参考资料">
+                Go 入门参考资料 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、interface-是一种类型"><span class="nav-number">1.</span> <span class="nav-text">1、interface 是一种类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、interface-变量存储的是实现者的值"><span class="nav-number">2.</span> <span class="nav-text">2、interface 变量存储的是实现者的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、如何判断-interface-变量存储的是哪种类型"><span class="nav-number">3.</span> <span class="nav-text">3、如何判断 interface 变量存储的是哪种类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、空的-interface"><span class="nav-number">4.</span> <span class="nav-text">4、空的 interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、interface-的实现者的-receiver-如何选择"><span class="nav-number">5.</span> <span class="nav-text">5、interface 的实现者的 receiver 如何选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文中用到的代码"><span class="nav-number">7.</span> <span class="nav-text">文中用到的代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/07/22/how-to-understand-go-interface/';
+          this.page.identifier = '2017/07/22/how-to-understand-go-interface/';
+          this.page.title = '理解 Go interface 的 5 个关键点';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="lib,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="httprequests易读易懂的 http libary  Doc PyPi Github">
+<meta name="keywords" content="lib">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非常有用的 Python 第三方库">
+<meta property="og:url" content="http://sanyuesha.com/2014/12/27/python-lib/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="httprequests易读易懂的 http libary  Doc PyPi Github">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T03:39:41.619Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非常有用的 Python 第三方库">
+<meta name="twitter:description" content="httprequests易读易懂的 http libary  Doc PyPi Github">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2014/12/27/python-lib/">
+
+
+
+
+
+  <title>非常有用的 Python 第三方库 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2014/12/27/python-lib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">非常有用的 Python 第三方库</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-12-27T19:53:27+08:00">
+                Dec 27 2014
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><h3 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h3><p>易读易懂的 http libary</p>
+<ul>
+<li><a href="http://docs.python-requests.org/en/latest/index.html" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/requests" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://github.com/kennethreitz/requests" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<a id="more"></a>
+<h3 id="django-rest-framework"><a href="#django-rest-framework" class="headerlink" title="django-rest-framework"></a>django-rest-framework</h3><p>基于django 用以构建web api</p>
+<ul>
+<li><a href="http://www.django-rest-framework.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/tomchristie/django-rest-framework" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="eve"><a href="#eve" class="headerlink" title="eve"></a>eve</h3><p>基于Flask, mongodb的 REST API framework</p>
+<ul>
+<li><a href="http://python-eve.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/nicolaiarocci/eve" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h2 id="图形图像"><a href="#图形图像" class="headerlink" title="图形图像"></a>图形图像</h2><h3 id="pgmagick"><a href="#pgmagick" class="headerlink" title="pgmagick"></a>pgmagick</h3><p>pgmagick 是 GraphicsMagick(Magick++) python 绑定 </p>
+<ul>
+<li><a href="http://pythonhosted.org/pgmagick/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/pgmagick/" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://bitbucket.org/hhatto/pgmagick" target="_blank" rel="noopener">Bitbucket</a></li>
+</ul>
+<h3 id="Pillow"><a href="#Pillow" class="headerlink" title="Pillow"></a>Pillow</h3><p>PIL 一个更友好的实现</p>
+<ul>
+<li><a href="http://python-pillow.github.io/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/python-pillow/Pillow" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h2 id="分布式-amp-异步队列"><a href="#分布式-amp-异步队列" class="headerlink" title="分布式&amp;异步队列"></a>分布式&amp;异步队列</h2><h3 id="celery"><a href="#celery" class="headerlink" title="celery"></a>celery</h3><p>celery 是基于分布式消息的异步任务队列</p>
+<ul>
+<li><a href="http://www.celeryproject.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/celery/celery" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="rq"><a href="#rq" class="headerlink" title="rq"></a>rq</h3><p>非常简单的基于进程的异步队列</p>
+<ul>
+<li><a href="http://python-rq.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/nvie/rq" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h2 id="html-amp-xml-解析"><a href="#html-amp-xml-解析" class="headerlink" title="html&amp;xml 解析"></a>html&amp;xml 解析</h2><h3 id="lxml"><a href="#lxml" class="headerlink" title="lxml"></a>lxml</h3><p>lxml 是特性最丰富，最容易使用的xml解析库</p>
+<ul>
+<li><a href="http://lxml.de/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/lxml" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://github.com/lxml/lxml/" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="beautifulsoup4"><a href="#beautifulsoup4" class="headerlink" title="beautifulsoup4"></a>beautifulsoup4</h3><p>解析xml和html，用来提取xml和html中的数据</p>
+<ul>
+<li><a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://pypi.python.org/pypi/beautifulsoup4" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://code.launchpad.net/beautifulsoup" target="_blank" rel="noopener">Code</a></li>
+</ul>
+<h3 id="pyquery"><a href="#pyquery" class="headerlink" title="pyquery"></a>pyquery</h3><p>类似jquery一样解析xml和html</p>
+<ul>
+<li><a href="http://pyquery.readthedocs.org/en/latest/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/gawel/pyquery" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ul>
+<li>nose</li>
+<li>pytest</li>
+<li>webtest</li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>jinji2</li>
+</ul>
+<h2 id="web-framework"><a href="#web-framework" class="headerlink" title="web framework"></a>web framework</h2><ul>
+<li>flask</li>
+<li>tornado</li>
+<li>pyramid <a href="https://trypyramid.com/" target="_blank" rel="noopener">https://trypyramid.com/</a></li>
+</ul>
+<h2 id="风格和规范"><a href="#风格和规范" class="headerlink" title="风格和规范"></a>风格和规范</h2><h3 id="autopep8"><a href="#autopep8" class="headerlink" title="autopep8"></a>autopep8</h3><ul>
+<li><a href="https://pypi.python.org/pypi/autopep8/" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://github.com/hhatto/autopep8" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="pep8"><a href="#pep8" class="headerlink" title="pep8"></a>pep8</h3><ul>
+<li><a href="https://github.com/jcrocholl/pep8" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><h3 id="mkdocs"><a href="#mkdocs" class="headerlink" title="mkdocs"></a>mkdocs</h3><p>python 项目文档生成工具</p>
+<ul>
+<li><a href="http://www.mkdocs.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://github.com/tomchristie/mkdocs" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="Pygments"><a href="#Pygments" class="headerlink" title="Pygments"></a>Pygments</h3><p>python 实现的代码高亮库，支持300多种语言</p>
+<ul>
+<li><a href="http://pygments.org/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/Pygments" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://bitbucket.org/birkenfeld/pygments-main" target="_blank" rel="noopener">Bitbucket</a></li>
+</ul>
+<h2 id="命令行和linux工具"><a href="#命令行和linux工具" class="headerlink" title="命令行和linux工具"></a>命令行和linux工具</h2><h3 id="psutil"><a href="#psutil" class="headerlink" title="psutil"></a>psutil</h3><p>在运行的python进程中获取进程和操作系统信息(CPU, memory, disks, network)，支持多个平台</p>
+<ul>
+<li><a href="http://pythonhosted.org/psutil/" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="https://pypi.python.org/pypi/psutil" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="https://github.com/giampaolo/psutil/" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="paramiko"><a href="#paramiko" class="headerlink" title="paramiko"></a>paramiko</h3><p>python 实现的ssh2 协议库</p>
+<ul>
+<li><a href="https://github.com/paramiko/paramiko" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h3 id="colorama"><a href="#colorama" class="headerlink" title="colorama"></a>colorama</h3><p>shell 中输出颜色</p>
+<ul>
+<li><a href="https://pypi.python.org/pypi/colorama" target="_blank" rel="noopener">pip</a></li>
+<li><a href="https://github.com/tartley/colorama" target="_blank" rel="noopener">Github</a></li>
+</ul>
+<h2 id="加密和安全"><a href="#加密和安全" class="headerlink" title="加密和安全"></a>加密和安全</h2><h3 id="Passlib"><a href="#Passlib" class="headerlink" title="Passlib"></a>Passlib</h3><p>提供各种加密算法，夸平台，支持超过30种常用的加密算法</p>
+<ul>
+<li><a href="https://pythonhosted.org/passlib/index.html" target="_blank" rel="noopener">Doc</a></li>
+<li><a href="http://pypi.python.org/pypi/passlib" target="_blank" rel="noopener">PyPi</a></li>
+<li><a href="http://code.google.com/p/passlib/source" target="_blank" rel="noopener">Code</a></li>
+</ul>
+<h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><h3 id="sqlacodegen"><a href="#sqlacodegen" class="headerlink" title="sqlacodegen"></a>sqlacodegen</h3><p>根据不同的数据库生成 sqlalchemy model</p>
+<p><a href="https://github.com/agronholm/sqlacodegen" target="_blank" rel="noopener">https://github.com/agronholm/sqlacodegen</a></p>
+<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><h3 id="fasteners"><a href="#fasteners" class="headerlink" title="fasteners"></a>fasteners</h3><p>linux 文件锁</p>
+<p><a href="https://pypi.python.org/pypi/fasteners" target="_blank" rel="noopener">https://pypi.python.org/pypi/fasteners</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/lib/" rel="tag"># lib</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/12/20/one-time-python-memory-leaks/" rel="next" title="Python 内存泄漏排查与分析">
+                <i class="fa fa-chevron-left"></i> Python 内存泄漏排查与分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/25/wechat-product-opinion/" rel="prev" title="我的产品记第一记">
+                我的产品记第一记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-number">1.</span> <span class="nav-text">http</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requests"><span class="nav-number">1.1.</span> <span class="nav-text">requests</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#django-rest-framework"><span class="nav-number">1.2.</span> <span class="nav-text">django-rest-framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eve"><span class="nav-number">1.3.</span> <span class="nav-text">eve</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形图像"><span class="nav-number">2.</span> <span class="nav-text">图形图像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pgmagick"><span class="nav-number">2.1.</span> <span class="nav-text">pgmagick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pillow"><span class="nav-number">2.2.</span> <span class="nav-text">Pillow</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式-amp-异步队列"><span class="nav-number">3.</span> <span class="nav-text">分布式&amp;异步队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#celery"><span class="nav-number">3.1.</span> <span class="nav-text">celery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rq"><span class="nav-number">3.2.</span> <span class="nav-text">rq</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-amp-xml-解析"><span class="nav-number">4.</span> <span class="nav-text">html&amp;xml 解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lxml"><span class="nav-number">4.1.</span> <span class="nav-text">lxml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beautifulsoup4"><span class="nav-number">4.2.</span> <span class="nav-text">beautifulsoup4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pyquery"><span class="nav-number">4.3.</span> <span class="nav-text">pyquery</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板"><span class="nav-number">6.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-framework"><span class="nav-number">7.</span> <span class="nav-text">web framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#风格和规范"><span class="nav-number">8.</span> <span class="nav-text">风格和规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autopep8"><span class="nav-number">8.1.</span> <span class="nav-text">autopep8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pep8"><span class="nav-number">8.2.</span> <span class="nav-text">pep8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档"><span class="nav-number">8.3.</span> <span class="nav-text">文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdocs"><span class="nav-number">8.4.</span> <span class="nav-text">mkdocs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pygments"><span class="nav-number">8.5.</span> <span class="nav-text">Pygments</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行和linux工具"><span class="nav-number">9.</span> <span class="nav-text">命令行和linux工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#psutil"><span class="nav-number">9.1.</span> <span class="nav-text">psutil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#paramiko"><span class="nav-number">9.2.</span> <span class="nav-text">paramiko</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#colorama"><span class="nav-number">9.3.</span> <span class="nav-text">colorama</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加密和安全"><span class="nav-number">10.</span> <span class="nav-text">加密和安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Passlib"><span class="nav-number">10.1.</span> <span class="nav-text">Passlib</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM"><span class="nav-number">11.</span> <span class="nav-text">ORM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlacodegen"><span class="nav-number">11.1.</span> <span class="nav-text">sqlacodegen</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发与并行"><span class="nav-number">12.</span> <span class="nav-text">并发与并行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fasteners"><span class="nav-number">12.1.</span> <span class="nav-text">fasteners</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2014/12/27/python-lib/';
+          this.page.identifier = '2014/12/27/python-lib/';
+          this.page.title = '非常有用的 Python 第三方库';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

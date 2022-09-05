@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="表拆分,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
+<meta name="keywords" content="表拆分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb 单表亿级数据的拆分方案">
+<meta property="og:url" content="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://sanyuesha.com/images/table-split.png">
+<meta property="og:updated_time" content="2017-12-03T05:52:18.518Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongodb 单表亿级数据的拆分方案">
+<meta name="twitter:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
+<meta name="twitter:image" content="http://sanyuesha.com/images/table-split.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">
+
+
+
+
+
+  <title>mongodb 单表亿级数据的拆分方案 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">mongodb 单表亿级数据的拆分方案</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-27T21:38:14+08:00">
+                Aug 27 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mongodb/" itemprop="url" rel="index">
+                    <span itemprop="name">mongodb</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：</p>
+<ul>
+<li>聚合查询变得困难</li>
+<li>拆分的键一旦选定，更改会非常困难</li>
+<li>拆表的过程要保证线上业务不受影响，操作复杂度高</li>
+</ul>
+<p>因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。</p>
+<p>在本次实施的拆分方案中，数据特点是:</p>
+<ul>
+<li>单表过亿</li>
+<li>业务数据是用户对资源的收藏，结构比较单一</li>
+<li>只做单向(用户—&gt;数据)查找，不要求反向(数据—&gt;用户)查找</li>
+<li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
+</ul>
+<a id="more"></a>
+<h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
+<h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
+<ul>
+<li>用户新增一条数据</li>
+<li>用户删除一条数据</li>
+<li>用户查询数据(有翻页)</li>
+</ul>
+<p>拆表的基本原理就是对选择的键进行 hash 生成每个键所属的表空间名，也就是说，在任意时刻，任意用户的数据只有以下三种状态</p>
+<p>1.全部在旧表中<br>2.部分在新表，部分在旧表<br>3.全部在新表中</p>
+<p>数据拆分的具体工作是要离线进行的，为了能保证用户数据在这样三种状态之下依然具有像单表中一样的一致性，需要业务层在处理当前用户数据时判断用户是否在迁移中，只有处于迁移状态之下，用户数据才需要特别处理。</p>
+<h2 id="迁移状态如何判断"><a href="#迁移状态如何判断" class="headerlink" title="迁移状态如何判断?"></a>迁移状态如何判断?</h2><p>当用户数据处于迁移状态，为了保证用户数据全部可用，即要做到不跨表翻页，我们做了如下决定：一旦开始迁移，用户的全部数据就会载入到一个特殊区域(这里我们用了 redis，后面再讨论这样处理可能带来的问题)且保存为有序集数据。</p>
+<p>如果用户处于迁移状态，则用户的数据一定存在于这个区域，暂且给此区域命名为 <em>on_progress</em>。</p>
+<h2 id="迁移状态下如何保证用户数据的正确性？"><a href="#迁移状态下如何保证用户数据的正确性？" class="headerlink" title="迁移状态下如何保证用户数据的正确性？"></a>迁移状态下如何保证用户数据的正确性？</h2><p>当用户处于迁移状态，用户新增一条数据，则在新表、<em>on_progress</em> 、旧表中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>、旧表中同时删除该数据。</p>
+<p><strong>这样做的目的是什么?</strong></p>
+<p>处于迁移状态下的用户，<em>on_progress</em> 中保存了其所有数据，可以进行翻页操作，<em>on_progress</em> 中的所有数据会在离线状态下不断写入新表中，迁移完成之后，旧表中的数据将被删除，<em>on_progress</em> 中数据也将被清除，这样用户数据全部进入新表中，后续的所有操作将只在新表上进行。</p>
+<p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新—&gt;旧或由旧—&gt;新的顺序进行，在这个过程中：</p>
+<blockquote>
+<p>用户删除一条数据</p>
+</blockquote>
+<p>1）有可能该条数据已经写入新表中，所以删除操作要在新表中执行。<br>2）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而删除操作也要在 <em>on_progress</em> 中执行。<br>3）如果发生意外导致 <em>on_progress</em> 不可用，为维护数据的一致性，删除操作也需要在旧表中进行。</p>
+<blockquote>
+<p>用户新增一条数据</p>
+</blockquote>
+<p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧—&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。<br>3）如果发生意外导致 <em>on_progress</em> 不可用，为维护数据的一致性，新增操作也需要在旧表中进行。</p>
+<h2 id="on-progress-的选择"><a href="#on-progress-的选择" class="headerlink" title="on_progress 的选择"></a>on_progress 的选择</h2><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
+<p>迁移完成之后，先删除旧表中的数据，然后再删除 <em>on_progress</em> 中有序集。</p>
+<p><strong>判断用户迁移状态</strong></p>
+<p>1.只要用户处于 redis 中，则此时一定是迁移中或迁移完成<br>2.只在旧表中找到用户数据，则该用户一定还没有开始迁移<br>3.只在新表中找到用户数据，用户已经迁移成功</p>
+<p>需要注意的是，选用 redis 可能带来的问题是 redis 宕机会导致迁移中的数据无法恢复(redis 未开持久化操作或其他原因导致数据不能恢复)，只要用户在旧表中有数据存在，则用户删除数据的操作一定也要在旧表中执行，再次恢复迁移时，清除旧表数据，直接载入旧表中的数据到 <em>on_progress</em>。</p>
+<p><img src="/images/table-split.png" alt="迁移流程图" width="800"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/表拆分/" rel="tag"># 表拆分</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/20/distributed-lock-with-redis/" rel="next" title="如何用 redis 造一把分布式锁">
+                <i class="fa fa-chevron-left"></i> 如何用 redis 造一把分布式锁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/" rel="prev" title="mysql 不指定 ip 的连接默认都是 localhost">
+                mysql 不指定 ip 的连接默认都是 localhost <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择拆分键"><span class="nav-number">1.</span> <span class="nav-text">如何选择拆分键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何保证拆分的过程中不影响用户的操作？"><span class="nav-number">2.</span> <span class="nav-text">如何保证拆分的过程中不影响用户的操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移状态如何判断"><span class="nav-number">3.</span> <span class="nav-text">迁移状态如何判断?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移状态下如何保证用户数据的正确性？"><span class="nav-number">4.</span> <span class="nav-text">迁移状态下如何保证用户数据的正确性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#on-progress-的选择"><span class="nav-number">5.</span> <span class="nav-text">on_progress 的选择</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2016/08/27/mongodb-single-table-split/';
+          this.page.identifier = '2016/08/27/mongodb-single-table-split/';
+          this.page.title = 'mongodb 单表亿级数据的拆分方案';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

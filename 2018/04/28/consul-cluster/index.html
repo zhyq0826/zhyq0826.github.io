@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="集群,consul,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="单个节点的 consul agent 在测试时非常容易使用，但是如果想要在生产环境中搭建一个稳定的可靠的 consul 服务还需要对 consul cluster 有深入了解。 当一个 consul agent 启动时，它本身对其它 consul 节点是一无所知的，这一个节点组成了一个独立的集群。如果想要知道其它的集群成员，这个 agent 必须在启动时加入一个已经存在集群。为了加入一个集群，这个">
+<meta name="keywords" content="集群,consul">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Consul 集群">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/28/consul-cluster/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="单个节点的 consul agent 在测试时非常容易使用，但是如果想要在生产环境中搭建一个稳定的可靠的 consul 服务还需要对 consul cluster 有深入了解。 当一个 consul agent 启动时，它本身对其它 consul 节点是一无所知的，这一个节点组成了一个独立的集群。如果想要知道其它的集群成员，这个 agent 必须在启动时加入一个已经存在集群。为了加入一个集群，这个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.287Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Consul 集群">
+<meta name="twitter:description" content="单个节点的 consul agent 在测试时非常容易使用，但是如果想要在生产环境中搭建一个稳定的可靠的 consul 服务还需要对 consul cluster 有深入了解。 当一个 consul agent 启动时，它本身对其它 consul 节点是一无所知的，这一个节点组成了一个独立的集群。如果想要知道其它的集群成员，这个 agent 必须在启动时加入一个已经存在集群。为了加入一个集群，这个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/28/consul-cluster/">
+
+
+
+
+
+  <title>Consul 集群 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/28/consul-cluster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Consul 集群</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T15:09:23+08:00">
+                Apr 28 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/consul/" itemprop="url" rel="index">
+                    <span itemprop="name">consul</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>单个节点的 consul agent 在测试时非常容易使用，但是如果想要在生产环境中搭建一个稳定的可靠的 consul 服务还需要对 consul cluster 有深入了解。</p>
+<p>当一个 consul agent 启动时，它本身对其它 consul 节点是一无所知的，这一个节点组成了一个独立的集群。如果想要知道其它的集群成员，这个 agent 必须在启动时加入一个已经存在集群。为了加入一个集群，这个 agent 必须知道至少一个独立存在的 agent member，待加入之后，这个 agent 会和这个节点进行通讯获取其它节点信息。</p>
+<p>一个 consul 的 agent 可以加入任何一个 agent，不仅包括 server mode 的 agent。</p>
+<h2 id="启动多个-agent"><a href="#启动多个-agent" class="headerlink" title="启动多个 agent"></a>启动多个 agent</h2><p>为了模拟一个真实的集群，我们将启动通过 vagrant 启动两个节点，vagrantfile 见 <a href="https://github.com/hashicorp/consul/tree/master/demo/vagrant-cluster" target="_blank" rel="noopener">demo section of the Consul repo</a> 。</p>
+<blockquote>
+<p>vagrant 的下载配置非常简单，进入 <a href="https://www.vagrantup.com/downloads.html" target="_blank" rel="noopener">https://www.vagrantup.com/downloads.html</a> 选择所需要的版本，安装即可，注意翻墙。</p>
+</blockquote>
+<p>首先启动两个节点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure></p>
+<p>待系统可用之后，就可以进入机器进行集群相关的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh n1</span><br></pre></td></tr></table></figure></p>
+<p>在前文中我们为了测试方便使用的 <strong>-dev flag</strong> 来启动一个 development server，但是在生产环境中我们将去掉这个参数。</p>
+<p>每个在 cluster 中的 node 必须要有唯一的名字，默认情况下 consul 使用 hostname，但是我们也可以使用 <a href="https://www.consul.io/docs/agent/options.html#_node" target="_blank" rel="noopener">-node</a> command-line option 进行覆盖。</p>
+<p>启动我们也可以指定 consul listen on 的地址，这个地址必须能被 cluster 中其它节点连接和使用。虽然 bind address 不是严格要求，但是最佳实践中总是推荐必须指定一个，consul 默认会监听所有 ipv4 的 interface，如果发现了多个 私有 ip，则停止 bind。</p>
+<p>第一个节点在我们整个 cluster 中将是一个单独的 server ，详见 <a href="https://www.consul.io/docs/agent/options.html#_server" target="_blank" rel="noopener">server</a> switch。</p>
+<p><a href="https://www.consul.io/docs/agent/options.html#_bootstrap_expect" target="_blank" rel="noopener">-bootstrap-expect flag</a> 揭示了整个 cluster 中其它 server node 的数量，这个 flag 的目的是为了延迟 replicated log 复制，直到指定数量的 server 全部加入 cluster，详见 <a href="https://www.consul.io/docs/guides/bootstrapping.html" target="_blank" rel="noopener">bootstrapping guide</a> 。</p>
+<p>在这个 cluster 例子中，我们启用了 <a href="https://www.consul.io/docs/agent/options.html#_enable_script_checks" target="_blank" rel="noopener">-enable-script-checks</a> flag 来执行内部的脚本进行 health check。在生产环境中个，你可以配置 <a href="https://www.consul.io/docs/guides/acl.html" target="_blank" rel="noopener">ACLs</a>来配合这个 flag 来注册任意的脚本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n1:~$ consul agent -server -bootstrap-expect=1 \</span><br><span class="line">    -data-dir=/tmp/consul -node=agent-one -bind=172.20.20.10 \</span><br><span class="line">    -enable-script-checks=true -config-dir=/etc/consul.d</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>然后我们再进入第二个 node：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh n2</span><br></pre></td></tr></table></figure></p>
+<p>第二个agent 启动时我们指定了 vargrantfile 中指定的 ip 和 node name，由于这个 node 不是 server，所以我们不必提供 <a href="https://www.consul.io/docs/agent/options.html#_server" target="_blank" rel="noopener">server</a> switch。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n2:~$ consul agent -data-dir=/tmp/consul -node=agent-two \</span><br><span class="line">    -bind=172.20.20.11 -enable-script-checks=true -config-dir=/etc/consul.d</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>至此，我们有两个 consul agent 启动，一个是 server，一个是 client，两个 agent 彼此之间互相不知道，各自形成一个独立的 单节点 cluster，可以使用 <a href="https://www.consul.io/docs/commands/members.html" target="_blank" rel="noopener"><code>consul members</code></a> 命令来验证这一点。</p>
+<h2 id="加入-cluster"><a href="#加入-cluster" class="headerlink" title="加入 cluster"></a>加入 cluster</h2><p>现在，我们来告诉第一个 agent 加入第二个 agent：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vagrant ssh n1</span></span><br><span class="line">...</span><br><span class="line">vagrant@n1:~$ consul join 172.20.20.11</span><br><span class="line">Successfully joined cluster by contacting 1 nodes.</span><br></pre></td></tr></table></figure>
+<p>我们可以在两个 agent logs 看到它们彼此加入的信息：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2018/05/16 10:02:33 [INFO] agent: (LAN) joining: [172.20.20.11]</span><br><span class="line">2018/05/16 10:02:33 [INFO] serf: EventMemberJoin: agent-two 172.20.20.11</span><br><span class="line">2018/05/16 10:02:33 [INFO] agent: (LAN) joined: 1 Err: &lt;nil&gt;</span><br><span class="line">2018/05/16 10:02:33 [INFO] consul: member 'agent-two' joined, marking health alive</span><br></pre></td></tr></table></figure></p>
+<p>再次执行 consul members 可以进行验证，两个节点已经相互知道彼此了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n1:~$ consul members</span><br><span class="line">Node       Address            Status  Type    Build  Protocol  DC   Segment</span><br><span class="line">agent-one  172.20.20.10:8301  alive   server  1.1.0  2         dc1  &lt;all&gt;</span><br><span class="line">agent-two  172.20.20.11:8301  alive   client  1.1.0  2         dc1  &lt;default&gt;</span><br></pre></td></tr></table></figure></p>
+<p>记住，为了加入一个集群，consul agent 仅仅只需要知道一个已经存在的 member 即可。</p>
+<h2 id="在-agent-启动时自动加入-cluster"><a href="#在-agent-启动时自动加入-cluster" class="headerlink" title="在 agent 启动时自动加入 cluster"></a>在 agent 启动时自动加入 cluster</h2><p>理想的情况下，一个 agent 启动时应该自动加入 cluster 而不需要人工进行干预，consul 可以在各个云平台通过给定的 tag 进行自动发现。我们也可以在 agent 启动时手动指定节点信息 <a href="https://www.consul.io/docs/agent/options.html#_join" target="_blank" rel="noopener">-join</a> flag。</p>
+<h2 id="查询节点"><a href="#查询节点" class="headerlink" title="查询节点"></a>查询节点</h2><p>和查询 service 类似，consul 也提供了类似的 API 通过 DNS 和 HTTP 的方式来查询节点信息，对 DNS API 来说，结构是 <code>NAME.node.consul</code> or<code>NAME.node.DATACENTER.consul</code>，如果 datacenter 被移除，consul 只会在本地 datacenter 查询：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vagrant@n1:~$ dig @127.0.0.1 -p 8600 agent-two.node.consul</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.9.5-9+deb8u14-Debian &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 agent-two.node.consul</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 46375</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;agent-two.node.consul.     IN  A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">agent-two.node.consul.  0   IN  A   172.20.20.11</span><br><span class="line"></span><br><span class="line">;; Query time: 0 msec</span><br><span class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</span><br><span class="line">;; WHEN: Wed May 16 10:06:26 GMT 2018</span><br><span class="line">;; MSG SIZE  rcvd: 66</span><br></pre></td></tr></table></figure>
+<p>查询节点信息对系统管理员特别有用，可以快速获得节点地址。</p>
+<h2 id="离开-cluster"><a href="#离开-cluster" class="headerlink" title="离开 cluster"></a>离开 cluster</h2><p>如果想让 agent 离开节点，可以使用 ctrl-c 或者强制 agent 退出，gracefully 退出能够让节点过渡到 left 的状态，其它强制手段执行退出，其它节点会自动检测并标记节点为 failed。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.consul.io/intro/getting-started/join.html" target="_blank" rel="noopener">https://www.consul.io/intro/getting-started/join.html</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/集群/" rel="tag"># 集群</a>
+          
+            <a href="/tags/consul/" rel="tag"># consul</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/consul-service/" rel="next" title="Consul 服务注册和查询">
+                <i class="fa fa-chevron-left"></i> Consul 服务注册和查询
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/07/go-env/" rel="prev" title="Go 基础环境搭建和环境变量详解">
+                Go 基础环境搭建和环境变量详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动多个-agent"><span class="nav-number">1.</span> <span class="nav-text">启动多个 agent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加入-cluster"><span class="nav-number">2.</span> <span class="nav-text">加入 cluster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-agent-启动时自动加入-cluster"><span class="nav-number">3.</span> <span class="nav-text">在 agent 启动时自动加入 cluster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询节点"><span class="nav-number">4.</span> <span class="nav-text">查询节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离开-cluster"><span class="nav-number">5.</span> <span class="nav-text">离开 cluster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/28/consul-cluster/';
+          this.page.identifier = '2018/04/28/consul-cluster/';
+          this.page.title = 'Consul 集群';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

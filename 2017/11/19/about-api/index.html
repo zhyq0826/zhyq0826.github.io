@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="移动互联网盛行之前， RESTful API 就已经存在很久了，只不过恰巧移动桌面的的兴起让 RESTful API 变成了几乎任何需要联网设备的标配，它的普及也正好证明了它的重要性程度是和它的普及程度是一样的。虽然没有专门的厂商来定义 RESTful API 的标准，但是得意于大平台的垄断和其 API 使用范围的广泛性，大平台出品的开放式 API 几乎就可以成为一种标准，所以想要把你的 API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="说说 API 这个事">
+<meta property="og:url" content="http://sanyuesha.com/2017/11/19/about-api/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="移动互联网盛行之前， RESTful API 就已经存在很久了，只不过恰巧移动桌面的的兴起让 RESTful API 变成了几乎任何需要联网设备的标配，它的普及也正好证明了它的重要性程度是和它的普及程度是一样的。虽然没有专门的厂商来定义 RESTful API 的标准，但是得意于大平台的垄断和其 API 使用范围的广泛性，大平台出品的开放式 API 几乎就可以成为一种标准，所以想要把你的 API">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/15122829585a239b4e911d4.png">
+<meta property="og:image" content="https://static.git-star.com/15122828935a239b0d0b99e.png">
+<meta property="og:image" content="https://static.git-star.com/WX20171202-134256@2x.png">
+<meta property="og:image" content="https://static.git-star.com/WX20171203-142635@2x.png">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="说说 API 这个事">
+<meta name="twitter:description" content="移动互联网盛行之前， RESTful API 就已经存在很久了，只不过恰巧移动桌面的的兴起让 RESTful API 变成了几乎任何需要联网设备的标配，它的普及也正好证明了它的重要性程度是和它的普及程度是一样的。虽然没有专门的厂商来定义 RESTful API 的标准，但是得意于大平台的垄断和其 API 使用范围的广泛性，大平台出品的开放式 API 几乎就可以成为一种标准，所以想要把你的 API">
+<meta name="twitter:image" content="https://static.git-star.com/15122829585a239b4e911d4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/11/19/about-api/">
+
+
+
+
+
+  <title>说说 API 这个事 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/11/19/about-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">说说 API 这个事</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T16:58:03+08:00">
+                Nov 19 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>移动互联网盛行之前， RESTful API 就已经存在很久了，只不过恰巧移动桌面的的兴起让 RESTful API 变成了几乎任何需要联网设备的标配，它的普及也正好证明了它的重要性程度是和它的普及程度是一样的。虽然没有专门的厂商来定义 RESTful API 的标准，但是得意于大平台的垄断和其 API 使用范围的广泛性，大平台出品的开放式 API 几乎就可以成为一种标准，所以想要把你的 API 设计的更标准一点，参考一下主流开放平台的 API 即可，那些可参考的平台包括但不限于：twitter、Facebook、github、Yahoo、Google 等。</p>
+<p>不论提供什么内容或服务的 API 从其诞生起一般要经历：定义设计、测试、上线、升级、维护等几个阶段，而 API 作为一种消费品不得不需要进行非常清晰的定义和描述才能真正投入实际生产使用，这就需要 API的定义 层级清晰，分组合理，文档美观，测试方便，升级容易。而 RESTFul 经过移动互联网的洗礼已经衍生出了很多解决方案来达到上述目的，甚至有的公司基于此已经成功做成了一桩大生意悄悄地发财，比如卖身 Oracle 的 <a href="https://apiary.io/" target="_blank" rel="noopener">apiary.io</a>。</p>
+<h1 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h1><p>虽然大厂的 API 可以参考成为一种标准，但是每次设计 API 都去翻翻大厂的文档显得真有点太逊了点，<a href="https://github.com/OAI" target="_blank" rel="noopener">OpenAPI</a> 和 <a href="https://swagger.io/" target="_blank" rel="noopener">swagger-ui</a> 提供了关于 API 定义的标准，前者是 API 设计的一些规约，后者是基于此规约实现的自动化 API 文档和测试工具。有了这两者，你再也不会为了把 API 定义的更标准更通用而去和消费 API 的 开发者讨价还价了。</p>
+<p>除了 swagger 其他一些 API 工具厂商也会提供一些轮子做 API 设计和文档的工具，比如 apiary 有 <a href="https://github.com/apiaryio/api-blueprint" target="_blank" rel="noopener">https://github.com/apiaryio/api-blueprint</a> ，api-blueprint 定义了一种描述 API 的语言，这种语言更高阶，更合适开发者抒写和定义，这种语言也称之为领域驱动语言，是用来专门描述特定领域内容的高阶语言。api-blueprint 会把描述的 API 自动转换更有利于开发者的形式，类似 swagger-ui 那样。</p>
+<ul>
+<li><a href="https://github.com/OAI" target="_blank" rel="noopener">https://github.com/OAI</a></li>
+<li><a href="https://swagger.io/" target="_blank" rel="noopener">https://swagger.io/</a></li>
+<li><a href="https://github.com/apiaryio/api-blueprint" target="_blank" rel="noopener">https://github.com/apiaryio/api-blueprint</a></li>
+</ul>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p>swagger-ui 在遵循 OAI 的同时其自身就是非常美观的 API 文档工具，swagger 支持的是 <strong>YML</strong>格式的描述，而 api-blueprint 是 <strong>markdown</strong> 格式，相比 swagger 更容易抒写。</p>
+<p><img src="https://static.git-star.com/15122829585a239b4e911d4.png" alt="swagger"><br><img src="https://static.git-star.com/15122828935a239b0d0b99e.png" alt="swagger"></p>
+<p>api-blueprint 只提供了对 API 的描述，要根据它的描述输出好看的文档还需要借助支持这种语言的工具，在 api-blueprint 的官方提供了一些工具可以很好的完成文档的解析和渲染。</p>
+<ul>
+<li><a href="https://github.com/danielgtaylor/aglio" target="_blank" rel="noopener">https://github.com/danielgtaylor/aglio</a></li>
+<li><a href="https://github.com/bukalapak/snowboard" target="_blank" rel="noopener">https://github.com/bukalapak/snowboard</a></li>
+</ul>
+<p><img src="https://static.git-star.com/WX20171202-134256@2x.png" alt="snowboard"></p>
+<p><img src="https://static.git-star.com/WX20171203-142635@2x.png" alt="aglio"></p>
+<p>更多选择可以看 <a href="https://apiblueprint.org/tools.html#" target="_blank" rel="noopener">https://apiblueprint.org/tools.html#</a> </p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>API 的测试是和 API 的定义密不可分的，拥有好的 API 定义是可以让 API 测试事半功倍的，一般的 API 设计工具都都会提供简单的 API 测试，也有专门的服务只提供相应的 API 测试服务比如 <a href="https://runscope.com/" target="_blank" rel="noopener">https://runscope.com/</a> ，API 测试也有不少开源的解决方案，比如网易的 <a href="https://github.com/NEYouFan/nei-toolkit" target="_blank" rel="noopener">https://github.com/NEYouFan/nei-toolkit</a> ，这儿工具就集 API 定义、mock、测试与一体，wecatch 也自己实现过一个 API 测试工具 <a href="https://github.com/wecatch/turbo-api-test" target="_blank" rel="noopener">https://github.com/wecatch/turbo-api-test</a> ，使用 yml 描述，利用 Python 的 unittest 自动生成测试套件并且汇报测试结果，我们已经在生产环境使用了，很轻便。</p>
+<ul>
+<li><a href="https://runscope.com/" target="_blank" rel="noopener">runscope</a></li>
+<li><a href="https://github.com/NEYouFan/nei-toolkit" target="_blank" rel="noopener">nei-toolkit</a></li>
+<li><a href="https://github.com/wecatch/turbo-api-test" target="_blank" rel="noopener">turbo-api-test</a></li>
+</ul>
+<h1 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h1><p>监控可以理解为对生产环境 API 持续不断的测试并汇报健康状态，所以监控又是和测试密不可分的，不过不同于测试，对生成环境测试就需要注意不同 HTTP method 对产生的副作用，尤其是 POST 这种非幂等方法要非常谨慎使用，而当初 wecatch 造 <a href="https://github.com/wecatch/turbo-api-test" target="_blank" rel="noopener">turbo-api-test</a> 一方面是为了测试，另一方面也是为了可以配合 <a href="https://www.zabbix.com/" target="_blank" rel="noopener">zabbix</a> 对生产环境的 API 健康状态进行监控和报警。</p>
+<h1 id="选择合适的一套工具"><a href="#选择合适的一套工具" class="headerlink" title="选择合适的一套工具"></a>选择合适的一套工具</h1><p>任何时候当你开始新的服务准备好开始新的 API 之前一定要根据自己的需要选择一整套完整的方案，从定义、文档、测试、监控都要面面俱到，并让团队所有人都遵循这一套规范，如此才能在 API 的整个生命周期之内无论团队成员如何变化，或者业务如何变化都能游刃有余解决 API 的一切问题。</p>
+<h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><ul>
+<li><a href="https://www.gitbook.com/book/huangwenchao/swagger/details" target="_blank" rel="noopener">Swagger从入门到精通</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/15/what-about-consul/" rel="next" title="Consul 安装和基本使用">
+                <i class="fa fa-chevron-left"></i> Consul 安装和基本使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/20/target-process-result/" rel="prev" title="目标 过程 结果">
+                目标 过程 结果 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标准"><span class="nav-number">1.</span> <span class="nav-text">标准</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文档"><span class="nav-number">2.</span> <span class="nav-text">文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">3.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控"><span class="nav-number">4.</span> <span class="nav-text">监控</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择合适的一套工具"><span class="nav-number">5.</span> <span class="nav-text">选择合适的一套工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#资源"><span class="nav-number">6.</span> <span class="nav-text">资源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/11/19/about-api/';
+          this.page.identifier = '2017/11/19/about-api/';
+          this.page.title = '说说 API 这个事';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="fundamental concepts同步调用者等待调用结果的返回 异步调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果 阻塞调用方式影响后续指令的执行 非阻塞调用方式不影响后续指令的执行  一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tornado 中的异步调用模式">
+<meta property="og:url" content="http://sanyuesha.com/2017/02/08/tornado-async-style/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="fundamental concepts同步调用者等待调用结果的返回 异步调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果 阻塞调用方式影响后续指令的执行 非阻塞调用方式不影响后续指令的执行  一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tornado 中的异步调用模式">
+<meta name="twitter:description" content="fundamental concepts同步调用者等待调用结果的返回 异步调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果 阻塞调用方式影响后续指令的执行 非阻塞调用方式不影响后续指令的执行  一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/02/08/tornado-async-style/">
+
+
+
+
+
+  <title>tornado 中的异步调用模式 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/02/08/tornado-async-style/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">tornado 中的异步调用模式</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T07:18:17+08:00">
+                Feb 8 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tornado/" itemprop="url" rel="index">
+                    <span itemprop="name">tornado</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="fundamental-concepts"><a href="#fundamental-concepts" class="headerlink" title="fundamental concepts"></a>fundamental concepts</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>调用者等待调用结果的返回</p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>调用者不等待调用结果的返回，而是通过间隔轮询、通知等方式得知结果</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>调用方式影响后续指令的执行</p>
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><p>调用方式不影响后续指令的执行</p>
+<hr>
+<p>一般来说，阻塞是绝对的，非阻塞则是相对的，因为任何指令或调用的执行都要占用 CPU 周期，或网络，或 IO。非阻塞只是说调用或者资源消耗不影响后续逻辑执行，他们经得起等待。非阻塞往往和异步一起出现。</p>
+<p><a href="https://github.com/tornadoweb/tornado" target="_blank" rel="noopener">tornado</a> 是一个异步非阻塞 httpserver，同时也是一个 web framework。</p>
+<blockquote>
+<p><a href="http://www.tornadoweb.org/" target="_blank" rel="noopener">Tornado</a> is a Python web framework and asynchronous networking library, originally developed at <a href="http://friendfeed.com/" target="_blank" rel="noopener">FriendFeed</a>. By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for <a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling" target="_blank" rel="noopener">long polling</a>, <a href="http://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener">WebSockets</a>, and other applications that require a long-lived connection to each user。</p>
+</blockquote>
+<p>在 tornado 中异步和非阻塞是通过 ioloop 和 Future 实现的，Future 是借助 python 的协程来实现非阻塞调用。tornado 提供了不同的异步调用形式来适配不同的调用场景，本文的目的就是为了说明不同形式是如何使用的以及它们的差别。</p>
+<p>为了演示方便，这里使用了一个公共模块 util.py 来提供 ioloop 的启动和销毁，下文不做特殊说明皆是如此。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># util.py </span></span><br><span class="line"><span class="keyword">import</span> tornado.ioloop</span><br><span class="line"></span><br><span class="line">COUNTER = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stop_loop</span><span class="params">(times)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> COUNTER</span><br><span class="line">    COUNTER += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> COUNTER == times:</span><br><span class="line">        tornado.ioloop.IOLoop.instance().stop()</span><br><span class="line">        print(<span class="string">'====&gt; ioloop end'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_loop</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'====&gt; ioloop start'</span>)</span><br><span class="line">    ioloop = tornado.ioloop.IOLoop.current()</span><br><span class="line">    ioloop.start()</span><br></pre></td></tr></table></figure>
+<h2 id="最常用的调用方式"><a href="#最常用的调用方式" class="headerlink" title="最常用的调用方式"></a>最常用的调用方式</h2><p>在 tornado 中最普遍的使用方式是把函数的调用结果封装成 Future，利用 ioloop 执行并异步获得结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> tornado.httpclient <span class="keyword">import</span> AsyncHTTPClient</span><br><span class="line"><span class="keyword">from</span> tornado.concurrent <span class="keyword">import</span> Future</span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> gen</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> stop_loop, start_loop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># fetch 返回的是 future</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">asyn_fetch_future</span><span class="params">(url)</span>:</span></span><br><span class="line">    http_client = AsyncHTTPClient()</span><br><span class="line">    <span class="keyword">return</span> http_client.fetch(url)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">asyn_fetch_future_callback</span><span class="params">(future)</span>:</span></span><br><span class="line">    result = future.result()</span><br><span class="line">    print(<span class="string">'future_callback'</span>)</span><br><span class="line">    print(result.request.url, result.code, result.reason, result.request_time)</span><br><span class="line">    stop_loop(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    result_future = asyn_fetch_future(<span class="string">'http://www.apple.com/cn/'</span>)  <span class="comment">#1</span></span><br><span class="line">    result_future.add_done_callback(asyn_fetch_future_callback)</span><br><span class="line">    start_loop()</span><br></pre></td></tr></table></figure>
+<p>在 <code>#1</code> 处通过tornado 提供的异步 httpclient 获得一个 Future，为 Future 添加执行结果回调函数获得执行结果，Future 的执行结果也是一个 Future。</p>
+<p>输出结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">====&gt; ioloop start</span><br><span class="line">future_callback</span><br><span class="line">(&apos;http://www.apple.com/cn/&apos;, 200, &apos;OK&apos;, 0.5546278953552246)</span><br><span class="line">====&gt; ioloop end</span><br><span class="line">        0.71 real         0.06 user         0.06 sys</span><br></pre></td></tr></table></figure>
+<p>这种调用方式必须手动启动 ioloop 并在调用结束之后手动销毁 ioloop，想要获得调用结果必须为 Future 添加回调。</p>
+<h2 id="只关心调用，不在乎结果"><a href="#只关心调用，不在乎结果" class="headerlink" title="只关心调用，不在乎结果"></a>只关心调用，不在乎结果</h2><p>有时候我们并不在乎函数的调用结果，只要函数正确执行即可，ioloop 提供了 spawn_callback 来执行这样的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> tornado.gen</span><br><span class="line"><span class="keyword">import</span> tornado.ioloop</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> start_loop, stop_loop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">divide</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x / y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># The IOLoop will catch the exception and print a stack trace in</span></span><br><span class="line">    <span class="comment"># the logs. Note that this doesn't look like a normal call, since</span></span><br><span class="line">    <span class="comment"># we pass the function object to be called by the IOLoop.</span></span><br><span class="line">    tornado.ioloop.IOLoop.current().spawn_callback(divide, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    tornado.ioloop.IOLoop.current().add_timeout(</span><br><span class="line">        tornado.ioloop.time.time() + <span class="number">1</span>, stop_loop, <span class="number">1</span>)</span><br><span class="line">    start_loop()</span><br></pre></td></tr></table></figure>
+<p>借助 spawn_callback 可以直接执行函数调用，但是依然需要手动处理 ioloop 的开闭。</p>
+<h2 id="一次性执行"><a href="#一次性执行" class="headerlink" title="一次性执行"></a>一次性执行</h2><p>run_sync 可以自动开启 ioloop 并在函数执行结束之后关闭 ioloop，此种调用在执行一次性操作时非常有用，比如要对数据库进行一次性修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_tag</span><span class="params">()</span>:</span></span><br><span class="line">    tb_tag = Tag() <span class="comment">#1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        result = <span class="keyword">yield</span> tb_tag.insert(&#123;<span class="string">'name'</span>: random.choice(<span class="string">'abcdefghjklpoiuytrewq'</span>)&#125;)</span><br><span class="line">        print(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tornado.ioloop.IOLoop.current().run_sync(<span class="keyword">lambda</span>: init_tag())</span><br></pre></td></tr></table></figure>
+<p><code>#1</code> 是一个 <a href="http://motor.readthedocs.io/en/stable/" target="_blank" rel="noopener">motor</a> Mongodb collection，借助 run_sync 可以非常方便对数据库执行操作，由于run_sync 只接受一个参数，如果函数调用需要传参，可以把函数封装成 lambda。</p>
+<h2 id="使用-callback"><a href="#使用-callback" class="headerlink" title="使用 callback*"></a>使用 callback*</h2><p>如果调用需要与 callback 函数进行交互，可以利用 gen.task</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> tornado.gen</span><br><span class="line"><span class="keyword">import</span> tornado.ioloop</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> start_loop, stop_loop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_task</span><span class="params">()</span>:</span></span><br><span class="line">    result = <span class="keyword">yield</span> tornado.gen.Task(some_function, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">raise</span> tornado.gen.Return(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_coroutine_callback</span><span class="params">(future)</span>:</span></span><br><span class="line">    print(<span class="string">'coroutine callback ==&gt; '</span>, future.result())</span><br><span class="line">    stop_loop(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_function</span><span class="params">(x, y, callback=None)</span>:</span></span><br><span class="line">    print(<span class="string">'some_function called'</span>)</span><br><span class="line">    callback(x * y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    future = call_task()</span><br><span class="line">    future.add_done_callback(fetch_coroutine_callback)</span><br><span class="line">    start_loop()</span><br></pre></td></tr></table></figure>
+<p>使用 gen.task 可以直接返回一个 Future ，被调用的函数会自动增加一个 callback 函数，用来在函数执行结束之后把结果进行回调通知。</p>
+<h2 id="通过-threadPool-来调用阻塞操作"><a href="#通过-threadPool-来调用阻塞操作" class="headerlink" title="通过 threadPool 来调用阻塞操作"></a>通过 threadPool 来调用阻塞操作</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> tornado.concurrent <span class="keyword">import</span> Future</span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> gen</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> start_loop, stop_loop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">EXECUTOR = ThreadPoolExecutor(max_workers=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_coroutine_callback</span><span class="params">(future)</span>:</span></span><br><span class="line">    print(<span class="string">'coroutine callback'</span>)</span><br><span class="line">    print(future.result())</span><br><span class="line">    stop_loop(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep_func</span><span class="params">(t)</span>:</span></span><br><span class="line">    print(<span class="string">'sleep_func call'</span>)</span><br><span class="line">    time.sleep(t)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'blocking func result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blocking</span><span class="params">()</span>:</span></span><br><span class="line">    result = <span class="keyword">yield</span> EXECUTOR.submit(sleep_func, *(<span class="number">4</span>, ))</span><br><span class="line">    <span class="keyword">raise</span> gen.Return(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">not_blocking</span><span class="params">()</span>:</span></span><br><span class="line">    future = Future()</span><br><span class="line">    future.set_result(<span class="string">'not blocking func result'</span>)</span><br><span class="line">    result = <span class="keyword">yield</span> future</span><br><span class="line">    <span class="keyword">raise</span> gen.Return(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    用多线程的方式借助协程实现异步调用</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    blocking().add_done_callback(fetch_coroutine_callback)</span><br><span class="line">    not_blocking().add_done_callback(fetch_coroutine_callback)</span><br><span class="line">    start_loop()</span><br></pre></td></tr></table></figure>
+<p>如果代码中有阻塞操作，可以借助 ThreadPoolExecutor 来完成异步的调用，这样把耗时的操作交给别的线程，可以使当前的线程继续执行后续的操作。这里的阻塞操作一般是 IO 或者其他系统调用。</p>
+<h2 id="并行执行"><a href="#并行执行" class="headerlink" title="并行执行"></a>并行执行</h2><p>tornado 的 Future 是支持并行执行的，可以对多个 future 进行 yield 操作并返回多个结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> tornado.httpclient <span class="keyword">import</span> AsyncHTTPClient</span><br><span class="line"><span class="keyword">from</span> tornado.concurrent <span class="keyword">import</span> Future</span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> gen</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> stop_loop, start_loop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_many_coroutine</span><span class="params">(urls)</span>:</span></span><br><span class="line">    http_client = AsyncHTTPClient()</span><br><span class="line">    response1, response2 = <span class="keyword">yield</span> [http_client.fetch(urls[<span class="number">0</span>]), http_client.fetch(urls[<span class="number">1</span>])]</span><br><span class="line">    <span class="keyword">raise</span> gen.Return([response1, response2])</span><br><span class="line"></span><br><span class="line"><span class="meta">@gen.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_coroutine</span><span class="params">(urls)</span>:</span></span><br><span class="line">    http_client = AsyncHTTPClient()</span><br><span class="line">    responses = <span class="keyword">yield</span> [http_client.fetch(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls]</span><br><span class="line">    <span class="keyword">raise</span> gen.Return(responses)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_coroutine_callback</span><span class="params">(future)</span>:</span></span><br><span class="line">    print(<span class="string">'coroutine callback'</span>)</span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> future.result():</span><br><span class="line">        print(</span><br><span class="line">            result.request.url,</span><br><span class="line">            result.code, result.reason, result.request_time)</span><br><span class="line">    stop_loop(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    使用gen.coroutine 可以很方便让包含 yield 的函数返回future</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    result_future = fetch_coroutine([<span class="string">'https://baidu.com'</span>, <span class="string">'https://baidu.com'</span>])</span><br><span class="line">    result_future.add_done_callback(fetch_coroutine_callback)</span><br><span class="line">    result_future = fetch_many_coroutine([<span class="string">'https://baidu.com'</span>, <span class="string">'https://baidu.com'</span>])</span><br><span class="line">    result_future.add_done_callback(fetch_coroutine_callback)</span><br><span class="line">    start_loop()</span><br></pre></td></tr></table></figure>
+<p>文中所有代码见 <a href="https://github.com/zhyq0826/tornado-asyn" target="_blank" rel="noopener">tornado-asyn</a>，欢迎指正。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/05/understand-semantic-ui-grid/" rel="next" title="理解 semantic-ui grid 的使用">
+                <i class="fa fa-chevron-left"></i> 理解 semantic-ui grid 的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/16/mongodb-practice-for-four-years-md/" rel="prev" title="创业三年，使用 mongodb 的实践教训">
+                创业三年，使用 mongodb 的实践教训 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fundamental-concepts"><span class="nav-number">1.</span> <span class="nav-text">fundamental concepts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同步"><span class="nav-number">1.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步"><span class="nav-number">1.2.</span> <span class="nav-text">异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞"><span class="nav-number">1.3.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非阻塞"><span class="nav-number">1.4.</span> <span class="nav-text">非阻塞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最常用的调用方式"><span class="nav-number">2.</span> <span class="nav-text">最常用的调用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#只关心调用，不在乎结果"><span class="nav-number">3.</span> <span class="nav-text">只关心调用，不在乎结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一次性执行"><span class="nav-number">4.</span> <span class="nav-text">一次性执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-callback"><span class="nav-number">5.</span> <span class="nav-text">使用 callback*</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过-threadPool-来调用阻塞操作"><span class="nav-number">6.</span> <span class="nav-text">通过 threadPool 来调用阻塞操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并行执行"><span class="nav-number">7.</span> <span class="nav-text">并行执行</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/02/08/tornado-async-style/';
+          this.page.identifier = '2017/02/08/tornado-async-style/';
+          this.page.title = 'tornado 中的异步调用模式';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

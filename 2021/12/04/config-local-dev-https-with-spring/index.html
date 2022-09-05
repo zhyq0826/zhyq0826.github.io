@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="java,https,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="日常大多数前端使用的都是 Chrome 浏览器，由于安全策略的限制，Chrome 不允许在 https 环境之下访问非 https 的资源，包括静态资源和非静态 http 请求，会报 Mixed Content blocked 错误，因此为了让前端同学可以在日常的环境中和后端同学联合调试就需要一套可信任的 https 环境，最终状态是通过自定义域名访问 http 服务事浏览器会显示证书安全的标志，">
+<meta name="keywords" content="java,https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置浏览器信任的 Spring boot https 开发环境">
+<meta property="og:url" content="http://sanyuesha.com/2021/12/04/config-local-dev-https-with-spring/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="日常大多数前端使用的都是 Chrome 浏览器，由于安全策略的限制，Chrome 不允许在 https 环境之下访问非 https 的资源，包括静态资源和非静态 http 请求，会报 Mixed Content blocked 错误，因此为了让前端同学可以在日常的环境中和后端同学联合调试就需要一套可信任的 https 环境，最终状态是通过自定义域名访问 http 服务事浏览器会显示证书安全的标志，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/WX20211204-140412@2x.png">
+<meta property="og:image" content="https://static.git-star.com/WX20211204-143101@2x.png">
+<meta property="og:image" content="https://static.git-star.com/WX20211204-143405@2x.png">
+<meta property="og:updated_time" content="2021-12-04T07:33:14.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="配置浏览器信任的 Spring boot https 开发环境">
+<meta name="twitter:description" content="日常大多数前端使用的都是 Chrome 浏览器，由于安全策略的限制，Chrome 不允许在 https 环境之下访问非 https 的资源，包括静态资源和非静态 http 请求，会报 Mixed Content blocked 错误，因此为了让前端同学可以在日常的环境中和后端同学联合调试就需要一套可信任的 https 环境，最终状态是通过自定义域名访问 http 服务事浏览器会显示证书安全的标志，">
+<meta name="twitter:image" content="https://static.git-star.com/WX20211204-140412@2x.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2021/12/04/config-local-dev-https-with-spring/">
+
+
+
+
+
+  <title>配置浏览器信任的 Spring boot https 开发环境 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2021/12/04/config-local-dev-https-with-spring/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">配置浏览器信任的 Spring boot https 开发环境</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-04T13:50:16+08:00">
+                Dec 4 2021
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>日常大多数前端使用的都是 Chrome 浏览器，由于安全策略的限制，Chrome 不允许在 https 环境之下访问非 https 的资源，包括静态资源和非静态 http 请求，会报 <code>Mixed Content blocked</code> 错误，因此为了让前端同学可以在日常的环境中和后端同学联合调试就需要一套可信任的 https 环境，最终状态是通过自定义域名访问 http 服务事浏览器会显示证书安全的标志，如下访问 freecodecamp.org 一样</p>
+<p><img src="https://static.git-star.com/WX20211204-140412@2x.png" alt></p>
+<p>本文详细记录了配合 Spring boot 在 Mac 下搭建一套浏览器信任的 https 环境的全部工作，我们假设本地要使用的域名是 <code>dev.com</code></p>
+<h2 id="生成自签名证书"><a href="#生成自签名证书" class="headerlink" title="生成自签名证书"></a>生成自签名证书</h2><p>生成一个 RSA-2048 的 key ，用来生成 Root SSL certificate，生成过程中根据提示输入密码，这个密码在后续使用过程中会用到，所谓根证书就是权威机构颁发的证书，详细含义见 <a href="https://support.dnsimple.com/articles/what-is-ssl-root-certificate/" target="_blank" rel="noopener">What is a Root SSL Certificate?</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -des3 -out rootCA.key 2048</span><br></pre></td></tr></table></figure>
+<p>然后用这个 key 生成根证书，这个证书的有效期是 1024 天，可以根据自己的需要变更。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.pem</span><br></pre></td></tr></table></figure>
+<h2 id="让-Mac-信任证书"><a href="#让-Mac-信任证书" class="headerlink" title="让 Mac 信任证书"></a>让 Mac 信任证书</h2><p>打开 Mac 的钥匙串 App，导入生成的 <code>rootCA.pem</code> </p>
+<p><img src="https://static.git-star.com/WX20211204-143101@2x.png" style="zoom:50%;"></p>
+<p>然后双击导入的证书进行编辑，改写信任-&gt;当使用证书一览:始终信任</p>
+<p><img src="https://static.git-star.com/WX20211204-143405@2x.png" style="zoom:50%;"></p>
+<h2 id="为域名-dev-com-签发证书"><a href="#为域名-dev-com-签发证书" class="headerlink" title="为域名 dev.com 签发证书"></a>为域名 dev.com 签发证书</h2><p>创建 server.csr.cnf 文件，输入以下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[req]</span><br><span class="line">default_bits = 2048</span><br><span class="line">prompt = no</span><br><span class="line">default_md = sha256</span><br><span class="line">distinguished_name = dn</span><br><span class="line"></span><br><span class="line">[dn]</span><br><span class="line">C=US</span><br><span class="line">ST=RandomState</span><br><span class="line">L=RandomCity</span><br><span class="line">O=RandomOrganization</span><br><span class="line">OU=RandomOrganizationUnit</span><br><span class="line">emailAddress=hello@dev.com</span><br><span class="line">CN = dev.com</span><br></pre></td></tr></table></figure>
+<p>创建一个 v3.ext 文件，输入以下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">authorityKeyIdentifier=keyid,issuer</span><br><span class="line">basicConstraints=CA:FALSE</span><br><span class="line">keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment</span><br><span class="line">subjectAltName = @alt_names</span><br><span class="line"></span><br><span class="line">[alt_names]</span><br><span class="line">DNS.1 = dev.com</span><br></pre></td></tr></table></figure>
+<p>使用 <code>server.csf.cnf</code> 文件为 dev.com 创建一个certificate  key 保存为 <code>server.key</code> 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 -keyout server.key -config &lt;( cat server.csr.cnf )</span><br></pre></td></tr></table></figure>
+<p>接着生成 certificate signing request 文件 <code>server.crt</code> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -<span class="keyword">in</span> server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile v3.ext</span><br></pre></td></tr></table></figure>
+<h2 id="配置-spring-boot-的-https"><a href="#配置-spring-boot-的-https" class="headerlink" title="配置 spring boot 的 https"></a>配置 spring boot 的 https</h2><p>Java 提供了 <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html" target="_blank" rel="noopener">keytool</a> 工具为 Java 程序生成对应的 https 证书，其格式是 JKS 或 PKCS12，在这里我们在 Spring boot 中 使用 PKCS12 格式，在上面的我们已经为 dev.com 生成了对应的证书，再此我们可以使用 keytool 工具进行转换为 PKCS12 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -out springboot.p12 -inkey server.key -<span class="keyword">in</span> server.crt</span><br></pre></td></tr></table></figure>
+<p>把 <code>springboot.p12</code>拷贝到 Spring 项目的 resource 下，配置 Spring 的 <code>application.yaml</code> 或 <code>application.properties</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  ssl:</span></span><br><span class="line"><span class="attr">    key-store:</span> <span class="attr">classpath:springboot.p12</span></span><br><span class="line"><span class="attr">    key-store-password:</span> <span class="string">password</span></span><br><span class="line"><span class="attr">    key-store-type:</span> <span class="string">pkcs12</span></span><br><span class="line"><span class="attr">    key-password:</span> <span class="string">password</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">443</span></span><br></pre></td></tr></table></figure>
+<p>启动 Spring 程序，配置 dev.com 指定到本地 127.0.0.1 即可完成访问</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.thomasvitale.com/https-spring-boot-ssl-certificate/" target="_blank" rel="noopener">https://www.thomasvitale.com/https-spring-boot-ssl-certificate/</a></li>
+<li><a href="https://www.freecodecamp.org/news/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec/" target="_blank" rel="noopener">https://www.freecodecamp.org/news/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/https/" rel="tag"># https</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/21/understand-architecture/" rel="next" title="理解架构这件事">
+                <i class="fa fa-chevron-left"></i> 理解架构这件事
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/08/21/understand-react/" rel="prev" title="理解和学习 react">
+                理解和学习 react <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成自签名证书"><span class="nav-number">1.</span> <span class="nav-text">生成自签名证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让-Mac-信任证书"><span class="nav-number">2.</span> <span class="nav-text">让 Mac 信任证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为域名-dev-com-签发证书"><span class="nav-number">3.</span> <span class="nav-text">为域名 dev.com 签发证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-spring-boot-的-https"><span class="nav-number">4.</span> <span class="nav-text">配置 spring boot 的 https</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2021/12/04/config-local-dev-https-with-spring/';
+          this.page.identifier = '2021/12/04/config-local-dev-https-with-spring/';
+          this.page.title = '配置浏览器信任的 Spring boot https 开发环境';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

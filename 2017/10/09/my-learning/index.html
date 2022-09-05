@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="学习的第1步：认识学习的目的、本质和底层规律知识的真正作用以及发展历程知识发展共经历了三个阶段： 第一阶段，知识数量构建认识优势第二阶段，知识获取速度构建认知优势第三阶段，知识深度构建认知优势（现在的阶段） 这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。不难看出管理知识的真正目的就是提升认知深度，改变行为模式，这也是知识的真正作用。 如何提升认知深度分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的学习方法论">
+<meta property="og:url" content="http://sanyuesha.com/2017/10/09/my-learning/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="学习的第1步：认识学习的目的、本质和底层规律知识的真正作用以及发展历程知识发展共经历了三个阶段： 第一阶段，知识数量构建认识优势第二阶段，知识获取速度构建认知优势第三阶段，知识深度构建认知优势（现在的阶段） 这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。不难看出管理知识的真正目的就是提升认知深度，改变行为模式，这也是知识的真正作用。 如何提升认知深度分析">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.297Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的学习方法论">
+<meta name="twitter:description" content="学习的第1步：认识学习的目的、本质和底层规律知识的真正作用以及发展历程知识发展共经历了三个阶段： 第一阶段，知识数量构建认识优势第二阶段，知识获取速度构建认知优势第三阶段，知识深度构建认知优势（现在的阶段） 这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。不难看出管理知识的真正目的就是提升认知深度，改变行为模式，这也是知识的真正作用。 如何提升认知深度分析">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/10/09/my-learning/">
+
+
+
+
+
+  <title>我的学习方法论 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/09/my-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">我的学习方法论</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T12:48:24+08:00">
+                Oct 9 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/方法论/" itemprop="url" rel="index">
+                    <span itemprop="name">方法论</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="学习的第1步：认识学习的目的、本质和底层规律"><a href="#学习的第1步：认识学习的目的、本质和底层规律" class="headerlink" title="学习的第1步：认识学习的目的、本质和底层规律"></a>学习的第1步：认识学习的目的、本质和底层规律</h1><h2 id="知识的真正作用以及发展历程"><a href="#知识的真正作用以及发展历程" class="headerlink" title="知识的真正作用以及发展历程"></a>知识的真正作用以及发展历程</h2><p>知识发展共经历了三个阶段：</p>
+<p>第一阶段，知识数量构建认识优势<br>第二阶段，知识获取速度构建认知优势<br>第三阶段，知识深度构建认知优势（现在的阶段）</p>
+<p>这三个阶段的发展反应了知识管理的核心是通过管理知识提升认知深度，进而改变自己的行为模式。不难看出管理知识的真正目的就是提<strong>升认知深度，改变行为模式</strong>，这也是知识的真正作用。</p>
+<h2 id="如何提升认知深度"><a href="#如何提升认知深度" class="headerlink" title="如何提升认知深度"></a>如何提升认知深度</h2><p>分析 how 之前我们需要知道 what 和 why</p>
+<p>什么才是认知深度? 从案例入手分析认知深度反应在哪几个方面：<br><strong>问</strong>：怎么增加团队的认同感<br><strong>答案1</strong>：领导经常开会强调。<br><strong>答案2</strong>：人的认同感来自全力以赴完成一个共同目标，其中付出努力的程度以及共同参与的仪式感都很重要。</p>
+<p>答案 2 比答案 1 差别体现在：<br>第一，形式上，简单回答是对具体问题或事情本身做出回答，深度回答是分析具体现象之后找出抽象规律。<br>第二，思考方式上，简单回答根据自己的直观感受，情绪和经验做出回答，深度回答依托于有实验验证或有数据分析支持的结论。<br>第三，效果上，简单回答只能解决一个特定的问题，深度回答能更普遍解决类似的问题，启发我们由表及里地思考问题。</p>
+<p>所以深度认知能力是指：<br><strong>在分析问题的时候能够跳出问题本身思考更普遍的情况</strong><br><strong>在寻求答案的时候，能够根据理由可信度判断是否接受这个结论</strong></p>
+<p>从认知深度的提升也延伸出了一个重要的概念：通过深度认知得出的结论，往往能够解释相似情境中的很多问题，在这些结论中，有些结论经过了更为广泛长期的验证，也在更普遍的领域具有指导意义和应用价值，这些结论是<strong>临界知识</strong>。</p>
+<p><strong>临界知识就是具有普遍指导意义的规律或定律，提升认知深度就是掌握更多的临界知识，并学会应用</strong>。<br><strong>请注意从知识的作用—&gt;定义认知深度—&gt;提高认知深度—&gt;掌握临界知识的思考过程和路径</strong></p>
+<h2 id="学习能力差的问题是什么"><a href="#学习能力差的问题是什么" class="headerlink" title="学习能力差的问题是什么"></a>学习能力差的问题是什么</h2><p>上面分析了需要学习的真正知识就是要掌握的临界知识，学习能力差也就是体现在学习的知识并不是临界知识，这样的知识只是事务的表层，这样的知识提升的往往是<strong>技术效率</strong>，也就是只要知识发生变化就需要重新学习，由于没有掌握临界知识的底层规律，无法把现有的问题和以往的知识联系起来，无法看透问题的本质可能就是已经掌握的知识的一种另一种表现，这就是学习层次无法提升的重要原因，直接反应出来的是学习能力差，学习效率低。</p>
+<h2 id="哪些知识需要学"><a href="#哪些知识需要学" class="headerlink" title="哪些知识需要学"></a>哪些知识需要学</h2><p>按照知识反应的能力把能力对应的课程划分为：</p>
+<ul>
+<li>公共基础课：执行能力</li>
+<li>专业必修课：专业能力</li>
+<li>通用必修课：结构能力</li>
+</ul>
+<p><strong>公共基础课</strong>，就是每个每天都用到的能力，比如时间管理，资料信息管理，沟通谈判技巧</p>
+<p><strong>专业必修课</strong>，专业能力并不是仅仅一个特定领域的知识，而是可以跨学科思考，系统性解决问题的知识，我们要能够做到在自己特定的领域内，夸学科思考，解决问题，能够灵活性应用多个学科的知识，让他们在合适的时机出现在合适的位置为我们解决问题。</p>
+<p><strong>通用必修课</strong>，就是要掌握临界知识，认知事务的更加底层的结构和规律，我们经营的领域是如何产生的，影响这个领域发展的基本动力是什么，有哪些规律会普遍影响这些事务，这就像在深刻理解一场战役为什么爆发，会以什么样的脉络发展，其中起决定性的作用的因素究竟是什么样。</p>
+<p>毛泽东抗日战争看透了战争的本质，思考到了底层规律：中日战争的底层决定因素，是中国战略空间的广阔和日本需要速战速决的压力，所以影响战争的决定性因素是空间和时间的博弈。</p>
+<p>通过分析真正影响我们认知深度的是通用必修课。</p>
+<h2 id="学习需要的底层思维"><a href="#学习需要的底层思维" class="headerlink" title="学习需要的底层思维"></a>学习需要的底层思维</h2><p>第一，跳出低水平勤奋的误区，不要只做摘记，不对知识进行联系和整理，没有对新旧知识建立关联，不能内化成能力</p>
+<p>第二，放慢速度，将获得的知识和已有的知识进行网络状联系，在此过程中内化知识，形成新行为暗示，比如将自己已有的模型思考框架和新的知识相联系看是否能够发现新的规律，因而读书不追求数量，也不一定要去读完，而是需要解决某个问题的时候，主动去寻找这个问题有关的书籍和文章，去观察 — <strong>作者用什么样的思路解决问题？在这个解决方案背后？是否有我熟悉的知识？我还能把这个解决方案应用到什么地方？</strong></p>
+<h2 id="学习需要的心态"><a href="#学习需要的心态" class="headerlink" title="学习需要的心态"></a>学习需要的心态</h2><h3 id="绿灯思维的心态"><a href="#绿灯思维的心态" class="headerlink" title="绿灯思维的心态"></a>绿灯思维的心态</h3><p>绿灯思维是防止习惯性防御的思维出现，之所以有习惯性防御是因为我们怕暴露自己的思考背后的思维，因为害怕别人发现它是错误的。</p>
+<p><strong>区分否定我和否定我的观点是不一样的行为，质疑观点不一定是质疑提出观点的人。</strong></p>
+<h3 id="慢就是快的心态"><a href="#慢就是快的心态" class="headerlink" title="慢就是快的心态"></a>慢就是快的心态</h3><p>快是结果，不是原因，之所以快是因为能力强才快，如果正式需要提高能力的时候就应该慢下来认真学。</p>
+<p>高效的学习是知识融汇贯通的结果，有了对重要的、核心知识的深刻理解，我们才能游刃有余运用，对我们大多数人而言，阻碍我们融汇贯通的原因是我们在学习中遇到的一些阻塞没有把它攻克，导致我们其实有自以为知道，其实不知道的知识阻塞。</p>
+<p>比如读书，首先找到这本书对自身而言最紧要之处，花慢功夫认真领会，打通知识阻塞，弄懂基本原理。</p>
+<p>那什么才是把慢功夫花在真问题上，就是把时间花在重要的就基本概念、有启发的观点和自己没想明白的问题上。</p>
+<h2 id="学习需要的底层方法"><a href="#学习需要的底层方法" class="headerlink" title="学习需要的底层方法"></a>学习需要的底层方法</h2><p>上面提到知识的真正作用是帮助我们提升认知层次进而改变我们的行为模式，而学习的本质又是什么？</p>
+<p>学习是一个长期动态变化的过程，在这个动态变化过程中我们其实就是不断对我们提出的假设进行验证，修正，继续假设修正，直到找到一个满足我们要求的假设或者行为，然后不断实践它以产生有用的输出。可以看出，<strong>学习最重要的就是提出假设，验证假设，调整假设，做出决策和行动</strong>。</p>
+<p>而我们所有的假设和行动都在什么地方？在我们一点一滴的生活行动当中，因而学习的本质其实就是对我们的生活行动不断进行反思修正的过程，具体来有三个方法可以帮助我们实践这个过程：<strong>反思、以教为学和刻意练习</strong>。</p>
+<h3 id="反思：提升知识的掌握层次"><a href="#反思：提升知识的掌握层次" class="headerlink" title="反思：提升知识的掌握层次"></a>反思：提升知识的掌握层次</h3><p>总结和反思是不同的，总结是对结果的好坏进行分析；而反思是对产生结果的原因进行分析，反思的实质是对假设进行校正。</p>
+<p>做事的顺序：做出假设——→采取行动——→产生结果<br>反思的顺序：观察结果（现象）——→研究原先假设——→反思校正假设</p>
+<h4 id="反思的作用"><a href="#反思的作用" class="headerlink" title="反思的作用"></a><strong>反思的作用</strong></h4><ul>
+<li>发现知识误区</li>
+<li>促进已有知识产生新知识</li>
+<li>检验学习的新知识是否用了起来</li>
+</ul>
+<h3 id="如何训练反思能力"><a href="#如何训练反思能力" class="headerlink" title="如何训练反思能力"></a><strong>如何训练反思能力</strong></h3><ul>
+<li>从小事反思，深入突破</li>
+<li>把生活案例化处理</li>
+<li>培养记反思日记的习惯</li>
+</ul>
+<h3 id="以教为学"><a href="#以教为学" class="headerlink" title="以教为学"></a>以教为学</h3><p>以教为学顾名思义就是把自己知道的讲给别人，教是也是一个动态的过程，通过教不但可以检测自己学的程度，强化自己学习的记忆的，在别人提出疑问或质疑还能增强我们的认识。</p>
+<h3 id="刻意练习"><a href="#刻意练习" class="headerlink" title="刻意练习"></a>刻意练习</h3><p>刻意练习就是有目的的，有针对性的对自己未掌握以及需要掌握的知识不断进行练习和优化，刻意练习非常重要的一点是：<strong>第一，要有目标，第二，要有反馈</strong>。</p>
+<p>刻意练习的过程就是不断构筑自我元认知的过程，而元认知就是需要掌握的知识的最基础的概念以及最基础的规律的理解和运用，通过掌握的知识不断构筑更大的知识单元，直到能够解决复杂的问题。</p>
+<h2 id="学习需要的能力技巧"><a href="#学习需要的能力技巧" class="headerlink" title="学习需要的能力技巧"></a>学习需要的能力技巧</h2><p>技巧是学习的工具，利用这些工具可以让学习事半功倍。</p>
+<h3 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h3><p>记录是主动思考的过程，记录不是流水账，而是实实在在记录发生了什么事情，为什么发生，这样的记录有助于我们回顾和观察事件的整个发生过程，有助于还原事情真相，因为<strong>事情的时间间隔越久，我们就越容易对自己当初的行为动机和想法按照对现在有利的结果进行解读</strong>，这就违背了事情的真相。</p>
+<h3 id="定期回顾"><a href="#定期回顾" class="headerlink" title="定期回顾"></a>定期回顾</h3><p>定期回顾就是上面我们介绍的反思，不同于反思，定期回顾是一种习惯性的反思，并且只有记下来了才可能进行定期回顾，不然回顾很容易基于对过去的假象进行回顾。</p>
+<p>回顾工作具体要怎么做呢？回顾可以分为三个层次：</p>
+<ul>
+<li>周/月度回顾，主要是微观层面审视解决问题的假设和效果；</li>
+<li>年度回顾，检视基本思维方式和灵感激发；</li>
+<li>五年以上回顾，探寻基本规律如何影响生活。</li>
+</ul>
+<h3 id="付费购买"><a href="#付费购买" class="headerlink" title="付费购买"></a>付费购买</h3><p>辣么多知识付费的服务和产品，此条不展开细讲了。</p>
+<h2 id="发现临界知识"><a href="#发现临界知识" class="headerlink" title="发现临界知识"></a>发现临界知识</h2><p>临界知识的思想，核心是用更加可靠学科的研究方法、思想和结论来处理没那么可靠的领域的问题。简言之，就是解决问题最稳妥的办法是拿可信度更高的方法去处理问题。发现临界知识就是找到这些可靠领域提供给我们的科学方法和思想，如何寻找？</p>
+<p>1.从自己感兴趣的领域入手，学习这个学科的重要知识<br>所有现象层面的知识研究到底层之后，都会联系起来。所以，从自己感兴趣的领域入手去阅读经典的书籍，从中寻找最重要的原理和知识。</p>
+<p>2.找到最重要的知识和原理的原始出处<br>尽管我们可能发现了事情背后的规律，但是这往往还不够，还要进一步寻找这个规律的原始出处。这个步骤非常重要，也是大多数人在学习研究的时候忽略的一个环节——找到重要的结论是怎么来的。</p>
+<p>3.试用更加基本的原理来解释这个知识</p>
+<p>4.没有解释的时候，想办法寻找或者自己创造一个假设，并验证</p>
+<h2 id="应用临界知识"><a href="#应用临界知识" class="headerlink" title="应用临界知识"></a>应用临界知识</h2><p>刻意练习我们学到的临界知识，是我们真正掌握它的关键。</p>
+<p>刻意练习要做到：<br>第一，在不同的场景中，重复应用同一个临界知识；<br>第二，在不同的时间里，重复应用同一个临界知识。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>此书从更深层次的角度探讨了知识的作用，学习的本质，以及要具备什么样的条件才能学好知识，应用好知识，读罢此书，有一点非常明确，要想从根本上解决我们自身学习效率低的问题，就是不断提高自身对临界知识的掌握，而掌握这些临界知识就需要我们动用自己的所有神经掌握自己专业之内和之外那些底层的知识和规律，以计算机角度来解释这个问题就是，学好算法、网络原理、操作系统、统计学、数学、计算机语言理论等基础知识是保持在变化多端的 IT 领域立足的关键。</p>
+<h1 id="学习的第2步：建立学习目标"><a href="#学习的第2步：建立学习目标" class="headerlink" title="学习的第2步：建立学习目标"></a>学习的第2步：建立学习目标</h1><p>目标的重要意义和如何制定好目标已经在 <a href="/2017/11/20/target-process-result/" title="目标 过程 结果">目标 过程 结果</a> 中做了阐述，下面说明如何在学习开始前建立学习的目标。</p>
+<h2 id="写下自己要学习什么"><a href="#写下自己要学习什么" class="headerlink" title="写下自己要学习什么"></a>写下自己要学习什么</h2><p>这一步其实是帮助自己确认目标的过程，一个目标只有写下来才是真正的目标，否则不能称之为目标。遵循 <a href="/2017/11/20/target-process-result/" title="目标 过程 结果">目标 过程 结果</a>一起来写下一个学习的目标</p>
+<blockquote>
+<p><strong>目标</strong><br>学习使用 go 语言，熟悉 go 语言的基本语法和常用库，能够使用 go 语言写一个小网站，能够使用 go 语言做一些常用的功能库</p>
+</blockquote>
+<p>写下目标相当于做出了一个对自己错处了一个承诺，自己必须要兑现这个承诺是对自己的负责。</p>
+<h1 id="学习的第3步：信息分类、获取和管理"><a href="#学习的第3步：信息分类、获取和管理" class="headerlink" title="学习的第3步：信息分类、获取和管理"></a>学习的第3步：信息分类、获取和管理</h1><h2 id="什么是信息"><a href="#什么是信息" class="headerlink" title="什么是信息"></a>什么是信息</h2><p>广义上的信息是指任何能够被传递的内容，文字，声音，视频，图片等，而这里的对自己而言信息是指<strong>有价值的内容</strong>，其包括</p>
+<ul>
+<li>一篇文章 (技术性，经济学，心理学等)</li>
+<li>一条新闻消息 （科技新闻，经济政策，社会新闻事件）</li>
+<li>一个活动消息 （电商促销打折）</li>
+<li>一本书</li>
+<li>一条微博 （主要是技术性微博转发和一些时政观点）</li>
+</ul>
+<p>而这些有价值的内容中，只有能够影响自己行动的信息才是对自己有价值的。任何一个不能影响自己行动的信息流都是在浪费时间。</p>
+<h2 id="信息的分类和特征"><a href="#信息的分类和特征" class="headerlink" title="信息的分类和特征"></a>信息的分类和特征</h2><ul>
+<li>随意信息</li>
+<li>观点信息</li>
+<li>过程信息</li>
+<li>具体信息</li>
+<li>抽象信息</li>
+</ul>
+<h3 id="随意信息"><a href="#随意信息" class="headerlink" title="随意信息"></a>随意信息</h3><p>此类信息不具有关联性，或逻辑关系非常若，比如历史事件发生年代，人体基本结构知识都属于此类，此类信息要运用相关技巧性来达到记忆的目的。</p>
+<p>记住这些信息的技巧</p>
+<ul>
+<li>联想</li>
+<li>图表</li>
+<li>比喻类比</li>
+</ul>
+<h3 id="观点信息"><a href="#观点信息" class="headerlink" title="观点信息"></a>观点信息</h3><p>观点信息是有争论的信息，对于观点信息最重要的有两点</p>
+<ul>
+<li>提取观点</li>
+<li>通过自己的思考和判断验证观点（查找支持文中观点的相关信息进行验证，或者自己查找信息进行验证）</li>
+</ul>
+<h3 id="过程信息"><a href="#过程信息" class="headerlink" title="过程信息"></a>过程信息</h3><p>过程信息是教导人怎么行动的信息，是讲述一系列动作和操作的信息，比如如何游泳，如何编写游戏，建一所房子和模型都依赖过程信息。面对这类信息，最重要的是不断练习和反复去做。练习过程信息的关键还有要对背景有一定深入的了解，如果你完全不懂原理的练习是是浪费时间不起作用的。</p>
+<h3 id="具体信息"><a href="#具体信息" class="headerlink" title="具体信息"></a>具体信息</h3><p>可观察的，可感受到的信息，此类信息，此类信息适合内在化，就是通过自身想象为此类信息配上图片，声音等然后进行联系和想象。</p>
+<h3 id="抽象信息"><a href="#抽象信息" class="headerlink" title="抽象信息"></a>抽象信息</h3><p>此类新缺乏与感官的联系，但逻辑性很强，想要正确理解抽象信息一定把抽象信息放置于具体的层次来应用和想象。通过把抽象信息进行具体化来理解，比如通过图像图表等方法进行具体的描述和理解。</p>
+<h2 id="收集理解不同信息的关键"><a href="#收集理解不同信息的关键" class="headerlink" title="收集理解不同信息的关键"></a>收集理解不同信息的关键</h2><p>面对信息首先要对信息进行分类，然后针对不同的信息运用不同的策略和技巧。比如面对一段过程信息就需要进行练习，否则信息毫无价值。面对一段具体信息，如果很有用，可以记住，否则可以暂时放弃。面对抽象信息需要反复理解，进行具体化直到自己真的弄懂为止。</p>
+<h2 id="信息的来源方式"><a href="#信息的来源方式" class="headerlink" title="信息的来源方式"></a>信息的来源方式</h2><ul>
+<li>读书</li>
+<li>搜索引擎</li>
+<li>github</li>
+<li>hacknews</li>
+<li>微博</li>
+<li>公众号</li>
+<li>小密圈</li>
+<li>朋友圈</li>
+<li>群聊（微信或面对面）</li>
+</ul>
+<p>读书时获取知识最好的渠道。</p>
+<ul>
+<li>GitHub 获取的是技术性的趋势和优质的技术资源。</li>
+<li>微博和朋友圈是实时新闻和热点事件(关注较少，在所有信息中占用比例很低)。</li>
+<li>小密圈，公众号，朋友圈提供了不同圈子人关注点和思考点，是看别人的一条通道。</li>
+<li>群聊是通过看别人聊天以及和别人聊天产生的思维碰撞，消息来源于此渠道的也比较少。</li>
+</ul>
+<p>通过分析得到最有价值的信息获取渠道是<strong>读书</strong>，其次是搜索引擎，这两者贡献的信息价值最大，根据墨菲定律，2/8原则，应该加大对这两者的投入比例。</p>
+<h2 id="获取信息的方式"><a href="#获取信息的方式" class="headerlink" title="获取信息的方式"></a>获取信息的方式</h2><p>1.主动获取，通过搜索引擎，读书等手段<br>2.被动获取，浏览公众号和朋友圈以及微博</p>
+<p>两种方式占比主动获取是 80%，被动获取是20%，也就是通过被动获取的知识越来越不能满足自己的需要了。</p>
+<h2 id="信息管理的现状"><a href="#信息管理的现状" class="headerlink" title="信息管理的现状"></a>信息管理的现状</h2><ul>
+<li>各种文章，资源以收藏为主</li>
+<li>读书以记录笔记为主</li>
+<li>信息散落在各个平台（为知笔记，有道笔记，印象笔记，收藏夹，微信收藏，微博收藏，github，trello，markdown 笔记）</li>
+<li>信息没有被消化吸收，越积越多</li>
+<li>信息缺乏有效的组织和联系，成碎片化，孤立存在</li>
+</ul>
+<h2 id="如何管理"><a href="#如何管理" class="headerlink" title="如何管理"></a>如何管理</h2><p>信息存在的问题已经提出，首先针对存在的问题来逐一解决</p>
+<h3 id="解决信息散落在各个平台的问题"><a href="#解决信息散落在各个平台的问题" class="headerlink" title="解决信息散落在各个平台的问题"></a>解决信息散落在各个平台的问题</h3><p>统一信息的收集方式，方便整理和使用，删除 Evernote 和 为知笔记内容并弃用，整理有道笔记之后逐渐弃用，统一知识管理工具为</p>
+<ul>
+<li>quiver</li>
+<li>github issue</li>
+<li>markdown 笔记</li>
+<li>trello</li>
+</ul>
+<p>微博搜藏和微信搜藏仅仅做短短期管理，整理之后可以删除。</p>
+<h3 id="定期清理，保持简洁"><a href="#定期清理，保持简洁" class="headerlink" title="定期清理，保持简洁"></a>定期清理，保持简洁</h3><p>浏览器收藏夹、微信收藏夹、微博收藏是目前主要的收藏方式，逐渐整理这些收藏夹，然后以<strong>主题</strong>的方式重新组织，让收藏夹都变成短期收藏使用，定期清理，保持简洁。</p>
+<h3 id="定期整理，周期性调整-—-记录过程"><a href="#定期整理，周期性调整-—-记录过程" class="headerlink" title="定期整理，周期性调整 —- 记录过程"></a>定期整理，周期性调整 —- 记录过程</h3><p>信息需要进行定期整理和回顾，周期以天，周，月为单位，对信息进行简单归类和整理，逐步建立自己的归类方法。</p>
+<p>信息采集主要通过浏览器收藏夹，微信收藏和微博收藏，每天晚上或和周末对这一周期内收藏的信息进行主题式的归纳和分类，以链接的方式收集到 quiver 然后建立一个 主题，用一个 note 的方式，之后在 trello 中建立一个 todo 项目建立该主题的待办，之后进行归纳和梳理，写成文章。</p>
+<p>每个月对当月输出的主题进行联系和归纳，形成一个更大的体系。</p>
+<h3 id="主动联系-，及时总结和归档-—-反思回顾"><a href="#主动联系-，及时总结和归档-—-反思回顾" class="headerlink" title="主动联系 ，及时总结和归档 —- 反思回顾"></a>主动联系 ，及时总结和归档 —- 反思回顾</h3><p>信息之所以孤立存在重要的原因是没有对信息进行加工和主动关联，主动关联意味着需要手动整理和思考信息背后一致和不一致的地方，对一致的地方进行提炼，不一致的地方进行对比修正，形成自我观点和知识，然后实践和使用。</p>
+<p>所以解决信息孤立存在的关键是主动关联，归纳，总结和提炼，然后输出。</p>
+<h3 id="加工输出，形成体系-—-以教为学，回顾检验"><a href="#加工输出，形成体系-—-以教为学，回顾检验" class="headerlink" title="加工输出，形成体系 —- 以教为学，回顾检验"></a>加工输出，形成体系 —- 以教为学，回顾检验</h3><p>信息整理之后需要进行消化吸收，然后通过以教为学的手段进行输出和检验</p>
+<h3 id="总结规律"><a href="#总结规律" class="headerlink" title="总结规律"></a>总结规律</h3><p>信息的管理一个重要的底层规律就是化简就繁，也就是把信息收集的方式单一化，定时清理和主动归纳联系，形成更有价值的主题和自我体系，然后输出。</p>
+<h2 id="需要培养的习惯"><a href="#需要培养的习惯" class="headerlink" title="需要培养的习惯"></a>需要培养的习惯</h2><ul>
+<li>定期检查和整理</li>
+<li>识别有用的信息，主动远离无价值的信息，判断标准是能不能影响自己的行动</li>
+</ul>
+<h1 id="学习的第4步：理解和吸收信息"><a href="#学习的第4步：理解和吸收信息" class="headerlink" title="学习的第4步：理解和吸收信息"></a>学习的第4步：理解和吸收信息</h1><p>理解就是知道是什么以及怎么做，但是为什么可能不太清楚，在学习的早期可以不需要深入理解为什么，此时的目的只是怎么正确使用</p>
+<p>如何达到正确理解，或者说如何检验正确理解了？</p>
+<p>能够讲出来或者写出来让其他人明白就达到理解了，坚持写博客和公众号目的也在于此。</p>
+<h1 id="学习的第5步：刻意练习和检验"><a href="#学习的第5步：刻意练习和检验" class="headerlink" title="学习的第5步：刻意练习和检验"></a>学习的第5步：刻意练习和检验</h1><p>在《刻意练习：如何从新手到大师》这本书中提到，一个人的能力的强弱表现在长时记忆，也就是说如果对于同样一件事的或知识的理解，能力强的人能够在很久之后依然刻意记得和应用。而如何才能达到这一的记忆效果呢？<strong>答案就是刻意练习，并且是难度适中，能够收到反馈，有足够重复次数，学习者能够从中纠正自己错误的练习</strong></p>
+<p>如何才能让刻意练习发挥出最大的作用？那就是在情境中练习，同样的观点也见《程序员思维训练》一书中。而正是因为人的大脑是具有重塑能力的，也就是也可以不比天生就具有某些才华，那些才华是能通过后天练习得到提升的，当然爱因斯坦或牛顿的能力可能确实不是后天训练可以得到的。这个观点也揭示出学习不是为了发展某些能力，而是创造这些能力。</p>
+<p>怎样才能算是做到真正有效的刻意练习？<br>第一要有目的，要有非常明确的目标<br>第二要专注<br>第三要有反馈，有反馈才能知道做的对错好坏才能知道如何调整成最佳<br>第四要走出舒适区，不走出舒适区意味着无法取得进步</p>
+<p>在刻意练习这本书提到了一个重要的概念：心理表征，是指我们思考某个物体，观点，某些信息或者其他事物对应的心理结构，或抽象，或具体，简单来讲比如提到蒙娜丽莎，你可能会想到达芬奇的画，这就是你的心理表征。</p>
+<p>虽然说刻意练习是有目的，但是如果想让刻意练习真正得帮我们建立正确的心里表征，我们需要更进一步对刻意练习有了解。在《刻意练习：如何从新手到大师》讲到，刻意练习最大两个特点是就是：</p>
+<ul>
+<li>你练习的行业或领域有杰出的从业者</li>
+<li>你可以帮你布置练习作业的导师</li>
+</ul>
+<p>也就是找到一个比你更高明的人至关重要，只有这样你才能第一时间找到正确的方法帮助你得到正确的练习。如果你的练习一开始就不是正确的，再怎么刻意也是白费功夫。</p>
+<p>如果你自学能力很强，或者你根本找不到导师该怎么进行刻意练习？答案是：专注、反馈和及时纠正，将技能分解成一些组成部分，以便反复练习，并且有效分析、确定你的不足之处，然后想办法来解决它们。</p>
+<p>运用刻意练习你将会成为一个杰出人物，这个路线图就是：产生兴趣、变得认真、全力投入。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/29/python-bumpversion/" rel="next" title="使用 Python bumpversion 轻松实现版本管理">
+                <i class="fa fa-chevron-left"></i> 使用 Python bumpversion 轻松实现版本管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/10/pipenv/" rel="prev" title="使用 pipenv 和 autoenv 构造一键 Python Project 环境">
+                使用 pipenv 和 autoenv 构造一键 Python Project 环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#学习的第1步：认识学习的目的、本质和底层规律"><span class="nav-number">1.</span> <span class="nav-text">学习的第1步：认识学习的目的、本质和底层规律</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#知识的真正作用以及发展历程"><span class="nav-number">1.1.</span> <span class="nav-text">知识的真正作用以及发展历程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何提升认知深度"><span class="nav-number">1.2.</span> <span class="nav-text">如何提升认知深度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习能力差的问题是什么"><span class="nav-number">1.3.</span> <span class="nav-text">学习能力差的问题是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哪些知识需要学"><span class="nav-number">1.4.</span> <span class="nav-text">哪些知识需要学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习需要的底层思维"><span class="nav-number">1.5.</span> <span class="nav-text">学习需要的底层思维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习需要的心态"><span class="nav-number">1.6.</span> <span class="nav-text">学习需要的心态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绿灯思维的心态"><span class="nav-number">1.6.1.</span> <span class="nav-text">绿灯思维的心态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#慢就是快的心态"><span class="nav-number">1.6.2.</span> <span class="nav-text">慢就是快的心态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习需要的底层方法"><span class="nav-number">1.7.</span> <span class="nav-text">学习需要的底层方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#反思：提升知识的掌握层次"><span class="nav-number">1.7.1.</span> <span class="nav-text">反思：提升知识的掌握层次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#反思的作用"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">反思的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何训练反思能力"><span class="nav-number">1.7.2.</span> <span class="nav-text">如何训练反思能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以教为学"><span class="nav-number">1.7.3.</span> <span class="nav-text">以教为学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#刻意练习"><span class="nav-number">1.7.4.</span> <span class="nav-text">刻意练习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习需要的能力技巧"><span class="nav-number">1.8.</span> <span class="nav-text">学习需要的能力技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#记录"><span class="nav-number">1.8.1.</span> <span class="nav-text">记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定期回顾"><span class="nav-number">1.8.2.</span> <span class="nav-text">定期回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#付费购买"><span class="nav-number">1.8.3.</span> <span class="nav-text">付费购买</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发现临界知识"><span class="nav-number">1.9.</span> <span class="nav-text">发现临界知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用临界知识"><span class="nav-number">1.10.</span> <span class="nav-text">应用临界知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.11.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习的第2步：建立学习目标"><span class="nav-number">2.</span> <span class="nav-text">学习的第2步：建立学习目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#写下自己要学习什么"><span class="nav-number">2.1.</span> <span class="nav-text">写下自己要学习什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习的第3步：信息分类、获取和管理"><span class="nav-number">3.</span> <span class="nav-text">学习的第3步：信息分类、获取和管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是信息"><span class="nav-number">3.1.</span> <span class="nav-text">什么是信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息的分类和特征"><span class="nav-number">3.2.</span> <span class="nav-text">信息的分类和特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#随意信息"><span class="nav-number">3.2.1.</span> <span class="nav-text">随意信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观点信息"><span class="nav-number">3.2.2.</span> <span class="nav-text">观点信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过程信息"><span class="nav-number">3.2.3.</span> <span class="nav-text">过程信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体信息"><span class="nav-number">3.2.4.</span> <span class="nav-text">具体信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象信息"><span class="nav-number">3.2.5.</span> <span class="nav-text">抽象信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收集理解不同信息的关键"><span class="nav-number">3.3.</span> <span class="nav-text">收集理解不同信息的关键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息的来源方式"><span class="nav-number">3.4.</span> <span class="nav-text">信息的来源方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取信息的方式"><span class="nav-number">3.5.</span> <span class="nav-text">获取信息的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息管理的现状"><span class="nav-number">3.6.</span> <span class="nav-text">信息管理的现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何管理"><span class="nav-number">3.7.</span> <span class="nav-text">如何管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决信息散落在各个平台的问题"><span class="nav-number">3.7.1.</span> <span class="nav-text">解决信息散落在各个平台的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定期清理，保持简洁"><span class="nav-number">3.7.2.</span> <span class="nav-text">定期清理，保持简洁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定期整理，周期性调整-—-记录过程"><span class="nav-number">3.7.3.</span> <span class="nav-text">定期整理，周期性调整 —- 记录过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主动联系-，及时总结和归档-—-反思回顾"><span class="nav-number">3.7.4.</span> <span class="nav-text">主动联系 ，及时总结和归档 —- 反思回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加工输出，形成体系-—-以教为学，回顾检验"><span class="nav-number">3.7.5.</span> <span class="nav-text">加工输出，形成体系 —- 以教为学，回顾检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结规律"><span class="nav-number">3.7.6.</span> <span class="nav-text">总结规律</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要培养的习惯"><span class="nav-number">3.8.</span> <span class="nav-text">需要培养的习惯</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习的第4步：理解和吸收信息"><span class="nav-number">4.</span> <span class="nav-text">学习的第4步：理解和吸收信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习的第5步：刻意练习和检验"><span class="nav-number">5.</span> <span class="nav-text">学习的第5步：刻意练习和检验</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/10/09/my-learning/';
+          this.page.identifier = '2017/10/09/my-learning/';
+          this.page.title = '我的学习方法论';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="consul,服务,service,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前文我们已经简单介绍 Consul 的安装和启动了，本篇我们来开始在 consul 中注册和使用 service 定义 serviceService 可以通过 service 定义或者 API 调用进行注册，但是使用配置文件定义是最通用的形式。 首先创建一个目录用来存放配置文件，Consul 会从配置目录中加载所有配置文件，一种在 unix 系统中通用的做法是在定义一个 /etc/consul.d">
+<meta name="keywords" content="consul,服务,service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Consul 服务注册和查询">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/28/consul-service/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="前文我们已经简单介绍 Consul 的安装和启动了，本篇我们来开始在 consul 中注册和使用 service 定义 serviceService 可以通过 service 定义或者 API 调用进行注册，但是使用配置文件定义是最通用的形式。 首先创建一个目录用来存放配置文件，Consul 会从配置目录中加载所有配置文件，一种在 unix 系统中通用的做法是在定义一个 /etc/consul.d">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.288Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Consul 服务注册和查询">
+<meta name="twitter:description" content="前文我们已经简单介绍 Consul 的安装和启动了，本篇我们来开始在 consul 中注册和使用 service 定义 serviceService 可以通过 service 定义或者 API 调用进行注册，但是使用配置文件定义是最通用的形式。 首先创建一个目录用来存放配置文件，Consul 会从配置目录中加载所有配置文件，一种在 unix 系统中通用的做法是在定义一个 /etc/consul.d">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/28/consul-service/">
+
+
+
+
+
+  <title>Consul 服务注册和查询 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/28/consul-service/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Consul 服务注册和查询</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T13:52:41+08:00">
+                Apr 28 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/consul/" itemprop="url" rel="index">
+                    <span itemprop="name">consul</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前文我们已经简单介绍 Consul 的安装和启动了，本篇我们来开始在 consul 中注册和使用 service</p>
+<h2 id="定义-service"><a href="#定义-service" class="headerlink" title="定义 service"></a>定义 service</h2><p>Service 可以通过 <a href="https://www.consul.io/docs/agent/services.html" target="_blank" rel="noopener">service 定义</a>或者 API 调用进行注册，但是使用配置文件定义是最通用的形式。</p>
+<p>首先创建一个目录用来存放配置文件，Consul 会从配置目录中加载所有配置文件，一种在 unix 系统中通用的做法是在定义一个 <code>/etc/consul.d</code> 目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir consul.d</span><br></pre></td></tr></table></figure>
+<p>然后创建一个文件用来存放我们定义的服务，在这个配置中我们还提供了一个 tag 用来做服务查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;&#123;&quot;service&quot;: &#123;&quot;name&quot;: &quot;web&quot;, &quot;tags&quot;: [&quot;python&quot;], &quot;port&quot;: 8888&#125;&#125;&apos; | tee consul.d/web.json</span><br></pre></td></tr></table></figure>
+<p>这里我们定义了名称是 web 并且跑在 8888 端口的 web 服务。</p>
+<p>重启 agent 并且提供配置目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">consul agent -dev -node=zhaoyongqiang -config-dir=consul.d</span><br><span class="line">==&gt; Starting Consul agent...</span><br><span class="line">==&gt; Consul agent running!</span><br><span class="line">           Version: 'v1.0.0'</span><br><span class="line">           Node ID: '2705278f-db30-b1a8-9607-1107a4524395'</span><br><span class="line">         Node name: 'zhaoyongqiang'</span><br><span class="line">        Datacenter: 'dc1' (Segment: '&lt;all&gt;')</span><br><span class="line">            Server: true (Bootstrap: false)</span><br><span class="line">       Client Addr: [127.0.0.1] (HTTP: 8500, HTTPS: -1, DNS: 8600)</span><br><span class="line">      Cluster Addr: 127.0.0.1 (LAN: 8301, WAN: 8302)</span><br><span class="line">           Encrypt: Gossip: false, TLS-Outgoing: false, TLS-Incoming: false</span><br><span class="line"></span><br><span class="line">==&gt; Log data will now stream in as it occurs:</span><br><span class="line"></span><br><span class="line">    2017/11/16 11:36:32 [DEBUG] Using random ID "2705278f-db30-b1a8-9607-1107a4524395" as node ID</span><br><span class="line">    2017/11/16 11:36:32 [INFO] raft: Initial configuration (index=1): [&#123;Suffrage:Voter ID:2705278f-db30-b1a8-9607-1107a4524395 Address:127.0.0.1:8300&#125;]</span><br><span class="line">    2017/11/16 11:36:32 [INFO] raft: Node at 127.0.0.1:8300 [Follower] entering Follower state (Leader: "")</span><br><span class="line">    2017/11/16 11:36:32 [INFO] serf: EventMemberJoin: zhaoyongqiang.dc1 127.0.0.1</span><br><span class="line">    2017/11/16 11:36:32 [INFO] serf: EventMemberJoin: zhaoyongqiang 127.0.0.1</span><br><span class="line">    2017/11/16 11:36:32 [INFO] consul: Handled member-join event for server "zhaoyongqiang.dc1" in area "wan"</span><br><span class="line">    2017/11/16 11:36:32 [INFO] consul: Adding LAN server zhaoyongqiang (Addr: tcp/127.0.0.1:8300) (DC: dc1)</span><br><span class="line">    2017/11/16 11:36:32 [INFO] agent: Started DNS server 127.0.0.1:8600 (udp)</span><br><span class="line">    2017/11/16 11:36:32 [INFO] agent: Started DNS server 127.0.0.1:8600 (tcp)</span><br><span class="line">    2017/11/16 11:36:32 [INFO] agent: Started HTTP server on 127.0.0.1:8500 (tcp)</span><br><span class="line">    2017/11/16 11:36:32 [WARN] raft: Heartbeat timeout from "" reached, starting election</span><br><span class="line">    2017/11/16 11:36:32 [INFO] raft: Node at 127.0.0.1:8300 [Candidate] entering Candidate state in term 2</span><br><span class="line">    2017/11/16 11:36:32 [DEBUG] raft: Votes needed: 1</span><br><span class="line">    2017/11/16 11:36:32 [DEBUG] raft: Vote granted from 2705278f-db30-b1a8-9607-1107a4524395 in term 2. Tally: 1</span><br><span class="line">    2017/11/16 11:36:32 [INFO] raft: Election won. Tally: 1</span><br><span class="line">    2017/11/16 11:36:32 [INFO] raft: Node at 127.0.0.1:8300 [Leader] entering Leader state</span><br><span class="line">    2017/11/16 11:36:32 [INFO] consul: cluster leadership acquired</span><br><span class="line">    2017/11/16 11:36:32 [INFO] consul: New leader elected: zhaoyongqiang</span><br><span class="line">    2017/11/16 11:36:32 [DEBUG] consul: Skipping self join check for "zhaoyongqiang" since the cluster is too small</span><br><span class="line">    2017/11/16 11:36:32 [INFO] consul: member 'zhaoyongqiang' joined, marking health alive</span><br><span class="line">    2017/11/16 11:36:32 [INFO] agent: Synced service 'web'</span><br></pre></td></tr></table></figure>
+<p>注意输出包含了 “synced” the web service，consul 已经成功把定义的服务导入 service catlog 了。</p>
+<h2 id="查询服务"><a href="#查询服务" class="headerlink" title="查询服务"></a>查询服务</h2><p>一旦服务注册之后，我们就可以使用 DNS 或者 HTTP 的方式查询 service 了。</p>
+<h3 id="DNS-查询"><a href="#DNS-查询" class="headerlink" title="DNS 查询"></a>DNS 查询</h3><p>服务注册之后可以通过 DNS 进行服务查询，service 的 DNS name 是 <strong>NAME.service.consul</strong>，默认情况下所有的 DNS names 总是在 consul namespace 中，namespace 可以进行 <a href="https://www.consul.io/docs/agent/options.html#domain" target="_blank" rel="noopener">配置</a> ，service 的 subdomain 用来告知 Consul 我们需要查询的 service 名称，在这里就是 NAME：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">%</span><span class="bash"> dig @127.0.0.1 -p 8600 web.service.consul                                                                          </span></span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 web.service.consul</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 25186</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;web.service.consul.        IN  A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">web.service.consul. 0   IN  A   127.0.0.1</span><br><span class="line"></span><br><span class="line">;; Query time: 87 msec</span><br><span class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</span><br><span class="line">;; WHEN: Thu Nov 16 11:46:31 2017</span><br><span class="line">;; MSG SIZE  rcvd: 52</span><br></pre></td></tr></table></figure>
+<p>可以看到一个带有节点 ip 的 record 会返回，record 只能 hold IP address。</p>
+<p>我们也可以通过 DNS 查询完整的 address/port pair:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">± % dig @127.0.0.1 -p 8600 web.service.consul SRV</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 web.service.consul SRV</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 50494</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 2</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;web.service.consul.        IN  SRV</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">web.service.consul. 0   IN  SRV 1 1 8888 zhaoyongqiang.node.dc1.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">zhaoyongqiang.node.dc1.consul. 0 IN A   127.0.0.1</span><br><span class="line">zhaoyongqiang.node.dc1.consul. 0 IN TXT "consul-network-segment="</span><br><span class="line"></span><br><span class="line">;; Query time: 36 msec</span><br><span class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</span><br><span class="line">;; WHEN: Fri Nov 17 16:19:30 2017</span><br><span class="line">;; MSG SIZE  rcvd: 137</span><br></pre></td></tr></table></figure>
+<p>SRV 记录表明 web service 在端口 8888 上并且存在于 zhaoyongqiang.node.dc1.consul 这个节点上。</p>
+<p>我们也可以使用 tag 过滤需要出现的 web service，形如 <strong>TAG.NAME.service.consul</strong>，比如使用我们定义 service 时使用的 tag python：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">dig @127.0.0.1 -p 8600 python.web.service.consul</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; @127.0.0.1 -p 8600 rails.web.service.consul</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 14331</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;rails.web.service.consul.  IN  A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">rails.web.service.consul. 0 IN  A   127.0.0.1</span><br><span class="line"></span><br><span class="line">;; Query time: 15 msec</span><br><span class="line">;; SERVER: 127.0.0.1#8600(127.0.0.1)</span><br><span class="line">;; WHEN: Fri Nov 17 16:23:39 2017</span><br><span class="line">;; MSG SIZE  rcvd: 58</span><br></pre></td></tr></table></figure>
+<h3 id="HTTP-查询"><a href="#HTTP-查询" class="headerlink" title="HTTP 查询"></a>HTTP 查询</h3><p>除了 DNS 也可以使用 HTTP 的方式查询 web service</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">± % curl http://localhost:8500/v1/catalog/service/web</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;ID&quot;: &quot;2705278f-db30-b1a8-9607-1107a4524395&quot;,</span><br><span class="line">        &quot;Node&quot;: &quot;zhaoyongqiang&quot;,</span><br><span class="line">        &quot;Address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">        &quot;Datacenter&quot;: &quot;dc1&quot;,</span><br><span class="line">        &quot;TaggedAddresses&quot;: &#123;</span><br><span class="line">            &quot;lan&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">            &quot;wan&quot;: &quot;127.0.0.1&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;NodeMeta&quot;: &#123;</span><br><span class="line">            &quot;consul-network-segment&quot;: &quot;&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;ServiceID&quot;: &quot;web&quot;,</span><br><span class="line">        &quot;ServiceName&quot;: &quot;web&quot;,</span><br><span class="line">        &quot;ServiceTags&quot;: [</span><br><span class="line">            &quot;python&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;ServiceAddress&quot;: &quot;&quot;,</span><br><span class="line">        &quot;ServicePort&quot;: 8888,</span><br><span class="line">        &quot;ServiceEnableTagOverride&quot;: false,</span><br><span class="line">        &quot;CreateIndex&quot;: 6,</span><br><span class="line">        &quot;ModifyIndex&quot;: 6</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>http api 可以返回所有定义了该服务的节点信息，稍后我们在 <a href="https://www.consul.io/intro/getting-started/checks.html" target="_blank" rel="noopener">health checks</a> 会看到，通常情况下你指向查询健康状态是 passing 的实例节点。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">curl 'http://localhost:8500/v1/health/service/web?passing'</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Node": &#123;</span><br><span class="line">            "ID": "db363ec4-ba40-8563-fa35-b9fd762aaf2b",</span><br><span class="line">            "Node": "zhaoyongqiang",</span><br><span class="line">            "Address": "127.0.0.1",</span><br><span class="line">            "Datacenter": "dc1",</span><br><span class="line">            "TaggedAddresses": &#123;</span><br><span class="line">                "lan": "127.0.0.1",</span><br><span class="line">                "wan": "127.0.0.1"</span><br><span class="line">            &#125;,</span><br><span class="line">            "Meta": &#123;</span><br><span class="line">                "consul-network-segment": ""</span><br><span class="line">            &#125;,</span><br><span class="line">            "CreateIndex": 5,</span><br><span class="line">            "ModifyIndex": 6</span><br><span class="line">        &#125;,</span><br><span class="line">        "Service": &#123;</span><br><span class="line">            "ID": "web",</span><br><span class="line">            "Service": "web",</span><br><span class="line">            "Tags": [</span><br><span class="line">                "python"</span><br><span class="line">            ],</span><br><span class="line">            "Address": "",</span><br><span class="line">            "Port": 8888,</span><br><span class="line">            "EnableTagOverride": false,</span><br><span class="line">            "CreateIndex": 6,</span><br><span class="line">            "ModifyIndex": 6</span><br><span class="line">        &#125;,</span><br><span class="line">        "Checks": [</span><br><span class="line">            &#123;</span><br><span class="line">                "Node": "zhaoyongqiang",</span><br><span class="line">                "CheckID": "serfHealth",</span><br><span class="line">                "Name": "Serf Health Status",</span><br><span class="line">                "Status": "passing",</span><br><span class="line">                "Notes": "",</span><br><span class="line">                "Output": "Agent alive and reachable",</span><br><span class="line">                "ServiceID": "",</span><br><span class="line">                "ServiceName": "",</span><br><span class="line">                "ServiceTags": [],</span><br><span class="line">                "CreateIndex": 5,</span><br><span class="line">                "ModifyIndex": 5</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="更新-service"><a href="#更新-service" class="headerlink" title="更新 service"></a>更新 service</h2><p>service 更新可以通过重新定义配置文件或者 HTTP 接口进行更新，更新配置文件可以向 agent 发送 SIGHUP 来达到不重启服务而更新配置的目的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.consul.io/intro/getting-started/services.html" target="_blank" rel="noopener">https://www.consul.io/intro/getting-started/services.html</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/consul/" rel="tag"># consul</a>
+          
+            <a href="/tags/服务/" rel="tag"># 服务</a>
+          
+            <a href="/tags/service/" rel="tag"># service</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/technical-transformation-road-01/" rel="next" title="现役司的技术转型之路">
+                <i class="fa fa-chevron-left"></i> 现役司的技术转型之路
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/28/consul-cluster/" rel="prev" title="Consul 集群">
+                Consul 集群 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-service"><span class="nav-number">1.</span> <span class="nav-text">定义 service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询服务"><span class="nav-number">2.</span> <span class="nav-text">查询服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-查询"><span class="nav-number">2.1.</span> <span class="nav-text">DNS 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-查询"><span class="nav-number">2.2.</span> <span class="nav-text">HTTP 查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-service"><span class="nav-number">3.</span> <span class="nav-text">更新 service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/28/consul-service/';
+          this.page.identifier = '2018/04/28/consul-service/';
+          this.page.title = 'Consul 服务注册和查询';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

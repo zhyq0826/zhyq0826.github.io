@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="一、现状和治理思路自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品">
+<meta property="og:type" content="article">
+<meta property="og:title" content="现役司的技术转型之路">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="一、现状和治理思路自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/WX20180426-120729.png">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="现役司的技术转型之路">
+<meta name="twitter:description" content="一、现状和治理思路自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。 在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。 现状描述整个后端技术团队支撑的是一组日活达百万的产品">
+<meta name="twitter:image" content="https://static.git-star.com/WX20180426-120729.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/">
+
+
+
+
+
+  <title>现役司的技术转型之路 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/25/technical-transformation-road-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">现役司的技术转型之路</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T11:31:46+08:00">
+                Apr 25 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、现状和治理思路"><a href="#一、现状和治理思路" class="headerlink" title="一、现状和治理思路"></a>一、现状和治理思路</h1><p>自从接手后端技术团队之后，面临的就是一个烂摊子，大小事故不断，新老人几乎没有衔接，导致大量业务代码逻辑无人知晓，架构设计没有办法追本溯源，比较长一段时间内都是急于救火，完全无暇顾及技术和管理，人员也是基本放任状态。</p>
+<p>在突击解决了几次线上面临的大事故之后，暂时摁住了故障频发的势头，让技术团队可以稍缓一口气，做一些早该进行的工作。</p>
+<h2 id="现状描述"><a href="#现状描述" class="headerlink" title="现状描述"></a>现状描述</h2><p>整个后端技术团队支撑的是一组日活达百万的产品，包括各个公众平台，还包括一部分线下订单业务，涉及支付。现在面临的<strong>外部状况</strong>是：</p>
+<ul>
+<li>服务突发故障导致线下交易受阻，用户投诉</li>
+<li>业务需求压力过大，开发人员缺少，业务需求难以快速消化</li>
+</ul>
+<p><strong>内部状况</strong>是：</p>
+<ul>
+<li>数百台服务资源利用和管理不善，忙的忙死，闲的闲死</li>
+<li>架构设计几乎是透明，导致新人无从摸索，出故障不能快速定位和解决</li>
+<li>cache 服务、proxy 服务、nginx 服务、rpc 服务、注册和发现服务、异步任务服务、数据库服务彼此耦合严重，调用依赖非常混乱，变更困难，升级困难</li>
+<li>服务监控使用了多种监控手段，包括 glance、zabbix、munich </li>
+<li>异步任务存在多种技术选型，rq、beanstalkd、celery</li>
+<li>缓存集群使用多种技术选型，twproxy、codis、sentinel</li>
+<li>数据统计和存储使用多种技术选型，MySQL、MongoDB、hadoop、influxdb</li>
+<li>部署环境存在多种技术选型，walle、fabric、ansible</li>
+<li>服务以单体应用存在，无降级措施，无限流措施，一损俱损</li>
+<li>数十个 worker 单台机器部署，CPU 经常超负载</li>
+<li>几百个 crontab 任务</li>
+<li>同一业务代码散落的多个代码仓库改动升级困难</li>
+<li>等…..</li>
+</ul>
+<h2 id="治理思路"><a href="#治理思路" class="headerlink" title="治理思路"></a>治理思路</h2><p>思维决定了行动，无思不行，行辅助思，从行中总结提升思维的高度和境界，思维反过来指导行为实践</p>
+<h3 id="治理方式-from-top-to-down"><a href="#治理方式-from-top-to-down" class="headerlink" title="治理方式 from top to down"></a>治理方式 from top to down</h3><p>公司业务使用的是云服务器，购买、新建、管理相对来说都非常方便，云厂商提供了类似业务<strong>分组、标签、名称</strong>等管理手段来管理服务器。为了让业务服务部署清晰，划分明了，首先从机器名称功能分组开始梳理，<strong>保证机器的具有单一职责，方便动态扩容和管理</strong>。</p>
+<p>功能和名称划分清晰之后保证业务开发人员能以<strong>上帝视角审视所有服务以及它们之间的联系</strong>。</p>
+<h3 id="开放权限，人人参与"><a href="#开放权限，人人参与" class="headerlink" title="开放权限，人人参与"></a>开放权限，人人参与</h3><p>为了让每一个开发者都能透彻了解它们开发、部署的服务以及运行状态，放开所有监控工具权限，放开云厂商的机器管理权限，让每一个人都能快速了解到部署的机器，也可以通过云厂商提供的监控及时了解机器的状态。</p>
+<p>开发者要能做运维，会做运维，运维必须要有开发者参与，此举才能保证 devops 理念的实践和落地</p>
+<h3 id="定位问题，各个击破"><a href="#定位问题，各个击破" class="headerlink" title="定位问题，各个击破"></a>定位问题，各个击破</h3><p>整理和梳理技术团队现在面临的每一个问题，按照优先级排序，逐个投入资源彻底解决，与其不断救火，不如集中力量完全消灭一处火源，逐步降低故障率。</p>
+<h3 id="系统化所有日常工作"><a href="#系统化所有日常工作" class="headerlink" title="系统化所有日常工作"></a>系统化所有日常工作</h3><p><a href="http://www.duokan.com/book/62892" target="_blank" rel="noopener">用系统来工作</a> 这本书的作者详细阐述了如何自己从救火队长变成了每天只需工作一两个小时的高效能人士，作者的基本理念就是<strong>把你所有的工作都系统化，让它们自己运转</strong>，也就是把自动化上升到了一个新的高度，<strong>系统化</strong>。</p>
+<p>为了能最大效率的提升技术团队的效率和产出，在找到每一个问题并击破之后，就要想办法如何让每一个问题都演变成可以自己工作的小系统，小系统彼此联合形成一个更大的系统。</p>
+<h1 id="二、机器的群组划分"><a href="#二、机器的群组划分" class="headerlink" title="二、机器的群组划分"></a>二、机器的群组划分</h1><h2 id="机器分组和命名"><a href="#机器分组和命名" class="headerlink" title="机器分组和命名"></a>机器分组和命名</h2><p>上百台机器的规模在管理上如果没有合理的划分和规划，时间一长非常容易陷入混乱，比如</p>
+<ul>
+<li><p><strong>难以评估现有业务规模和资源利用率</strong></p>
+</li>
+<li><p><strong>难以进行容量规划和动态扩容需要</strong></p>
+</li>
+<li><p>…</p>
+</li>
+</ul>
+<p>公司业务使用的 ucloud 云，ucloud 提供了<strong>业务组（tag）和主机名称（name）</strong>来表示机器，由此可以遵循 <strong>from bottom to top</strong> 的思路进行划分，即所有机器按照提供的基础功能进行划分，tag 表示其所提供的基础功能，name 表示具体的业务或者实现：</p>
+<p><img src="https://static.git-star.com/WX20180426-120729.png" alt></p>
+<p>由此可以把所有机器按照这个思路划分为：</p>
+<ul>
+<li>cache</li>
+<li>nginx</li>
+<li>MySQL</li>
+<li>api</li>
+<li>worker</li>
+<li>devops</li>
+<li>crontab</li>
+<li>consul</li>
+</ul>
+<p>等不同的业务组（tag），每个业务组下面又根据具体的业务逻辑或实现进行命名，以 cache 为例，可以分为</p>
+<ul>
+<li>codis-server</li>
+<li>codis-proxy</li>
+<li>redis</li>
+<li>sentinel</li>
+<li>twproxy</li>
+<li>ssdb</li>
+</ul>
+<p>以后不论是机器扩容还是缩容都可以根据这些 tag 和 name 自动进行，然后再根据这些 tag 和 name 自动获取 ip，动态地在配置服务中心进行增减。</p>
+<h2 id="动态生成各业务服务的快捷入口"><a href="#动态生成各业务服务的快捷入口" class="headerlink" title="动态生成各业务服务的快捷入口"></a>动态生成各业务服务的快捷入口</h2><p>借助云提供的 API 可以非常方便的在跳板机生成所有服务器的快捷入口，动态的在跳板机实现对所有机器的快捷访问，生成类似快捷方式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">alias s_cache_redis_cache_20.235='ssh 10.10.20.235'</span><br><span class="line">alias s_cache_redis_cache_64.207='ssh 10.10.64.207'</span><br><span class="line">alias s_cache_redis_cache_29.166='ssh 10.10.29.166'</span><br><span class="line">alias s_cache_redis_cache_44.213='ssh 10.10.44.213'</span><br><span class="line">alias s_cache_redis_cache_95.237='ssh 10.10.95.237'</span><br><span class="line">alias s_cache_redis_cache_86.173='ssh 10.10.86.173'</span><br></pre></td></tr></table></figure>
+<h1 id="三、资源隔离之域名拆分"><a href="#三、资源隔离之域名拆分" class="headerlink" title="三、资源隔离之域名拆分"></a>三、资源隔离之域名拆分</h1><h2 id="为什么执行域名拆分"><a href="#为什么执行域名拆分" class="headerlink" title="为什么执行域名拆分"></a>为什么执行域名拆分</h2><p>现在的团队支撑的所有业务都是通过同一个域名服务的，根据 URL PATH 的不同最终路由到不同的后端 APP</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>业务</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>api.host.com/v1</td>
+<td>business logic 1 第一个版本</td>
+<td>涉及支付，核心链路</td>
+</tr>
+<tr>
+<td>api.host.com/v2</td>
+<td>business logic 1 第二个版本</td>
+<td>涉及支付，核心链路</td>
+</tr>
+<tr>
+<td>api.host.com/v3</td>
+<td>business logic 2 第一个版本</td>
+<td>不涉及支付，非核心链路</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>从以上表格不难看出，现有的域名设计方案，核心业务和非核心业务都是用同样的域名，也就是他们都是用的是<strong>同一网关做出入口</strong>，这样会导致的问题是：</p>
+<p><strong>由于非核心业务引起的流量突发会波及核心业务链路</strong></p>
+<p>非核心业务在一些热点事件或推送的影响下流量会在短时间激增，是平时业务 5 倍甚至更高，因此之前的团队为了应付这种情况做了动态的调整带宽包，每隔一分钟检测出口带宽的使用率，以避免因为出口带宽打满而引起业务不可用，但是这个解决方案仍然有几个问题：</p>
+<ol>
+<li><strong>带宽检测的有延迟，并不能在带宽打满的第一时间做出调整</strong></li>
+<li><strong>动态调整带宽包依赖与云厂商的相关服务，此前因为云厂商带宽调整服务不可用导致带宽调整失败</strong></li>
+</ol>
+<p>为了能够保证核心业务始终高可用，采取如下几个措施：</p>
+<p>第一，需要把各个业务<strong>从域名开始彻底拆分，部署不同的网关</strong>，由于核心业务带宽稳定，可以使用较高的基础带宽来保证业务的高可用，辅助以动态调整带宽预防突发情况。</p>
+<p>第二，非核心业务依然采用动态调整的带宽的方式，观测和预估流量的走向，在业务高峰发生之前提前调整，比如在推送发生时触发流量调整事件，在业务高峰的早 9 点和晚 9 点前后提前调整流量。</p>
+<h2 id="划分域名的原则"><a href="#划分域名的原则" class="headerlink" title="划分域名的原则"></a>划分域名的原则</h2><p><strong>域名拆分的原则是把具有相同功能 API 划分到同一域名之下，区分核心业务（支付、交易等）和非核心业务（资讯、用户消息、评论等），始终保证核心域名的网关可用。</strong></p>
+<p>为了保证域名拆分可以顺利推动和落地实践，需要 API 的使用方和制作方严格遵守同一套规范，即<strong>对应功能要部署在对应的域名之下，对应的 API 的调用要使用对应的域名</strong>。</p>
+<p>注意，同类型服务（比如服务于同一个客户端 APP）不要引入过多域名，过多域名不利于维护，根据自己的业务场景酌情划分。</p>
+<p>命名规则可以参考类似 consul 的域名命名规则：NAME.TAG.host.com，name 表示业务功能，tag 表示具体的应用，例如 order.app.host.com 和 news.app.host.com 。</p>
+<h1 id="四、资源隔离之应用拆分"><a href="#四、资源隔离之应用拆分" class="headerlink" title="四、资源隔离之应用拆分"></a>四、资源隔离之应用拆分</h1><blockquote>
+<p> 域名拆分解决的是流量激增引起的主链路不可用的问题，而应用拆分是为了<strong>杜绝故障引起的雪崩效应</strong></p>
+</blockquote>
+<h2 id="单体应用的雪崩效应"><a href="#单体应用的雪崩效应" class="headerlink" title="单体应用的雪崩效应"></a>单体应用的雪崩效应</h2><p>现在团队的服务是个独立的单体应用，无论消费方是内部应用还是外部 APP 最终都是路由到同一个后端服务，也就是所有的消费方<strong>共享后端机器资源</strong>，包括进程资源，这样的架构组织方式带来的问题是显而易见的：<strong>由于单一应用引起的服务故障会波及所有服务消费方</strong>。举例来说，由于设计不当，某些极端情况下，客户端 APP 会对服务器做重试请求，这些请求由于后端的处理不当演变成了<strong>流量攻击</strong>直接打垮所有后端服务，<strong>由于进程未做隔离，后端服务打垮之后，其支撑的所有业务基本处于瘫痪状态，发生雪崩效应</strong>。</p>
+<h2 id="应用拆分部署"><a href="#应用拆分部署" class="headerlink" title="应用拆分部署"></a>应用拆分部署</h2><p>之所以所有的服务都依赖共同的机器资源，很大程度上是因为原来的代码是<strong>一个庞大的、各个模块耦合紧密的单体应用</strong>，鉴于业务的复杂程度要把所有业务代码全部拆分短时间很难达成，但是可以把<strong>各个业务分开部署，根据业务功能划分的不同的域名或 URL 路由到不同的后端 APP 以达到业务拆分的目的</strong>。</p>
+<p>改造之前的 nginx 配置:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">upstream rest_frontends &#123;</span><br><span class="line">    # ip_hash;</span><br><span class="line">    keepalive 1200;</span><br><span class="line">    server ip1:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip2:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip3:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip4:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line"></span><br><span class="line">    server ip5:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip6:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip7:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip8:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip9:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name api.host.com;</span><br><span class="line"></span><br><span class="line">    client_max_body_size 50M;</span><br><span class="line">    access_log  /data/log/nginx/rest.log api_access;</span><br><span class="line">    error_log  /data/log/nginx/rest_error.log;</span><br><span class="line"></span><br><span class="line">    location /volvo &#123;</span><br><span class="line">        include /etc/nginx/martin_allow.conf;</span><br><span class="line">        deny all;</span><br><span class="line">        proxy_pass_header User-Agent;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Scheme $scheme;</span><br><span class="line">        proxy_next_upstream error timeout invalid_header http_502;</span><br><span class="line">        proxy_pass http://rest_frontends;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location /lotus &#123;</span><br><span class="line">        proxy_pass_header User-Agent;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Scheme $scheme;</span><br><span class="line">        proxy_pass http://rest_frontends;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改造之后的 nginx 配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">upstream rest_frontends_volvo &#123;</span><br><span class="line">    # ip_hash;</span><br><span class="line">    keepalive 1200;</span><br><span class="line">    server ip1:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip2:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip3:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip4:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">upstream rest_frontends_lotus &#123;</span><br><span class="line">    keepalive 1200;</span><br><span class="line">    server ip5:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip6:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip7:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip8:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">    server ip9:19600 max_fails=1 fail_timeout=10s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name api.host.com;</span><br><span class="line"></span><br><span class="line">    client_max_body_size 50M;</span><br><span class="line">    access_log  /data/log/nginx/rest.log api_access;</span><br><span class="line">    error_log  /data/log/nginx/rest_error.log;</span><br><span class="line"></span><br><span class="line">    location /volvo &#123;</span><br><span class="line">        include /etc/nginx/martin_allow.conf;</span><br><span class="line">        deny all;</span><br><span class="line">        proxy_pass_header User-Agent;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Scheme $scheme;</span><br><span class="line">        proxy_next_upstream error timeout invalid_header http_502;</span><br><span class="line">        proxy_pass http://rest_frontends_volvo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location /lotus &#123;</span><br><span class="line">        proxy_pass_header User-Agent;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Scheme $scheme;</span><br><span class="line">        proxy_pass http://rest_frontends_lotus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>拆分之后，相当于各个业务功能的后端都是<strong>相互隔离</strong>的，即使某一业务导致后端服务故障，并不会波及其他业务。</p>
+<h1 id="五、标准化"><a href="#五、标准化" class="headerlink" title="五、标准化"></a>五、标准化</h1><blockquote>
+<p>标准化就是引入约束和规范，把各种流程借助对应的制度、工具等进规范化和自动化，尽量减少人为因素造成的故障或错误。</p>
+</blockquote>
+<h2 id="Git-仓库的标准化"><a href="#Git-仓库的标准化" class="headerlink" title="Git 仓库的标准化"></a>Git 仓库的标准化</h2><p><strong>收缩权限，统一各个项目的 owner</strong></p>
+<p>杜绝以私人身份建立仓库并上线，所有线上项目必须交由各自统一的 owner 进行建立、权限分配、部署和销毁。</p>
+<p><strong>统一分支开发模型</strong></p>
+<p>根据团队的实际情况采用合适的分支开发模型，强制所有成员必须严格按照分支模型进行仓库的管理，降低多人协作造成的混乱。</p>
+<p><strong>统一开发流程</strong></p>
+<p>核心项目全部采用 fork and pull request 开发流程，严格进行代码审核和测试、上线和回滚。</p>
+<h2 id="环境的标准化"><a href="#环境的标准化" class="headerlink" title="环境的标准化"></a>环境的标准化</h2><p>为解决本地开发环境依赖服务过多的问题，搭建专有的 VPN 服务，使得可以在本地连接任意线上测试环境服务,并且统一线上环境、测试环境、本地环境的配置，能够非常轻松对本地任何项目进行开发和调试。</p>
+<h2 id="部署流程的标准化"><a href="#部署流程的标准化" class="headerlink" title="部署流程的标准化"></a>部署流程的标准化</h2><p>简单项目采用 walle 等第三方部署工具部署，复杂项目使用 fabric 完成，为每一个 APP 统一部署流程：</p>
+<ul>
+<li>SQL 检查</li>
+<li>表更新</li>
+<li>创建 release tag</li>
+<li>更新代码</li>
+<li>更新依赖</li>
+<li>执行 build</li>
+<li>重启服务 </li>
+<li>服务检测</li>
+</ul>
+<h2 id="团队知识标准化"><a href="#团队知识标准化" class="headerlink" title="团队知识标准化"></a>团队知识标准化</h2><p>建立团队知识体系，并且以工具形势进行落地，建立团队内部使用的 wiki 、技术业务文档等，方便新人快速熟悉业务和快速查找。</p>
+<h2 id="故障定位标准化"><a href="#故障定位标准化" class="headerlink" title="故障定位标准化"></a>故障定位标准化</h2><p>建立故障 checklist，方便任何不熟悉整套服务体系的人快速定位故障和解决问题</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/23/mysql-trouble-list/" rel="next" title="MySQL 常见故障以及诊断和解决方案">
+                <i class="fa fa-chevron-left"></i> MySQL 常见故障以及诊断和解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/28/consul-service/" rel="prev" title="Consul 服务注册和查询">
+                Consul 服务注册和查询 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、现状和治理思路"><span class="nav-number">1.</span> <span class="nav-text">一、现状和治理思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#现状描述"><span class="nav-number">1.1.</span> <span class="nav-text">现状描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#治理思路"><span class="nav-number">1.2.</span> <span class="nav-text">治理思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#治理方式-from-top-to-down"><span class="nav-number">1.2.1.</span> <span class="nav-text">治理方式 from top to down</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放权限，人人参与"><span class="nav-number">1.2.2.</span> <span class="nav-text">开放权限，人人参与</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位问题，各个击破"><span class="nav-number">1.2.3.</span> <span class="nav-text">定位问题，各个击破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统化所有日常工作"><span class="nav-number">1.2.4.</span> <span class="nav-text">系统化所有日常工作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、机器的群组划分"><span class="nav-number">2.</span> <span class="nav-text">二、机器的群组划分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#机器分组和命名"><span class="nav-number">2.1.</span> <span class="nav-text">机器分组和命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态生成各业务服务的快捷入口"><span class="nav-number">2.2.</span> <span class="nav-text">动态生成各业务服务的快捷入口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、资源隔离之域名拆分"><span class="nav-number">3.</span> <span class="nav-text">三、资源隔离之域名拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么执行域名拆分"><span class="nav-number">3.1.</span> <span class="nav-text">为什么执行域名拆分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#划分域名的原则"><span class="nav-number">3.2.</span> <span class="nav-text">划分域名的原则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、资源隔离之应用拆分"><span class="nav-number">4.</span> <span class="nav-text">四、资源隔离之应用拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单体应用的雪崩效应"><span class="nav-number">4.1.</span> <span class="nav-text">单体应用的雪崩效应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用拆分部署"><span class="nav-number">4.2.</span> <span class="nav-text">应用拆分部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、标准化"><span class="nav-number">5.</span> <span class="nav-text">五、标准化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-仓库的标准化"><span class="nav-number">5.1.</span> <span class="nav-text">Git 仓库的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境的标准化"><span class="nav-number">5.2.</span> <span class="nav-text">环境的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署流程的标准化"><span class="nav-number">5.3.</span> <span class="nav-text">部署流程的标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#团队知识标准化"><span class="nav-number">5.4.</span> <span class="nav-text">团队知识标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障定位标准化"><span class="nav-number">5.5.</span> <span class="nav-text">故障定位标准化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/25/technical-transformation-road-01/';
+          this.page.identifier = '2018/04/25/technical-transformation-road-01/';
+          this.page.title = '现役司的技术转型之路';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="module,path,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块 package包，包含有 __init__ 文件的文件夹 relative path相对路径，相对于某个目录的路径 absolute path绝对路径，全路径 路径查找python 解释器查找被引入的包或模块 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路">
+<meta name="keywords" content="module,path">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何理解 Python 的模块查找原理与方式">
+<meta property="og:url" content="http://sanyuesha.com/2016/05/28/python-module-path-find/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块 package包，包含有 __init__ 文件的文件夹 relative path相对路径，相对于某个目录的路径 absolute path绝对路径，全路径 路径查找python 解释器查找被引入的包或模块 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T03:40:07.269Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何理解 Python 的模块查找原理与方式">
+<meta name="twitter:description" content="基础概念module模块， 一个 py 文件或以其他文件形式存在的可被导入的就是一个模块 package包，包含有 __init__ 文件的文件夹 relative path相对路径，相对于某个目录的路径 absolute path绝对路径，全路径 路径查找python 解释器查找被引入的包或模块 Python 解释器是如何查找包和模块的Python 执行一个 py 文件，无论执行的方式是用绝对路">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2016/05/28/python-module-path-find/">
+
+
+
+
+
+  <title>如何理解 Python 的模块查找原理与方式 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/05/28/python-module-path-find/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">如何理解 Python 的模块查找原理与方式</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-28T11:27:22+08:00">
+                May 28 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>模块， 一个 <code>py</code> 文件或以其他文件形式存在的可被导入的就是一个模块</p>
+<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>包，包含有 <code>__init__</code> 文件的文件夹</p>
+<h3 id="relative-path"><a href="#relative-path" class="headerlink" title="relative path"></a>relative path</h3><p>相对路径，相对于某个目录的路径</p>
+<h3 id="absolute-path"><a href="#absolute-path" class="headerlink" title="absolute path"></a>absolute path</h3><p>绝对路径，全路径</p>
+<h3 id="路径查找"><a href="#路径查找" class="headerlink" title="路径查找"></a>路径查找</h3><p>python 解释器查找被引入的包或模块</p>
+<h2 id="Python-解释器是如何查找包和模块的"><a href="#Python-解释器是如何查找包和模块的" class="headerlink" title="Python 解释器是如何查找包和模块的"></a>Python 解释器是如何查找包和模块的</h2><p>Python 执行一个 py 文件，无论执行的方式是用绝对路径还是相对路径，interpreter 都会把文件所在的 directory 加入 sys.path 这个 list 中，Python 就是在 sys.path 中查找包和模块的，sys.path 中的内容本身又是又 Python 的环境变量决定。</p>
+<a id="more"></a>
+<p><strong>code-1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> sys.path[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># execute</span></span><br><span class="line">python test.py</span><br><span class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test.py</span><br></pre></td></tr></table></figure>
+<p>执行表明相对路径和绝对路径都输出相同的结果，而且无论哪种执行方式，test.py 所在的文件夹都会被加入 sys.path 的首位，也就是索引为0的位置。</p>
+<h2 id="Python-解释器查找包的顺序是什么"><a href="#Python-解释器查找包的顺序是什么" class="headerlink" title="Python 解释器查找包的顺序是什么"></a>Python 解释器查找包的顺序是什么</h2><p>解释器查找包，首先搜索 built-in module，其次搜索 sys.path ，<strong>这样的查找顺序将会导致同名包或模块被遮蔽。</strong></p>
+<p><strong>code-2</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ls</span></span><br><span class="line">├── os.py</span><br><span class="line">├── test2.py</span><br><span class="line">├── redis.py</span><br><span class="line"></span><br><span class="line"><span class="comment">#test2.py</span></span><br><span class="line">import os</span><br><span class="line">from redis import Redis</span><br><span class="line"></span><br><span class="line"><span class="comment">#execute test2.py</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"/Users/x/workspace/blog-code/p2016_05_28_python_path_find/test2.py"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from redis import Redis</span><br><span class="line">ImportError: cannot import name Redis</span><br></pre></td></tr></table></figure>
+<p>由于 <code>os</code> 是 built-in module，即使在同目录下有同名模块，解释器依然可以找到正确的 <code>os</code> 模块，可以证实 built-in module 不会被遮蔽，而 <code>redis</code> 属于第三方模块，默认安装位置是 Python 环境变量中的 site-packages，解释器启动之后会将此目录中的内容加入 sys.path，由于当前目录会在 sys.path 的首位，当前目录的 <code>redis</code> 优先被找到，site-packages 中的 <code>redis</code> 模块被遮蔽了。</p>
+<h2 id="交互式执行环境的查找顺序"><a href="#交互式执行环境的查找顺序" class="headerlink" title="交互式执行环境的查找顺序"></a>交互式执行环境的查找顺序</h2><p>进入交互式执行环境，解释器会自动把当前目录加入 sys.path, 这时当前目录是以相对路径的形式出现在 sys.path 中:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import os.path</span><br><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; os.path.abspath(sys.path[0])</span><br><span class="line"><span class="string">'/Users/x/workspace/blog-code'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>除此之外，其他与执行一个文件是相同的。</p>
+<h2 id="模块中的-file-变量"><a href="#模块中的-file-变量" class="headerlink" title="模块中的 __file__ 变量"></a>模块中的 <code>__file__</code> 变量</h2><blockquote>
+<p><code>__file__</code> is the pathname of the file from which the module was loaded, if it was loaded from a file. 如果一个模块是从文件加载的，<code>__file__</code> 就是该模块的路径名—<a href="https://docs.python.org/2/reference/datamodel.html" target="_blank" rel="noopener">Python Doc</a>: </p>
+</blockquote>
+<p>顾名思义，当模块以文件的形式出现 <code>__file__</code> 指的是模块文件的路径名，以相对路径执行 <code>__file__</code> 是相对路径，以绝对路径执行 <code>__file__</code> 是绝对路径。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test3.py</span></span><br><span class="line"><span class="keyword">print</span> __file__</span><br><span class="line"></span><br><span class="line"><span class="comment">#相对路径执行</span></span><br><span class="line"></span><br><span class="line">python test3.py</span><br><span class="line">test3.py</span><br><span class="line"></span><br><span class="line"><span class="comment">#绝对路径执行</span></span><br><span class="line">python /Users/x/workspace/blog-code/p2016_05_28_python_path_find/test3.py</span><br><span class="line">/Users/x/workspace/blog-code/p2016_05_28_python_path_find/test3.py</span><br></pre></td></tr></table></figure>
+<p>为了保证<code>__file__</code> 每次都能准确得到模块的正确位置，最好对其再取一次绝对路径 <code>os.path.abspath(__file__)</code>。</p>
+<p><strong>交互式 shell 中的 <code>__file__</code></strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; __file__</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">NameError: name <span class="string">'__file__'</span> is not defined</span><br></pre></td></tr></table></figure>
+<p>这是因为当前交互式shell的执行并不是以文件的形式加载，所以不存在<code>__file__</code> 这样的属性。</p>
+<h2 id="sys-argv-0-变量"><a href="#sys-argv-0-变量" class="headerlink" title="sys.argv[0] 变量"></a>sys.argv[0] 变量</h2><p>sys.argv[0] 是它用来获取主入口执行文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#test.py</span><br><span class="line">import sys</span><br><span class="line">print __file__</span><br><span class="line">print sys.argv[0]</span><br></pre></td></tr></table></figure>
+<p>以上 print 输出相同的结果，因为主执行文件和<code>__file__</code>所属的模块是同一个，当我们改变入口文件，区别就出现了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#test.py</span><br><span class="line">import sys</span><br><span class="line">print __file__</span><br><span class="line">print sys.argv[0]</span><br><span class="line"></span><br><span class="line">#test2.py</span><br><span class="line">import test</span><br><span class="line"></span><br><span class="line">#execute test2.py</span><br><span class="line">/Users/x/workspace/blog-code/p2016_05_28_python_path_find/child/test.py #__file__</span><br><span class="line">test2.py #sys.argv[0]</span><br></pre></td></tr></table></figure>
+<p>总的来说，sys.argv[0] 是获得入口执行文件路径，<code>__file__</code> 是获得任意模块文件的路径。</p>
+<h2 id="sys-modules-的作用"><a href="#sys-modules-的作用" class="headerlink" title="sys.modules 的作用"></a>sys.modules 的作用</h2><p>既然 Python 是在 sys.path 中搜索模块的，那载入的模块存放在何处？答案就是 sys.modules。模块一经载入，Python 会把这个模块加入 sys.modules 中供下次载入使用，这样可以加速模块的引入，起到缓存的作用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; sys.modules[<span class="string">'tornado'</span>]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">KeyError: <span class="string">'tornado'</span></span><br><span class="line">&gt;&gt;&gt; import tornado</span><br><span class="line">&gt;&gt;&gt; sys.modules[<span class="string">'tornado'</span>]</span><br><span class="line">&lt;module <span class="string">'tornado'</span> from <span class="string">'/Users/x/python_dev/lib/python2.7/site-packages/tornado/__init__.pyc'</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>前面说过 Python 解释器启动之后，会把预先载入 built-in module，可以通过 sys.modules 验证。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sys.modules[&apos;os&apos;]</span><br><span class="line">&lt;module &apos;os&apos; from &apos;/Users/x/python_dev/lib/python2.7/os.pyc&apos;&gt;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>借助 sys.modules 和 <code>__file__</code>，可以动态获取所有已加载模块目录和路径。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.path.realpath(sys.modules[<span class="string">'os'</span>].__file__)</span><br><span class="line"><span class="string">'/Users/x/python_dev/lib/python2.7/os.pyc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> tornado</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.path.realpath(sys.modules[<span class="string">'tornado'</span>].__file__)</span><br><span class="line"><span class="string">'/Users/x/python_dev/lib/python2.7/site-packages/tornado/__init__.pyc'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_module_dir</span><span class="params">(name)</span>:</span></span><br><span class="line">    path = getattr(sys.modules[name], <span class="string">'__file__'</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">'module %s has not attribute __file__'</span>%name)</span><br><span class="line">    <span class="keyword">return</span> os.path.dirname(os.path.abspath(path))</span><br></pre></td></tr></table></figure>
+<h2 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h2><p>总的来说，Python 是通过查找 sys.path 来决定包的导入，并且系统包优先级&gt;同目录&gt;sys.path，Python 中的特有属性 <code>__file__</code> 以及 sys.argv[0]，sys.modules 都能帮助我们理解包的查找和导入概念，只要能正确理解 sys.path 的作用和行为，理解包的查找就不是难题了。</p>
+<p>文中所有代码见：<a href="https://github.com/zhyq0826/blog-code/tree/master/p2016_05_28_python_path_find" target="_blank" rel="noopener">github</a></p>
+<blockquote>
+<p>转载请注明出处</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/module/" rel="tag"># module</a>
+          
+            <a href="/tags/path/" rel="tag"># path</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/12/first-art-for-my-life/" rel="next" title="程序人生的第一件艺术品">
+                <i class="fa fa-chevron-left"></i> 程序人生的第一件艺术品
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/04/why-emberjs-is-best-for-cms/" rel="prev" title="为什么选择 emberjs 开发 dashboard 和 CMS 类系统">
+                为什么选择 emberjs 开发 dashboard 和 CMS 类系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#module"><span class="nav-number">1.1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#package"><span class="nav-number">1.2.</span> <span class="nav-text">package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#relative-path"><span class="nav-number">1.3.</span> <span class="nav-text">relative path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#absolute-path"><span class="nav-number">1.4.</span> <span class="nav-text">absolute path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径查找"><span class="nav-number">1.5.</span> <span class="nav-text">路径查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-解释器是如何查找包和模块的"><span class="nav-number">2.</span> <span class="nav-text">Python 解释器是如何查找包和模块的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-解释器查找包的顺序是什么"><span class="nav-number">3.</span> <span class="nav-text">Python 解释器查找包的顺序是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交互式执行环境的查找顺序"><span class="nav-number">4.</span> <span class="nav-text">交互式执行环境的查找顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块中的-file-变量"><span class="nav-number">5.</span> <span class="nav-text">模块中的 __file__ 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sys-argv-0-变量"><span class="nav-number">6.</span> <span class="nav-text">sys.argv[0] 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sys-modules-的作用"><span class="nav-number">7.</span> <span class="nav-text">sys.modules 的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#summary"><span class="nav-number">8.</span> <span class="nav-text">summary</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2016/05/28/python-module-path-find/';
+          this.page.identifier = '2016/05/28/python-module-path-find/';
+          this.page.title = '如何理解 Python 的模块查找原理与方式';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="发号器,ticket-server,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="本质上发号器解决的问题就是分布式环境之下 ID 的唯一性，但是由于不同的业务场景差异悬殊，发号器的设计也有很大的不同，而且由于很多互联网公司的业务数据都是用的关系数据库，因而需要 ID 是自增的数字以满足数据库索引的要求，比如数字对 MySQL 的索引 B+ 就很友好，本文就常见发号器设计进行了详细的阐述和对比，希望对你有所帮助。 MySQL 发号器Flickr 在技术博客 Ticket Serv">
+<meta name="keywords" content="发号器,ticket-server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="发号器设计漫谈">
+<meta property="og:url" content="http://sanyuesha.com/2019/03/11/ticket-server/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="本质上发号器解决的问题就是分布式环境之下 ID 的唯一性，但是由于不同的业务场景差异悬殊，发号器的设计也有很大的不同，而且由于很多互联网公司的业务数据都是用的关系数据库，因而需要 ID 是自增的数字以满足数据库索引的要求，比如数字对 MySQL 的索引 B+ 就很友好，本文就常见发号器设计进行了详细的阐述和对比，希望对你有所帮助。 MySQL 发号器Flickr 在技术博客 Ticket Serv">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/mysql-ticket-server.jpg">
+<meta property="og:image" content="https://static.git-star.com/snowflake.jpeg">
+<meta property="og:image" content="https://static.git-star.com/meituan-leaf.jpg">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.057Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="发号器设计漫谈">
+<meta name="twitter:description" content="本质上发号器解决的问题就是分布式环境之下 ID 的唯一性，但是由于不同的业务场景差异悬殊，发号器的设计也有很大的不同，而且由于很多互联网公司的业务数据都是用的关系数据库，因而需要 ID 是自增的数字以满足数据库索引的要求，比如数字对 MySQL 的索引 B+ 就很友好，本文就常见发号器设计进行了详细的阐述和对比，希望对你有所帮助。 MySQL 发号器Flickr 在技术博客 Ticket Serv">
+<meta name="twitter:image" content="https://static.git-star.com/mysql-ticket-server.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2019/03/11/ticket-server/">
+
+
+
+
+
+  <title>发号器设计漫谈 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/03/11/ticket-server/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">发号器设计漫谈</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-11T22:50:21+08:00">
+                Mar 11 2019
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本质上发号器解决的问题就是分布式环境之下 ID 的唯一性，但是由于不同的业务场景差异悬殊，发号器的设计也有很大的不同，而且由于很多互联网公司的业务数据都是用的关系数据库，因而需要 ID 是自增的数字以满足数据库索引的要求，比如数字对 MySQL 的索引 B+ 就很友好，本文就常见发号器设计进行了详细的阐述和对比，希望对你有所帮助。</p>
+<h2 id="MySQL-发号器"><a href="#MySQL-发号器" class="headerlink" title="MySQL 发号器"></a>MySQL 发号器</h2><p>Flickr 在技术博客 <a href="http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/" target="_blank" rel="noopener">Ticket Servers: Distributed Unique Primary Keys on the Cheap</a> 中透露了他们是如何设计发号器的，主要是利用了 MySQL 的自增技术。</p>
+<p><strong>如何用 MySQL 的自增来设计发号器？</strong>要弄清楚这些问题，我们需要一点一点从 MySQL 的自增主键开始讲起。</p>
+<h3 id="last-insert-id-函数"><a href="#last-insert-id-函数" class="headerlink" title="last_insert_id() 函数"></a>last_insert_id() 函数</h3><p>我们先在 MySQL 中创建一个带自增列的表，基于Innodb 引擎：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test_auto_increment`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>然后再插入几条数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`test_auto_increment`</span> (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">0</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`test_auto_increment`</span> (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>执行这条语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">LAST_INSERT_ID</span>();</span><br></pre></td></tr></table></figure>
+<p>在我的机器上这条语句返回的是 2，也就是插入两条数据之后 auto_increment 列的值。last_insert_id() 这个函数在不带参数的情况下，返回的是一个 64 位无符号整数，<strong>表示在 MySQL 中最近的一次执行 Insert 语句时 auto_increment 列产生的值</strong>，注意是<strong>最近</strong>，也就是说如果我们再创建一个表，插入数据之后再执行这个函数，结果就会发生变化，如果没有执行过任何 insert 语句，那么多次执行这个函数结果是一样的。</p>
+<p><strong>需要注意的是当前执行的 insert 语句不会对 last_insert_id() 函数产生影响</strong>，比如说通过在 insert 语句中引用 last_insert_id 函数，last_insert_id 的返回值也是<strong>这条 insert 语句上次的 insert</strong> 产生的递增的值。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> test_auto_increment <span class="keyword">select</span> <span class="keyword">LAST_INSERT_ID</span>();</span><br></pre></td></tr></table></figure>
+<p><strong>在 MySQL 中，last_insert_id() 产生的值实际上是 MySQL server 维护在每个 connection 上的 ，这就意味着不同的 client 的看到返回值是不同的，他们看到的都是最近通过他们自身的 session 执行的 insert 语句产生的自增值，对其他的 client 没有影响</strong>。</p>
+<h3 id="获取最新的一个自增值"><a href="#获取最新的一个自增值" class="headerlink" title="获取最新的一个自增值"></a>获取最新的一个自增值</h3><p>我们的目的是设计发号器，由于只有 insert 语句才会产生一个自增值，也就是我们想要获得一个自增的值必须先要插入一条数据，然后想办法获得该值。上面我们已经创建了一个带自增列的表，于是想要获得一个自增的主键我们可以在同一个 session 中执行下面的操作：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`test_auto_increment`</span> (<span class="keyword">id</span>) <span class="keyword">values</span> (<span class="number">0</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">LAST_INSERT_ID</span>();</span><br></pre></td></tr></table></figure>
+<p>到现在为止，设计一个全局唯一的发号器好像已经完成了。Anybody and any question？😁 这位优秀的同学有话要说：虽然全局唯一的发号器的目标已经达到了，但是无形之中 insert 语句会产生很多无用的数据，比如像 flick 一秒钟要上传 60 张图片，还不包括其他元数据，一天也要产生 500 万的数据量，一个月就要 1.5 亿数据，很快这个发号器的表就会变得很大。这个问题提的很好，我们来一起思考一下如何解决发号器表数据量过快增长的问题。</p>
+<h3 id="防止自增表数据过大"><a href="#防止自增表数据过大" class="headerlink" title="防止自增表数据过大"></a>防止自增表数据过大</h3><p>由于 insert 语句会不断产生数据，那有没有一种办法既可以让自增键不断得增长，还能让数据量不至于过大呢？有几种办法。</p>
+<ol>
+<li>由于我们只关心自增的值，表中已经产生的数据是没有意义的，可以定时进行清除。</li>
+<li>由于我们只关心自增的值，获得自增的数据之后，原来的值就可以顺手删除了，实时清除无意义数据。</li>
+<li><strong>利用 MySQL 提供的 REPLACE 语句</strong></li>
+</ol>
+<p>方法 1 和 2 本质上是一样的，都是需要开发者自己去处理，但是 3 利用了 MySQL 的特性 <a href="https://dev.mysql.com/doc/refman/8.0/en/replace.html" target="_blank" rel="noopener">replace</a>，更便捷。要想利用 replace 语句需要我们对之前的表结构做一下变更，新增一个具有唯一性索引的字段：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test_auto_increment <span class="keyword">add</span> <span class="keyword">column</span> stub <span class="built_in">int</span> <span class="keyword">unique</span> <span class="keyword">key</span>;</span><br><span class="line"><span class="keyword">delete</span> * <span class="keyword">from</span> test_auto_increment; //清楚之前产生的数据</span><br></pre></td></tr></table></figure>
+<p><strong>这里的唯一性的索引是必须的，因为 replace 的原理是先删除具有相同主键或唯一性索引的行，然后再插入新的行</strong>。改变之后再执行下面的语句，表的数据不再增长：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">replace</span> <span class="keyword">into</span> <span class="string">`test_auto_increment`</span> (stub) <span class="keyword">values</span> (<span class="number">2019</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">LAST_INSERT_ID</span>();</span><br></pre></td></tr></table></figure>
+<h3 id="高可用的发号器"><a href="#高可用的发号器" class="headerlink" title="高可用的发号器"></a>高可用的发号器</h3><p>我们已经通过 MySQL 的自增设计了可以满足需求的发号器，但是我们的发号器是单点的，只能用一个 MySQL 实例来发号，一旦 MySQL 故障就发号器就不可用了。我们需要一个高可用的发号器架构来消除单点的问题。</p>
+<p>幸运的是 MySQL 提供了 <a href="https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_increment" target="_blank" rel="noopener">auto_increment_increment</a> 和 <a href="https://dev.mysql.com/doc/refman/8.0/en/replication-options-master.html#sysvar_auto_increment_offset" target="_blank" rel="noopener">auto_increment_offset</a> 。原本 auto_increment_increment 和 auto_increment_offset 为解决 MySQL master-master 架构中 auto_increment 冲突的问题，这两个变量在 MySQL 中既可以在全局中设置，也可以在具体的一个 session 中更改，他们具体的值是 1~65535，接下来我们详细阐述他们对 auto_increment 的影响。</p>
+<p><strong>auto_increment_increment</strong> 这个变量控制的是自增列的 interval，查看 MySQL 的默认设置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> show variables like <span class="string">'auto_inc%'</span>;</span></span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| Variable_name            | Value |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| auto_increment_increment | 1     |</span><br><span class="line">| auto_increment_offset    | 1     |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+<p>然后我们把这个值改为 10：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @@auto_increment_increment=10;</span><br><span class="line">Query OK, 0 rows affected (0.05 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like &apos;auto_inc%&apos;;</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| Variable_name            | Value |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| auto_increment_increment | 10    |</span><br><span class="line">| auto_increment_offset    | 1     |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>然后我们创建一个表进行测试并且插入一些数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE TABLE `test_auto_increment2` (</span><br><span class="line">    -&gt;   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">    -&gt;   PRIMARY KEY (`id`)</span><br><span class="line">    -&gt; );</span><br><span class="line">Query OK, 0 rows affected (0.31 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; INSERT INTO test_auto_increment2 VALUES (0), (0), (0), (0);</span><br><span class="line">Query OK, 4 rows affected (0.14 sec)</span><br><span class="line">Records: 4  Duplicates: 0  Warnings: 0</span><br><span class="line">mysql&gt; select * from test_auto_increment2;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">|  1 |</span><br><span class="line">| 11 |</span><br><span class="line">| 21 |</span><br><span class="line">| 31 |</span><br><span class="line">+----+</span><br><span class="line">4 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到自增列的值间隔是 10。</p>
+<p><strong>auto_increment_offset</strong> 这个变量决定了自增列的起始值，接着在刚才我们打开的 session 中设置这个值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @@auto_increment_offset=5;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line">mysql&gt; show variables like &apos;auto_inc%&apos;;</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| Variable_name            | Value |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">| auto_increment_increment | 10    |</span><br><span class="line">| auto_increment_offset    | 5     |</span><br><span class="line">+--------------------------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>然后插入一些数据查看变化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; INSERT INTO test_auto_increment2 VALUES (0), (0), (0), (0);</span><br><span class="line">Query OK, 4 rows affected (0.29 sec)</span><br><span class="line">Records: 4  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_auto_increment2;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">|  1 |</span><br><span class="line">| 11 |</span><br><span class="line">| 21 |</span><br><span class="line">| 31 |</span><br><span class="line">| 45 |</span><br><span class="line">| 55 |</span><br><span class="line">| 65 |</span><br><span class="line">| 75 |</span><br><span class="line">+----+</span><br><span class="line">8 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到自增列接下来的值变成 45、55、65、75，实际上 MySQL 是根据下面的公式计算自增列的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto_increment_offset + N × auto_increment_increment</span><br></pre></td></tr></table></figure>
+<p>N 是 正整数，新行插入产生的自增值都会比已经存在的自增值要大，则根据上面的规则应该是 5 + N * 10 = [10, 15, 25, 35, 45,…]，根据上面的计算规则 MySQL 的官方给出的答案是 35，但是实际上 5.7.6 版本中则是从 45 开始的，具体原因我猜测因为 auto_increment_increment 规定了 interval 必须要是 10，而如果是从 35 的话，35 和 31 的 interval 就不是 10 了 ：）。</p>
+<p>既然可以通过 auto_increment_increment 和 auto_increment_offset 控制步长和起始值，那么我们就可以利用这个特性来水平扩展我们的发号器。</p>
+<p><img src="https://static.git-star.com/mysql-ticket-server.jpg" alt></p>
+<p>如图所示，发号器从一台扩展到 2 台，再扩展到 4 台，每次扩展我们都需要重新改变 offset ，调到一个比之前已经生成的 id 更大的值，并且调整 increment 为扩展的发号器数量，这样才能保证新扩展之后的发号器不冲突。</p>
+<p>不难看出基于 MySQL 的发号器有一个很大的问题：<strong>扩展麻烦，每次扩展都需要调整步长和初始值，而且为了达到性能要求只能水平加 MySQL 机器</strong>。</p>
+<h2 id="Twitter-Snowflake"><a href="#Twitter-Snowflake" class="headerlink" title="Twitter Snowflake"></a>Twitter Snowflake</h2><p>Twitter 在 2010 年开源了一个全局 ID 生成器的算法叫 Snowflake，如图所示：</p>
+<p><img src="https://static.git-star.com/snowflake.jpeg" alt></p>
+<p>该算法用一个 64 位整数来表示唯一性 ID，64 按照不同的段位进行划分：</p>
+<ol>
+<li>首位 1 bit 不用，固定是 0 ，由于计算机中正数的最高位是 0，ID 是正数</li>
+<li>41 位表示时间戳，精确到毫秒，这 41 位可以表示的数字范围是 0 ~ 2^41-1，这里只需要无符号数，也就是说如果从某个时间戳开始算起，这 41 位能够容纳的最长时间是 (2^41-1) / 1000<em>3600\</em>24*365 ≈ 69 年</li>
+<li>10 位工作机器 id，可以根据业务需要把这 10 位用作机器节点 id 或者数据中心 id，比如有 3 个数据中心就可以留 2 位出来，剩下的作为机器节点 id。</li>
+<li>12 位序列号，可以表示 2^12-1 = 4095 个整数，表示同一时间戳能产生的所有序号。</li>
+</ol>
+<p>snowflake 算法理论上每秒可以产生 4095<em>1000 个 id，能够满足很大的业务量需求，相比使用 MySQL 的自增进行发号，这个<em>*算法容易实现，水平扩展方便，只要保证扩展之后的 10 位工作机器 id 是唯一即可</em></em>，需要注意的是由于算法依赖机器的时间戳，如果机器的时间戳发生过回拨，也就是回退到之前的某个时间可能会导致 id 重发。</p>
+<p>snowflake 算法的具体实现可以参考如下文章：</p>
+<ul>
+<li><a href="https://juejin.im/post/5a7f9176f265da4e721c73a8" target="_blank" rel="noopener">https://juejin.im/post/5a7f9176f265da4e721c73a8</a></li>
+<li><a href="https://segmentfault.com/a/1190000011282426" target="_blank" rel="noopener">https://segmentfault.com/a/1190000011282426</a></li>
+</ul>
+<h2 id="美团点评的-Leaf-方案"><a href="#美团点评的-Leaf-方案" class="headerlink" title="美团点评的 Leaf 方案"></a>美团点评的 Leaf 方案</h2><p>前段时间美团开源了自家的分布式 ID 生成方案 Leaf <a href="https://github.com/Meituan-Dianping/Leaf" target="_blank" rel="noopener">https://github.com/Meituan-Dianping/Leaf</a> ，其在博客文章 <a href="https://tech.meituan.com/2017/04/21/mt-leaf.html" target="_blank" rel="noopener">https://tech.meituan.com/2017/04/21/mt-leaf.html</a>  谈过其设计思路，大致如下。</p>
+<p>Leaf 是基于 MySQL 的分布式 ID 生成方案，但是不同于使用 MySQL 自增的方式，Leaf 做了改良：</p>
+<ol>
+<li>由于 MySQL 自增方案中每做一次发号就要写一次数据库，在并发量大的情况下，MySQL 压力太大，<strong>Leaf 每做一次发号不是发一个号，而是发一个号段，比如 1 ~ 1000 这个号段，这样可以大大减少 MySQL 写的压力</strong></li>
+<li>通过调整步长和初始值来进行水平扩展非常复杂，难以精确控制，<strong>Leaf 为不同业务（通过 tag 区分）定义了不同的号段长和初始值，每个业务获取 ID 都相互隔离，互不影响</strong></li>
+<li>Leaf 不是直接从 MySQL 中获取 ID，而是通过 proxy，<strong>proxy 会把从 MySQL 获取的号段做缓存，有了 proxy 之后如果需要对发号器进行扩展，直接扩展 proxy 并且多分配一些号段即可，不需要变更 MySQL</strong></li>
+</ol>
+<p>整个 Leaf 的架构如下：</p>
+<p><img src="https://static.git-star.com/meituan-leaf.jpg" alt></p>
+<p>其中 MySQL 的表定义了：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Filed</th>
+<th>type</th>
+<th>comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>biz_tag</td>
+<td>varchar(128)</td>
+<td>业务 tag</td>
+</tr>
+<tr>
+<td>max_id</td>
+<td>bigint</td>
+<td>已发号的最大值</td>
+</tr>
+<tr>
+<td>step</td>
+<td>int(11)</td>
+<td>号段长</td>
+</tr>
+<tr>
+<td>desc</td>
+<td>varchar(256)</td>
+<td></td>
+</tr>
+<tr>
+<td>update_time</td>
+<td>timestamp</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>具体业务实现以上图 <code>test_tag</code> 为例，比如 proxy-2 节点上没有 test_tag 的号段，然后需要从 DB 更新号段，更新号段就是把 test_tag 对应的 max_id 增加一个步长：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Begin</span><br><span class="line">UPDATE table SET max_id=max_id+step WHERE biz_tag=test_tag</span><br><span class="line">SELECT tag, max_id, step FROM table WHERE biz_tag=test_tag</span><br><span class="line">Commit</span><br></pre></td></tr></table></figure></p>
+<p>变更之后 test_tag 的 max_id = 4000，之后每个 proxy 如果号段消耗完成就又以这种方式获取。</p>
+<p>除此之外 Leaf 还针做了如下优化：</p>
+<p>第一，如果 proxy 特别多，有可能会有多个 proxy 会在同时获取同一个 tag 的号段，这会导致 DB 有短时间的卡顿 proxy 更新号段线程发生阻塞从而影响发号。因而 Leaf 在 proxy 做了预更新机制，也就是在号段消耗约 10% 左右就开始更新下一批号段，并且 Leaf 中号段的长度是峰值 QPS 的百倍之多，这样能让 DB 即使出现短暂故障也不会影响发号。</p>
+<p>第二，Leaf 的 DB 采用一主多从的方式部署，同时分机房，并且 DB 的主从切换采用 <a href="https://github.com/Meituan-Dianping/DBProxy" target="_blank" rel="noopener">https://github.com/Meituan-Dianping/DBProxy</a> 保证了 Leaf 服务的高可用</p>
+<p><strong>Leaf 这种架构能够做到</strong>：</p>
+<ul>
+<li>Leaf服务可以很方便的线性扩展，性能完全能够支撑大多数业务场景。</li>
+<li>ID号码是趋势递增的 8 byte的64位数字，满足主流关系型数据库存储的主键要求。</li>
+<li>容灾性高：Leaf服务内部有号段缓存，即使DB宕机，短时间内Leaf仍能正常对外提供服务。</li>
+<li>可以自定义max_id的大小，非常方便业务从原有的ID方式上迁移过来</li>
+</ul>
+<p>由于 Leaf 是通过递增号段的方式发号，很容易让竞品根据号段猜出一些商业数据，Leaf 根据 snowflake 做了改进设计了 Leaf-snowflake， 并且使用 zookeeper 同步 Leaf-snowflake 服务的时间戳以及 worker id 来解决由于机器时钟回拨和节点变更的问题，详细可以见 <a href="https://tech.meituan.com/2017/04/21/mt-leaf.html" target="_blank" rel="noopener">https://tech.meituan.com/2017/04/21/mt-leaf.html</a> </p>
+<h2 id="MongoDB-ObjectID"><a href="#MongoDB-ObjectID" class="headerlink" title="MongoDB ObjectID"></a>MongoDB ObjectID</h2><p>MongoDB 的 ObjectID 也是一个可以在分布式环境之下使用的唯一性 ID，并且他是根据它的生成规则可以轻松在 client 端生成，这样 ID 的开销就转移到了 client 端。</p>
+<p>ObjectID 总共有 12字节分别是：</p>
+<ul>
+<li>a 4-byte value representing the seconds since the Unix epoch 时间戳</li>
+<li>a 5-byte random value  随机值</li>
+<li>a 3-byte counter, starting with a random value 计数器</li>
+</ul>
+<p>MongoDB 的 ID 带有时间戳信息，可以推断出生成 ID 的时间，而且这个 ID 也是趋势递增的，在客户端生成速度快是他的优势。MongoDB 的 ObjectID 结合 MongoDB 的环境使用最高效，有些场景可以替换 UUID 来用。</p>
+<h2 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h2><p>UUID(Universally Unique Identifier) 标准型式包含 32 个 16 进制数字，以连字号分为五段，形式为8-4-4-4-12的36个字符，示例：<code>550e8400-e29b-41d4-a716-446655440000</code>，到目前为止业界一共有5种方式生成UUID，详情见IETF发布的UUID规范 <a href="http://www.ietf.org/rfc/rfc4122.txt" target="_blank" rel="noopener">http://www.ietf.org/rfc/rfc4122.txt</a> 。</p>
+<p>UUID 比 MongoDB 的 ObjectID 还要长，占用 16 字节，不易于在类似 MySQL 这样的系统中存储检索，由于在客户端生成，效率很高，但是依赖于客户端的 MAC 地址，有暴露 MAC 地址的风险，</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>行文至此，我们一起来分析总结一下几种发号方案的优缺点。</p>
+<h4 id="方案一，MySQL-自增"><a href="#方案一，MySQL-自增" class="headerlink" title="方案一，MySQL 自增"></a>方案一，MySQL 自增</h4><p><strong>优势</strong>：实现简单，能够应付大部分场景，易于存储索引</p>
+<p><strong>缺点</strong>：水平扩展复杂，数据库在并发场景高的场景下压力大</p>
+<h4 id="方案二，snowflake-算法"><a href="#方案二，snowflake-算法" class="headerlink" title="方案二，snowflake 算法"></a>方案二，snowflake 算法</h4><p><strong>优势</strong>：实现不算复杂，水平扩展容易，并发量大，能够应付绝大数业务场景，趋势递增，易于存储索引</p>
+<p><strong>缺点</strong>：依赖于时间戳，机器时间回拨会导致 ID 重复发送</p>
+<h4 id="方案三，MongoDB-ObjectID"><a href="#方案三，MongoDB-ObjectID" class="headerlink" title="方案三，MongoDB ObjectID"></a>方案三，MongoDB ObjectID</h4><p><strong>优势</strong>：client 端生成，速度快，效率高，配合 MongoDB 在分布式环境中使用，自带时间戳，一些场景可以替换 UUID</p>
+<p><strong>缺点</strong>：不利于 MySQL 这样的关系型数据库存储索引</p>
+<h4 id="方案四，UUID"><a href="#方案四，UUID" class="headerlink" title="方案四，UUID"></a>方案四，UUID</h4><p><strong>优势</strong>：client  端生成，效率高</p>
+<p><strong>缺点</strong>：太长，不易关系型数据库存储索引，有一定的安全风险</p>
+<h2 id="开源实现"><a href="#开源实现" class="headerlink" title="开源实现"></a>开源实现</h2><p>以上方案的部分开源实现：</p>
+<ul>
+<li><a href="https://github.com/Meituan-Dianping/Leaf" target="_blank" rel="noopener">https://github.com/Meituan-Dianping/Leaf</a></li>
+<li><a href="https://github.com/baidu/uid-generator" target="_blank" rel="noopener">https://github.com/baidu/uid-generator</a></li>
+<li><a href="https://github.com/edwingeng/wuid" target="_blank" rel="noopener">https://github.com/edwingeng/wuid</a> </li>
+<li><a href="https://github.com/bwmarrin/snowflake" target="_blank" rel="noopener">https://github.com/bwmarrin/snowflake</a> </li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/发号器/" rel="tag"># 发号器</a>
+          
+            <a href="/tags/ticket-server/" rel="tag"># ticket-server</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/08/go-stand-lib-file/" rel="next" title="Go 文件操作详解">
+                <i class="fa fa-chevron-left"></i> Go 文件操作详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/12/my-info-system/" rel="prev" title="关于信息管理系统的思考">
+                关于信息管理系统的思考 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-发号器"><span class="nav-number">1.</span> <span class="nav-text">MySQL 发号器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#last-insert-id-函数"><span class="nav-number">1.1.</span> <span class="nav-text">last_insert_id() 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取最新的一个自增值"><span class="nav-number">1.2.</span> <span class="nav-text">获取最新的一个自增值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防止自增表数据过大"><span class="nav-number">1.3.</span> <span class="nav-text">防止自增表数据过大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高可用的发号器"><span class="nav-number">1.4.</span> <span class="nav-text">高可用的发号器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Twitter-Snowflake"><span class="nav-number">2.</span> <span class="nav-text">Twitter Snowflake</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美团点评的-Leaf-方案"><span class="nav-number">3.</span> <span class="nav-text">美团点评的 Leaf 方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MongoDB-ObjectID"><span class="nav-number">4.</span> <span class="nav-text">MongoDB ObjectID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UUID"><span class="nav-number">5.</span> <span class="nav-text">UUID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案一，MySQL-自增"><span class="nav-number">6.0.1.</span> <span class="nav-text">方案一，MySQL 自增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案二，snowflake-算法"><span class="nav-number">6.0.2.</span> <span class="nav-text">方案二，snowflake 算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案三，MongoDB-ObjectID"><span class="nav-number">6.0.3.</span> <span class="nav-text">方案三，MongoDB ObjectID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案四，UUID"><span class="nav-number">6.0.4.</span> <span class="nav-text">方案四，UUID</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#开源实现"><span class="nav-number">7.</span> <span class="nav-text">开源实现</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2019/03/11/ticket-server/';
+          this.page.identifier = '2019/03/11/ticket-server/';
+          this.page.title = '发号器设计漫谈';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

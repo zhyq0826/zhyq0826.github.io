@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="程序员,面试,工作,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="最近把工作换了，工作内容也从原来的单纯得后端开发转到了云，基本上换了个方向。由于公司的距离我比较在意，最低要求是最远不要超过北五环或者公司就在望京，再加上对公司规模和工作内容的要求，能选择的公司基本不多。 先说说今年的市场行情。都说今年行情不好，整体找工作的经历来看，确实各家都比较谨慎，通过类似拉勾网这种渠道投简历大多数没有任何回应，所以如果有认识的人，优先考虑内推。 再说说程序员找工作必须经历的">
+<meta name="keywords" content="程序员,面试,工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊面试和程序员找工作这件事">
+<meta property="og:url" content="http://sanyuesha.com/2019/06/27/about-interview/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="最近把工作换了，工作内容也从原来的单纯得后端开发转到了云，基本上换了个方向。由于公司的距离我比较在意，最低要求是最远不要超过北五环或者公司就在望京，再加上对公司规模和工作内容的要求，能选择的公司基本不多。 先说说今年的市场行情。都说今年行情不好，整体找工作的经历来看，确实各家都比较谨慎，通过类似拉勾网这种渠道投简历大多数没有任何回应，所以如果有认识的人，优先考虑内推。 再说说程序员找工作必须经历的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-29T12:14:34.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊聊面试和程序员找工作这件事">
+<meta name="twitter:description" content="最近把工作换了，工作内容也从原来的单纯得后端开发转到了云，基本上换了个方向。由于公司的距离我比较在意，最低要求是最远不要超过北五环或者公司就在望京，再加上对公司规模和工作内容的要求，能选择的公司基本不多。 先说说今年的市场行情。都说今年行情不好，整体找工作的经历来看，确实各家都比较谨慎，通过类似拉勾网这种渠道投简历大多数没有任何回应，所以如果有认识的人，优先考虑内推。 再说说程序员找工作必须经历的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2019/06/27/about-interview/">
+
+
+
+
+
+  <title>聊聊面试和程序员找工作这件事 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/06/27/about-interview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">聊聊面试和程序员找工作这件事</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T23:20:34+08:00">
+                Jun 27 2019
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近把工作换了，工作内容也从原来的单纯得后端开发转到了云，基本上换了个方向。由于公司的距离我比较在意，最低要求是最远不要超过北五环或者公司就在望京，再加上对公司规模和工作内容的要求，能选择的公司基本不多。</p>
+<p>先说说今年的市场行情。都说今年行情不好，整体找工作的经历来看，确实各家都比较谨慎，通过类似拉勾网这种渠道投简历大多数没有任何回应，所以如果有认识的人，优先考虑内推。</p>
+<p>再说说程序员找工作必须经历的笔试面试。</p>
+<p>IT 这个行业比其他行业特殊点的是，面试一般有笔试，而且会在白板上手写代码，甚至有的公司会出智力题，巨头们如微软、Google 等的面试是出了名的难。虽然工作了这么多年，面过很多人，也被不少人面过，基本还没遇到过出智力题的情况，大家都是按照传统套路出牌，不偏不倚。很多公司面试最少有四面，三面技术面，一面 hr 面，有的公司会多点，有五轮技术面，一轮 hr 面，但套路都大同小异，总结下对程序员考察点基本划分为：</p>
+<ul>
+<li>计算机基础科学知识</li>
+<li>项目经验和工程能力</li>
+<li>常用开源软件的理解、使用和应用</li>
+<li>语言细节</li>
+<li>思维能力和学习能力</li>
+<li>其他如领导力、团队合作、职业规划等软实力</li>
+</ul>
+<p>接下来我会把每个考察点一一展开来谈谈我的经历和看法，只针对具有普遍意义的程序员面试。</p>
+<h3 id="计算机基础科学知识"><a href="#计算机基础科学知识" class="headerlink" title="计算机基础科学知识"></a>计算机基础科学知识</h3><p>科班出身的程序员在基础计算机科学知识上是占优势的，即使很长时间没有碰这些理论性知识，花点时间重新复习一下也不会是什么大问题。基本的基础知识包括：</p>
+<ul>
+<li>算法</li>
+<li>数据库理论</li>
+<li>操作系统和计算机体系结构</li>
+<li>计算机网络和协议</li>
+<li>分布式基础理论</li>
+<li>计算机语言以及编译原理</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>算法是一个老生常谈的话题，作为程序员不可能绕得开，正面面对是唯一的办法，如果仅仅是抱着攻破各大公司面试题的这种想法去学算法，心会很累，而且会失去对算法的兴趣。相反如果留点心，根本不难发现现代各大开源软件到处都是经典算法的影子，MySQL 索引中的 B+ 算法，Redis 中集合中的 skiplist、hash 等数据结构，Java HashMap 中红黑树等等、字符串搜索提示的 Tire 树、大数据过滤的布隆算法等等不一而足，也就是说学习算法最好的途径是<strong>从解决实际生产问题入手逐个击破掌握</strong>。</p>
+<p>由于所有的算法都是建立在特定的数据结构之上的，而这些数据结构又是各种经典数据结构的组合和创新，比如红黑树是为了解决二叉查找树插入、删除不高效而演变出的结构，B+ 树又是多叉树的经典应用场景，skiplist 是链表和二分查找的经典组合，所以想要掌握算法又必须要能做到把所有<strong>常用的数据结构烂熟于心，对他们的优缺点有着原理性的理解，能够熟练写出最基本的表达和实现</strong>，这些基本结构包括：</p>
+<ul>
+<li>数组</li>
+<li>队列</li>
+<li>栈</li>
+<li>链表</li>
+<li>树</li>
+<li>hashmap</li>
+<li>图</li>
+</ul>
+<p>有了结构，就能按图索骥，不断把触角延伸，一步步探索这些结构的演变；有了问题，就有了场景，就能把算法应用起来，做到理论联系实际，而最后需要注意就是<strong>分类、归纳、对比，总结和不断地练习</strong>。</p>
+<p>算法分类，按功能划分有：排序、查找、压缩、过滤等等，按结构划分有：数组、链表、队列、栈、树、图、位图、hashmap 等等，按照思想划分有：暴力、分治、回溯、递归、贪心、动态规划等等，按照领域解决问题场景划分有：存储算法、分布式算法、调度算法、机器学习算法、限流算法、字符串匹配算法等等。</p>
+<p>有了上面这些方法论和学习地图，配合 LeetCode 的习题不断练习，算法终能掌握，不过可以预见的是，这个过程对于我们大部分并非天赋异禀，没有得到如来神掌真传的程序员来说是都是一场漫长而艰辛的寂寞之旅。</p>
+<h4 id="数据库理论"><a href="#数据库理论" class="headerlink" title="数据库理论"></a>数据库理论</h4><p>不管什么时候数据都是 IT 行业赖以存在的基石，因而存储不管在什么时候都应该在程序员应该掌握的领域知识中排第一位，按照目前后端开发经常遇到的存储类型可以简单划分为：</p>
+<ul>
+<li>传统关系型数据库</li>
+<li>NoSQL 数据库</li>
+<li>内存数据库</li>
+<li>图数据库</li>
+<li>大规模分布式存储系统</li>
+</ul>
+<p>互联网企业中，传统关系数据库基本都是 MySQL 或者 PostgreSQL 为代表的，其他收费的数据库一般来说基本可以不用考虑，因而一般来说只要掌握了 MySQL 或者 PostgreSQL 就能胜任绝大部分和存储相关的开发工作。</p>
+<p>关系数据库本身有一套非常复杂的理论，比如事务、外键、数据库范式等等，但是由于真实生产环境的复杂性，很多数据库理论都不会严格被实现，因而学习数据库知识最好以大规模使用的开源软件为准即可。</p>
+<p><strong>MySQL</strong></p>
+<p>MySQL 是关系数据库的最强代表，没有之一，因而掌握了 MySQL 基本可以通吃，可以从以下几方面入手：</p>
+<ul>
+<li>MySQL 数据库基本安装和使用以及组件结构</li>
+<li>MySQL 支持的数据类型以及各自使用场景优缺点</li>
+<li>MySQL 各种存储引擎以及适用场景</li>
+<li>MySQL 实现的基本原理 (推荐 《MySQL 技术内幕 —InnoDB 存储引擎》)</li>
+<li>MySQL 索引实现以及优化 (推荐 MySQL 官方文档索引相关章节)</li>
+<li>MySQL 优化 (推荐 《高性能 MySQL》)</li>
+</ul>
+<p>MySQL 涉及到的知识点非常庞大，没有哪本书会把 MySQL 的方方面面都涉及到，如果你确实比较懒，买点付费课程也是一种学习途径。</p>
+<p><strong>MongoDB、HBase、Elasticsearch、Cassandra、各种 KV 数据库</strong></p>
+<p>NoSQL 数据库是个很大的概念，基本上把 MongoDB、HBase、Redis 等等都包括了，拿 MongoDB来说， 本身是个文档数据库，支持以类似 JSON 的格式存储，支持大规模的读写，自带分布式部署和 shard，虽然 MongoDB 的争议不少，但是不可否认 MongoDB 的使用还算比较广泛。</p>
+<p>其实这些数据库产品不论哪种，如果平时工作中有应用，就多花点时间研究一下，能做到深入了解最好，这对面试都是加分项，至少能够说明个人的技术视野比较开阔，不局限，如果没有时间深入了解，最起码能做到，<strong>知道其应用场景以及局限，能够和 MySQL 这种传统数据库比较起来使用</strong>。</p>
+<p><strong>Redis</strong></p>
+<p>Redis 是一种典型的内存数据库，但是由于其应用真的是太广泛了，已经成为各大公司使用频度仅次于 MySQL 的开源软件，所以对 Redis 的了解要非常深入才能具备足够的竞争力：</p>
+<ul>
+<li>Redis 的基本安装和使用</li>
+<li>Redis 的各种数据结构以及使用场景</li>
+<li>Redis 的各种命令以及常用配置的含义</li>
+<li>Redis 的基本原理以及各种典型的使用场景</li>
+</ul>
+<p>推荐看看 《Redis 的设计与实现》、《Redis 开发与运维》以及 Redis 在各大厂的典型实践案例，网上有很多文章，掌握了这些，面试基本没有任何问题。</p>
+<p><strong>图数据库</strong></p>
+<p>如果不是针对特定公司或者特定场景的，可以略过。</p>
+<p><strong>大规模分布式存储系统</strong></p>
+<p>这个要稍微提一下，有的公司会问 <strong>HDFS 以及 Ceph 这样的大规模分布式存储系统的基本原理</strong>，这方面如果没有实践经验可以了解一下基本原理和理论即可，可以不必深究，除非是面试的岗位就是做类似系统的，那就需要特别了解了。</p>
+<h4 id="操作系统和计算机体系结构"><a href="#操作系统和计算机体系结构" class="headerlink" title="操作系统和计算机体系结构"></a>操作系统和计算机体系结构</h4><p>操作系统和计算机底层的一些知识一般绕不开，常见的包括：</p>
+<ul>
+<li>进程、线程、协程等的原理和差异</li>
+<li>进程间通信</li>
+<li>进程的在操作系统中的实现以及调度</li>
+<li>内存模型</li>
+<li>CPU 模型</li>
+<li>Linux 系统</li>
+</ul>
+<p>这部分内容确实能区分出程序员的基本功力，推荐 《深入理解计算机系统》和 《计算机程序的构造和解释》，啃完这两本，几乎没有过不去的操作系统相关的面试。</p>
+<h4 id="计算机网络和协议"><a href="#计算机网络和协议" class="headerlink" title="计算机网络和协议"></a>计算机网络和协议</h4><p>网络协议可以说是面试必考，包括 TCP\IP、UDP、HTTP、HTTPS、HTTP2，操作系统常见的网络模型，对于 TCP 应该至少掌握：</p>
+<ul>
+<li>三次握手和四次挥手的原理以及状态变迁</li>
+<li>TCP 的可靠性是如何保证的</li>
+<li>TCP 限流、慢启动、拥塞控制、长连接保证等等</li>
+<li>TCP 的拆包过程、重组过程等</li>
+<li>TCP 和 UDP 的基本区别，适用场景</li>
+<li>DNS 解析的过程、各部分使用的协议以及缘由</li>
+</ul>
+<p>推荐《TCP-IP详解卷一》中有关 TCP 和、UDP以及 IP 的章节，而且 TCP 的状态变迁本身并不是特别复杂，虽然状态不少，如果理解着记忆，并且结合着 tcpdump 多看一下各个场景下 TCP 的连接状态基本都能搞明白，很多公司喜欢问为什么不是二次握手，以及为什么不是三次挥手，并且会问原因，如果对 TCP 各个状态变迁没有做深入了解，这些问题会被绕晕。</p>
+<p>HTTP 协议是 web 开发必须要掌握的，不只是后端程序员，前端程序员也有同样的要求，对于 <strong>HTTP 协议可以看 《HTTP 协议权威指南》 这本书</strong>足够了，不需要买任何课程，费钱。</p>
+<p>HTTPS 要理解其原理和过程。</p>
+<p>HTTP2 要理解其原理，以及和 HTTP 1.1 相比做了如何的改进。</p>
+<p>和网络相关的还有一大块内容是 Linux 的网络模型，也就是现代高性能 Server 底层实现 epoll 等网络模型，包括但不限于 Redis、Nginx、Gunicorn、libuv 等底层都依赖于此，因此必须要掌握，推荐《unix 高级网络编程》这两本书。</p>
+<p>如果比较懒，可以参考我写的书 <a href="https://sanyuesha.com/python-server-tutorial/">https://sanyuesha.com/python-server-tutorial/</a>  。</p>
+<h4 id="分布式基础理论"><a href="#分布式基础理论" class="headerlink" title="分布式基础理论"></a>分布式基础理论</h4><p>知道分布式解决的问题是什么，以及分布式带来的挑战是什么，知道基本的 CAP 理论，理解常见的分布式一致性算法，理解常见的分布式架构原理以及适用场景。</p>
+<p>推荐  <a href="https://github.com/mixu/distsysbook" target="_blank" rel="noopener">https://github.com/mixu/distsysbook</a> 和 <a href="https://github.com/heathermiller/dist-prog-book" target="_blank" rel="noopener">https://github.com/heathermiller/dist-prog-book</a> 两本书，推荐 <a href="https://raft.github.io/" target="_blank" rel="noopener">https://raft.github.io/</a> 对 raft 一致性算法的介绍。</p>
+<h3 id="项目经验和工程能力"><a href="#项目经验和工程能力" class="headerlink" title="项目经验和工程能力"></a>项目经验和工程能力</h3><p>一般来说，大多数程序员的项目经验来自于工作时做的各种项目，因而<strong>对做过的项目在实现之后要能不断的总结提炼其中的精华部分</strong>，很多面试官喜欢让面试者 show 出自己所做项目的难点以及有深度的地方，这就是不断总结提炼的原因。如果平时能养成经常总结概括，回答这种问题基本可以做到即问即答。</p>
+<p>工程能力是程序员的一大基础能力，工程能力的强弱决定了程序员能够胜任不同规模和不同复杂性项目的能力，工程能力是一种过程性得动态能力，其主要来自于<strong>对项目的不断实践和反复重构优化的过程中</strong>。</p>
+<p>因而作为一名程序员，要对自己所做项目的<strong>完整生命周期负责</strong>，从项目构建、单元测试、部署、日志收集、容量规划、监控报警、性能优化、扩容等软件生存过程要全程参与，如果没有办法做到全程参与，至少也要能理解整个服务链路的生命周期。</p>
+<h3 id="常用开源软件的理解、使用和应用"><a href="#常用开源软件的理解、使用和应用" class="headerlink" title="常用开源软件的理解、使用和应用"></a>常用开源软件的理解、使用和应用</h3><p>面试经常会被问到各种开源软件的使用和原理，这些问题非常具体，而且答案比较标准，对于此要对自己常用的软件原理最好都能掌握，并且对其使用场景要非常熟悉，拿后端程序员来说，包括但不限于：</p>
+<ul>
+<li>NGINX</li>
+<li>MySQL</li>
+<li>Redis</li>
+<li>MongoDB</li>
+<li>ES</li>
+<li>HBASE</li>
+<li>HDFS</li>
+<li>Kafka</li>
+<li>MQ</li>
+<li>ZK</li>
+</ul>
+<p>最好能做到精通一个到两个，其他做到基本掌握和使用即可，<strong>没有面试官会要求一个面试者能掌握所有，但是很多面试官都期待面试者能至少对其中一个有非常深入的研究</strong>，如果面试者能做到这一点，将会是很大的加分项。</p>
+<h3 id="语言细节"><a href="#语言细节" class="headerlink" title="语言细节"></a>语言细节</h3><p>有的公司对语言有强烈要求，比如 Java 生态的，有的公司对语言没有强烈要求，比如 Python 或者 Go 生态的公司，但都会提问面试者熟悉的语言一些非常微小的细节，比如 Python 中的迭代器内部结构，以及迭代器和生成器的区别，比如 Go 中的 slice 的内部机制以及如何扩容缩容等。因而面试者要对自己熟悉的语言要有比较深入的理解才行，如果是 Java 系的就要对 Java 的各种常用标准库的内部实现以及各种并发编程模型、锁等熟悉，如果是 Python 系的，就要对 Python 常用数据结构的用法，差异，垃圾回收机制，GIL，内部原理都能掌握，同样 Go 也是如此，其实不管是哪种语言，只要留点心，再不济 <strong>Google 一下各种语言常见的面试问题</strong>，这一关总体来说问题都不会太大。</p>
+<h3 id="思维能力和学习能力"><a href="#思维能力和学习能力" class="headerlink" title="思维能力和学习能力"></a>思维能力和学习能力</h3><p>很多公司对思维能力的考察一般是通过做算法题或解决一个特定场景的问题，算法上文已经讲过了，<strong>对于系统设计这种场景性的问题，解决之道也是在日常工作中能对自己遇到的各种问题不断优化总结以及做项目时多问几个问题逐步积累出来的</strong>：</p>
+<ul>
+<li>如果在现有项目的规模放大十倍百倍这个项目应该如何设计和架构</li>
+<li>对于一个问题有没有更好的设计方案，如果有那该如何取舍权衡，如果没有，为什么</li>
+</ul>
+<p><strong>思维能力本质上反映出来的其实也是工程能力，也就是解决问题时能不能面面俱到的照顾到各个方面，并且权衡取舍到最优方案</strong>。</p>
+<p>面对这类问题，面试者一定要通过<strong>不断向面试官提问来缩小问题的范围和分析清楚问题的各种边界条件，争取考虑周全</strong>。</p>
+<p>学习能力考察一般会转换成让面试者讲述一门自己工作之外学习到的新技术或新技能，并且要阐述清楚其学习的目的以及这项新技术的原理和内部机制。所以任何时候都不要停止学习，因为我们都是程序员。</p>
+<h3 id="软实力"><a href="#软实力" class="headerlink" title="软实力"></a>软实力</h3><p>软实力是程序员能够在职场不断晋升，放大自身价值的必备技能，而这些能力确实需要每个程序员能根据自身条件来培养，完全因人而异。所以面试者要能非常了解自己的<strong>性格特质、能力边界、兴趣爱好以及对未来的规划期待</strong>等等。</p>
+<p>推荐阅读 《黑客与画家》、《软实力：代码之外的生存指南》、《程序员的思维训练》。</p>
+<h3 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h3><p>找工作和择偶很像，选择对方或者被对方选择，而这个选择在大程度上决定了未来一到两年自己职业的发展，甚至更远将来的选择，因而如何选择非常重要：</p>
+<ol>
+<li>如果是应届毕业，优选大企业，对于刚毕业的程序员，公司比做什么更重要，大公司提供了更多的可能性，有更多选择的机会锻炼和历练自己</li>
+<li>毕业两年到三年，已经经历了很多，大概知道自己的兴趣点和志向，此时根据市场热点选择一个自己感兴趣的方向，以及在这个方向上再选择一个上升型的企业，趁年轻可以获得公司成长的红利，也会得到更大的锻炼</li>
+<li>毕业五年以上，这个阶段的程序员面临一个很大的职业选型的问题，走技术路线，成为专家，走带管理的路线，成为专家型领导，每个人的性格特质不一样，这个时候就需要特别了解自己，包括自己的性格特点，能力范围，兴趣志向，还要了解行业趋势，未来市场的行情等等，最终综合选择一个自己能够深扎的行业以及技术方向做下去。</li>
+<li>时机来临选择创业或转行</li>
+</ol>
+<h3 id="危机中的幸运"><a href="#危机中的幸运" class="headerlink" title="危机中的幸运"></a>危机中的幸运</h3><p>很多人都说程序员是青春饭的职业，确实行业发展趋势中不可避免很多公司倾向选择更年轻的程序员，如果程序员想在行业长久立足只能是：不断提高自己的竞争力。写出更好的软件并不是拼体力，而是各种综合能力的体现，程序员想要持续享受 IT 行业发展带来的红利，唯有永远学习，不断提高个人能力。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/程序员/" rel="tag"># 程序员</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/工作/" rel="tag"># 工作</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/17/kubernetes-tutorial-for-beginner/" rel="next" title="一个小时学会搭建和使用 kubernetes">
+                <i class="fa fa-chevron-left"></i> 一个小时学会搭建和使用 kubernetes
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/07/mac-k8s/" rel="prev" title="在 mac 上搭建一个好用的 k8s 集群">
+                在 mac 上搭建一个好用的 k8s 集群 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机基础科学知识"><span class="nav-number">1.</span> <span class="nav-text">计算机基础科学知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法"><span class="nav-number">1.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库理论"><span class="nav-number">1.2.</span> <span class="nav-text">数据库理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作系统和计算机体系结构"><span class="nav-number">1.3.</span> <span class="nav-text">操作系统和计算机体系结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算机网络和协议"><span class="nav-number">1.4.</span> <span class="nav-text">计算机网络和协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式基础理论"><span class="nav-number">1.5.</span> <span class="nav-text">分布式基础理论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目经验和工程能力"><span class="nav-number">2.</span> <span class="nav-text">项目经验和工程能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用开源软件的理解、使用和应用"><span class="nav-number">3.</span> <span class="nav-text">常用开源软件的理解、使用和应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言细节"><span class="nav-number">4.</span> <span class="nav-text">语言细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思维能力和学习能力"><span class="nav-number">5.</span> <span class="nav-text">思维能力和学习能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软实力"><span class="nav-number">6.</span> <span class="nav-text">软实力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">7.</span> <span class="nav-text">选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#危机中的幸运"><span class="nav-number">8.</span> <span class="nav-text">危机中的幸运</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2019/06/27/about-interview/';
+          this.page.identifier = '2019/06/27/about-interview/';
+          this.page.title = '聊聊面试和程序员找工作这件事';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

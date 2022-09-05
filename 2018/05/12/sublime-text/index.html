@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="sublime,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="我最常用的编辑器是 vi 和 sublime text，vi 多用在服务端，sublime text 常用在桌面环境，我的 sublime 的配置主要包括以下的 package。  Anaconda AutoPEP8 Boxy Theme BracketHighlighter CSS Format EmberScript Emmet GitGutter GoSublime Handlerbars">
+<meta name="keywords" content="sublime">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的 sublime text 配置">
+<meta property="og:url" content="http://sanyuesha.com/2018/05/12/sublime-text/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="我最常用的编辑器是 vi 和 sublime text，vi 多用在服务端，sublime text 常用在桌面环境，我的 sublime 的配置主要包括以下的 package。  Anaconda AutoPEP8 Boxy Theme BracketHighlighter CSS Format EmberScript Emmet GitGutter GoSublime Handlerbars">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-13T09:49:59.444Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的 sublime text 配置">
+<meta name="twitter:description" content="我最常用的编辑器是 vi 和 sublime text，vi 多用在服务端，sublime text 常用在桌面环境，我的 sublime 的配置主要包括以下的 package。  Anaconda AutoPEP8 Boxy Theme BracketHighlighter CSS Format EmberScript Emmet GitGutter GoSublime Handlerbars">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/12/sublime-text/">
+
+
+
+
+
+  <title>我的 sublime text 配置 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/05/12/sublime-text/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">我的 sublime text 配置</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T11:48:14+08:00">
+                May 12 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我最常用的编辑器是 vi 和 sublime text，vi 多用在服务端，sublime text 常用在桌面环境，我的 sublime 的配置主要包括以下的 package。</p>
+<ul>
+<li>Anaconda</li>
+<li>AutoPEP8</li>
+<li>Boxy Theme</li>
+<li>BracketHighlighter</li>
+<li>CSS Format</li>
+<li>EmberScript</li>
+<li>Emmet</li>
+<li>GitGutter</li>
+<li>GoSublime</li>
+<li>Handlerbars</li>
+<li>HTML5</li>
+<li>HTMLBeautify</li>
+<li>Insert Nums</li>
+<li>Jade</li>
+<li>Javascript Completions</li>
+<li>Jinja2</li>
+<li>JsFormat</li>
+<li>LESS</li>
+<li>lessc</li>
+<li>MagincPython</li>
+<li>Markdown Preview</li>
+<li>Python Imports Sorter</li>
+<li>Reactjs</li>
+<li>Sass</li>
+<li>Stylus</li>
+<li>Stylus Clean Completions</li>
+<li>Swig</li>
+<li>Terminal</li>
+<li>Vue Syntax Highlight</li>
+</ul>
+<h2 id="编辑器主题"><a href="#编辑器主题" class="headerlink" title="编辑器主题"></a>编辑器主题</h2><p>编辑主题我用过很多种，一直在换，现在一直在用的是 <code>Boxy Theme</code>，用的其中 <code>Ocean Theme</code> 可能以后不会再换了。</p>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>支持 Python 的 package 我用过好几个，直到前年 Anaconda 出现，就一直用的它，支持：</p>
+<ul>
+<li>Go To Definition</li>
+<li>格式化</li>
+<li>Code Auto Complete</li>
+</ul>
+<p>仅仅这些功能的便捷程度就已经超过其他包了，而且稳定性好不怎么出问题，除此之外我还用了：</p>
+<ul>
+<li>AutoPEP8</li>
+<li>Python Imports Sorter<br>抱住我检查 PEP 的错误和格式化包的导入，非常方便。</li>
+</ul>
+<p>使用 Anaconda 时一定要注意配置用户环境:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"python_interpreter"</span>: <span class="string">"/Users/zhaoyongqiang/python_env/bin/python2.7"</span>,</span><br><span class="line">    <span class="attr">"anaconda_linting_behaviour"</span>: <span class="string">"save-only"</span>,</span><br><span class="line">    <span class="attr">"anaconda_gutter_marks"</span>: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>帮助 Anaconda 快速找到包。</p>
+<h2 id="Go-支持"><a href="#Go-支持" class="headerlink" title="Go 支持"></a>Go 支持</h2><p>GoSublime 是 sublime text 下对 Go 支持最好的包，包括</p>
+<ul>
+<li>自动导入</li>
+<li>自动补全</li>
+<li>格式化<br>但是也需要注意配置 GOPATH：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"env"</span>: &#123;</span><br><span class="line">        <span class="attr">"PATH"</span>: <span class="string">"$HOME/zhyq0826/go/bin:$PATH"</span>,</span><br><span class="line">        <span class="attr">"GOPATH"</span>: <span class="string">"/Users/zhyq0826/go"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>我现在前端写的比较少了，之前从 HTML 到 less 到 Vuejs、Emberjs 再到 ES2015 都没少写，用了一大堆语法支持和自动补全：</p>
+<ul>
+<li>CSS Format</li>
+<li>EmberScript</li>
+<li>Emmet</li>
+<li>Handlerbars</li>
+<li>HTML5</li>
+<li>HTMLBeautify</li>
+<li>Javascript Completions</li>
+<li>JsFormat</li>
+<li>LESS</li>
+<li>lessc</li>
+<li>Reactjs</li>
+<li>Sass</li>
+<li>Stylus</li>
+<li>Stylus Clean Completions</li>
+<li>Swig</li>
+<li>Vue Syntax Highlight<br>JsFormat 这个工具很好用，常用来格式化 JavaScript 和 JSON。</li>
+</ul>
+<h2 id="Git-支持"><a href="#Git-支持" class="headerlink" title="Git 支持"></a>Git 支持</h2><p><code>GitGutter</code> 这个工具提供仓库中文件信息的变更，我只需要这个功能，便于在更改文件时可以看到变化之处。</p>
+<h2 id="打开终端"><a href="#打开终端" class="headerlink" title="打开终端"></a>打开终端</h2><p>Terminal 这个工具能够在文件所在处打开 terminal，非常方便快速切入终端</p>
+<h2 id="Markdown-Preview"><a href="#Markdown-Preview" class="headerlink" title="Markdown Preview"></a>Markdown Preview</h2><p><code>Markdown Preview</code> 预览 markdown 文件</p>
+<h2 id="其他常用配置"><a href="#其他常用配置" class="headerlink" title="其他常用配置"></a>其他常用配置</h2><p>1.默认用 space 替代 tab，大小是 4 个 space<br>2.User setting 配置：</p>
+<pre><code class="lang-json">{
+    &quot;always_show_minimap_viewport&quot;: true,
+    &quot;binary_file_patterns&quot;:
+    [
+        &quot;*.jpg&quot;,
+        &quot;*.jpeg&quot;,
+        &quot;*.png&quot;,
+        &quot;*.gif&quot;,
+        &quot;*.ttf&quot;,
+        &quot;*.tga&quot;,
+        &quot;*.dds&quot;,
+        &quot;*.ico&quot;,
+        &quot;*.eot&quot;,
+        &quot;*.pdf&quot;,
+        &quot;*.swf&quot;,
+        &quot;*.jar&quot;,
+        &quot;*.zip&quot;,
+        &quot;node_modules/*&quot;,
+        &quot;bower_components/*&quot;,
+        &quot;tmp/*&quot;
+    ],
+    &quot;bold_folder_labels&quot;: true,
+    &quot;caret_extra_bottom&quot;: 1,
+    &quot;caret_extra_top&quot;: 1,
+    &quot;caret_extra_width&quot;: 1,
+    &quot;caret_style&quot;: &quot;blink&quot;,
+    &quot;color_scheme&quot;: &quot;Packages/Boxy Theme/schemes/Boxy Monokai.tmTheme&quot;,
+    &quot;fade_fold_buttons&quot;: false,
+    &quot;folder_exclude_patterns&quot;:
+    [
+        &quot;.svn&quot;,
+        &quot;.git&quot;,
+        &quot;.hg&quot;,
+        &quot;CVS&quot;,
+        &quot;tmp&quot;
+    ],
+    &quot;font_size&quot;: 16,
+    &quot;ignored_packages&quot;:
+    [
+        &quot;Node Completions&quot;,
+        &quot;Python&quot;,
+        &quot;Vintage&quot;
+    ],
+    &quot;indent_guide_options&quot;:
+    [
+        &quot;draw_normal&quot;,
+        &quot;draw_active&quot;
+    ],
+    &quot;line_padding_bottom&quot;: 2,
+    &quot;line_padding_top&quot;: 2,
+    &quot;overlay_scroll_bars&quot;: &quot;enabled&quot;,
+    &quot;show_encoding&quot;: true,
+    &quot;show_full_path&quot;: true,
+    &quot;show_line_endings&quot;: true,
+    &quot;theme&quot;: &quot;Boxy Ocean.sublime-theme&quot;,
+    &quot;translate_tabs_to_spaces&quot;: true
+}
+</code></pre>
+<p>字体我喜欢大一点的一般是 16，有些目录在搜索文件时可以排除，用 <code>folder_exclude_patterns</code>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sublime/" rel="tag"># sublime</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/07/go-json/" rel="next" title="理解 Go 中的 JSON">
+                <i class="fa fa-chevron-left"></i> 理解 Go 中的 JSON
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/16/consul-health-check/" rel="prev" title="Consul 健康检查">
+                Consul 健康检查 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑器主题"><span class="nav-number">1.</span> <span class="nav-text">编辑器主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-支持"><span class="nav-number">3.</span> <span class="nav-text">Go 支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端"><span class="nav-number">4.</span> <span class="nav-text">前端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-支持"><span class="nav-number">5.</span> <span class="nav-text">Git 支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开终端"><span class="nav-number">6.</span> <span class="nav-text">打开终端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown-Preview"><span class="nav-number">7.</span> <span class="nav-text">Markdown Preview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他常用配置"><span class="nav-number">8.</span> <span class="nav-text">其他常用配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/05/12/sublime-text/';
+          this.page.identifier = '2018/05/12/sublime-text/';
+          this.page.title = '我的 sublime text 配置';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

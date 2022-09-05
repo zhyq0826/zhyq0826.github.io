@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="编码,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案  基础概念字符character 构成文本的最小组成单元 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB231">
+<meta name="keywords" content="编码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 编码错误的本质和解决方案">
+<meta property="og:url" content="http://sanyuesha.com/2016/11/06/python-string-unicode/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案  基础概念字符character 构成文本的最小组成单元 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB231">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.306Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 编码错误的本质和解决方案">
+<meta name="twitter:description" content="Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案  基础概念字符character 构成文本的最小组成单元 字节byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成 字符集Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB231">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2016/11/06/python-string-unicode/">
+
+
+
+
+
+  <title>Python 编码错误的本质和解决方案 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/11/06/python-string-unicode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Python 编码错误的本质和解决方案</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-06T20:48:08+08:00">
+                Nov 6 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Python 常见编码错误 UnicodeDecodeError 和 UnicodeEncodeError 的原理和解决方案</p>
+</blockquote>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h3><p>character 构成文本的最小组成单元</p>
+<h3 id="字节"><a href="#字节" class="headerlink" title="字节"></a>字节</h3><p>byte 数据在计算机内部的存储单元，一个字节等于一个8位的比特，计算机中的所有数据都是由字节组成</p>
+<h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>Character set 由多个字符的组成的集合，常见的字符集有ASCII、Unicode、GB2312等</p>
+<h3 id="字符编码值"><a href="#字符编码值" class="headerlink" title="字符编码值"></a>字符编码值</h3><p>不同的字符集规定了不同的编码规则，编码规则中规定了字符对应的编码值 code point，一个整数值</p>
+<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>将字符集中的字符码根据 code point 映射为字节流(byte sequence)的一种具体实现</p>
+<h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>将字节流解析为字符集中的字符</p>
+<a id="more"></a>
+<hr>
+<blockquote>
+<p>文中 python 皆为 2.x 版本code</p>
+</blockquote>
+<p>初学 python 的人基本上都有过如下类似经历:</p>
+<p><strong>UnicodeDecodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>UnicodeEncodeError</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure></p>
+<p>这两个错误在 python 中十分常见，一不留神就碰上了。如果你写过c、c++ 或者 java，对比之下一定会觉得 python 这个错误真让人火大。事实也确实如此，我也曾经很火大🔥。</p>
+<p>这两个错误究竟意味着什么？可以先从 python 的基本数据类型 string 和 unicode 开始。</p>
+<h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p>字符串(string)其实就是一段<strong>文本序列</strong>，是由一个或多个字符组成(character)，<strong>字符是文本的最小构成单元</strong>，在 python 中可以用以下方式表示字符串:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s1 = <span class="string">'abc'</span></span><br><span class="line">&gt;&gt;&gt; s2 = <span class="string">"abc"</span></span><br><span class="line">&gt;&gt;&gt; s3 = <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">  abc</span></span><br><span class="line"><span class="string">  "</span><span class="string">""</span></span><br><span class="line">&gt;&gt;&gt; s4 = <span class="string">'中文'</span></span><br><span class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> [s1, s2, s3, s4]:</span><br><span class="line">        <span class="built_in">print</span> <span class="built_in">type</span>(i)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这些变量在 python shell 中对应输出是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 --&gt; <span class="string">'abc'</span></span><br><span class="line">s2 --&gt; <span class="string">'abc'</span></span><br><span class="line">s3 --&gt; <span class="string">'\nabc\n'</span></span><br><span class="line">s4 --&gt; <span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></span><br></pre></td></tr></table></figure>
+<p>s4 的输出和其它变量明显不同，字面上是一个 16 进制序列，但是 s4 和其它字符串一样，在 python 内部都是用同样方式进行存储的: <strong>字节流(byte stream)，即字节序列</strong>。</p>
+<p><strong>字节是计算机内部最小的可寻址的存储单位</strong>(对大部分计算机而言)，一个字节是由 8 bit 组成，也就是对应 8 个二进制位。其实可以更进一步解释说，python 不仅用字节的方式存储着变量中的字符串文本，python 文件中的所有信息在计算机内部都是用一个个字节表示的，<strong>计算机是用这样的方式存储文本数据的</strong>。</p>
+<h2 id="字符串用字节如何表示？"><a href="#字符串用字节如何表示？" class="headerlink" title="字符串用字节如何表示？"></a>字符串用字节如何表示？</h2><p>答案就是<strong>编码</strong>。计算机是只能识别 0 或 1 这样的二进制信息，而不是 a 或 b 这样对人类有意义的字符，为了让机器能读懂这些字符，人类就发明字符到二进制的映射关系，然后按照这个映射规则进行相应地编码。<a href="https://en.wikipedia.org/wiki/ascii" target="_blank" rel="noopener">ascii</a> 就是这样背景下诞生的一种编码规则。<strong>ascii 也是 python 2.x 默认使用的编码规则。</strong></p>
+<p>ascii 规定了常用的字符到计算机是如何映射的，编码范围是 0~127 共 128 个字符。<strong>简单来说它就是一本字典，规定了不同字符的对应的编码值(code point，一个整数值)，这样一来计算机就能用二进制表示了</strong>。比如字符 a 的编码是 97，对应的二进制是 1100001，<strong>一个字节</strong>就足够存储这些信息。字符串 “abc” 最终存储就是 <code>[97] [98] [99]</code> 三个字节。python 默认情况下就是使用这个规则对字符进行编码，对字节进行解码(反编码)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ord(<span class="string">'a'</span>)</span><br><span class="line"><span class="number">97</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">97</span>)</span><br><span class="line"><span class="string">'a'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>由于 ascii 的编码范围非常有限，对超过 ascii 范围之外的字符，python 是如何处理的？很简单，抛错误出来，这就是 <code>UnicodeEncodeError</code> 和 <code>UnicodeDecodeError</code> 的来源。那 python 会在什么时候抛出这样的错误，也就是说 python 进行编码和解码的操作发生在何时？</p>
+<h2 id="unicode-对象"><a href="#unicode-对象" class="headerlink" title="unicode 对象"></a>unicode 对象</h2><p>unicode 对象和 string 一样，是 python 中的一种<strong>字符对象</strong>(python 中一切皆对象，string 也是)。先不要去想 unicode 字符集、unicode 编码或者 utf-8 这些概念，在此特意加了<code>对象</code> 就是为了和后面提到的 unicode 字符集进行区分。这里说的 unicode 就是 python 中的 unicode 对象，构造函数是 <code>unicode()</code>。</p>
+<p>在 python 中创造 unicode 对象也很简单:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = unicode(<span class="string">'abc'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = <span class="string">u'abc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s3 = U<span class="string">'abc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s4 = <span class="string">u'中文'</span></span><br></pre></td></tr></table></figure>
+<p>这些变量在 python shell 中对应输出是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 --&gt; u<span class="string">'abc'</span></span><br><span class="line">s2 --&gt; u<span class="string">'abc'</span></span><br><span class="line">s3 --&gt; u<span class="string">'abc'</span></span><br><span class="line">s4 --&gt; u<span class="string">'\u4e2d\u6587'</span></span><br></pre></td></tr></table></figure></p>
+<p>同样的，s4 的输出和其它变量不同，这些就是unicode 字符。由于 ascii 能够表示的字符太少，而且不够通用(扩展 ascii 的话题，就是把 ascii 没有利用的剩下大于 127 的位置利用了，在不同的字符集里代表不同的意思)，<a href="https://zh.wikibooks.org/wiki/Unicode" target="_blank" rel="noopener">unicode 字符集</a> 就被造出来了，一本更大的字典，里面有更多的编码值。</p>
+<h2 id="unicode-字符集"><a href="#unicode-字符集" class="headerlink" title="unicode 字符集"></a>unicode 字符集</h2><p>unicode 字符集解决了：</p>
+<ul>
+<li>ascii 表达能力不够的问题</li>
+<li>扩展 ascii 不够通用的问题</li>
+</ul>
+<p>虽然 unicode 字符集表达能力强，又能够统一字符编码规则，但是它并没有规定这些字符在计算机中是如何表示的。它和 ascii 不同，很多字符(编码值大于 255 )没有办法用一个字节就搞定。怎样做到高效快捷地存储这些编码值？于是就有了 unicode 字符集的编码规则的实现：utf-8、utf-16等。</p>
+<p>到这里可以简单理清 ascii、unicode 字符集、utf-8等的关系了：ascii 和 unicode 字符集都是一种编码集，由字符和字符对应的整数值(code point)组成，ascii 在计算机内部用一个字节存储，utf-8 是 unicode 字符集存储的具体实现，因为 unicode 字符集没有办法简简单单用一个字节搞定。</p>
+<p>回到 s4 对应的输出，这个输出就是 <strong>unicode 字符集对应的编码值(code point)的 16 进制表示</strong>。</p>
+<p>unicode 对象是用来表示 unicode 字符集中的字符，这些字符(实际是那个编码值，一个整数) 在 python 中又是如何存储的？有了前文的分析，也许可以猜到，python 依然是通过<strong>编码然后用字节的方式</strong>存储，但是这里的编码就不能是 ascii 了，而是对应 unicode 字符集的编码规则: utf-8、utf-16等。</p>
+<h2 id="unicode-对象的编码"><a href="#unicode-对象的编码" class="headerlink" title="unicode 对象的编码"></a>unicode 对象的编码</h2><p>unicode 对象想要正确的存储就必须指定相应的编码规则，这里我们只讨论使用最广泛的 utf-8 实现。</p>
+<p>在 python 中对 unicode 对象编码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s=<span class="string">u'中文'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">&lt;type <span class="string">'str'</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>编码之后输出的是个 string 并以字节序列的方式进行存储。有了编码就会有解码，python 正是在这种编码、解码的过程使用了错误的编码规则而发生了 <code>UnicodeEncodeError</code> 和 <code>UnicodeDecodeError</code> 错误，因为<strong>它默认使用 ascii 来完成转换</strong>。</p>
+<h2 id="string-和-unicode-对象的转换"><a href="#string-和-unicode-对象的转换" class="headerlink" title="string 和 unicode 对象的转换"></a>string 和 unicode 对象的转换</h2><p>unicode 对象可以用 utf-8 编码为 string，同理，string 也可以用 utf-8 解码为 unicode 对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>u=<span class="string">u'中文'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = u.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe6\x96\x87'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;type <span class="string">'str'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">u'\u4e2d\u6587'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s.decode(<span class="string">'utf-8'</span>))</span><br><span class="line">&lt;type <span class="string">'unicode'</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>错误的编码规则就会导致那两个常见的异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>u.encode(<span class="string">'ascii'</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; s.decode('</span>ascii<span class="string">')</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "&lt;input&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="string">UnicodeDecodeError: '</span>ascii<span class="string">' codec can'</span>t decode byte <span class="number">0xe4</span> <span class="keyword">in</span> position <span class="number">0</span>: ordinal <span class="keyword">not</span> <span class="keyword">in</span> range(<span class="number">128</span>)</span><br></pre></td></tr></table></figure>
+<p>这两个错误在某些时候会突然莫名其妙地出现就是因为 python 自动地使用了 ascii 编码。</p>
+<h2 id="python-自动解编码"><a href="#python-自动解编码" class="headerlink" title="python 自动解编码"></a>python 自动解编码</h2><p>1.stirng 和 unicode 对象合并</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s + <span class="string">u''</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2.列表合并</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>as_list = [u, s]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">''</span>.join(as_list)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure>
+<p>3.格式化字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="string">'%s-%s'</span>%(s,u)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0xe4 in position 0: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>4.打印 unicode 对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test.py</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">u = <span class="string">u'中文'</span></span><br><span class="line"><span class="keyword">print</span> u</span><br><span class="line"></span><br><span class="line"><span class="comment">#outpt</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"/Users/zhyq0826/workspace/zhyq0826/blog-code/p20161030_python_encoding/uni.py"</span>, line <span class="number">3</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">print</span> u</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure>
+<p>5.输出到文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = open(<span class="string">'text.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.write(u)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode characters in position 0-1: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>1，2，3 的例子中，python 自动用 <strong>ascii 把 string 解码为 unicode</strong> 对象然后再进行相应操作，所以都是 <code>decode</code> 错误， 4 和 5 python 自动用 ascii 把 unicode 对象编码为字符串然后输出，所以都是 <code>encode</code> 错误。</p>
+<p>只要涉及到 unicode 对象和 string 的转换以及 unicode 对象输出、输入的地方可能都会触发 python 自动进行解码/编码，比如写入数据库、写入到文件、读取 socket 等等。</p>
+<p>到此，这两个异常产生的真正原因了基本已经清楚了: unicode 对象需要<strong>编码</strong>为相应的 string(字符串)才可以存储、传输、打印，字符串需要<strong>解码</strong>为对应的 unicode 对象才能完成 unicode 对象的各种操作，<code>len</code>、<code>find</code> 等。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string.decode('utf-8') --&gt; unicode</span><br><span class="line">unicode.encode('utf-8') --&gt; string</span><br></pre></td></tr></table></figure>
+<h2 id="如何避免这些的错误"><a href="#如何避免这些的错误" class="headerlink" title="如何避免这些的错误"></a>如何避免这些的错误</h2><p>1.理解编码或解码的转换方向</p>
+<p>无论何时发生编码错误，首先要理解编码方向，然后再针对性解决。</p>
+<p>2.设置默认编码为 utf-8</p>
+<p>在文件头写入 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+<p>python 会查找: coding: name or coding=name，并设置文件编码格式为 <code>name</code>，此方式是告诉 python 默认编码不再是 ascii ，而是要使用声明的编码格式。</p>
+<p>3.输入对象尽早解码为 unicode，输出对象尽早编码为字节流</p>
+<p>无论何时有字节流输入，都需要尽早解码为 unicode 对象。任何时候想要把 unicode 对象写入到文件、数据库、socket 等外界程序，都需要进行编码。</p>
+<p>4.使用 codecs 模块来处理输入输出 unicode 对象</p>
+<p><a href="https://docs.python.org/2/library/codecs.html" target="_blank" rel="noopener">codecs</a> 模块可以自动的完成解编码的工作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> codecs</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = codecs.open(<span class="string">'text.txt'</span>, <span class="string">'w'</span>, <span class="string">'utf-8'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.write(u)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.close()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考文献</p>
+<ul>
+<li><a href="https://zh.wikibooks.org/wiki/Unicode" target="_blank" rel="noopener">https://zh.wikibooks.org/wiki/Unicode</a></li>
+<li><a href="https://zh.wikibooks.org/wiki/ascii" target="_blank" rel="noopener">https://zh.wikibooks.org/wiki/ascii</a></li>
+<li><a href="http://www.unicode.org/" target="_blank" rel="noopener">http://www.unicode.org/</a></li>
+<li><a href="https://docs.python.org/2/howto/unicode.html" target="_blank" rel="noopener">https://docs.python.org/2/howto/unicode.html</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html</a></li>
+</ul>
+<p>注意：转载请注明出处和文章链接</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编码/" rel="tag"># 编码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/14/mysql-connect-localhost-and-ip-difference/" rel="next" title="mysql 不指定 ip 的连接默认都是 localhost">
+                <i class="fa fa-chevron-left"></i> mysql 不指定 ip 的连接默认都是 localhost
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/18/use-makrdown-to-format-wxmp/" rel="prev" title="用 markdown 自定义排版公众号文章">
+                用 markdown 自定义排版公众号文章 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符"><span class="nav-number">1.1.</span> <span class="nav-text">字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节"><span class="nav-number">1.2.</span> <span class="nav-text">字节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符集"><span class="nav-number">1.3.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符编码值"><span class="nav-number">1.4.</span> <span class="nav-text">字符编码值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">1.5.</span> <span class="nav-text">编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解码"><span class="nav-number">1.6.</span> <span class="nav-text">解码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string"><span class="nav-number">2.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串用字节如何表示？"><span class="nav-number">3.</span> <span class="nav-text">字符串用字节如何表示？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode-对象"><span class="nav-number">4.</span> <span class="nav-text">unicode 对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode-字符集"><span class="nav-number">5.</span> <span class="nav-text">unicode 字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode-对象的编码"><span class="nav-number">6.</span> <span class="nav-text">unicode 对象的编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string-和-unicode-对象的转换"><span class="nav-number">7.</span> <span class="nav-text">string 和 unicode 对象的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-自动解编码"><span class="nav-number">8.</span> <span class="nav-text">python 自动解编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何避免这些的错误"><span class="nav-number">9.</span> <span class="nav-text">如何避免这些的错误</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2016/11/06/python-string-unicode/';
+          this.page.identifier = '2016/11/06/python-string-unicode/';
+          this.page.title = 'Python 编码错误的本质和解决方案';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

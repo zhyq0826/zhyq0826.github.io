@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="优化,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="问题描述最近一直在服务端的性能优化，逐个解决线上之前遗留的一些问题，其中有一个问题是后端 rpc service MySQL 连接中出现大量 sleep 的连接，而且时间很长。我们技术栈用的是 Python，用 sqlalchemy 做 ORM 层，在 sqlalchemy 连接池中已经配置了对超过 300s 的连接做 recycle，但是 mysql 的 processlist 中出现了大量超过">
+<meta name="keywords" content="优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 优化 02 之连接管理">
+<meta property="og:url" content="http://sanyuesha.com/2018/12/29/mysql-optimization-02/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="问题描述最近一直在服务端的性能优化，逐个解决线上之前遗留的一些问题，其中有一个问题是后端 rpc service MySQL 连接中出现大量 sleep 的连接，而且时间很长。我们技术栈用的是 Python，用 sqlalchemy 做 ORM 层，在 sqlalchemy 连接池中已经配置了对超过 300s 的连接做 recycle，但是 mysql 的 processlist 中出现了大量超过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 优化 02 之连接管理">
+<meta name="twitter:description" content="问题描述最近一直在服务端的性能优化，逐个解决线上之前遗留的一些问题，其中有一个问题是后端 rpc service MySQL 连接中出现大量 sleep 的连接，而且时间很长。我们技术栈用的是 Python，用 sqlalchemy 做 ORM 层，在 sqlalchemy 连接池中已经配置了对超过 300s 的连接做 recycle，但是 mysql 的 processlist 中出现了大量超过">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/12/29/mysql-optimization-02/">
+
+
+
+
+
+  <title>MySQL 优化 02 之连接管理 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/12/29/mysql-optimization-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MySQL 优化 02 之连接管理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-29T11:51:41+08:00">
+                Dec 29 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近一直在服务端的性能优化，逐个解决线上之前遗留的一些问题，其中有一个问题是后端 rpc service MySQL 连接中出现大量 sleep 的连接，而且时间很长。我们技术栈用的是 Python，用 sqlalchemy 做 ORM 层，在 sqlalchemy 连接池中已经配置了对超过 300s 的连接做 recycle，但是 mysql 的 processlist 中出现了大量超过 300s 的连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">ID          USER    HOST              DB      COMMAND TIME    STATE   INFO</span><br><span class="line">163487088   user  10.10.91.38:45925   martin  Sleep   28233       NULL</span><br><span class="line">163492031   user  10.10.91.38:46375   martin  Sleep   26930       NULL</span><br><span class="line">163517693   user  10.10.115.248:52431 martin  Sleep   20166       NULL</span><br><span class="line">163517692   user  10.10.115.248:52430 martin  Sleep   20165       NULL</span><br><span class="line">163520369   user  10.10.115.89:59120  martin  Sleep   19472       NULL</span><br><span class="line">163531406   user  10.10.195.222:36208 martin  Sleep   16517       NULL</span><br><span class="line">163535568   user  10.10.195.222:42941 martin  Sleep   15500       NULL</span><br><span class="line">163545536   user  10.10.91.38:52311   martin  Sleep   9649        NULL</span><br><span class="line">163548642   user  10.10.131.145:54374 martin  Sleep   7659        NULL</span><br><span class="line">163548641   user  10.10.131.145:54372 martin  Sleep   7658        NULL</span><br><span class="line">163548640   user  10.10.131.145:54366 martin  Sleep   7658        NULL</span><br><span class="line">163550399   user  10.10.131.145:59423 martin  Sleep   6535        NULL</span><br><span class="line">163551913   user  10.10.138.210:52551 martin  Sleep   5582        NULL</span><br><span class="line">163551912   user  10.10.138.210:52550 martin  Sleep   5582        NULL</span><br><span class="line">163551911   user  10.10.138.210:52547 martin  Sleep   5582        NULL</span><br><span class="line">163551910   user  10.10.138.210:52544 martin  Sleep   5582        NULL</span><br><span class="line">163551307   user  10.10.115.248:34162 martin  Sleep   5378        NULL</span><br><span class="line">163553402   user  10.10.1.39:58200    martin  Sleep   4624        NULL</span><br><span class="line">163553858   user  10.10.91.38:54184   martin  Sleep   4321        NULL</span><br><span class="line">163554229   user  10.10.55.228:51618  martin  Sleep   4098        NULL</span><br><span class="line">163553577   user  10.10.46.232:51933  martin  Sleep   3982        NULL</span><br><span class="line">163553712   user  10.10.46.232:52096  martin  Sleep   3976        NULL</span><br><span class="line">163554595   user  10.10.131.145:42649 martin  Sleep   3873        NULL</span><br><span class="line">163554582   user  10.10.1.39:34434    martin  Sleep   3505        NULL</span><br><span class="line">163556848   user  10.10.3.68:37552    martin  Sleep   2440        NULL</span><br><span class="line">163557218   user  10.10.46.232:55973  martin  Sleep   2211        NULL</span><br><span class="line">163556771   user  10.10.67.225:49920  martin  Sleep   2150        NULL</span><br><span class="line">163557587   user  10.10.67.225:52996  martin  Sleep   1976        NULL</span><br><span class="line">163558125   user  10.10.67.225:54897  martin  Sleep   1648        NULL</span><br><span class="line">163558292   user  10.10.1.39:48445    martin  Sleep   1534        NULL</span><br><span class="line">163558147   user  10.10.138.210:39829 martin  Sleep   1510        NULL</span><br><span class="line">163558505   user  10.10.131.145:51929 martin  Sleep   1416        NULL</span><br><span class="line">163558570   user  10.10.105.200:53281 martin  Sleep   1374        NULL</span><br><span class="line">163558339   user  10.10.165.71:45458  martin  Sleep   1352        NULL</span><br><span class="line">163558899   user  10.10.141.67:38908  martin  Sleep   1176        NULL</span><br><span class="line">163558631   user  10.10.131.145:52252 martin  Sleep   1160        NULL</span><br><span class="line">163558968   user  10.10.115.248:53551 martin  Sleep   1128        NULL</span><br><span class="line">163559006   user  10.10.1.39:51176    martin  Sleep   1107        NULL</span><br><span class="line">163559041   user  10.10.1.39:51377    martin  Sleep   1079        NULL</span><br><span class="line">163559090   user  10.10.15.53:38326   martin  Sleep   1052        NULL</span><br><span class="line">163559098   user  10.10.138.210:42150 martin  Sleep   1048        NULL</span><br></pre></td></tr></table></figure>
+<h2 id="理解-processlist"><a href="#理解-processlist" class="headerlink" title="理解 processlist"></a>理解 processlist</h2><p>MySQL 的 processlist 显示的 MySQL 实例与所有 client 的连接状态，默认情况下只显示当前账户下面的连接，root 用户可以查看所有其他用户的连接，也可以为账户赋予 processlist 权限，方便查看所有用户的连接。</p>
+<p>可以使用以下 SQL 查看 processlist 的数据，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">PROCESSLIST</span>;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">PROCESSLIST</span>;</span><br></pre></td></tr></table></figure>
+<p>processlist 各个 column 的含义在此不一一解释了，不懂的可以参考：</p>
+<ul>
+<li><a href="http://www.ywnds.com/?p=9337" target="_blank" rel="noopener">http://www.ywnds.com/?p=9337</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/processlist-table.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/processlist-table.html</a></li>
+</ul>
+<p>在此重点解释一下 Command 列状态是 Sleep <strong> Sleep 的状态的连接表示，该连接上在等待有 SQL 命令的执行，也就是说这是一个空闲的连接</strong>，由于 MySQL 的执行速度其实很快，两次使用 processlist 查看同一个连接如果都处于 Sleep 状态，并不表示说这个连接没有被使用，可能其实已经执行过一次 SQL 命令并且结束了。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>Sleep 状态的连接很多，而且占用时间超过连接池配置的 300s 的占在一半，并且实际 QPS 远没有这么多，说明很多连接其实是一直空闲的状态，基本得不到释放。</p>
+<p>我们来举个实际的例子说明 connection pool 的配置中各个参数的影响和关系。某台数据库实例某段时间内连接数在 2k 左右，但是实际 QPS 峰值在 500 左右，也就是说 2k 中的连接只有 1/4 在工作，其他处于空闲状态，设置的 recycle 时间是 300s。假设从时间点 A 算起，过了 300s 之后到达时间点 B，由于峰值 QPS 是 500，也就是 2k 的连接中最多只需要 500，这时 connection pool 在触发检查 connection 的 recycle 时会把连接池从 2k 逐渐减少到 500，connection pool 是 FIFO 的机制，所有 connection 都有机会被获取，因而就有机会被释放。</p>
+<p>在 sqlalchemy 的实现中，recycle 的操作发生在从 pool 中获取新的连接的时候，如果一个 connection 已经满足 recycle，也就是存在时间超过了 300s，那么会把该连接关闭，然后创建一个新的连接并返回 <code>/lib/sqlalchemy/pool/base.py:_ConnectionRecord:get_connection</code>。</p>
+<p>为了重现 recycle 的机制，在本地写了一个多线程的程序，首先设置 pool 大小是 10，recycle 时间是 90s，用 15 个线程，每隔 60s 去连接数据库，连接池配置如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">engine = create_engine(</span><br><span class="line">    <span class="string">'mysql+pymysql://root:@localhost/blog?charset=utf8'</span>,</span><br><span class="line">    encoding=<span class="string">'utf8'</span>,</span><br><span class="line">    echo=<span class="literal">False</span>,</span><br><span class="line">    pool_size=<span class="number">10</span>,</span><br><span class="line">    pool_recycle=<span class="number">90</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>多线程的连接如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">with_thread_test_pool_recyle</span><span class="params">()</span>:</span></span><br><span class="line">    thread_list = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">15</span>):</span><br><span class="line">        t = threading.Thread(target=order_by)</span><br><span class="line">        thread_list.append(t)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> thread_list:</span><br><span class="line">        t.start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> thread_list:</span><br><span class="line">        t.join()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_pool_recyle</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'thread start'</span>)</span><br><span class="line">        with_thread_test_pool_recyle()</span><br><span class="line">        print(<span class="string">'thread end'</span>)</span><br><span class="line">        time.sleep(<span class="number">60</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>order_by</code> 是一个简单的通过 sqlalchemy session 连接 MySQL 查询的函数。</p>
+<p>运行测试用例，通过在 sqlalchemy 代码中浸入日志的办法可以明显观察到 recycle 触发了，而且在本地 MySQL 中观察 show processlist 能够明显看到连接在存活 90s 之后由于触发 recycle 而回收了，当然由于 sqlalchemy 触发回收发生在获取 pool 中的连接时，如果不从 pool 中获取连接 ，recycle 是不会执行的。</p>
+<p><strong>上述的回收机制引来一个问题</strong></p>
+<p>假设把连接池的大小设置成 30，并把 recycle 的时间设置成 300s，也就是最大连接数是 30，如果正常的 QPS 是 20，每个请求都能及时归还 connection 到连接池中，那么下次请求一定会复用该连接，也就是说只要 20 个连接就能够满足要求。</p>
+<p>现在流量涨到 30 QPS，且每个请求也能及时归还 connection 到连接池中，连接池实际连接会涨到 30，之后流量开始下降 QPS 回归到 20，由于连接池采用的 FIFO 的机制，只要有请求，每个请求都会得到机会触发 recycle，多余的 connection 会被慢慢回收。</p>
+<p>一般的服务由于需要利用多核都会开多个进程，在我们刚才分析的上述问题的场景就是监听多个端口的多个 Python 的进程。</p>
+<p>当流量突增，根据刚才单进程的分析，即使负载均衡稍微有点不均，每个进程连接池的实际连接大概率都会涨起来，流量退去之后，如果请求依然不均匀，导致部分进程承担了大部分流量，少部分进程只有少量请求分配，或没有请求分配，就会导致被增加的连接得不到触发回收的机会。</p>
+<h2 id="僵局"><a href="#僵局" class="headerlink" title="僵局"></a>僵局</h2><p>如果 sqlalchemy 根据 recycle 回收 connection 没有 bug，也没有任何连接不在 sqlalchemy 管制之下，比如由于 bug 发生内存泄露，sqlalchemy 失去了对 connection 的管理，使得 connection 得不到释放，假设这样的问题不存在，那么影响 connection 回收的时机就是最重要的，而影响时机的主要因素又是请求的分发时机。</p>
+<p>因而合理控制好请求的分发让每个进程都能得到均衡的负载应该就可以保证每个进程的 SQL 连接数是均衡的。</p>
+<p>但是在我们实际分析的这个场景中，一开始确实我们的代理层转发到后端 rpc service 服务的均衡由于有一个 bug 导致请求转发之后是不均匀的，但是在我们纠正之后，可以明显看到各个 rpc service 进程负载变均衡了，但是大量 Sleep 状态的 MySQL 连接依然存在。</p>
+<p>问题陷入了僵局。</p>
+<h2 id="解开僵局"><a href="#解开僵局" class="headerlink" title="解开僵局"></a>解开僵局</h2><p>大量 Sleep 状态的 MySQL connection 依然存在，然后开始分析拥有这些 connection 的进程都有什么特点。</p>
+<p>从 processlist 中能够看到连接到 MySQL 的端口，我们在例子中任意取一个端口，根据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netsta -antlp | grep 45925</span><br><span class="line">tcp        0      0 10.10.149.169:35099     10.10.109.32:3306      ESTABLISHED 32268/python</span><br></pre></td></tr></table></figure></p>
+<p>能够看到连接 MySQL 的进程 PID，然后根据 PID 获取监听的端口，<code>turbo</code> 是启动监听进程的文件名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep turbo | grep 32268</span><br></pre></td></tr></table></figure></p>
+<p>通过几次尝试发现 Sleep 状态的连接都来自特定的监听端口，然后我们根据负载均衡器的策略对照了一遍终于发现了答案。</p>
+<p>我们的负载均衡是自研的，根据自身业务的评估，把后端的机器和进程按照业务进行特定分组，不同的业务使用不同的进程，也就是不同的机器或者相同机器的不同端口。数据库实例也是按照业务的不同进行不同的分组，基本上进程中业务的划分和数据库的业务划分是对等的，但是也不是完全对等，也就是说总有 A 业务的 rpc 调用会连接 B 业务的数据库，但是量非常少，偶尔才会有一个调用出现，问题就是<strong>既然有调用出现，就会产生连接，这个连接池的管理，SQLAlchemy 是通过配置的数据库地址来进行的，也就是一个数据库地址是一个 connection pool，根据我们上面的分析，SQLAlchemy 是在获取新的连接时进行 recycle 的检查，如果一个连接池在创立之后，很少使用或几乎不用，那么该连接池中的 connection 也就没有办法得到释放，因为没有机会触发释放的时机了，正式因为有极个别的 A 业务的进程组使用了 B 业务的数据库，而且请求非常的少，导致 A 业务进程连接到 B 业务数据库的连接都没有机会得到释放，这才导致了 B 业务数据库中大量的 Sleep 状态的连接的出现</strong></p>
+<h2 id="主动释放连接太长的-MySQL-连接"><a href="#主动释放连接太长的-MySQL-连接" class="headerlink" title="主动释放连接太长的 MySQL 连接"></a>主动释放连接太长的 MySQL 连接</h2><p>既然被动检查时间太长，可以考虑进主动检查，也就是每隔一段时间对所有已经建立的连接池进行检查清理，这样基本可以完全杜绝 Sleep 状态的连接的出现，至此这个问题就解决完了。</p>
+<p><strong>如何释放？</strong></p>
+<p>我查阅了 SQLalchemy 处理连接的代码，跟踪了一下整个连接建立的全部过程，SQLalchemy connection 建立的过程都是从 engine 出发，封装 DBAPI connection，然后把封装好的 connection 加入 pool 供应用程序使用，每个 connection 都会和一个 transaction 绑定，而且 SQLalchemy 并没有提供直接遍历 pool 中所有 connection 的 API，可以通过 engine 的 pool 对象获取到，但是不建议这样做，如果 SQLalchemy 版本发生变动，这个属性也有可能发生变化。</p>
+<p>最好能直接通过 session 间接操作 connection，但是 session 中没有直接获取底层 connection 的属性，但是 session 提供了一个方法叫：<a href="https://docs.sqlalchemy.org/en/latest/orm/session_api.html#sqlalchemy.orm.session.Session.invalidate" target="_blank" rel="noopener"><code>invalidate</code></a>，这个方法可以把和 session 绑定的 connection 直接关闭而不是又重新放回 pool，因而可以借助这个方法实现主动释放，<strong>基本原理是</strong>：pool 中 connection 是按照 FIFO 的机制循环获取，如果一个 connection 长期处于 Sleep 状态说明这个 connection 很久没有被使用，使用过的 connection Sleep 会重新归 0 开始计算，那么这个进程的连接池的队列上大概率上已经不循环了，所以任意取一个 session 并把它关闭了就有机会把那个需要 recycle 的 connection 关闭，即使没有取到符合条件的也只是释放了一个连接而已，并不会造成太大影响。</p>
+<p>后端服务用的 gunicorn 并且模型是 gevent，可以借助 gevent 的非阻塞来定时处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MysqlConnectionRecycle</span><span class="params">(gevent.Greenlet)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, slist)</span>:</span></span><br><span class="line">        gevent.Greenlet.__init__(self)</span><br><span class="line">        self.slist = slist</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            gevent.sleep(<span class="number">320</span>)</span><br><span class="line">            <span class="keyword">for</span> Session <span class="keyword">in</span> self.slist:</span><br><span class="line">                session = Session()</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    session.execute(<span class="string">"select 1"</span>)</span><br><span class="line">                    session.invalidate()</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>定时器的周期是根据设置 pool 的 recycle 时间来定的，要让定时器在执行时有机会把需要 recycle 的 connection 关闭，所以可以选择略大于定时周期的时间，也可以设置成一个较短的周期，只要对服务的整体性能影响不大即可。</p>
+<p>如果 gunicorn 模型是其他模型，如果是 tornado 可以借助 tornado 的 PeriodTask，如果是同步模型，可以借助多线程。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/优化/" rel="tag"># 优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/26/ember-best-practice/" rel="next" title="Ember 最佳实践">
+                <i class="fa fa-chevron-left"></i> Ember 最佳实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/02/sqlalchemy-pool-mechanism/" rel="prev" title="SQLAlchemy 的连接池机制">
+                SQLAlchemy 的连接池机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解-processlist"><span class="nav-number">2.</span> <span class="nav-text">理解 processlist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">3.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#僵局"><span class="nav-number">4.</span> <span class="nav-text">僵局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解开僵局"><span class="nav-number">5.</span> <span class="nav-text">解开僵局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主动释放连接太长的-MySQL-连接"><span class="nav-number">6.</span> <span class="nav-text">主动释放连接太长的 MySQL 连接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/12/29/mysql-optimization-02/';
+          this.page.identifier = '2018/12/29/mysql-optimization-02/';
+          this.page.title = 'MySQL 优化 02 之连接管理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

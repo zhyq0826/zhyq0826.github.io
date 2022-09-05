@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Python,Go,Devops,algorithm">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。  1工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 How to Write Go Code。 Go 提供了非常优秀的工具来保证代码的风格和质量，比如：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新手 Go 程序员的最佳实践">
+<meta property="og:url" content="http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。  1工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 How to Write Go Code。 Go 提供了非常优秀的工具来保证代码的风格和质量，比如：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-07T14:47:06.470Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="新手 Go 程序员的最佳实践">
+<meta name="twitter:description" content="无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。  1工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 How to Write Go Code。 Go 提供了非常优秀的工具来保证代码的风格和质量，比如：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/">
+
+
+
+
+
+  <title>新手 Go 程序员的最佳实践 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">新手 Go 程序员的最佳实践</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T22:02:22+08:00">
+                Jul 30 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>无意中在 medium 看到了一篇文章《Best practices for a new Go developer》，读完之后略有启发，摘录文章观点至此共飨，感兴趣读者可以直接阅读原文，原文很长也很散乱。</p>
+</blockquote>
+<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p>工欲善其事必先利其器，真正写用 Go 编写代码之前先准备好你的环境，可以考虑从官方文档 <a href="https://golang.org/doc/code.html" target="_blank" rel="noopener">How to Write Go Code</a>。</p>
+<p>Go 提供了非常优秀的工具来保证代码的风格和质量，比如：gofmt，godoc，goimports，学会使用它们。</p>
+<p>对于新手来说不要着急一开始就想要完整的 Go 程序，你应该认真熟悉 Go 的基本语义和特性，认真读完 官方的 <a href="https://golang.org/doc/effective_go.html" target="_blank" rel="noopener">Effictive Go</a></p>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>不要害怕犯错，对于一门新的语言，大家都是平等，即使是用 Go 写过一到两年程序的人也会犯一些低级的错误。</p>
+<p>要学会顺势而为，学会用 Go 的方式去写 Go 的程序，比如要遵循 Go conventions，不要像 C 一样在 Go 中总是使用指针。</p>
+<p>新手都应该看看这篇文章 <a href="http://talks.golang.org/2012/splash.article，它有助于你了解" target="_blank" rel="noopener">http://talks.golang.org/2012/splash.article，它有助于你了解</a> Go 是如何诞生的，它的哲学理念是什么。</p>
+<h1 id="3"><a href="#3" class="headerlink" title="3"></a>3</h1><p>新手不要一开始就过渡关注 goroutine，channel 这些涉及并发的概念，你有可能滥用 channel 而不知道节制，毕竟 Go 在很多方面都表现的非常节制。</p>
+<p>理解 interface，了解它的潜力，学会用组合和 interface 创建健壮的 Go 代码， 它是 Go 最富有天赋的能力之一。</p>
+<p>如果你之前使用的其它 object-oriented 语言，暂时忘掉那些关于 OO 的特性和思维，虽然 Go 支持 OO，但 Go 不是基于类的语言，不支持类的继承。</p>
+<h1 id="4"><a href="#4" class="headerlink" title="4"></a>4</h1><p>Go 是强类型语言，意味着实现非常复杂的系统 API 时有可能会像 Java 或 C++ 一样使用大量的预定义类型，使代码变得脆弱丑陋，这并不是真正的 Go。Go 的 interface 和闭包特性允许我们写出更优雅更通用的实现。</p>
+<p>学会高效的使用闭包，为此可以学习一些函数式编程语言的理论，或者学学 Ruby，可以看看 The Well-Grounded Rubyist 这本书，然后尝试在 Go 编程中尝试使用这些知识。</p>
+<p>学会测试 Go 程序，学会使用 Go 相关的测试工具 unit testing，beachmarking testing，利用测试不断纠正和提高 Go 程序的质量，可以看看这个 <a href="http://github.com/feyeleanor/GoSpeed。" target="_blank" rel="noopener">http://github.com/feyeleanor/GoSpeed。</a></p>
+<h1 id="5"><a href="#5" class="headerlink" title="5"></a>5</h1><p>不要强迫你把过去其它语言的经验带入 Go，每个语言都是不同的，如果你是第一次接触 Go，让自己用一个全新的视角去看待它，也就是你需要尝试从语言的创作者以及社区的角度去理解它。</p>
+<p>一开始使用 Go，尽量避免使用 third party library，可能它们能简化你正在做的事情，但从长远角度来看，它们也妨碍了你对这么语言的理解。</p>
+<p>从标准库中学习如何写出更好的 Go 代码，比如你可以从 <code>net/http</code> package 中学习如何使用 concurrency，也可以去看看  Rob Pike 关于 concurrency 的视频。</p>
+<h1 id="6"><a href="#6" class="headerlink" title="6"></a>6</h1><p>尝试使用 composition 而不是 inheritance，基于 OO 的 inheritance 的思维方式会妨碍你写出优雅的 Go 代码。</p>
+<p>拥抱 interface。</p>
+<p>并不是所有的都是 object。</p>
+<blockquote>
+<p>A language that doesn’t affect the way you think about programming, is not worth knowing. — Alan Perlis</p>
+</blockquote>
+<p>如果一门语言没有影响你对编程的思考，这么语言就不值得学习。</p>
+<h1 id="7"><a href="#7" class="headerlink" title="7"></a>7</h1><ul>
+<li>保持函数短小，变量名不要太长</li>
+<li>不要像写其它语言一样写 Go，Go 不是 Java，不是 Python，不是 Ruby。</li>
+<li>花点时间搞懂 named and unnamed types。</li>
+<li>学会构建完整的 Go project，并且发布它们。</li>
+<li>Interface 很重要，你应该学会使用它们，很多你遇到的问题都可以用 interface 解决。</li>
+<li>学习阅读源码是学习 Go 的一种极佳的方式。</li>
+<li>保持简洁，简洁是 Go 的一个重要特性之一，避免过度工程化。</li>
+<li>以更小的单元实现你的代码功能，然后组合它们。</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这时间上有很多朴素的道理，很多人都知道，但是这些道理并没有给知道的人带来什么改变，比如勤奋不一定能成功，还是很多人很勤奋，有了好运气也不一定能成功，还是很多人天天盼望走狗屎运，前者太勤奋了，没有时间思考，后者不知道勤奋，总是抱有幻想。</p>
+<p>学习语言也是一样，不要着急实践，要先想一想，看一看，看完之后不能太懒，还要动手练一练。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/27/go-type/" rel="next" title="理解 Go 类型系统">
+                <i class="fa fa-chevron-left"></i> 理解 Go 类型系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/03/go-channel/" rel="prev" title="理解 Go channel">
+                理解 Go channel <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1"><span class="nav-number">1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2"><span class="nav-number">2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3"><span class="nav-number">3.</span> <span class="nav-text">3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4"><span class="nav-number">4.</span> <span class="nav-text">4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5"><span class="nav-number">5.</span> <span class="nav-text">5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6"><span class="nav-number">6.</span> <span class="nav-text">6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7"><span class="nav-number">7.</span> <span class="nav-text">7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">8.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2017/07/30/go-new-programmer-best-practice/';
+          this.page.identifier = '2017/07/30/go-new-programmer-best-practice/';
+          this.page.title = '新手 Go 程序员的最佳实践';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

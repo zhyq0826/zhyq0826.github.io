@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="最佳实践,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="最近 2 个月断断续续用 Go 实现了一个发布系统，主要特性包括：  主机管理 应用管理 服务的部署和发布  这是第一次使用 Go 实现复杂系统，记录一下最佳实践。 库和框架使用更接近 Go 风格的简单 web frameworkweb 框架用的是 gorilla 的一套：  github.com/gorilla/context github.com/gorilla/handlers github">
+<meta name="keywords" content="最佳实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 项目最佳实践">
+<meta property="og:url" content="http://sanyuesha.com/2018/12/26/go-project-best-practice/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="最近 2 个月断断续续用 Go 实现了一个发布系统，主要特性包括：  主机管理 应用管理 服务的部署和发布  这是第一次使用 Go 实现复杂系统，记录一下最佳实践。 库和框架使用更接近 Go 风格的简单 web frameworkweb 框架用的是 gorilla 的一套：  github.com/gorilla/context github.com/gorilla/handlers github">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-29T15:10:44.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go 项目最佳实践">
+<meta name="twitter:description" content="最近 2 个月断断续续用 Go 实现了一个发布系统，主要特性包括：  主机管理 应用管理 服务的部署和发布  这是第一次使用 Go 实现复杂系统，记录一下最佳实践。 库和框架使用更接近 Go 风格的简单 web frameworkweb 框架用的是 gorilla 的一套：  github.com/gorilla/context github.com/gorilla/handlers github">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/12/26/go-project-best-practice/">
+
+
+
+
+
+  <title>Go 项目最佳实践 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/12/26/go-project-best-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Go 项目最佳实践</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-26T12:00:59+08:00">
+                Dec 26 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近 2 个月断断续续用 Go 实现了一个发布系统，主要特性包括：</p>
+<ul>
+<li>主机管理</li>
+<li>应用管理</li>
+<li>服务的部署和发布</li>
+</ul>
+<p>这是第一次使用 Go 实现复杂系统，记录一下最佳实践。</p>
+<h2 id="库和框架使用"><a href="#库和框架使用" class="headerlink" title="库和框架使用"></a>库和框架使用</h2><h3 id="更接近-Go-风格的简单-web-framework"><a href="#更接近-Go-风格的简单-web-framework" class="headerlink" title="更接近 Go 风格的简单 web framework"></a>更接近 Go 风格的简单 web framework</h3><p>web 框架用的是 gorilla 的一套：</p>
+<ul>
+<li>github.com/gorilla/context</li>
+<li>github.com/gorilla/handlers</li>
+<li>github.com/gorilla/mux</li>
+<li>github.com/gorilla/websocket</li>
+</ul>
+<p>在用的过程中还发现了 mux 的一个问题，见<a href="https://github.com/gorilla/mux/issues/393" target="_blank" rel="noopener">Middleware does not work because of subrouter order</a>，这个问题根本原因就是遍历 route 时一旦发现有有不匹配的情况，后续 route 就不会在遍历了，这个问题也在打包前端 app 的时候出现过比较诡异语法错误的现象，原因就是配置的 <code>NotFoundHandler</code> 路由拦截了前端 js 文件的加载，因此配置 <code>NotFoundHandler</code> 要在 router 的最后进行。</p>
+<p>这个问题 mux 社区有相关的 pull request 已经解决了，截止发文之前一直都没有合并到主干。</p>
+<h3 id="易用性胜于性能的日志组件"><a href="#易用性胜于性能的日志组件" class="headerlink" title="易用性胜于性能的日志组件"></a>易用性胜于性能的日志组件</h3><p>日志考察了好几个，基本上都是格式化的日志，有的追求了性能，易用性差点，有的追求好用，性能又差点，考虑的发布系统的性能不是最需要考量的，最后采用了 <a href="https://github.com/sirupsen/logrus" target="_blank" rel="noopener">logrus</a> 。</p>
+<h3 id="简单的-ORM-框架"><a href="#简单的-ORM-框架" class="headerlink" title="简单的 ORM 框架"></a>简单的 ORM 框架</h3><p>ORM 工具用的是 <a href="https://github.com/jinzhu/gorm" target="_blank" rel="noopener">gorm</a>，在我的这个场景之下，完全够用，可维护性也很好，一点教训是复杂语句尽量使用纯 SQL。</p>
+<h3 id="TCP-Client"><a href="#TCP-Client" class="headerlink" title="TCP Client"></a>TCP Client</h3><p>用了 <a href="https://github.com/StabbyCutyou/buffstreams" target="_blank" rel="noopener">buffstreams</a> 这个库做发布日志回传工具，是个一个简单的 TCP client 和 TCP Server ，采用 <a href="https://github.com/golang/protobuf" target="_blank" rel="noopener">protobuf</a> 数据传输协议</p>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>用了 <a href="https://github.com/patrickmn/go-cache" target="_blank" rel="noopener">go-cache</a> 这个工具缓存每个部署任务回传的消息，一定时间会自动清除，类似 redis 的 expire。</p>
+<h3 id="支持异步的系统命令执行库"><a href="#支持异步的系统命令执行库" class="headerlink" title="支持异步的系统命令执行库"></a>支持异步的系统命令执行库</h3><p>使用 <a href="https://github.com/go-cmd/cmd" target="_blank" rel="noopener">cmd</a> 执行部署命令和采集部署日志，这个库封装了系统的 <code>exec.Command</code> 支持非阻塞的执行系统命令，支持异步获取命令的执行错误和输出</p>
+<h3 id="统一打包，发挥-Go-部署简单的优势"><a href="#统一打包，发挥-Go-部署简单的优势" class="headerlink" title="统一打包，发挥 Go 部署简单的优势"></a>统一打包，发挥 Go 部署简单的优势</h3><p>静态文件打包工具使用 <a href="https://github.com/gobuffalo/packr" target="_blank" rel="noopener">packr</a> 把前端用到的静态文件打包到 Go 的二进制程序中执行，这样发布 Go 程序只需要一个静态包即可，非常方便。</p>
+<h3 id="其他第三方库"><a href="#其他第三方库" class="headerlink" title="其他第三方库"></a>其他第三方库</h3><ul>
+<li><a href="https://github.com/upyun/go-sdk" target="_blank" rel="noopener">https://github.com/upyun/go-sdk</a></li>
+<li><a href="https://github.com/xanzy/go-gitlab" target="_blank" rel="noopener">https://github.com/xanzy/go-gitlab</a></li>
+<li><a href="https://github.com/hashicorp/consul" target="_blank" rel="noopener">https://github.com/hashicorp/consul</a></li>
+</ul>
+<p>发布过程中需要和 gitlab 以及文件上传服务打交道，用了一个社区的 gitlab API 库，由于使用的 consul 做服务发现与注册用，也用了 consul 官方提供的 API，文件上传用的又拍云 SDK。</p>
+<h3 id="消息协议"><a href="#消息协议" class="headerlink" title="消息协议"></a>消息协议</h3><p>用的是 <a href="https://github.com/golang/protobuf" target="_blank" rel="noopener">protobuf</a></p>
+<h2 id="项目结构最佳实践"><a href="#项目结构最佳实践" class="headerlink" title="项目结构最佳实践"></a>项目结构最佳实践</h2><p>由于 Go 的 import 规则对目录结构是有严格要求的，这就需要提前安排好每个 package 的功能，为的是防止一旦发生目录变动，更改 import 语句代价不小。</p>
+<p>由于是 web 项目，整个项目结构和普通 web 项目结构很相似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Makefile</span><br><span class="line">├── README.md</span><br><span class="line">├── apps                后端 APP</span><br><span class="line">├── db                  数据库连接</span><br><span class="line">├── ember-app-espire    前端 APP</span><br><span class="line">├── helpers             和 model 层交互的 business layer</span><br><span class="line">├── logshow             日志回显组件</span><br><span class="line">├── main.go             入口文件</span><br><span class="line">├── models              ORM 中的 model</span><br><span class="line">├── pbmessage           protobuf</span><br><span class="line">├── resources           表单对应的 Go struct，称之为 form struct</span><br><span class="line">├── script</span><br><span class="line">├── services            接口响应对应的 playload，称之为 JSON struct</span><br><span class="line">├── static</span><br><span class="line">├── templates           html 目录</span><br><span class="line">├── tests</span><br><span class="line">├── utils               第三方工具</span><br><span class="line">└── worker              执行部署任务的 worker</span><br></pre></td></tr></table></figure>
+<p>有几个原则是整个项目结构划分一直坚持的：</p>
+<ul>
+<li>前端 APP 提交的 form 和 后端响应返回的 playload 必须显示定义</li>
+<li>后端 APP 层要严格按照路由进行划分</li>
+<li>worker 单独成包，不能依赖除 utils、service、resource 包之外的其他任何业务层的包，方便移植和拆分</li>
+<li>工具包必须要有 test case</li>
+</ul>
+<h3 id="后端-APP-结构"><a href="#后端-APP-结构" class="headerlink" title="后端 APP 结构"></a>后端 APP 结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apps</span><br><span class="line">├── app</span><br><span class="line">│   └── app.go</span><br><span class="line">├── cloud</span><br><span class="line">│   └── cloud.go</span><br><span class="line">├── computer</span><br><span class="line">│   └── computer.go</span><br><span class="line">├── consul</span><br><span class="line">│   └── consul.go</span><br><span class="line">├── domain</span><br><span class="line">│   └── domain.go</span><br><span class="line">├── gitlab</span><br><span class="line">│   └── gitlab.go</span><br><span class="line">├── home</span><br><span class="line">│   └── home.go</span><br><span class="line">├── router.go</span><br><span class="line">└── service</span><br><span class="line">    └── service.go</span><br></pre></td></tr></table></figure>
+<p>后端 APP 按照业务和路由规则进行分组，不同的业务分属不同的组，在根目录的 router 中统一组装然后注册到 server 中。</p>
+<p>这样做的好处是业务的可移植性强，如果愿意甚至都可以做热插拔。</p>
+<h3 id="执行任务部署的-worker"><a href="#执行任务部署的-worker" class="headerlink" title="执行任务部署的 worker"></a>执行任务部署的 worker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">worker</span><br><span class="line">├── cmd.go</span><br><span class="line">├── job.go</span><br><span class="line">├── log.go</span><br><span class="line">├── main.go</span><br><span class="line">└── run.go</span><br></pre></td></tr></table></figure>
+<p>worker 是单独部署的一个进程，主要是轮询部署任务，然后执行部署，实时报告部署状态和日志，分层结构是按照部署任务的步骤划分的。</p>
+<h3 id="独立第三方-sdk-和工具库"><a href="#独立第三方-sdk-和工具库" class="headerlink" title="独立第三方 sdk 和工具库"></a>独立第三方 sdk 和工具库</h3><p>整个项目中都要用到日志、http client、第三方 sdk 等，这部分功能单独出来形成了项目的整个工具库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">utils</span><br><span class="line">├── consul</span><br><span class="line">│   └── consul.go</span><br><span class="line">├── format</span><br><span class="line">│   └── format.go</span><br><span class="line">├── gitlab</span><br><span class="line">│   └── gitlab.go</span><br><span class="line">├── http</span><br><span class="line">│   └── http.go</span><br><span class="line">├── log</span><br><span class="line">│   └── log.go</span><br><span class="line">├── ucloud</span><br><span class="line">│   ├── ucloud.go</span><br><span class="line">│   └── ucloud_test.go</span><br><span class="line">├── upyun</span><br><span class="line">│   ├── upyun.go</span><br><span class="line">│   └── upyun_test.go</span><br><span class="line">└── util.go</span><br></pre></td></tr></table></figure>
+<p>第三方单独在封装就是怕第三方接口变动时需要改业务逻辑，封装之后即使第三方接口字段等发生变化，只要按照需要的格式进行一层转换即可。</p>
+<h2 id="选好依赖管理"><a href="#选好依赖管理" class="headerlink" title="选好依赖管理"></a>选好依赖管理</h2><p>项目一开始没有用任何依赖管理，后来随着依赖的不断变多，用了 dep 来做包管理，再后来发现 dep 升级包非常痛苦，这个时候 Go module 出了一段时间了，于是换上了 Go module。</p>
+<p>Go module 比 dep 好用，速度快，而且在规则上要比 dep 简单，感兴趣的可以看 <a href="https://colobu.com/2018/08/27/learn-go-module/" target="_blank" rel="noopener">https://colobu.com/2018/08/27/learn-go-module/</a> 的文章对 Go module 的介绍，Go module 兼容 dep ，初始化时会自动导入 dep 管理的所有依赖。</p>
+<p>如果你的项目可以升级到支持 Go module 的版本，或者换管理包的代价还能承受，最好换上 Go module 能省去很多不必要的麻烦。</p>
+<h2 id="善用-Go-的异步特性"><a href="#善用-Go-的异步特性" class="headerlink" title="善用 Go 的异步特性"></a>善用 Go 的异步特性</h2><p>Go 的异步支持是从语言层面就开始了，所以非常适合在同一个进程内开多个轮询任务，做工作流比使用其他语言要容易很多，因为工作流就是各种不能中断的 runner 一直执行的过程，而且各个 runner 之间需要进行消息同步。</p>
+<p>Runner 自然用协程实现，消息同步用 chan，在实现工作流之前，务必要先设计个好需要多少个流程，每个流程之间需要同步哪些消息，提前设计好，再用代码去实现。</p>
+<h2 id="使用-make-自动化-build"><a href="#使用-make-自动化-build" class="headerlink" title="使用 make 自动化 build"></a>使用 make 自动化 build</h2><p>Go 作为静态语言需要频繁的构建和发布，可以使用第三方工具自动检测 Go 源文件的变化自动 make 或者自己自己写一个定时 build 。</p>
+<p>尽量使用环境变量来从入口 main 传入需要定制的参数，减少配置在仓库中暴露的风险，也符合 12 factor 对应用部署的要求。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/最佳实践/" rel="tag"># 最佳实践</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/20/optimization-01/" rel="next" title="后端性能优化 01">
+                <i class="fa fa-chevron-left"></i> 后端性能优化 01
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/26/ember-best-practice/" rel="prev" title="Ember 最佳实践">
+                Ember 最佳实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#库和框架使用"><span class="nav-number">1.</span> <span class="nav-text">库和框架使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更接近-Go-风格的简单-web-framework"><span class="nav-number">1.1.</span> <span class="nav-text">更接近 Go 风格的简单 web framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#易用性胜于性能的日志组件"><span class="nav-number">1.2.</span> <span class="nav-text">易用性胜于性能的日志组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的-ORM-框架"><span class="nav-number">1.3.</span> <span class="nav-text">简单的 ORM 框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Client"><span class="nav-number">1.4.</span> <span class="nav-text">TCP Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">1.5.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持异步的系统命令执行库"><span class="nav-number">1.6.</span> <span class="nav-text">支持异步的系统命令执行库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统一打包，发挥-Go-部署简单的优势"><span class="nav-number">1.7.</span> <span class="nav-text">统一打包，发挥 Go 部署简单的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他第三方库"><span class="nav-number">1.8.</span> <span class="nav-text">其他第三方库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息协议"><span class="nav-number">1.9.</span> <span class="nav-text">消息协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目结构最佳实践"><span class="nav-number">2.</span> <span class="nav-text">项目结构最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后端-APP-结构"><span class="nav-number">2.1.</span> <span class="nav-text">后端 APP 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行任务部署的-worker"><span class="nav-number">2.2.</span> <span class="nav-text">执行任务部署的 worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立第三方-sdk-和工具库"><span class="nav-number">2.3.</span> <span class="nav-text">独立第三方 sdk 和工具库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选好依赖管理"><span class="nav-number">3.</span> <span class="nav-text">选好依赖管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#善用-Go-的异步特性"><span class="nav-number">4.</span> <span class="nav-text">善用 Go 的异步特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-make-自动化-build"><span class="nav-number">5.</span> <span class="nav-text">使用 make 自动化 build</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/12/26/go-project-best-practice/';
+          this.page.identifier = '2018/12/26/go-project-best-practice/';
+          this.page.title = 'Go 项目最佳实践';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

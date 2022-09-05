@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="kubernetes,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="本文是一个面向 kubernetes 初学者的教程，是我作为一名开发者在开始使用和理解 kubernetes 一点经验总结，它包含两部分，第一部分介绍使用 kubeadm 搭建一个 kubernetes 集群，第二部分使用 kubernetes 部署一个包含多个组件的应用程序，通过这两部分初学者基本能够理解 kubernetes 的组成以及应用。 作为一个开发者，为什么要了解 kubernetes">
+<meta name="keywords" content="kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个小时学会搭建和使用 kubernetes">
+<meta property="og:url" content="http://sanyuesha.com/2019/05/17/kubernetes-tutorial-for-beginner/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="本文是一个面向 kubernetes 初学者的教程，是我作为一名开发者在开始使用和理解 kubernetes 一点经验总结，它包含两部分，第一部分介绍使用 kubeadm 搭建一个 kubernetes 集群，第二部分使用 kubernetes 部署一个包含多个组件的应用程序，通过这两部分初学者基本能够理解 kubernetes 的组成以及应用。 作为一个开发者，为什么要了解 kubernetes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/k8s-app-tutorial-architecture.png">
+<meta property="og:image" content="https://static.git-star.com/k8s-tutorial-app-service.png">
+<meta property="og:image" content="https://static.git-star.com/k8s-tutorial-app-show.gif?a=aaa">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.046Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个小时学会搭建和使用 kubernetes">
+<meta name="twitter:description" content="本文是一个面向 kubernetes 初学者的教程，是我作为一名开发者在开始使用和理解 kubernetes 一点经验总结，它包含两部分，第一部分介绍使用 kubeadm 搭建一个 kubernetes 集群，第二部分使用 kubernetes 部署一个包含多个组件的应用程序，通过这两部分初学者基本能够理解 kubernetes 的组成以及应用。 作为一个开发者，为什么要了解 kubernetes">
+<meta name="twitter:image" content="https://static.git-star.com/k8s-app-tutorial-architecture.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2019/05/17/kubernetes-tutorial-for-beginner/">
+
+
+
+
+
+  <title>一个小时学会搭建和使用 kubernetes | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/05/17/kubernetes-tutorial-for-beginner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">一个小时学会搭建和使用 kubernetes</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T22:50:20+08:00">
+                May 17 2019
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文是一个面向 kubernetes 初学者的教程，是我作为一名开发者在开始使用和理解 kubernetes 一点经验总结，它包含两部分，第一部分介绍使用 kubeadm 搭建一个 kubernetes 集群，第二部分使用 kubernetes 部署一个包含多个组件的应用程序，通过这两部分初学者基本能够理解 kubernetes 的组成以及应用。</p>
+<p>作为一个开发者，为什么要了解 kubernetes？因为 kubernetes 做到了让应用的开发、部署、运维整个流程无缝连接，应用的整个生命周期管理从未像现在这样如此贴近一个开发者，对此我只能说很爽很强大。为了简述方便，下文把 kubernetes 统称为 k8s。</p>
+<h1 id="第一部分，使用-kubeadm-搭建-k8s"><a href="#第一部分，使用-kubeadm-搭建-k8s" class="headerlink" title="第一部分，使用 kubeadm 搭建 k8s"></a>第一部分，使用 kubeadm 搭建 k8s</h1><p>k8s 的安装很复杂，搭建高可用的 k8s 集群尤其复杂，本文介绍的 k8s 安装方式是基于官方的工具 kubeadm 完成的，虽然 kubeadm 现在还在开发当中，相信不久的将来 kubeadm 会变成一个真正构建 k8s 集群的标准工具。</p>
+<h2 id="1-机器准备"><a href="#1-机器准备" class="headerlink" title="1. 机器准备"></a>1. 机器准备</h2><p>准备相互连通的三台 linux ，虽然 kubeadm 支持在单节点部署一个 k8s 集群，但是为了能做到真正演示 k8s 集群工作原理，建议使用多个节点。这里我使用的三台云服务机器，基于 Ubuntu 16.04，这也是基于 Ubuntu linux 搭建 k8s 的最低版本。这里三台机器分别是 ubuntu@node1、ubuntu@node2、ubuntu@node3，并且关闭三个节点的 swap。</p>
+<h2 id="2-准备-docker"><a href="#2-准备-docker" class="headerlink" title="2. 准备 docker"></a>2. 准备 docker</h2><p>k8s 本质上一个容器编排工具，所以容器是 k8s 运作的前提，k8s 支持各种容器运行时，这里我们使用 docker。在 Ubuntu 上安装 docker 参见官方文档 <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/ubuntu/</a> 。</p>
+<p>由于 docker 官方镜像在国内访问特别的慢，docker 环境准备完成之后请配置国内的加速镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tee /etc/docker/daemon.json &lt;&lt;-<span class="string">'EOF'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"registry-mirrors"</span>: [<span class="string">"https://registry.docker-cn.co"</span>]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>如果提示权限不足，请使用 sudo 命令或 root 用户。</p>
+<h2 id="3-安装-k8s-的基础组件"><a href="#3-安装-k8s-的基础组件" class="headerlink" title="3. 安装 k8s 的基础组件"></a>3. 安装 k8s 的基础组件</h2><p>安装 k8s 的最低要求见 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#before-you-begin</a> :</p>
+<ul>
+<li>要求 2CPU 和 2 GB</li>
+<li>不能启用 swap</li>
+<li>外网可通</li>
+<li>…</li>
+</ul>
+<p>任选一台机器作 k8s master 节点，后面所有的安装如果没有特殊标明都在 master 上执行，使用 sudo 命令或 root 用户依次执行下面的命令完成以下各个组件的安装，这里我们使用阿里云的 k8s 源进行安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install -y apt-transport-https</span><br><span class="line">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - </span><br><span class="line">cat &lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list</span><br><span class="line">deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main</span><br><span class="line">EOF</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y kubelet kubeadm kubectl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
+<p>这里简单介绍一下这三个组件的作用：</p>
+<ul>
+<li>kubelet 是 work node 节点负责 Pod 生命周期状态管理以及和 master 节点交互的组件</li>
+<li>kubectl k8s 的命令行工具，负责和 master 节点交互</li>
+<li>kubeadm 搭建 k8s 的官方工具</li>
+</ul>
+<h2 id="4-安装-k8s-依赖的各种镜像"><a href="#4-安装-k8s-依赖的各种镜像" class="headerlink" title="4. 安装 k8s 依赖的各种镜像"></a>4. 安装 k8s 依赖的各种镜像</h2><p>使用 root 执行下面命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --image-repository=gcr.akscn.io/google_containers --pod-network-cidr=192.168.0.0/16</span><br></pre></td></tr></table></figure>
+<p>这里我们通过 <code>--image-repository</code> 指定了一个国内的镜像，因为 google 官方镜像被国内无法访问，并且指定了 <code>--pod-network-cidr</code> 网络情况，这是因为后面我们的组件使用的是 <code>Calico</code>这个网络组件，所有这些都不用去在乎它们是什么，只要先按部就班的安装。</p>
+<p>安装完成之后会有如下的输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">[addons] Applied essential addon: CoreDNS</span><br><span class="line">[addons] Applied essential addon: kube-proxy</span><br><span class="line"></span><br><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run <span class="string">"kubectl apply -f [podnetwork].yaml"</span> with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join 10.10.76.89:6443 --token t51nk2.4rtw6twkmca53nbu \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:8356397a4ccd20b2d6506130e8bb4ad13ccc3fe33302296d3c48651601be5bfd</span><br></pre></td></tr></table></figure>
+<p>按照提示你应该再继续执行以下操作：</p>
+<ul>
+<li>让 k8s 的命令可以在非 root 用户下执行</li>
+<li>安装 k8s 的网络组件</li>
+</ul>
+<p>所以你要记住上面输出的提示操作，找个地方把他们存下来。</p>
+<h2 id="5-让非-root-用户可以使用-k8s"><a href="#5-让非-root-用户可以使用-k8s" class="headerlink" title="5. 让非 root 用户可以使用 k8s"></a>5. 让非 root 用户可以使用 k8s</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br></pre></td></tr></table></figure>
+<p>为了能够在 worker 节点也可以使用 kubectl 命令，建议再 worker node 加入集群之后，把 <code>$HOME/.kube/config</code> 文件也复制一份到 worker node 节点。</p>
+<h2 id="6-安装-Calico-网络组件"><a href="#6-安装-Calico-网络组件" class="headerlink" title="6. 安装 Calico 网络组件"></a>6. 安装 Calico 网络组件</h2><p>k8s 的网络组件非常多，为了演示方便我们使用 Calico:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml</span><br><span class="line">kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml</span><br></pre></td></tr></table></figure>
+<p>安装完成之后检查 corndns :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods --all-namespaces</span><br></pre></td></tr></table></figure>
+<p>确保所有的 STATUS 都是 running 说明安装成功</p>
+<h2 id="7-加入-worker-node"><a href="#7-加入-worker-node" class="headerlink" title="7. 加入 worker node"></a>7. 加入 worker node</h2><p>在上面 kubeadm init 命令的输出中有加入节点的命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">kubeadm join 10.10.76.89:6443 --token t51nk2.4rtw6twkmca53nbu \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:8356397a4ccd20b2d6506130e8bb4ad13ccc3fe33302296d3c48651601be5bfd</span><br></pre></td></tr></table></figure>
+<p>这个 token 是必须的，而且 token 的有效期是 24 小时，分别在其它被选为 work node 的节点执行这个加入命令，token 的获取和使用参考 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/" target="_blank" rel="noopener">https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/</a></p>
+<p>执行完成之后，在 master 节点执行 <code>kubectl get nodes</code>，会看到如下输出，说明其他节点加入成功:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NAME           STATUS   ROLES    AGE    VERSION</span><br><span class="line">10-10-158-97   Ready    &lt;none&gt;   2d2h   v1.14.1</span><br><span class="line">10-10-23-227   Ready    &lt;none&gt;   2d2h   v1.14.1</span><br><span class="line">10-10-76-89    Ready    master   2d2h   v1.14.1</span><br></pre></td></tr></table></figure></p>
+<p>查看组成 k8s 的组件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pods --namespace=kube-system </span><br><span class="line">NAME                                  READY   STATUS    RESTARTS   AGE</span><br><span class="line">calico-node-9vrt4                     2/2     Running   0          2d22h</span><br><span class="line">calico-node-rklrf                     2/2     Running   0          2d22h</span><br><span class="line">calico-node-wb7ln                     2/2     Running   0          2d22h</span><br><span class="line">coredns-9846cf96-dblrm                1/1     Running   2          2d22h</span><br><span class="line">coredns-9846cf96-x7z7l                1/1     Running   2          2d22h</span><br><span class="line">etcd-10-10-76-89                      1/1     Running   2          2d22h</span><br><span class="line">kube-apiserver-10-10-76-89            1/1     Running   0          2d22h</span><br><span class="line">kube-controller-manager-10-10-76-89   1/1     Running   0          2d22h</span><br><span class="line">kube-proxy-2nbm6                      1/1     Running   0          2d22h</span><br><span class="line">kube-proxy-vvdpk                      1/1     Running   0          2d22h</span><br><span class="line">kube-proxy-whjqt                      1/1     Running   0          2d22h</span><br><span class="line">kube-scheduler-10-10-76-89            1/1     Running   0          2d22h</span><br></pre></td></tr></table></figure>
+<p>可以看到 k8s 主要有以下核心组组件组成:</p>
+<ul>
+<li>etcd 保存了整个集群的状态；</li>
+<li>apiserver 提供了资源操作的唯一入口，并提供认证、授权、访问控制、API 注册和发现等机制；</li>
+<li>controller manager 负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；</li>
+<li>scheduler 负责资源的调度，按照预定的调度策略将 Pod 调度到相应的机器上；</li>
+<li>kubelet 负责维护容器的生命周期，同时也负责 Volume（CVI）和网络（CNI）的管理；</li>
+<li>Container runtime 负责镜像管理以及 Pod 和容器的真正运行（CRI）；</li>
+<li>kube-proxy 负责为 Service 提供 cluster 内部的服务发现和负载均衡</li>
+</ul>
+<h1 id="第二部分，使用-k8s-部署一个完整应用"><a href="#第二部分，使用-k8s-部署一个完整应用" class="headerlink" title="第二部分，使用 k8s 部署一个完整应用"></a>第二部分，使用 k8s 部署一个完整应用</h1><p>我们将使用刚才搭建的 k8s 集群部署一个完整的应用，这个应用包含三个组件：一个用 ember 构建的前端 APP，一个用 Python 构建的后端 APP，一个 redis 用作存储节点，组成如下：</p>
+<p><img src="https://static.git-star.com/k8s-app-tutorial-architecture.png" alt></p>
+<p>为了演示 k8s 强大的能力，在这个应用中，三个 APP 彼此是不知道对方的存在的，也就是我们需要让三个 APP 通过网络能够相互发现对方并取得连接，这样即使他们的 IP 发生变动也不会影响他们之间的交互。</p>
+<h2 id="1-k8s-的基础概念解释"><a href="#1-k8s-的基础概念解释" class="headerlink" title="1. k8s 的基础概念解释"></a>1. k8s 的基础概念解释</h2><p>k8s 是通过一个个声明式的资源对象来完成对应用管理的，为了能够覆盖完整的应用生命周期管理，k8s 提供了很多资源对象:</p>
+<ul>
+<li>Autoscaling (HPA)</li>
+<li>ConfigMap</li>
+<li>CronJob</li>
+<li>CustomResourceDefinition</li>
+<li>DaemonSet</li>
+<li>Deployment</li>
+<li>Ingress</li>
+<li>Job</li>
+<li>LocalVolume</li>
+<li>Namespace</li>
+<li>NetworkPolicy</li>
+<li>Node</li>
+<li>PersistentVolume</li>
+<li>Pod</li>
+<li>PodPreset</li>
+<li>ReplicaSet</li>
+<li>Resource Quota</li>
+<li>Secret</li>
+<li>SecurityContext</li>
+<li>Service</li>
+<li>ServiceAccount</li>
+<li>StatefulSet</li>
+<li>Volume</li>
+</ul>
+<p>在这个演示中我们要用到以下几种资源:</p>
+<p><strong>Pod</strong></p>
+<p>Pod 是一组紧密关联的容器集合，它们共享 IPC、Network 和 UTS namespace，是 Kubernetes 调度的基本单位。Pod 的设计理念是支持多个容器在一个 Pod 中共享网络和文件系统，可以通过进程间通信和文件共享这种简单高效的方式组合完成服务。可以把 Pod 理解为共享资源的一个或一组进程</p>
+<p><strong>Deployment</strong></p>
+<p>Deployment 为 Pod 和 ReplicaSet 提供了一个声明式定义 (declarative) 方法，借用 Deployment 可以完成:</p>
+<ul>
+<li>创建 Pod 和 ReplicaSet</li>
+<li>扩容和缩容</li>
+<li>暂停和继续 Deployment</li>
+</ul>
+<p><strong>Namespace</strong></p>
+<p>Namespace 是对一组资源和对象的抽象集合，比如可以用来将系统内部的对象划分为不同的项目组或用户组，默认的 Namespace 是 default。</p>
+<p><strong>Service</strong></p>
+<p>Service 是对一组提供相同功能的 Pods 的抽象，并为它们提供一个统一的入口。借助 Service，应用可以方便的实现服务发现与负载均衡，并实现应用的零宕机升级。Service 通过标签来选取服务后端，一般配合 Deployment 来保证后端容器的正常运行。</p>
+<h2 id="2-创建一个-front-end-Pod-尝鲜"><a href="#2-创建一个-front-end-Pod-尝鲜" class="headerlink" title="2. 创建一个 front-end Pod 尝鲜"></a>2. 创建一个 front-end Pod 尝鲜</h2><p>为了演示方便，我已经在仓库 <a href="https://github.com/zhyq0826/kubernetes-tutorial-app" target="_blank" rel="noopener">https://github.com/zhyq0826/kubernetes-tutorial-app</a> 中创建好了 Pod，cd 进入 kubernetes-tutorial-app/step-one，获取我们要创建的 Pod。  k8s 采用声明式的定义，这样方便维护而且容易追溯。</p>
+<p>启动一个 Pod 非常简单:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ember-app-pod.yaml</span><br></pre></td></tr></table></figure></p>
+<p>然后观察 Pod 的启动情况:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure></p>
+<p>如果能看到容器的状态是 running 说明正确启动了。</p>
+<p>创建 Pod 如此简单，我们看一下如何定义 Pod:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span>                  <span class="comment"># 创建的资源类型 pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">ember-app</span>          <span class="comment"># 资源名称</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">ember-app</span>         <span class="comment"># pod 标签 用在 service 中进行筛选                         </span></span><br><span class="line"><span class="attr">spec:</span>                                                </span><br><span class="line"><span class="attr">  containers:</span></span><br><span class="line"><span class="attr">    - image:</span> <span class="string">zhyq0826/nginx:k8s-ember-app</span>   <span class="comment"># 镜像名称 来自 docker hub 公开镜像                          </span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">ember-app</span>     <span class="comment"># pod container 的名称            </span></span><br><span class="line"><span class="attr">      ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">80</span>   <span class="comment"># 容器监控 port</span></span><br></pre></td></tr></table></figure>
+<p>这个文件定义了一个 Pod， 这个 Pod 中包含了一个容器，是一个已经做好的 nginx 镜像，这里打包了我们要演示的 front-app，需要注意的是这里我们为 Pod 打上了一个 label: <code>app=ember-app</code> ，这个 label 将在下一步我们创建 service 的时候派上用场。</p>
+<p>这个容器并不能访问，容器只在它内部通过 nginx 监听了 80 端口，如果想让容器可以外部访问，我们需要把容器的端口映射到外部，比如可以像这样:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl port-forward ember-app 88:80</span><br></pre></td></tr></table></figure></p>
+<p>这个命令的意思把 Pod ember-app 的 80 端口和本机的 88 端口进行映射，然后再通过下面的命令访问容器内的应用:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:88</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-通过-Service-访问-Pod"><a href="#3-通过-Service-访问-Pod" class="headerlink" title="3. 通过 Service 访问 Pod"></a>3. 通过 Service 访问 Pod</h2><p>在 2 中我们创建了一个 Pod，为了演示 Service 作为负载均衡的特性，我们再创建一个 Pod:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ember-app-pod2.yaml</span><br></pre></td></tr></table></figure></p>
+<p>这样我们就有两个 Pod 了，这两个 Pod 除了名字不同以外，其他都是一样的。</p>
+<p>现在我们创建一个 Service 用来访问刚才我们创建的两个 Pod:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f ember-app-service.yaml</span><br></pre></td></tr></table></figure></p>
+<p>这两个文件可以在 <code>kubernetes-tutorial-app/step-one/</code> 中找到。</p>
+<p>创建 Service 之后我们查看一下 Service:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get service ember-app-service</span><br><span class="line">ember-app-service   LoadBalancer   10.101.206.188   &lt;pending&gt;     80:30537/TCP   21h</span><br></pre></td></tr></table></figure></p>
+<p>Service 成功启动，然后用 curl 检查我们的服务 <code>curl 10.101.206.188</code> 能够访问说明我们的服务启动成功了。</p>
+<p>Service 的作用就是生成一个 proxy 可以动态根据 Pod 的 label 路由的对应的 Pod，查看 Service 的文件定义可以看到:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span>              <span class="comment"># 资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">ember-app-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">LoadBalancer</span>      <span class="comment"># service 类型 有 4 种类型 </span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">80</span>           <span class="comment"># service 监听端口 service 类型 是  loadBalance 会在 node 节点暴露一个 port 和 此处的 port 不同 随机的</span></span><br><span class="line"><span class="attr">    protocol:</span> <span class="string">TCP</span>      <span class="comment"># 协议  </span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">80</span>     <span class="comment"># 目标端口 </span></span><br><span class="line"><span class="attr">  selector:</span>                </span><br><span class="line"><span class="attr">    app:</span> <span class="string">ember-app</span>     <span class="comment"># label 定义的 service 根据 app: ember-app 这个 label 寻找 pod</span></span><br></pre></td></tr></table></figure></p>
+<p>我们指定了 Service 的 selector 和 Pod 的 label 一样，这是 Service 能够正确访问两个 Pod 的关键，Service 根据 selector 提供的 label 来过滤具有相同 label 的 Pod。</p>
+<p><img src="https://static.git-star.com/k8s-tutorial-app-service.png" alt></p>
+<h2 id="4-使用-Deployment-部署-Pod"><a href="#4-使用-Deployment-部署-Pod" class="headerlink" title="4. 使用 Deployment 部署 Pod"></a>4. 使用 Deployment 部署 Pod</h2><p>虽然可以直接使用 Pod 部署应用，但并不是推荐的方式，因为 Pod 自己无法扩容，无法在故障时自动转移，为此 k8s 提供了 Deployment 来实现 Pod 的高可用部署。</p>
+<p>在 Deployment 中可以根据自己的需要配置 Pod 的数量，Pod 的升级方式，Pod 故障转移方式等等:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span>                                          <span class="comment"># 资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">ember-app-deployment</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span>                                             <span class="comment"># pod 副本数量</span></span><br><span class="line"><span class="attr">  minReadySeconds:</span> <span class="number">15</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">RollingUpdate</span>                                   <span class="comment"># 部署策略 滚动升级</span></span><br><span class="line"><span class="attr">    rollingUpdate:</span> </span><br><span class="line"><span class="attr">      maxUnavailable:</span> <span class="number">1</span>                                   <span class="comment"># 在升级过程中最多允许几个 pod 不可用</span></span><br><span class="line"><span class="attr">      maxSurge:</span> <span class="number">1</span>                                         <span class="comment"># 升级过程中允许最多添加几个 pod, 如果 副本是 2 升级过程中要保证可用一直是 2 必须要再加一个 pod</span></span><br><span class="line"><span class="attr">  template:</span>                                               <span class="comment"># 定义 deploy 使用 pod</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        app:</span> <span class="string">ember-app</span>                                  <span class="comment">#  模板定的 pod 的 label 根据这个 label 生成 service</span></span><br><span class="line"><span class="attr">    spec:</span>                                               <span class="comment"># spec 相当于 step-one 中的 pod</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">        - image:</span> <span class="string">zhyq0826/nginx:k8s-ember-app</span></span><br><span class="line"><span class="attr">          imagePullPolicy:</span> <span class="string">Always</span>                         <span class="comment"># 镜像策略</span></span><br><span class="line"><span class="attr">          name:</span> <span class="string">ember-app</span></span><br><span class="line"><span class="attr">          ports:</span></span><br><span class="line"><span class="attr">            - containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure></p>
+<p>进入 <code>kubernetes-tutorial-app/step-two</code> 目录，然后创建 Deployment:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f ember-app-deployment.yaml</span><br></pre></td></tr></table></figure></p>
+<p>查看 Pod 可以看到这个 Deployment 启动了两个 Pod:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br><span class="line">NAME                                     READY   STATUS    RESTARTS   AGE</span><br><span class="line">ember-app-deployment-f4cb9594b-9xpzz     1/1     Running   0          1m</span><br><span class="line">ember-app-deployment-f4cb9594b-s8bvm     1/1     Running   0          1m</span><br></pre></td></tr></table></figure></p>
+<h2 id="5-构建完整的应用"><a href="#5-构建完整的应用" class="headerlink" title="5. 构建完整的应用"></a>5. 构建完整的应用</h2><p>到目前为止，你已经知道了如何使用 Deployment 创建高可用的应用，并且知道用 Service 来为 Pod 提供供内部集群访问的能力，接下来我们就把我们要部署的后端应用全部部署。</p>
+<p>进入 <code>kubernetes-tutorial-app/step-three</code> 可以看到:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── ember-app-deployment.yaml</span><br><span class="line">├── ember-app-service.yaml</span><br><span class="line">├── python-app-deployment.yaml</span><br><span class="line">├── python-app-service.yaml</span><br><span class="line">├── redis-deployment.yaml</span><br><span class="line">└── redis-service.yaml</span><br></pre></td></tr></table></figure>
+<p>可以看到这里我准备了三个 Deployment 和 三个 Service，分别对应着即将要部署的三个应用，并且在 python-app-deployment.yaml 中通过环境变量为 python-app 提供了 redis 的地址:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">python-app-deployment</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  minReadySeconds:</span> <span class="number">15</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">RollingUpdate</span></span><br><span class="line"><span class="attr">    rollingUpdate:</span> </span><br><span class="line"><span class="attr">      maxUnavailable:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">      maxSurge:</span> <span class="number">1</span> </span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        app:</span> <span class="string">python-app</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">        - image:</span> <span class="string">zhyq0826/python:k8s-python-app</span></span><br><span class="line"><span class="attr">          imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">          name:</span> <span class="string">python-app</span></span><br><span class="line"><span class="attr">          ports:</span></span><br><span class="line"><span class="attr">            - containerPort:</span> <span class="number">5000</span></span><br><span class="line"><span class="attr">          env:</span></span><br><span class="line"><span class="attr">            - name:</span> <span class="string">REDIS_HOST</span></span><br><span class="line"><span class="attr">              value:</span> <span class="string">redis-service.default.svc.cluster.local</span>   <span class="comment"># 利用 k8s 提供的默认 dns 解析，发现 redis 服务</span></span><br></pre></td></tr></table></figure>
+<p>Redis 这个 <code>redis-service.default.svc.cluster.local</code> 服务发现功能是通过 k8s 提供的默认的 DNS 就系完成的，组成方式是 <code>$service_name.$namespace.svc.cluster.local</code> ，由于在没有指定 namespace 的时候，默认是 default。DNS 解析可以在 python-app Pod 中查看:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl <span class="built_in">exec</span> -it python-app-deployment-7b64859cd9-stjpt cat /etc/resolv.conf</span><br><span class="line">nameserver 10.96.0.10</span><br><span class="line">search default.svc.cluster.local svc.cluster.local cluster.local</span><br><span class="line">options ndots:5</span><br></pre></td></tr></table></figure>
+<p>可以看到对应的 DNS server 是 10.96.0.10 :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get service  --namespace=kube-system</span><br><span class="line">NAME           TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)                  AGE</span><br><span class="line">calico-typha   ClusterIP   10.111.6.44   &lt;none&gt;        5473/TCP                 2d13h</span><br><span class="line">kube-dns       ClusterIP   10.96.0.10    &lt;none&gt;        53/UDP,53/TCP,9153/TCP   2d13h</span><br></pre></td></tr></table></figure>
+<p>正好是 kube-dns 的地址。</p>
+<p>把目录中所有的 Deployment 和 Service 执行完毕，依次执行 <code>kubectl apply -f *.yaml</code> 即可，执行完毕之后，一个完整的应用就组成了。由于我们希望 front-app 可以被用户所访问，所以 ember-app-service 的网络类型是 NodePort，也就是在每个节点会启动一个监听端口把所有外部访问的请求转发到 Service 的监听端口，也就完成了 Service 可以被外部网络所访问。</p>
+<p> 而 ember-app 由于要访问 python-app ，作为一个前端应用他需要一个可以访问 python-app 的外部地址，为了可以让 ember-app 总是能访问到 python-app 我们在 python-app-service.yaml 中指定主机要绑定的端口 NodePort 32500，这里为了演示方便直接让 python-app 暴露出来，生成环境会把 python-app 挂在 nginx 这种反向代理后面:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span>              <span class="comment"># 资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">python-app-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span>      <span class="comment"># service 类型 有 4 种类型 </span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">5000</span>           <span class="comment"># service 监听端口 集群内部访问</span></span><br><span class="line"><span class="attr">    protocol:</span> <span class="string">TCP</span>      <span class="comment"># 协议  </span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">5000</span>     <span class="comment"># 目标端口</span></span><br><span class="line"><span class="attr">    nodePort:</span> <span class="number">32500</span>       <span class="comment"># 暴露给外部访问  The range of valid ports is 30000-32767</span></span><br><span class="line"><span class="attr">  selector:</span>                </span><br><span class="line"><span class="attr">    app:</span> <span class="string">python-app</span>     <span class="comment"># label 定义的 service 根据 app: python-app 这个 label 寻找 pod%</span></span><br></pre></td></tr></table></figure>
+<p>这样 ember-app 中就可以通过这个固定的端口访问到 python-app 了:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$.post(<span class="string">`<span class="subst">$&#123;<span class="built_in">window</span>.location.protocol&#125;</span>//<span class="subst">$&#123;<span class="built_in">window</span>.location.hostname&#125;</span>:<span class="subst">$&#123;config.backendport&#125;</span>`</span>+<span class="string">'/login'</span>, &#123;<span class="string">"username"</span>: <span class="keyword">this</span>.username&#125;, (data)=&gt;&#123;</span><br><span class="line">                <span class="keyword">this</span>.set(<span class="string">'msg'</span>, <span class="string">`<span class="subst">$&#123;data.name&#125;</span> <span class="subst">$&#123;data.msg&#125;</span> <span class="subst">$&#123;data.count&#125;</span>`</span>)</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<p>最后让我们看一眼我们的应用：</p>
+<p><img src="https://static.git-star.com/k8s-tutorial-app-show.gif?a=aaa" alt></p>
+<p>这个应用的功能很简单，每次把用户的登陆次数加一存储在 redis 中，并且显示到前端。</p>
+<h2 id="6-简单回顾"><a href="#6-简单回顾" class="headerlink" title="6. 简单回顾"></a>6. 简单回顾</h2><p>k8s 让应用的整个部署和维护变得非常简单，而且是第一次让一个开发可以如此便捷的部署自己的应用程序，k8s 的安装如果没有 kubeadm 这样的工具将非常复杂，生成环境使用一定要搭建高可用的 k8s 集群，也就是由多个 etcd 节点和多个 master 节点组成，详细可参考官网 <a href="https://kubernetes.io/docs/setup/independent/high-availability/" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/independent/high-availability/</a> </p>
+<p>k8s 使用声明式的 API 来管理和创建各种资源对象，相比命令式的更容易维护和变更。</p>
+<p>参考文章：</p>
+<ul>
+<li><a href="https://kubernetes.feisky.xyz/" target="_blank" rel="noopener">https://kubernetes.feisky.xyz/</a></li>
+<li><a href="https://kubernetes.io/" target="_blank" rel="noopener">https://kubernetes.io/</a></li>
+</ul>
+<p>文中涉及的应用完整代码见 <a href="https://github.com/zhyq0826/kubernetes-tutorial-app" target="_blank" rel="noopener">https://github.com/zhyq0826/kubernetes-tutorial-app</a>  你可以在你的 k8s 集群中使用他们。</p>
+<p>文中 k8s 集群基于 v1.14.1 版本。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/18/raft/" rel="next" title="理解 raft 算法">
+                <i class="fa fa-chevron-left"></i> 理解 raft 算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/27/about-interview/" rel="prev" title="聊聊面试和程序员找工作这件事">
+                聊聊面试和程序员找工作这件事 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一部分，使用-kubeadm-搭建-k8s"><span class="nav-number">1.</span> <span class="nav-text">第一部分，使用 kubeadm 搭建 k8s</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-机器准备"><span class="nav-number">1.1.</span> <span class="nav-text">1. 机器准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-准备-docker"><span class="nav-number">1.2.</span> <span class="nav-text">2. 准备 docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-安装-k8s-的基础组件"><span class="nav-number">1.3.</span> <span class="nav-text">3. 安装 k8s 的基础组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-安装-k8s-依赖的各种镜像"><span class="nav-number">1.4.</span> <span class="nav-text">4. 安装 k8s 依赖的各种镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-让非-root-用户可以使用-k8s"><span class="nav-number">1.5.</span> <span class="nav-text">5. 让非 root 用户可以使用 k8s</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-安装-Calico-网络组件"><span class="nav-number">1.6.</span> <span class="nav-text">6. 安装 Calico 网络组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-加入-worker-node"><span class="nav-number">1.7.</span> <span class="nav-text">7. 加入 worker node</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二部分，使用-k8s-部署一个完整应用"><span class="nav-number">2.</span> <span class="nav-text">第二部分，使用 k8s 部署一个完整应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-k8s-的基础概念解释"><span class="nav-number">2.1.</span> <span class="nav-text">1. k8s 的基础概念解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-创建一个-front-end-Pod-尝鲜"><span class="nav-number">2.2.</span> <span class="nav-text">2. 创建一个 front-end Pod 尝鲜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-通过-Service-访问-Pod"><span class="nav-number">2.3.</span> <span class="nav-text">3. 通过 Service 访问 Pod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-使用-Deployment-部署-Pod"><span class="nav-number">2.4.</span> <span class="nav-text">4. 使用 Deployment 部署 Pod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-构建完整的应用"><span class="nav-number">2.5.</span> <span class="nav-text">5. 构建完整的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-简单回顾"><span class="nav-number">2.6.</span> <span class="nav-text">6. 简单回顾</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2019/05/17/kubernetes-tutorial-for-beginner/';
+          this.page.identifier = '2019/05/17/kubernetes-tutorial-for-beginner/';
+          this.page.title = '一个小时学会搭建和使用 kubernetes';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

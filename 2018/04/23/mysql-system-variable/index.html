@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="variable,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="MySQL system variable 提供了 MySQL 服务器的常用配置项，为 MySQL 的日常问题诊断、排查、性能调优提供了非常灵活的选择，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html     Variable_name Value scope      auto_increm">
+<meta name="keywords" content="variable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL system variable 详解">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/23/mysql-system-variable/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="MySQL system variable 提供了 MySQL 服务器的常用配置项，为 MySQL 的日常问题诊断、排查、性能调优提供了非常灵活的选择，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html     Variable_name Value scope      auto_increm">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL system variable 详解">
+<meta name="twitter:description" content="MySQL system variable 提供了 MySQL 服务器的常用配置项，为 MySQL 的日常问题诊断、排查、性能调优提供了非常灵活的选择，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html     Variable_name Value scope      auto_increm">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/23/mysql-system-variable/">
+
+
+
+
+
+  <title>MySQL system variable 详解 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/23/mysql-system-variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MySQL system variable 详解</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T17:47:11+08:00">
+                Apr 23 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MySQL system variable 提供了 MySQL 服务器的常用配置项，为 MySQL 的日常问题诊断、排查、性能调优提供了非常灵活的选择，具体见官方文档：</p>
+<p><a href="https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html</a></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>Variable_name</strong></th>
+<th><strong>Value</strong></th>
+<th>scope</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>auto_increment_increment</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>auto_increment_offset</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>autocommit</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>automatic_sp_privileges</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>back_log</strong></td>
+<td>2000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>basedir</strong></td>
+<td>/opt/udb/program/mysql/mysql-5.5.24</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>big_tables</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>binlog_cache_size</strong></td>
+<td>32768</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>binlog_direct_non_transactional_updates</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>binlog_format</strong></td>
+<td>MIXED</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>binlog_stmt_cache_size</strong></td>
+<td>32768</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>bulk_insert_buffer_size</strong></td>
+<td>8388608</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_client</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_connection</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_database</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_filesystem</strong></td>
+<td>binary</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_results</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_server</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_set_system</strong></td>
+<td>utf8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>character_sets_dir</strong></td>
+<td>/opt/udb/program/mysql/mysql-5.5.24/share/charsets/</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>collation_connection</strong></td>
+<td>utf8_general_ci</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>collation_database</strong></td>
+<td>utf8_general_ci</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>collation_server</strong></td>
+<td>utf8_general_ci</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>completion_type</strong></td>
+<td>NO_CHAIN</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>concurrent_insert</strong></td>
+<td>AUTO</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>connect_timeout</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>datadir</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/data/</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>date_format</strong></td>
+<td>%Y-%m-%d</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>datetime_format</strong></td>
+<td>%Y-%m-%d %H:%i:%s</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>default_storage_engine</strong></td>
+<td>InnoDB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>default_week_format</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>delay_key_write</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>delayed_insert_limit</strong></td>
+<td>100</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>delayed_insert_timeout</strong></td>
+<td>300</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>delayed_queue_size</strong></td>
+<td>1000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>div_precision_increment</strong></td>
+<td>4</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>engine_condition_pushdown</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>error_count</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>event_scheduler</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>expire_logs_days</strong></td>
+<td>7</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>external_user</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>flush</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>flush_time</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>foreign_key_checks</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ft_boolean_syntax</strong></td>
+<td>+ -&gt;&lt;()~*:”&amp;\</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ft_max_word_len</strong></td>
+<td>84</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ft_min_word_len</strong></td>
+<td>4</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ft_query_expansion_limit</strong></td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ft_stopword_file</strong></td>
+<td>(built-in)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>general_log</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>general_log_file</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/log/mysqld.log</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>group_concat_max_len</strong></td>
+<td>51200</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_compress</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_crypt</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_csv</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_dynamic_loading</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_geometry</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_innodb</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_ndbcluster</strong></td>
+<td>NO</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_openssl</strong></td>
+<td>NO</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_partitioning</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_profiling</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_query_cache</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_rtree_keys</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_ssl</strong></td>
+<td>NO</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>have_symlink</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>hostname</strong></td>
+<td>046c68c53211</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>identity</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ignore_builtin_innodb</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>init_connect</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>init_file</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>init_slave</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_adaptive_flushing</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_adaptive_hash_index</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_additional_mem_pool_size</strong></td>
+<td>8388608</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_autoextend_increment</strong></td>
+<td>8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_autoinc_lock_mode</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_buffer_pool_instances</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_buffer_pool_size</strong></td>
+<td>1887436800</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_change_buffering</strong></td>
+<td>all</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_checksums</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_commit_concurrency</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_concurrency_tickets</strong></td>
+<td>500</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_data_file_path</strong></td>
+<td>ibdata1:100M:autoextend</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_data_home_dir</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/data</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_doublewrite</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_fast_shutdown</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_file_format</strong></td>
+<td>Antelope</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_file_format_check</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_file_format_max</strong></td>
+<td>Antelope</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_file_per_table</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_flush_log_at_trx_commit</strong></td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_flush_method</strong></td>
+<td>O_DIRECT</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_force_load_corrupted</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_force_recovery</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_io_capacity</strong></td>
+<td>2000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_large_prefix</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_lock_wait_timeout</strong></td>
+<td>50</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_locks_unsafe_for_binlog</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_log_buffer_size</strong></td>
+<td>8388608</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_log_file_size</strong></td>
+<td>536870912</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_log_files_in_group</strong></td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_log_group_home_dir</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/data</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_max_dirty_pages_pct</strong></td>
+<td>50</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_max_purge_lag</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_mirrored_log_groups</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_old_blocks_pct</strong></td>
+<td>37</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_old_blocks_time</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_open_files</strong></td>
+<td>1024</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_purge_batch_size</strong></td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_purge_threads</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_random_read_ahead</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_read_ahead_threshold</strong></td>
+<td>56</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_read_io_threads</strong></td>
+<td>8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_replication_delay</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_rollback_on_timeout</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_rollback_segments</strong></td>
+<td>128</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_spin_wait_delay</strong></td>
+<td>6</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_stats_method</strong></td>
+<td>nulls_equal</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_stats_on_metadata</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_stats_sample_pages</strong></td>
+<td>8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_strict_mode</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_support_xa</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_sync_spin_loops</strong></td>
+<td>30</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_table_locks</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_thread_concurrency</strong></td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_thread_sleep_delay</strong></td>
+<td>10000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_use_native_aio</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_use_sys_malloc</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_version</strong></td>
+<td>1.1.8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>innodb_write_io_threads</strong></td>
+<td>8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>insert_id</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>interactive_timeout</strong></td>
+<td>28800</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>join_buffer_size</strong></td>
+<td>131072</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>keep_files_on_create</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>key_buffer_size</strong></td>
+<td>33554432</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>key_cache_age_threshold</strong></td>
+<td>300</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>key_cache_block_size</strong></td>
+<td>1024</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>key_cache_division_limit</strong></td>
+<td>100</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>large_files_support</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>large_page_size</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>large_pages</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>last_insert_id</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lc_messages</strong></td>
+<td>en_US</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lc_messages_dir</strong></td>
+<td>/opt/udb/program/mysql/mysql-5.5.24/share/</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lc_time_names</strong></td>
+<td>en_US</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>license</strong></td>
+<td>GPL</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>local_infile</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lock_wait_timeout</strong></td>
+<td>31536000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>locked_in_memory</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_bin</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_bin_trust_function_creators</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_error</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/log/mysqld.log</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_output</strong></td>
+<td>TABLE</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_queries_not_using_indexes</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_slave_updates</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_slow_queries</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>log_warnings</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>long_query_time</strong></td>
+<td>3</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>low_priority_updates</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lower_case_file_system</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>lower_case_table_names</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet" target="_blank" rel="noopener"><strong>max_allowed_packet</strong></a></td>
+<td>16777216</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_binlog_cache_size</strong></td>
+<td>18446744073709547520</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_binlog_size</strong></td>
+<td>1073741824</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_binlog_stmt_cache_size</strong></td>
+<td>18446744073709547520</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_connect_errors</strong></td>
+<td>1000000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_connections</strong></td>
+<td>2000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_delayed_threads</strong></td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_error_count</strong></td>
+<td>64</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_heap_table_size</strong></td>
+<td>16777216</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_insert_delayed_threads</strong></td>
+<td>20</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_join_size</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_length_for_sort_data</strong></td>
+<td>1024</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_long_data_size</strong></td>
+<td>16777216</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_prepared_stmt_count</strong></td>
+<td>16382</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_relay_log_size</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_seeks_for_key</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_sort_length</strong></td>
+<td>1024</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_sp_recursion_depth</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_tmp_tables</strong></td>
+<td>32</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_user_connections</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>max_write_lock_count</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>metadata_locks_cache_size</strong></td>
+<td>1024</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>min_examined_row_limit</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>multi_range_count</strong></td>
+<td>256</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_data_pointer_size</strong></td>
+<td>6</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_max_sort_file_size</strong></td>
+<td>9223372036853727232</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_mmap_size</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_recover_options</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_repair_threads</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_sort_buffer_size</strong></td>
+<td>8388608</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_stats_method</strong></td>
+<td>nulls_unequal</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>myisam_use_mmap</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>net_buffer_length</strong></td>
+<td>8192</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>net_read_timeout</strong></td>
+<td>30</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>net_retry_count</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>net_write_timeout</strong></td>
+<td>60</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>new</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>old</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>old_alter_table</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>old_passwords</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>open_files_limit</strong></td>
+<td>150000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>optimizer_prune_level</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>optimizer_search_depth</strong></td>
+<td>62</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>optimizer_switch</strong></td>
+<td>index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,engine_condition_pushdown=on</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_events_waits_history_long_size</strong></td>
+<td>10000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_events_waits_history_size</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_cond_classes</strong></td>
+<td>80</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_cond_instances</strong></td>
+<td>1000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_file_classes</strong></td>
+<td>50</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_file_handles</strong></td>
+<td>32768</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_file_instances</strong></td>
+<td>10000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_mutex_classes</strong></td>
+<td>200</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_mutex_instances</strong></td>
+<td>1000000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_rwlock_classes</strong></td>
+<td>30</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_rwlock_instances</strong></td>
+<td>1000000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_table_handles</strong></td>
+<td>100000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_table_instances</strong></td>
+<td>50000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_thread_classes</strong></td>
+<td>50</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>performance_schema_max_thread_instances</strong></td>
+<td>1000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>pid_file</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/mysqld.pid</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>plugin_dir</strong></td>
+<td>/opt/udb/program/mysql/mysql-5.5.24/lib/plugin/</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>3306</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>preload_buffer_size</strong></td>
+<td>32768</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>profiling</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>profiling_history_size</strong></td>
+<td>15</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>protocol_version</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>proxy_user</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>pseudo_thread_id</strong></td>
+<td>111080103</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_alloc_block_size</strong></td>
+<td>8192</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_cache_limit</strong></td>
+<td>1048576</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_cache_min_res_unit</strong></td>
+<td>4096</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_cache_size</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_cache_type</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_cache_wlock_invalidate</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>query_prealloc_size</strong></td>
+<td>8192</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rand_seed1</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rand_seed2</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>range_alloc_block_size</strong></td>
+<td>4096</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>read_buffer_size</strong></td>
+<td>262144</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>read_only</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>read_rnd_buffer_size</strong></td>
+<td>524288</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/relaylog/mysql-relay.log</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log_index</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log_info_file</strong></td>
+<td>relay-log.info</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log_purge</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log_recovery</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>relay_log_space_limit</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>report_host</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>report_password</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>report_port</strong></td>
+<td>3306</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>report_user</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_recovery_rank</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_master_enabled</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_master_timeout</strong></td>
+<td>10000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_master_trace_level</strong></td>
+<td>32</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_master_wait_no_slave</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_slave_enabled</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>rpl_semi_sync_slave_trace_level</strong></td>
+<td>32</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>secure_auth</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>secure_file_priv</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/tmp/</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>server_id</strong></td>
+<td>168430248</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>skip_external_locking</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>skip_name_resolve</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>skip_networking</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>skip_show_database</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_compressed_protocol</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_exec_mode</strong></td>
+<td>STRICT</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_load_tmpdir</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/tmp</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_net_timeout</strong></td>
+<td>3600</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_skip_errors</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_transaction_retries</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slave_type_conversions</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slow_launch_time</strong></td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slow_query_log</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>slow_query_log_file</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/log/mysql-slow.log</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>socket</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/mysqld.sock</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sort_buffer_size</strong></td>
+<td>524288</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_auto_is_null</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_big_selects</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_big_tables</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_buffer_result</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_log_bin</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_log_off</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_low_priority_updates</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_max_join_size</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_mode</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_notes</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_quote_show_create</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_safe_updates</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_select_limit</strong></td>
+<td>18446744073709551615</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_slave_skip_counter</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sql_warnings</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ssl_ca</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ssl_capath</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ssl_cert</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ssl_cipher</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ssl_key</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>storage_engine</strong></td>
+<td>InnoDB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>stored_program_cache</strong></td>
+<td>256</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sync_binlog</strong></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sync_frm</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sync_master_info</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sync_relay_log</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>sync_relay_log_info</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>system_time_zone</strong></td>
+<td>CST</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>table_definition_cache</strong></td>
+<td>400</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>table_open_cache</strong></td>
+<td>128</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>thread_cache_size</strong></td>
+<td>50</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>thread_concurrency</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>thread_handling</strong></td>
+<td>one-thread-per-connection</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>thread_stack</strong></td>
+<td>262144</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>time_format</strong></td>
+<td>%H:%i:%s</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>time_zone</strong></td>
+<td>SYSTEM</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>timed_mutexes</strong></td>
+<td>OFF</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>timestamp</strong></td>
+<td>1524477955</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>tmp_table_size</strong></td>
+<td>16777216</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>tmpdir</strong></td>
+<td>/opt/udb/instance/mysql-5.5/udb-ovzdmx/tmp</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>transaction_alloc_block_size</strong></td>
+<td>8192</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>transaction_prealloc_size</strong></td>
+<td>4096</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>tx_isolation</strong></td>
+<td>REPEATABLE-READ</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>unique_checks</strong></td>
+<td>ON</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>updatable_views_with_limit</strong></td>
+<td>YES</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>5.5.24-ucloudrel1-log</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>version_comment</strong></td>
+<td>Source distribution</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>version_compile_machine</strong></td>
+<td>x86_64</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>version_compile_os</strong></td>
+<td>Linux</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout" target="_blank" rel="noopener"><strong>wait_timeout</strong></a></td>
+<td>28800</td>
+<td>Both</td>
+<td>mysql 在关闭一个不活动 connection 之前等待的秒数</td>
+</tr>
+<tr>
+<td><strong>warning_count</strong></td>
+<td>0</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/variable/" rel="tag"># variable</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/22/mysql-status/" rel="next" title="MySQL status 详解">
+                <i class="fa fa-chevron-left"></i> MySQL status 详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/23/mysql-lost-connection-error/" rel="prev" title="MySQL 2013 lost connection error 详解">
+                MySQL 2013 lost connection error 详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/23/mysql-system-variable/';
+          this.page.identifier = '2018/04/23/mysql-system-variable/';
+          this.page.title = 'MySQL system variable 详解';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

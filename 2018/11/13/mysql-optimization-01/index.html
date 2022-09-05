@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="优化,聚合,join,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="最近线上生产环境中有些 MySQL 的语句特别慢，跑一个查询需要大概 5 分钟，已经到了不得不解决的地步了。 案例一：单表复杂语句的聚合计算问题描述单表数据超过 1500 万，写入不是特别频繁，查询很多，需要对表中订单的费用的进行实时计算，主要是基于时间以及订单状态进行运算。 123SELECT count(order.id) AS order_count, sum(order.original_">
+<meta name="keywords" content="优化,聚合,join">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 优化 01 之慢查询">
+<meta property="og:url" content="http://sanyuesha.com/2018/11/13/mysql-optimization-01/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="最近线上生产环境中有些 MySQL 的语句特别慢，跑一个查询需要大概 5 分钟，已经到了不得不解决的地步了。 案例一：单表复杂语句的聚合计算问题描述单表数据超过 1500 万，写入不是特别频繁，查询很多，需要对表中订单的费用的进行实时计算，主要是基于时间以及订单状态进行运算。 123SELECT count(order.id) AS order_count, sum(order.original_">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-29T15:10:44.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 优化 01 之慢查询">
+<meta name="twitter:description" content="最近线上生产环境中有些 MySQL 的语句特别慢，跑一个查询需要大概 5 分钟，已经到了不得不解决的地步了。 案例一：单表复杂语句的聚合计算问题描述单表数据超过 1500 万，写入不是特别频繁，查询很多，需要对表中订单的费用的进行实时计算，主要是基于时间以及订单状态进行运算。 123SELECT count(order.id) AS order_count, sum(order.original_">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/11/13/mysql-optimization-01/">
+
+
+
+
+
+  <title>MySQL 优化 01 之慢查询 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/11/13/mysql-optimization-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MySQL 优化 01 之慢查询</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T11:16:47+08:00">
+                Nov 13 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近线上生产环境中有些 MySQL 的语句特别慢，跑一个查询需要大概 5 分钟，已经到了不得不解决的地步了。</p>
+<h2 id="案例一：单表复杂语句的聚合计算"><a href="#案例一：单表复杂语句的聚合计算" class="headerlink" title="案例一：单表复杂语句的聚合计算"></a>案例一：单表复杂语句的聚合计算</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>单表数据超过 1500 万，写入不是特别频繁，查询很多，需要对表中订单的费用的进行实时计算，主要是基于时间以及订单状态进行运算。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">count</span>(order.id) <span class="keyword">AS</span> order_count, <span class="keyword">sum</span>(order.original_total_fee) <span class="keyword">AS</span> original_total_fee, <span class="keyword">sum</span>(order.settlement_fee) <span class="keyword">AS</span> settlement_fee, <span class="keyword">sum</span>(order.total_fee) <span class="keyword">AS</span> total_fee, order.seller_id <span class="keyword">AS</span> order_seller_id</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">order</span></span><br><span class="line"><span class="keyword">WHERE</span> order.create_time &lt; <span class="string">'2018-11-10 00:00:00'</span> <span class="keyword">and</span> create_time &gt; <span class="string">'2016-10-10'</span> <span class="keyword">AND</span> order.order_status <span class="keyword">IN</span> (<span class="string">'paid'</span>, <span class="string">'refund_refused'</span>) <span class="keyword">AND</span> order.partner_id <span class="keyword">IN</span> (<span class="number">105203908</span>, <span class="number">105203916</span>, <span class="number">105203958</span>, <span class="number">105203910</span>) <span class="keyword">AND</span>  order.seller_id = <span class="number">96691</span> <span class="keyword">AND</span> order.user_id <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="number">105203908</span>, <span class="number">105203916</span>, <span class="number">105203958</span>, <span class="number">105203910</span>) <span class="keyword">GROUP</span> <span class="keyword">BY</span> order.seller_id;</span><br></pre></td></tr></table></figure>
+<p>表中有以下索引：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_order_id_device_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_order_id_device_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"device_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_device_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"device_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">4125022</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_device_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_status"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">4125022</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_device_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_seller_id_order_name"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"seller_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">18</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_seller_id_order_name"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_name"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">5125</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_seller_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"seller_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">5899</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_seller_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"create_time"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_status_seller_id_order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_status"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">18</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_status_seller_id_order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"seller_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">31548</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_status_seller_id_order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_seller_id_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"seller_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">18</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_seller_id_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"user_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">8250045</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_seller_id_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"create_time"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">16500090</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个 SQL 语句每次执行时间因需要计算的数据大小而异，平均时间再 1 分钟，更长会达到 3 分钟或更久。</p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>这个表已经有不少索引了，先不说这些索引的合理性，单从上面的语句来看，应该尽量使用现存的索引来优化查询，使用 explain 语句分析上面的查询输出如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"select_type"</span>: <span class="string">"SIMPLE"</span>,</span><br><span class="line">            <span class="attr">"table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"range"</span>,</span><br><span class="line">            <span class="attr">"possible_keys"</span>: <span class="string">"order_seller_order_name,order_seller_id_create_time,idx_order_status_seller_id_order_id,idx_seller_id_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"order_seller_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"key_len"</span>: <span class="string">"12"</span>,</span><br><span class="line">            <span class="attr">"ref"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"rows"</span>: <span class="number">22764</span>,</span><br><span class="line">            <span class="attr">"Extra"</span>: <span class="string">"Using where"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到上面的语句使用了 <code>order_seller_id_create_time</code> 这个索引，这个不难理解，因为 where 子句中用了 seller_id 的等值以及 create_time 的范围，符合最左前缀的要求，按理来说查询应该不是很慢，rows 显示也就只有几万条数据，不算太大，尝试尽量减少数据范围，继续观察对计算时间的影响，做了以下几种修改：</p>
+<p><strong>缩小 create_time 时间范围</strong></p>
+<p>只有当数据明显减少之后计算时间才会缩短</p>
+<p><strong>简化 where 子句的条件</strong></p>
+<p>去掉 user_id 和 partner_id 的删选，尽量简化 where 子句的删选，索引选择依然没有变，但是如果不缩小数据范围，依然很慢。</p>
+<p>在做了以上几种尝试之后，初步能得出结论：<strong>慢不在于查询，而在于聚合运算</strong>。</p>
+<p>既然索引本身无助于聚合运算，尝试对数据库硬件进行升级，来保证 MySQL 有充分的资源进行计算，虽然查了一圈没有找到特别详细的描述 MySQL 做聚合运算的原理，猜测肯定会用到不少资源。</p>
+<h3 id="方案尝试"><a href="#方案尝试" class="headerlink" title="方案尝试"></a>方案尝试</h3><h4 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h4><p>原有 MySQL 实例用的是云，6G 内存，ssd 的实例，直接增加内存到 12G，然后直行上面的运算，并没有显著改善</p>
+<h4 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h4><p>修改 <code>innodb_buffer_pool_size</code> 大小从原来的 4G 到 8G，并且更改 <code>innodb_buffer_pool_instances</code> 为 2，让每个 buffer_pool 分配 4G 内存，然后直行上面的计算，速度得到显著改善。</p>
+<h3 id="方案总结"><a href="#方案总结" class="headerlink" title="方案总结"></a>方案总结</h3><p><strong>提升硬件资源有利于 MySQL 执行聚合运算</strong>，但是最终是有利于 MySQL 把查询索引都缓存了改善了查询，还是改善了聚合计算所需要的资源在这个场景之下都不太好能得出结论，猜测二者都有可能。</p>
+<p><a href="https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_buffer_pool_size" target="_blank" rel="noopener"><code>innodb_buffer_pool_size</code></a> 是 MySQL 为执行 MySQL 查询计算所预留的一个缓存区，本质上是越大越好，因为这样的话，MySQL 会把大部分运算直接在内存中执行，<code>innodb_buffer_pool_instances</code> 是为了在并发大的时候提升并发读和并发写的，单个 <code>innodb_buffer_pool_size</code> 的大小是 innodb_buffer_pool_size/innodb_buffer_pool_instances，官方建议 innodb_buffer_pool_size 最小不要小于 1G。</p>
+<h2 id="案例二：大表-join-查询"><a href="#案例二：大表-join-查询" class="headerlink" title="案例二：大表 join 查询"></a>案例二：大表 join 查询</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>两个大表 join 查询，大表 2000 万以上，小表 1500 万以上</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> order_base.id <span class="keyword">AS</span> order_base_id, order_base.user_id <span class="keyword">AS</span> order_base_user_id</span><br><span class="line"><span class="keyword">FROM</span> order_base <span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="keyword">order</span> <span class="keyword">ON</span> order_base.id = order.order_id</span><br><span class="line"><span class="keyword">WHERE</span> order.seller_id = <span class="number">96691</span> <span class="keyword">AND</span> order_base.paid_time &gt;= <span class="string">'2015-10-03T16:43:07'</span> <span class="keyword">AND</span> order_base.paid_time &lt; <span class="string">'2018-11-12T16:43:07'</span> <span class="keyword">AND</span> order_base.paid = <span class="number">1</span> <span class="keyword">AND</span> order.partner_id <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="number">105203908</span>, <span class="number">105203916</span>, <span class="number">105203958</span>, <span class="number">105203910</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> order_base.order_id <span class="keyword">DESC</span></span><br><span class="line"> <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>order_base 索引如下:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"uuid"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"uuid"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"user_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">6978457</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"user_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_order_id"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"order_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"user_id"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">10467686</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"create_time"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"Table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"Non_unique"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Key_name"</span>: <span class="string">"idx_order_base_paid_time"</span>,</span><br><span class="line">            <span class="attr">"Seq_in_index"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Column_name"</span>: <span class="string">"paid_time"</span>,</span><br><span class="line">            <span class="attr">"Collation"</span>: <span class="string">"A"</span>,</span><br><span class="line">            <span class="attr">"Cardinality"</span>: <span class="number">20935372</span>,</span><br><span class="line">            <span class="attr">"Sub_part"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Packed"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"Null"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_type"</span>: <span class="string">"BTREE"</span>,</span><br><span class="line">            <span class="attr">"Comment"</span>: <span class="string">""</span>,</span><br><span class="line">            <span class="attr">"Index_comment"</span>: <span class="string">""</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>order 表索引同 <strong>案例一</strong>。</p>
+<p>如果最终没有数据满足条件，这个 SQL 语句非常慢，如果有数据满足条件，速度也不算特别理想。</p>
+<h3 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h3><p>使用 explain 语句可以看到如下输出：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"select_type"</span>: <span class="string">"SIMPLE"</span>,</span><br><span class="line">            <span class="attr">"table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"index"</span>,</span><br><span class="line">            <span class="attr">"possible_keys"</span>: <span class="string">"order_order_id_device_id,order_seller_id_order_name,seller_id_create_time,idx_seller_id_user_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"order_order_id_device_id"</span>,</span><br><span class="line">            <span class="attr">"key_len"</span>: <span class="string">"12"</span>,</span><br><span class="line">            <span class="attr">"ref"</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">"rows"</span>: <span class="number">473</span>,</span><br><span class="line">            <span class="attr">"Extra"</span>: <span class="string">"Using where"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"select_type"</span>: <span class="string">"SIMPLE"</span>,</span><br><span class="line">            <span class="attr">"table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"eq_ref"</span>,</span><br><span class="line">            <span class="attr">"possible_keys"</span>: <span class="string">"PRIMARY,idx_order_base_paid_time"</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">            <span class="attr">"key_len"</span>: <span class="string">"4"</span>,</span><br><span class="line">            <span class="attr">"ref"</span>: <span class="string">"martin_order.order.order_id"</span>,</span><br><span class="line">            <span class="attr">"rows"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Extra"</span>: <span class="string">"Using where"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于 explain 语句的输出，详见 <a href="/2018/03/23/mysql-explain/" title="MySQL explain 详解">MySQL explain 详解</a>，这里可以明显看到表 order 中的 ref 是 null，type 是 index，也就是是一个索引扫描，也就是说 <strong>order 表可能使用了一个不合理的索引 <code>order_order_id_device_id</code> 从而造成了 order 需要进行全索引扫描，这是非常糟糕的索引选择类型，这有可能是造成查询慢的原因之一</strong>。</p>
+<p>表 order_base 用的 type 是 eq_ref，意味着 order_base 使用的是唯一性索引或者 primary key，从上不能看出是 primary key，性能较好。</p>
+<h3 id="方案尝试-1"><a href="#方案尝试-1" class="headerlink" title="方案尝试"></a>方案尝试</h3><p>order 表有很多索引，在这个 join 语句的 where 子句中 order 表主要使用了 seller_id 和 partner_id，已经存在的索引中只有 <code>order_seller_id_create_time</code> 满足场景，因而可以在 join 的时候强制表 order 走这个索引：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> order_base.id <span class="keyword">AS</span> order_base_id, order_base.user_id <span class="keyword">AS</span> order_base_user_id</span><br><span class="line"><span class="keyword">FROM</span> order_base <span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="keyword">order</span> <span class="keyword">force</span> <span class="keyword">index</span>(order_seller_id_create_time) <span class="keyword">ON</span> order_base.id = order.order_id</span><br><span class="line"><span class="keyword">WHERE</span> order.seller_id = <span class="number">96691</span> <span class="keyword">AND</span> order_base.paid_time &gt;= <span class="string">'2015-10-03T16:43:07'</span> <span class="keyword">AND</span> order_base.paid_time &lt; <span class="string">'2018-11-12T16:43:07'</span> <span class="keyword">AND</span> order_base.paid = <span class="number">1</span> <span class="keyword">AND</span> order.partner_id <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="number">105203908</span>, <span class="number">105203916</span>, <span class="number">105203958</span>, <span class="number">105203910</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> order_base.order_id <span class="keyword">DESC</span></span><br><span class="line"> <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>再使用 explain 输出如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"select_type"</span>: <span class="string">"SIMPLE"</span>,</span><br><span class="line">            <span class="attr">"table"</span>: <span class="string">"order"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"ref"</span>,</span><br><span class="line">            <span class="attr">"possible_keys"</span>: <span class="string">"order_seller_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"order_seller_id_create_time"</span>,</span><br><span class="line">            <span class="attr">"key_len"</span>: <span class="string">"4"</span>,</span><br><span class="line">            <span class="attr">"ref"</span>: <span class="string">"const"</span>,</span><br><span class="line">            <span class="attr">"rows"</span>: <span class="number">348810</span>,</span><br><span class="line">            <span class="attr">"Extra"</span>: <span class="string">"Using where; Using filesort"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"select_type"</span>: <span class="string">"SIMPLE"</span>,</span><br><span class="line">            <span class="attr">"table"</span>: <span class="string">"order_base"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"eq_ref"</span>,</span><br><span class="line">            <span class="attr">"possible_keys"</span>: <span class="string">"PRIMARY,idx_order_base_paid_time"</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">            <span class="attr">"key_len"</span>: <span class="string">"4"</span>,</span><br><span class="line">            <span class="attr">"ref"</span>: <span class="string">"martin_order.order.order_id"</span>,</span><br><span class="line">            <span class="attr">"rows"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"Extra"</span>: <span class="string">"Using where"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到表 order 的 type 已经是 ref，表示使用了一个非唯一性索引或者是满足最左前缀的索引，而且 ref 已经成了 const，是非常好的索引选择。</p>
+<p>在 join 查询中，需要 match 的总行数是各个表 explain output 中 rows 的乘机，虽然说更改之后表 order 的 rows 明显增多，但是能够合理使用索引，还是明显改善查询速度，优化后的 SQL 语句基本是秒查。</p>
+<p><strong>update</strong></p>
+<p>上述优化对于 <code>order_base.paid = 1</code> 这个条件删选出的数据如果比较少时确实很快，10 万以下，但是如果非常多还是很慢，后来发现 order 表也有一个类似的 paid 状态，相对来说数据要少很多，换成 <code>order.order_status=&#39;paid&#39;</code> 会有显著改善，也就是说上述 SQL 语句在不同的查询量级的情况下使用不同的方案更合适。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>MySQL 的慢查询大多都集中在索引使用不合理，对 MySQL 的索引原理要有深入理解才能准确定位问题，而且 MySQL 的性能问题是多方面的，有硬件也有数据的影响，要多方面综合考虑。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/优化/" rel="tag"># 优化</a>
+          
+            <a href="/tags/聚合/" rel="tag"># 聚合</a>
+          
+            <a href="/tags/join/" rel="tag"># join</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/11/go-concurrency-with-shared-data-4/" rel="next" title="并发 Go 程序中的共享变量 (四)：内存同步">
+                <i class="fa fa-chevron-left"></i> 并发 Go 程序中的共享变量 (四)：内存同步
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/16/mongodb-server-selection/" rel="prev" title="可容错的 server proxy 实现">
+                可容错的 server proxy 实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例一：单表复杂语句的聚合计算"><span class="nav-number">1.</span> <span class="nav-text">案例一：单表复杂语句的聚合计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析"><span class="nav-number">1.2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案尝试"><span class="nav-number">1.3.</span> <span class="nav-text">方案尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案一"><span class="nav-number">1.3.1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案二"><span class="nav-number">1.3.2.</span> <span class="nav-text">方案二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案总结"><span class="nav-number">1.4.</span> <span class="nav-text">方案总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例二：大表-join-查询"><span class="nav-number">2.</span> <span class="nav-text">案例二：大表 join 查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述-1"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析-1"><span class="nav-number">2.2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案尝试-1"><span class="nav-number">2.3.</span> <span class="nav-text">方案尝试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/11/13/mysql-optimization-01/';
+          this.page.identifier = '2018/11/13/mysql-optimization-01/';
+          this.page.title = 'MySQL 优化 01 之慢查询';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

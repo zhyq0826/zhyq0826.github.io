@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="turbo,backend,wheel,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="turbo 与其说是一个 framework ，不如说是一个后端的解决方案。  turbo 是如何诞生的?tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。 原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一">
+<meta name="keywords" content="turbo,backend,wheel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python 轮子 turbo 的诞生记">
+<meta property="og:url" content="http://sanyuesha.com/2016/07/23/why-did-i-make-turbo/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="turbo 与其说是一个 framework ，不如说是一个后端的解决方案。  turbo 是如何诞生的?tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。 原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-12T14:29:16.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python 轮子 turbo 的诞生记">
+<meta name="twitter:description" content="turbo 与其说是一个 framework ，不如说是一个后端的解决方案。  turbo 是如何诞生的?tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。 原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2016/07/23/why-did-i-make-turbo/">
+
+
+
+
+
+  <title>python 轮子 turbo 的诞生记 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/07/23/why-did-i-make-turbo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python 轮子 turbo 的诞生记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-23T19:05:01+08:00">
+                Jul 23 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/turbo/" itemprop="url" rel="index">
+                    <span itemprop="name">turbo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a href="https://github.com/wecatch/app-turbo" target="_blank" rel="noopener">turbo</a> 与其说是一个 framework ，不如说是一个后端的解决方案。</p>
+</blockquote>
+<h2 id="turbo-是如何诞生的"><a href="#turbo-是如何诞生的" class="headerlink" title="turbo 是如何诞生的?"></a>turbo 是如何诞生的?</h2><p>tornado 是异步非阻塞的 web 服务器，同时也是一个 web framework，功能简单但完全够用。</p>
+<p>原东家的技术栈是：tornado、mongodb、redis、openresty，最大的服务每天服务的独立用户有上百万。早期大部分项目完全使用 tornado 最原始的方式构建，一个 main 文件包含几百个路由，所有的 handler 分布在十几个大大小小的文件夹下面，项目基本的文件结构包含：</p>
+<ul>
+<li>一个抽象的 dal 层(数据抽象)</li>
+<li>数据库连接(db)</li>
+<li>配置(conf)</li>
+<li>工具(utils)</li>
+<li>缓存(cache)</li>
+<li>第三方库(lib)</li>
+</ul>
+<p>随着项目的代码越来越多，多个特性开发常常同时进行，开发人员经常要非常小心地应对代码的更改，即使如此，冲突依然时常发生，代码的可维护性和健壮性日益变差。</p>
+<p>创业公司由于业务面临飞速增长，多条业务线齐头并进，开发团队往往要同时维护很多个项目，有的项目生命周期很短，一次活动就结束了，有的项目要对外合作，随合作的结束而结束，有的项目服务新的产品，需要快速构建。不同的项目由不同的开发人员创建，创建项目的方式基本是 copy 旧项目，比较原始，容易出错。项目结构在不同的项目之间的差异随着业务的不同，差别渐渐凸显，重复的功能性代码和工具性代码也逐渐变多。</p>
+<a id="more"></a>
+<p>在这样的背景之下，影响后端开发效率和开发质量主要问题可归纳为：</p>
+<ul>
+<li>大项目路由多，不易管理，不易变更</li>
+<li>项目目录分层不够，协同开发困难</li>
+<li>构建没有标准，混乱不堪，可维护性差</li>
+<li>重复性代码可共享性差，不易插拔</li>
+<li>tornado 天生原始，没有 Session、数据库连接、配套的 mongodb ORM、缓存管理、RESTFul等丰富特性辅以提高开发效率。</li>
+</ul>
+<p>turbo 就是为解决这些问题而创建的，因而 turbo 更像是一个解决方案。</p>
+<h2 id="turbo-具有什么特性？"><a href="#turbo-具有什么特性？" class="headerlink" title="turbo 具有什么特性？"></a>turbo 具有什么特性？</h2><ul>
+<li>项目构建工具，一键生成项目目录和 app 结构</li>
+<li>Session，提供灵活的接口，可以自定义存储方式</li>
+<li>简单的 mongodb ORM，和 mongoose 相比，非常简单甚至粗糙，但足够用了</li>
+<li>丰富且高度统一的目录划分，项目再大也不怕</li>
+<li>代码可插拔，易移植，易维护</li>
+<li>可以方便实现 RESTFul 风格的 api</li>
+<li>灵活的路由组织结构，非常方便重构和查找</li>
+</ul>
+<h3 id="一键构建"><a href="#一键构建" class="headerlink" title="一键构建"></a>一键构建</h3><p>目录结构一键生成，不再是从旧项目拷贝，结构一致，高度统一，可维护性变强。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">% turbo-admin -h                                                                                                                                                        </span><br><span class="line">turbo init project, server or app.</span><br><span class="line">    Usage:</span><br><span class="line">      turbo-admin (-h | --<span class="built_in">help</span>)</span><br><span class="line">      turbo-admin startproject  &lt;project&gt;</span><br><span class="line">      turbo-admin startserver   &lt;server&gt;</span><br><span class="line">      turbo-admin startapp      &lt;app&gt;</span><br><span class="line">      turbo-admin index         &lt;model_name&gt;</span><br><span class="line"></span><br><span class="line">    Options:</span><br><span class="line">      -h,  --<span class="built_in">help</span>        Show <span class="built_in">help</span> document</span><br><span class="line"></span><br><span class="line">% turbo-admin startproject hello-turbo</span><br><span class="line">% <span class="built_in">cd</span> hello-turbo</span><br><span class="line">% tree -L 2</span><br><span class="line">├── app-server</span><br><span class="line">│   ├── apps</span><br><span class="line">│   ├── main.py</span><br><span class="line">│   ├── setting.py</span><br><span class="line">│   ├── static</span><br><span class="line">│   └── templates</span><br><span class="line">├── config</span><br><span class="line">│   └── __init__.py</span><br><span class="line">├── db</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── conn.py</span><br><span class="line">│   └── setting.py</span><br><span class="line">├── helpers</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── settings.py</span><br><span class="line">│   └── user</span><br><span class="line">├── lib</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   └── session.py</span><br><span class="line">├── models</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── base.py</span><br><span class="line">│   ├── settings.py</span><br><span class="line">│   └── user</span><br><span class="line">├── service</span><br><span class="line">│   └── __init__.py</span><br><span class="line">├── store</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── actions.py</span><br><span class="line">│   ├── modules</span><br><span class="line">│   └── mutation_types.py</span><br><span class="line">└── utils</span><br><span class="line">    └── __init__.py</span><br></pre></td></tr></table></figure>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><p>自带 Session，存储方式可以自由变更，灵活性强。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.session <span class="keyword">import</span> HeaderObject, CookieObject</span><br><span class="line"><span class="keyword">from</span> turbo.session <span class="keyword">import</span> Store, RedisStore, DiskStore</span><br></pre></td></tr></table></figure>
+<h3 id="简单的-mongodb-ORM"><a href="#简单的-mongodb-ORM" class="headerlink" title="简单的 mongodb ORM"></a>简单的 mongodb ORM</h3><p>ORM 提供最基本的 collection 结构到代码的映射，表结构清晰明了，增删改均可灵活定义数据一致性检查。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> turbo.model</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Category</span><span class="params">(turbo.model.BaseModel)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""分类</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    field:</span></span><br><span class="line"><span class="string">        name: 名称</span></span><br><span class="line"><span class="string">        ename: 英文名</span></span><br><span class="line"><span class="string">        desc: 描述</span></span><br><span class="line"><span class="string">        tag: 标签列表</span></span><br><span class="line"><span class="string">        sn: 序号</span></span><br><span class="line"><span class="string">        nvideo: 视频数量</span></span><br><span class="line"><span class="string">        cover: 封面</span></span><br><span class="line"><span class="string">        uid: 创建用户</span></span><br><span class="line"><span class="string">        atime: 时间</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    name = <span class="string">'category'</span></span><br><span class="line">    field = &#123;</span><br><span class="line">        <span class="string">'name'</span>:             (basestring, <span class="string">''</span>),</span><br><span class="line">        <span class="string">'ename'</span>:            (basestring, <span class="string">''</span>),</span><br><span class="line">        <span class="string">'desc'</span>:             (basestring, <span class="string">''</span>),</span><br><span class="line">        <span class="string">'tag'</span>:              (list, []),</span><br><span class="line"></span><br><span class="line">        <span class="string">'sn'</span>:               (int, <span class="number">0</span>),</span><br><span class="line">        <span class="string">'nvideo'</span>:           (int, <span class="number">0</span>),</span><br><span class="line"></span><br><span class="line">        <span class="string">'cover'</span>:            (ObjectId, <span class="literal">None</span>),</span><br><span class="line">        <span class="string">'uid'</span>:              (ObjectId, <span class="literal">None</span>),</span><br><span class="line"></span><br><span class="line">        <span class="string">'atime'</span>:            (datetime, <span class="literal">None</span>),</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="丰富的目录结构划分"><a href="#丰富的目录结构划分" class="headerlink" title="丰富的目录结构划分"></a>丰富的目录结构划分</h3><p>严格定义了各个目录的结构的作用以及层次，提供了一般大型项目所需的各种目录划分</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">├── README.md</span><br><span class="line">├── app-server <span class="comment"># 业务 server</span></span><br><span class="line">├── config <span class="comment"># 全局配置</span></span><br><span class="line">├── db <span class="comment"># db 连接</span></span><br><span class="line">├── helpers <span class="comment"># 全局业务逻辑</span></span><br><span class="line">├── lib <span class="comment"># 第三方依赖库</span></span><br><span class="line">├── models <span class="comment"># 表结构</span></span><br><span class="line">├── script <span class="comment"># 一次性脚本</span></span><br><span class="line">├── service <span class="comment"># 业务性工具</span></span><br><span class="line">├── store <span class="comment"># 全局状态管理</span></span><br><span class="line">├── task <span class="comment"># 异步任务</span></span><br><span class="line">├── utils <span class="comment"># 非业务性工具</span></span><br></pre></td></tr></table></figure>
+<h3 id="代码可插拔-易移植"><a href="#代码可插拔-易移植" class="headerlink" title="代码可插拔, 易移植"></a>代码可插拔, 易移植</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apps</span><br><span class="line">├── __init__.py</span><br><span class="line">├── app</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── app.py</span><br><span class="line">│   ├── base.py</span><br><span class="line">│   ├── setting.py</span><br><span class="line">├── base.py</span><br><span class="line">├── settings.py</span><br></pre></td></tr></table></figure>
+<p>每个业务 app 都具有一样的结构，配置和业务代码随着业务所需分布在各个不同的层次，抽象程度越高的代码，所在层次越高，比如全局合法性检查可以放置在 <code>apps/base.py</code> 中，越具体的业务所在的层次越低，比如具体的注册登录逻辑可以放置在 <code>apps/app/app.py</code> 中。如果业务发生变更，业务目录 <code>app</code> 可完整移植。</p>
+<p>所有业务 <code>app</code> 都必须在 <code>apps/settings.py</code> 下注册才能生效，上下线 so easy.</p>
+<h3 id="RESTFul-api"><a href="#RESTFul-api" class="headerlink" title="RESTFul api"></a>RESTFul api</h3><p>http 协议所支持的方法都可以在 turbo 中以大小写的方式区分来实现普通页面 render 和接口 api</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># render </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># api  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GET</span><span class="params">(self)</span>:</span></span><br><span class="line">    self._data = &#123;<span class="string">'username'</span>: <span class="string">'zhyq0826'</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="灵活的路由"><a href="#灵活的路由" class="headerlink" title="灵活的路由"></a>灵活的路由</h3><p>路由紧随业务代码，turbo 提供了</p>
+<ul>
+<li>register_group_urls</li>
+<li>register_url</li>
+</ul>
+<p>两种方式来实现路由的注册</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">register.register_group_urls(<span class="string">''</span>, [</span><br><span class="line">    (<span class="string">'/'</span>, app.HomeHandler),</span><br><span class="line">    (<span class="string">'/index'</span>, app.HomeHandler, <span class="string">'index'</span>),</span><br><span class="line">    (<span class="string">'/hello'</span>, app.HomeHandler, <span class="string">'home'</span>),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">register.register_url(<span class="string">'/v1/hello'</span>, app.ApiHandler)</span><br></pre></td></tr></table></figure>
+<p>可以十分方便的更改路由规则。</p>
+<h3 id="集成很多实用的功能特性"><a href="#集成很多实用的功能特性" class="headerlink" title="集成很多实用的功能特性"></a>集成很多实用的功能特性</h3><p>在使用mongodb 和 tornado 的实际开发中遇到了各式各样的问题，因而 turbo 自身在发展过程中集成了很多小功能，非常实用。</p>
+<p>1.可以使用命令行一键生成所有 collection 的索引</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">turbo-admin index &lt;model_name&gt;</span><br></pre></td></tr></table></figure>
+<p>2.类似 flux 的状态和事件分发机制，可以非常方便管理和更改全局变量状态，此特性可以用以请求统计，函数调用统计等方面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#user.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.flux <span class="keyword">import</span> Mutation, register, State</span><br><span class="line"></span><br><span class="line">mutation = Mutation(__file__)</span><br><span class="line">state = State(__file__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@register(mutation)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">increase_rank</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> rank+<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@register(mutation)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dec_rank</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> rank<span class="number">-1</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#actions.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.flux <span class="keyword">import</span> Mutation, register, dispatch, register_dispatch</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mutation_types</span><br><span class="line"></span><br><span class="line"><span class="meta">@register_dispatch('user', mutation_types.INCREASE)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">increase</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrease</span><span class="params">(rank)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> dispatch(<span class="string">'user'</span>, mutation_types.DECREASE, rank)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@register_dispatch('metric', 'inc_qps')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inc_qps</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>3.mongodb 读写调用 hook，利用该 hook ，可以统计 mongodb 读写调用状况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(turbo.model.BaseModel)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write_action_call</span><span class="params">(self, name, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        execute when write action occurs, note: in this method write action must be called asynchronously</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read_action_call</span><span class="params">(self, name, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        execute when read action occurs, note: in this method read action must be called asynchronously</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>4.日志可以根据文件所在路径生成 logger 名称，也可以自定义 logger 路径、级别、名称等<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.util <span class="keyword">import</span> getLogger</span><br><span class="line"></span><br><span class="line">logger = getLogger(__file__)</span><br><span class="line"></span><br><span class="line">logger = getLogger(<span class="string">'feed'</span>, log_level=logging.DEBUG, log_path=<span class="string">'/var/log/feed.log'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>5.字符串化 mongodb 数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> turbo.util <span class="keyword">import</span> to_str, to_list_str, to_dict_str, json_encode</span><br><span class="line"></span><br><span class="line">data  = json_encode(to_str(db.collection.find()))</span><br></pre></td></tr></table></figure>
+<p>6.参数快捷提取和转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">_get_params = &#123;</span><br><span class="line">    <span class="string">'need'</span>: [</span><br><span class="line">        (<span class="string">'skip'</span>, int),</span><br><span class="line">        (<span class="string">'limit'</span>, int),</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'option'</span>: [</span><br><span class="line">        (<span class="string">'did'</span>, basestring, <span class="literal">None</span>)</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可调用 self.parameters 完成参数提取工作，必须的参数不存在或转换错误时，值为 <code>None</code>，可选的参数可以指定默认值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> self.parameters[<span class="string">'skip'</span>] == <span class="number">0</span></span><br><span class="line"><span class="keyword">assert</span> self.parameters[<span class="string">'did'</span>] == <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>除上面列举的之外，turbo 还具有很多实用的特性，仓库地址：<a href="https://github.com/wecatch/app-turbo" target="_blank" rel="noopener">https://github.com/wecatch/app-turbo</a></p>
+</blockquote>
+<h2 id="适时而建的轮子-turbo"><a href="#适时而建的轮子-turbo" class="headerlink" title="适时而建的轮子 turbo"></a>适时而建的轮子 turbo</h2><p>turbo 在生产环境中应用了近一年，最大的项目日独立用户过百万，还有十多个大大小小的项目的后端使用了 turbo，已经经过了最初的考验。</p>
+<p>后端的轮子相比前端来说，远不如后者的来的快、来的猛，后端需要更长久的磨练和雕琢，一点一滴都需要经过业务的锤炼和数据的洗礼，才能渐成佳品，成为解决特定问题的利器。而轮子的创造更要把握时机，顺势而发，过早，轮子不够健全，解决问题不够彻底，很难推广使用，甚至有可能成了绊脚石，过晚，很多问题已经导致代码积劳成疾，想要完全治愈，必然代价不菲。</p>
+<p>turbo 正是为了解决 tornado 和 mongodb 类应用在面对代码规模庞大、多人协同所遭遇的种种问题而创造的，它的立足点非常实际，没有炫技，不浮夸，切中要害，直面问题。</p>
+<p>turbo 的实用就是它的华丽所在。</p>
+<ul>
+<li><a href="https://github.com/wecatch/app-turbo" target="_blank" rel="noopener">Github</a> </li>
+<li>QQ群交流: 387199856</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/turbo/" rel="tag"># turbo</a>
+          
+            <a href="/tags/backend/" rel="tag"># backend</a>
+          
+            <a href="/tags/wheel/" rel="tag"># wheel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/18/python-copy-deepcopy/" rel="next" title="如何理解 Python 浅拷贝和深拷贝">
+                <i class="fa fa-chevron-left"></i> 如何理解 Python 浅拷贝和深拷贝
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/20/distributed-lock-with-redis/" rel="prev" title="如何用 redis 造一把分布式锁">
+                如何用 redis 造一把分布式锁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#turbo-是如何诞生的"><span class="nav-number">1.</span> <span class="nav-text">turbo 是如何诞生的?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#turbo-具有什么特性？"><span class="nav-number">2.</span> <span class="nav-text">turbo 具有什么特性？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一键构建"><span class="nav-number">2.1.</span> <span class="nav-text">一键构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Session"><span class="nav-number">2.2.</span> <span class="nav-text">Session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的-mongodb-ORM"><span class="nav-number">2.3.</span> <span class="nav-text">简单的 mongodb ORM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#丰富的目录结构划分"><span class="nav-number">2.4.</span> <span class="nav-text">丰富的目录结构划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码可插拔-易移植"><span class="nav-number">2.5.</span> <span class="nav-text">代码可插拔, 易移植</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RESTFul-api"><span class="nav-number">2.6.</span> <span class="nav-text">RESTFul api</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#灵活的路由"><span class="nav-number">2.7.</span> <span class="nav-text">灵活的路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集成很多实用的功能特性"><span class="nav-number">2.8.</span> <span class="nav-text">集成很多实用的功能特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适时而建的轮子-turbo"><span class="nav-number">3.</span> <span class="nav-text">适时而建的轮子 turbo</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2016/07/23/why-did-i-make-turbo/';
+          this.page.identifier = '2016/07/23/why-did-i-make-turbo/';
+          this.page.title = 'python 轮子 turbo 的诞生记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

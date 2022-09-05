@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="golang,file,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="Go 在 os 中提供了文件的基本操作，包括通常意义的打开、创建、读写等操作，除此以外为了追求便捷以及性能上，Go 还在 io/ioutil 以及 bufio 提供一些其他函数供开发者使用，今天在这篇文章中，我们介绍一些常用文件操作在 Go 中是如何使用的。 File 文件类型Go 在 os 中定义了 File 类型：123type File struct &amp;#123;        // con">
+<meta name="keywords" content="golang,file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 文件操作详解">
+<meta property="og:url" content="http://sanyuesha.com/2019/03/08/go-stand-lib-file/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="Go 在 os 中提供了文件的基本操作，包括通常意义的打开、创建、读写等操作，除此以外为了追求便捷以及性能上，Go 还在 io/ioutil 以及 bufio 提供一些其他函数供开发者使用，今天在这篇文章中，我们介绍一些常用文件操作在 Go 中是如何使用的。 File 文件类型Go 在 os 中定义了 File 类型：123type File struct &amp;#123;        // con">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/go-file.jpg?a">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.045Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go 文件操作详解">
+<meta name="twitter:description" content="Go 在 os 中提供了文件的基本操作，包括通常意义的打开、创建、读写等操作，除此以外为了追求便捷以及性能上，Go 还在 io/ioutil 以及 bufio 提供一些其他函数供开发者使用，今天在这篇文章中，我们介绍一些常用文件操作在 Go 中是如何使用的。 File 文件类型Go 在 os 中定义了 File 类型：123type File struct &amp;#123;        // con">
+<meta name="twitter:image" content="https://static.git-star.com/go-file.jpg?a">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2019/03/08/go-stand-lib-file/">
+
+
+
+
+
+  <title>Go 文件操作详解 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/03/08/go-stand-lib-file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Go 文件操作详解</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-08T23:21:39+08:00">
+                Mar 8 2019
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go-标准库/" itemprop="url" rel="index">
+                    <span itemprop="name">Go 标准库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Go 在 <a href="https://golang.org/pkg/os/" target="_blank" rel="noopener">os</a> 中提供了文件的基本操作，包括通常意义的打开、创建、读写等操作，除此以外为了追求便捷以及性能上，Go 还在 <a href="https://golang.org/pkg/io/ioutil/" target="_blank" rel="noopener">io/ioutil</a> 以及 <a href="https://golang.org/pkg/bufio/" target="_blank" rel="noopener">bufio</a> 提供一些其他函数供开发者使用，今天在这篇文章中，我们介绍一些常用文件操作在 Go 中是如何使用的。</p>
+<h2 id="File-文件类型"><a href="#File-文件类型" class="headerlink" title="File 文件类型"></a>File 文件类型</h2><p>Go 在 os 中定义了 <a href="https://golang.org/pkg/os/#File" target="_blank" rel="noopener">File</a> 类型：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> File <span class="keyword">struct</span> &#123;</span><br><span class="line">        <span class="comment">// contains filtered or unexported fields</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打开一个文件进行读直接使用 <a href="https://golang.org/pkg/os/#Open" target="_blank" rel="noopener"><code>os.Open</code> </a>:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file, err := os.Open(<span class="string">"msg.txt"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>os.Open</code> 只接受一个文件名参数，默认打开的文件只支持读操作，文件的读写 <code>flag</code> 是以常量的形式定义的 <a href="https://golang.org/pkg/os/#pkg-constants" target="_blank" rel="noopener">Constants</a>   分别是：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">        <span class="comment">// Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.</span></span><br><span class="line">        O_RDONLY <span class="keyword">int</span> = syscall.O_RDONLY <span class="comment">// open the file read-only.</span></span><br><span class="line">        O_WRONLY <span class="keyword">int</span> = syscall.O_WRONLY <span class="comment">// open the file write-only.</span></span><br><span class="line">        O_RDWR   <span class="keyword">int</span> = syscall.O_RDWR   <span class="comment">// open the file read-write.</span></span><br><span class="line">        <span class="comment">// The remaining values may be or'ed in to control behavior.</span></span><br><span class="line">        O_APPEND <span class="keyword">int</span> = syscall.O_APPEND <span class="comment">// append data to the file when writing.</span></span><br><span class="line">        O_CREATE <span class="keyword">int</span> = syscall.O_CREAT  <span class="comment">// create a new file if none exists.</span></span><br><span class="line">        O_EXCL   <span class="keyword">int</span> = syscall.O_EXCL   <span class="comment">// used with O_CREATE, file must not exist.</span></span><br><span class="line">        O_SYNC   <span class="keyword">int</span> = syscall.O_SYNC   <span class="comment">// open for synchronous I/O.</span></span><br><span class="line">        O_TRUNC  <span class="keyword">int</span> = syscall.O_TRUNC  <span class="comment">// truncate regular writable file when opened.</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>以 <code>os.Open</code> 打开的文件其实就只有 <code>O_RDONLY</code> flag。</p>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>读取文件操作时通过 <code>File</code> 的方法 <a href="https://golang.org/pkg/os/#File.Read" target="_blank" rel="noopener">Read</a> 进行的，这个方法接受一个参数 <code>buf []byte</code> ，默认读取的内容大小是 <code>len(buf)</code>，并且返回读取的字节 size 和错误（如果有的话），如果读取到了文件末尾，则返回 0以及<code>io.EOF</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">&#125;</span><br><span class="line">buf := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">126</span>)</span><br><span class="line">n, err := file.Read(buf)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%d = %q"</span>, n, buf)</span><br></pre></td></tr></table></figure>
+<h2 id="按行读取"><a href="#按行读取" class="headerlink" title="按行读取"></a>按行读取</h2><p>在大多数文件操作中，我们可能只需要的一行行读取文件就可以满足需要，在 Go 中如何读取行呢？至少在 <a href="https://golang.org/pkg/os/" target="_blank" rel="noopener">os</a> 这个 package 中好像没有找到相关操作，其实 Go 已经在其他包中提供了这个操作 <a href="https://golang.org/pkg/bufio/" target="_blank" rel="noopener">bufio</a>。</p>
+<p>bufio 顾名思义就是带 buffer 的 IO，由于频繁读写磁盘会有相当的性能开销，因为一次磁盘的读写就是一次系统的调用，所以 Go 提供了一个 buffer 来缓冲读写的数据，比如多次写磁盘 bufio 就会把数据先缓冲起来，待 buffer 装满之后一次性写入，又比如多次读数据，bufio 会预先按照 buffer 的大小（一般是磁盘 block size 的整数倍）尽量多的读取数据，也就是采用预读的技术以提高读的性能。</p>
+<p>bufio 提供了 <a href="https://golang.org/pkg/bufio/#Reader" target="_blank" rel="noopener">Reader</a> 、<a href="https://golang.org/pkg/bufio/#Writer" target="_blank" rel="noopener">Writer</a>、<a href="https://golang.org/pkg/bufio/#Scanner" target="_blank" rel="noopener">Scanner</a> 来进行文件的读写，其中 Reader 和 Scanner 都支持按行读取文件。</p>
+<h3 id="Reader-读取行"><a href="#Reader-读取行" class="headerlink" title="Reader 读取行"></a>Reader 读取行</h3><p>使用 Reader 的<a href="https://golang.org/pkg/bufio/#Reader.ReadLine" target="_blank" rel="noopener">ReadLine</a> 按行读，其中 file 表示我们刚才打开的文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reader := bufio.NewReader(file)</span><br><span class="line">buf, _, err = reader.ReadLine()</span><br></pre></td></tr></table></figure>
+<p>ReadLine 读取文件的一行，默认是以 <code>\r\n</code> 或者 <code>\n</code> 分割，并且不包括分割符，如果行太长超过了内部 buffer 的大小，第二个返回值 isPrefix 就会被设置，直到 isPrefix 为 false 为止，表示一行读取完成。</p>
+<p>除了 ReadLine 之外，<a href="https://golang.org/pkg/bufio/#Reader.ReadBytes" target="_blank" rel="noopener">ReadBytes</a> 也支持按行读取，区别是 ReadBytes 需要显示的指定分隔符，而且其返回的数据中包括分割符：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">buf, err = reader.ReadBytes(<span class="string">'\n'</span>)</span><br><span class="line">fmt.Printf(<span class="string">"%d = %q"</span>, <span class="built_in">len</span>(buf), buf) <span class="comment">//输出包含 \n</span></span><br></pre></td></tr></table></figure>
+<p>除了对行的读取，bufio.Reader 还包含 <a href="https://golang.org/pkg/bufio/#Reader.ReadRune" target="_blank" rel="noopener">ReadRune</a>、ReadSlice、ReadString 等读取内容的函数。</p>
+<h3 id="Scanner-读取行"><a href="#Scanner-读取行" class="headerlink" title="Scanner 读取行"></a>Scanner 读取行</h3><p>Scanner 其实类似于 Reader，但是 scanner 有更强的便捷性，scanner 的主要目的就是利用各种分隔符来读取行，他提供了 SplitFunc 来自定义对文件内容的分割:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scanner := bufio.NewScanner(file)</span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">    fmt.Println(scanner.Text())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码会把文件 file 的内容按行输出，为什么恰好会按行输出？主要原因是 scanner 提供的默认的 <a href="https://golang.org/pkg/bufio/#Scanner.Split" target="_blank" rel="noopener">SplitFunc</a> 是 <a href="https://golang.org/pkg/bufio/#ScanLines" target="_blank" rel="noopener">ScanLines</a>，也就是 scanner.Text() 方法使用就是这个 splitfunc。</p>
+<p>接下类我们使用一个自定义的 SplitFunc 来实现从文本中找到可以转换成数字的字符。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">r := strings.NewReader(<span class="string">"123 456 k789 123"</span>)</span><br><span class="line">split := <span class="function"><span class="keyword">func</span><span class="params">(data []<span class="keyword">byte</span>, atEOF <span class="keyword">bool</span>)</span> <span class="params">(advance <span class="keyword">int</span>, token []<span class="keyword">byte</span>, err error)</span></span> &#123;</span><br><span class="line">    <span class="comment">// scanWords 按照 space 进行分割</span></span><br><span class="line">    advance, token, err = bufio.ScanWords(data, atEOF)</span><br><span class="line">    fmt.Printf(<span class="string">"data=%q\n"</span>, data)</span><br><span class="line">    fmt.Printf(<span class="string">"advance=%d\n"</span>, advance)</span><br><span class="line">    fmt.Printf(<span class="string">"token=%q\n"</span>, token)</span><br><span class="line">    fmt.Printf(<span class="string">"atEOF=%t\n"</span>, atEOF)</span><br><span class="line">    <span class="keyword">if</span> strings.Trim(<span class="keyword">string</span>(token), <span class="string">" "</span>) != <span class="string">""</span> &#123;</span><br><span class="line">        _, err = strconv.ParseInt(<span class="keyword">string</span>(token), <span class="number">10</span>, <span class="number">32</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scanner := bufio.NewScanner(r)</span><br><span class="line">scanner.Split(split)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">    fmt.Println(<span class="string">"scan text="</span>, scanner.Text())</span><br><span class="line">    fmt.Println(<span class="string">"======="</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> err := scanner.Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">"%s"</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子中我们定义了一个 SplitFunc，正如 SplitFunc 签名一样，他接受三个参数，分别是待处理的数据 data，是否还有更多的数据要处理的标识 atEOF，然后返回的是当前已经处理的数据的字节长度 advance，已经处理的字节数组 token，以及一个可选的错误 err。</p>
+<p><strong>advance 的计算是从当前剩下要处理的数据首位 0 的位置开始一直到下一个分割符，并且包含分隔符占用的字节</strong>，可以对照看以下输出就能明白：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">data=&quot;123 456 k789 123&quot;</span><br><span class="line">advance=4         //从 1 开始直到下一个空格</span><br><span class="line">token=&quot;123&quot;</span><br><span class="line">atEOF=false</span><br><span class="line">scan text= 123</span><br><span class="line">=======</span><br><span class="line">data=&quot;456 k789 123&quot;</span><br><span class="line">advance=4</span><br><span class="line">token=&quot;456&quot;</span><br><span class="line">atEOF=false</span><br><span class="line">scan text= 456</span><br><span class="line">=======</span><br><span class="line">data=&quot;k789 123&quot;   </span><br><span class="line">advance=5   //从 k 开始直到下一个空格</span><br><span class="line">token=&quot;k789&quot;</span><br><span class="line">atEOF=false</span><br><span class="line">strconv.ParseInt: parsing &quot;k789&quot;: invalid syntax%</span><br></pre></td></tr></table></figure>
+<p>而且需要注意的是，scanner 在遇到一个错误之后就停止 Scan 了，上面的 ParseInt 发生错误之后之后的 Scan 也不会输出。</p>
+<h2 id="File-类型和-bufio"><a href="#File-类型和-bufio" class="headerlink" title="File 类型和 bufio"></a>File 类型和 bufio</h2><p><img src="https://static.git-star.com/go-file.jpg?a" alt></p>
+<p>如图 File 是实现了<code>io.Reader</code> 和 <code>io.Writer</code> 两个 interface 的 type，而 bufio 提供的几种操作都以这两个 interface 为基础实现文件的读写，也就是说只要 type 实现了 io.Reader 就可以使用 bufio 读取，实现了 io.Writer 就可以使用 bufio 输出。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str := strings.NewReader(strings.Repeat(<span class="string">"ab"</span>, <span class="number">10</span>))</span><br><span class="line">buf := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">2</span>)</span><br><span class="line">reader := bufio.NewReader(str)</span><br></pre></td></tr></table></figure>
+<p>如上代码 str 是一个 string 的 Reader，然后就可以使用 bufio进行高效读取。</p>
+<h2 id="文件的输出"><a href="#文件的输出" class="headerlink" title="文件的输出"></a>文件的输出</h2><p>文件的写入类似文件的读取，Go 提供了 <a href="https://golang.org/pkg/os/#Create" target="_blank" rel="noopener">Create</a>、 <a href="https://golang.org/pkg/os/#OpenFile" target="_blank" rel="noopener">OpenFile</a> 打开文件进行写入或追加。</p>
+<p>Create 会打开一个文件，默认的模式是 O_RDWR 即读和写，如果原来的文件已经存在则清空，如果不存在则新创建一个。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file, err := os.Create(<span class="string">"new.txt"</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line"></span><br><span class="line">file.WriteString(time.Now().Local().String())</span><br></pre></td></tr></table></figure>
+<p>OpenFile 提供了更灵活的方式打开一个文件，他接受三个参数，依次是文件名，打开文件的 flag，以及文件权限。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">file, err := os.OpenFile(<span class="string">"new.txt"</span>, os.O_RDWR|os.O_CREATE, <span class="number">0775</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line">file.WriteString(time.Now().Local().String())</span><br></pre></td></tr></table></figure>
+<p>除了 WriteString，file 类型还提供了 <a href="https://golang.org/pkg/os/#File.Write" target="_blank" rel="noopener">Write</a> 方法，区别是 Write 接受的是 []byte 。</p>
+<h3 id="使用-bufio-Writer-进行文件输出"><a href="#使用-bufio-Writer-进行文件输出" class="headerlink" title="使用 bufio.Writer 进行文件输出"></a>使用 bufio.Writer 进行文件输出</h3><p>上面我们提到过 bufio 提供了 Writer 来进行高效的输出，如何使用呢？</p>
+<p>Writer 实际上是一个内部包含 buffer 的特殊 struct，其结构大致如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Writer <span class="keyword">struct</span> &#123;</span><br><span class="line">    err error</span><br><span class="line">    buf []<span class="keyword">byte</span></span><br><span class="line">    n   <span class="keyword">int</span></span><br><span class="line">    wr  io.Writer</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>buf 这个 field 就是缓冲输出内容的，当满足指定 size 之后，Writer 才会把 buf 中的内容通过 wr 写到输出对象。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wr := bufio.NewWriterSize(os.Stdout, <span class="number">38</span>)</span><br><span class="line">	count := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		wr.WriteString(time.Now().Format(<span class="string">"2006-01-02 15:04:05"</span>))</span><br><span class="line">		time.Sleep(time.Second * <span class="number">1</span>)</span><br><span class="line">		fmt.Println(<span class="string">"\ncount "</span>, count)</span><br><span class="line">		count++</span><br><span class="line">		<span class="keyword">if</span> count &gt; <span class="number">10</span> &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">wr.Flush()</span><br></pre></td></tr></table></figure>
+<p>上面的代码会在 buf 的 size 满足 38 之后输出到标准输出，可以运行代码查看输出时间隔 2 秒产生的:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">count  0</span><br><span class="line">count  1</span><br><span class="line">2019-03-10 14:01:022019-03-10 14:01:03</span><br><span class="line">count  2</span><br><span class="line">count  3</span><br><span class="line">2019-03-10 14:01:042019-03-10 14:01:05</span><br><span class="line">count  4</span><br><span class="line">count  5</span><br><span class="line">2019-03-10 14:01:062019-03-10 14:01:07</span><br><span class="line">count  6</span><br><span class="line">count  7</span><br><span class="line">2019-03-10 14:01:082019-03-10 14:01:09</span><br><span class="line">count  8</span><br><span class="line">count  9</span><br><span class="line">2019-03-10 14:01:102019-03-10 14:01:11</span><br><span class="line">count  10</span><br><span class="line">2019-03-10 14:01:12</span><br></pre></td></tr></table></figure>
+<p>默认情况下 bufio.Writer 指定的 size 大小是 <a href="https://golang.org/src/bufio/bufio.go?s=14124:14193#L17" target="_blank" rel="noopener">defaultBufSize</a> = 4096，像上面的代码一样可以通过 NewWriterSize 来改变这个大小。</p>
+<p>需要注意的是，Writer 在遇到错误之后不会接着执行后面的输出，看以下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Writer <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*Writer)</span> <span class="title">Write</span><span class="params">(p []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"Write: %q\n"</span>, p)</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>, errors.New(<span class="string">"IO Error!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	wr := bufio.NewWriterSize(<span class="built_in">new</span>(Writer), <span class="number">3</span>)</span><br><span class="line">	wr.Write([]<span class="keyword">byte</span>&#123;<span class="string">'a'</span>&#125;)</span><br><span class="line">	wr.Write([]<span class="keyword">byte</span>&#123;<span class="string">'b'</span>&#125;)</span><br><span class="line">	wr.Write([]<span class="keyword">byte</span>&#123;<span class="string">'c'</span>&#125;)</span><br><span class="line">	wr.Write([]<span class="keyword">byte</span>&#123;<span class="string">'d'</span>&#125;)</span><br><span class="line">	err := wr.Flush()</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Write: &quot;abc&quot;</span><br><span class="line">IO Error!</span><br></pre></td></tr></table></figure>
+<p>最后一个字符 d 没有输出</p>
+<h2 id="ioutil-包的文件读写"><a href="#ioutil-包的文件读写" class="headerlink" title="ioutil 包的文件读写"></a>ioutil 包的文件读写</h2><p>除了上面提到的对文件的读写操作，<a href="https://golang.org/pkg/io/ioutil/" target="_blank" rel="noopener">io/ioutil</a> 中提供了几个便捷的函数来读写文件，分别是：</p>
+<p><a href="https://golang.org/pkg/io/ioutil/#WriteFile" target="_blank" rel="noopener">WriteFile</a> 、<a href="https://golang.org/pkg/io/ioutil/#ReadFile" target="_blank" rel="noopener">ReadFile</a> ，他们可以直接对文件进行写入和读取，省去了一个打开的过程。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+            <a href="/tags/file/" rel="tag"># file</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/12/architecture-evolution-process/" rel="next" title="互联网后端架构的演化">
+                <i class="fa fa-chevron-left"></i> 互联网后端架构的演化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/11/ticket-server/" rel="prev" title="发号器设计漫谈">
+                发号器设计漫谈 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#File-文件类型"><span class="nav-number">1.</span> <span class="nav-text">File 文件类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件读取"><span class="nav-number">1.1.</span> <span class="nav-text">文件读取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按行读取"><span class="nav-number">2.</span> <span class="nav-text">按行读取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reader-读取行"><span class="nav-number">2.1.</span> <span class="nav-text">Reader 读取行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scanner-读取行"><span class="nav-number">2.2.</span> <span class="nav-text">Scanner 读取行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-类型和-bufio"><span class="nav-number">3.</span> <span class="nav-text">File 类型和 bufio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件的输出"><span class="nav-number">4.</span> <span class="nav-text">文件的输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-bufio-Writer-进行文件输出"><span class="nav-number">4.1.</span> <span class="nav-text">使用 bufio.Writer 进行文件输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ioutil-包的文件读写"><span class="nav-number">5.</span> <span class="nav-text">ioutil 包的文件读写</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2019/03/08/go-stand-lib-file/';
+          this.page.identifier = '2019/03/08/go-stand-lib-file/';
+          this.page.title = 'Go 文件操作详解';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

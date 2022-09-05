@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="架构,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
+<meta name="keywords" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="互联网后端架构的演化">
+<meta property="og:url" content="http://sanyuesha.com/2019/01/12/architecture-evolution-process/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png">
+<meta property="og:image" content="https://static.git-star.com/f5a9fb089a8d32bce76f34e619a32f9f.png">
+<meta property="og:image" content="https://static.git-star.com/c53dd40a6f9c3119a337abf21217ecc6.png">
+<meta property="og:image" content="https://static.git-star.com/15d136d8a752eb93e8b19799a3c1fc47.png">
+<meta property="og:image" content="https://static.git-star.com/14dd29dda365f3da8a451b8082f06681.png">
+<meta property="og:image" content="https://static.git-star.com/cf80a1d007dcbbe62e512f7b1f437670.png">
+<meta property="og:updated_time" content="2021-12-04T07:58:21.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="互联网后端架构的演化">
+<meta name="twitter:description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
+<meta name="twitter:image" content="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2019/01/12/architecture-evolution-process/">
+
+
+
+
+
+  <title>互联网后端架构的演化 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/01/12/architecture-evolution-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">互联网后端架构的演化</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T23:09:43+08:00">
+                Jan 12 2019
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。</p>
+<h2 id="数据库篇"><a href="#数据库篇" class="headerlink" title="数据库篇"></a>数据库篇</h2><blockquote>
+<p>以 MySQL 为例说明支持事务的持久化数据库的架构演变。</p>
+</blockquote>
+<p><img src="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png" alt></p>
+<h3 id="单实例-single-instance"><a href="#单实例-single-instance" class="headerlink" title="单实例 single-instance"></a>单实例 single-instance</h3><p>在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。</p>
+<p><strong>优势</strong></p>
+<p>简单，开发调试方便，维护成本低廉</p>
+<p><strong>缺点</strong></p>
+<p>缺乏可靠性，单机实例一旦故障，既不可写，又不可读。</p>
+<h3 id="主从结构-master-slave"><a href="#主从结构-master-slave" class="headerlink" title="主从结构 master-slave"></a>主从结构 master-slave</h3><p>伴随着业务的增长，单机性能会遇到瓶颈，比如单机连接数、单机处理并发的能力都是有限的，这就需要数据库可以做到横向扩展，主从结构 master-slave 就是满足这一需求的架构，有的地方又称之为 <strong>master-replication</strong> 架构。</p>
+<p><strong>优势</strong></p>
+<p>可靠性得到提升，主节点故障，从节点会自动提升为主节点，突破了单机性能瓶颈，可以做到横向扩展。</p>
+<p><strong>缺点</strong></p>
+<p>主从节点同步有延迟，主从节点数据一致性需要一定的时间，对数据实时性要求较高的场景需要开发者自己处理同步延迟的问题，比如读写都在 master 节点上执行。</p>
+<h3 id="双主多从"><a href="#双主多从" class="headerlink" title="双主多从"></a>双主多从</h3><p>为了保证主库的高可用，可以设置多个主库，多个主库之间进行双向同步，使用 keepalive 监测双主的可用性随时进行切换。</p>
+<p><strong>优势</strong></p>
+<p>解决写单点的问题。</p>
+<p><strong>缺点</strong></p>
+<p>主库之间同步一致性复杂。</p>
+<h3 id="分片-sharding"><a href="#分片-sharding" class="headerlink" title="分片 sharding"></a>分片 sharding</h3><p>随着数据量的不断增大，单机存储所有数据会导致数据库实例的性能开始下降，于是会考虑根据业务需求，把数据拆分成几部分存储，称之为<strong>切片分库</strong>，每一数据库实例存储整体数据中的一部分，这样单机存储的容量会降低，能够继续充分发挥单机的性能。</p>
+<p><strong>优势</strong></p>
+<p>数据分散存储，能够通过横向扩展，满足业务发展需求。</p>
+<p><strong>缺点</strong></p>
+<p>复杂度高，横向扩展虽然能够降低单机数据的存储量，但是实时复杂，比如对于一般采用的 hash 方法实时的分库，新增节点，意味着原有的数据需要重新 hash。</p>
+<h3 id="分片加主从"><a href="#分片加主从" class="headerlink" title="分片加主从"></a>分片加主从</h3><p>数据分片解决的是数据量过大的问题，但是单节点的可靠性并没有得到保证，因而可以在分片的同时，对每一个分片继续实施主从架构以保证单个片的数据可靠性。</p>
+<p><strong>优势</strong></p>
+<p>数据分散存储，数据可靠性有保证，支持横向扩展，满足业务需求。</p>
+<h3 id="自动分片和自动扩容"><a href="#自动分片和自动扩容" class="headerlink" title="自动分片和自动扩容"></a>自动分片和自动扩容</h3><p>这是数据库架构最理想的状态，相当于支持无限扩展，只要新增节点，在保证数据可靠性的同时(多副本存储)，集群会自动对数据进行动态平衡（重新 hash）。</p>
+<h2 id="缓存篇"><a href="#缓存篇" class="headerlink" title="缓存篇"></a>缓存篇</h2><blockquote>
+<p>缓存是互联网架构中必不可少的一个组件，以 redis 为例说明缓存架构的演变。</p>
+</blockquote>
+<p><img src="https://static.git-star.com/f5a9fb089a8d32bce76f34e619a32f9f.png" alt></p>
+<h3 id="单点-single-instance"><a href="#单点-single-instance" class="headerlink" title="单点 single-instance"></a>单点 single-instance</h3><p>缓存的重要作用就是缓解持久化 DB 的压力，业务发展的初期用户量少，单点足以应付</p>
+<p><strong>优势</strong></p>
+<p>配合单点 APP 使用，和 APP 部署在同一主机，部署方便，维护方便，开发方便</p>
+<h3 id="主从结构-master-slave-1"><a href="#主从结构-master-slave-1" class="headerlink" title="主从结构 master-slave"></a>主从结构 master-slave</h3><p>随着用户量增大，请求规模的增长，单点无法满足请求压力，可以使用主从结构来分摊请求压力，缓存的场景以写少读多最常见，主从结构能够有效缓解单点的带来的问题。</p>
+<p><strong>优势</strong></p>
+<p>解决单点性能瓶颈</p>
+<h3 id="一致性-hash-切片-sharding"><a href="#一致性-hash-切片-sharding" class="headerlink" title="一致性 hash 切片 sharding"></a>一致性 hash 切片 sharding</h3><p>随着单点的写压力以及数据量逐步增大，可以使用一致性 hash 的方式将数据进行切片分散存储，解决单点容量的问题，一致性 hash 的方式能够有效缓解，增减节点带来的缓存失效问题。</p>
+<p><strong>优势</strong></p>
+<p>解决单点容量不足的问题和压力过大的问题</p>
+<p><strong>劣势</strong></p>
+<p>运维复杂</p>
+<h3 id="一致性-hash-高可用"><a href="#一致性-hash-高可用" class="headerlink" title="一致性 hash 高可用"></a>一致性 hash 高可用</h3><p>切片之后的数据存在单点的问题，也就是数据只在一个节点读和写，如果节点挂掉，缓存就失效了。如果业务需要保证缓存也要高可用，每个节点可以使用主从结构，多副本的方式存储，配合以 sentinel 进行主从切换。</p>
+<p><strong>优势</strong></p>
+<p>解决切片之后数据单点的问题</p>
+<h3 id="一致性-hash-自动伸缩"><a href="#一致性-hash-自动伸缩" class="headerlink" title="一致性 hash 自动伸缩"></a>一致性 hash 自动伸缩</h3><p>采用一致性 hash 最大的问题是缩容和扩容带来的数据一致性难题，每增加和删除节点都需要重新对数据进行动态调整，要做到能够自动伸缩一般会配以 monitor 组件对每个节点的容量进行监控，在达到阈值之后，新增节点进行扩容，然后通知 router 等组件，一致性 hash 的 slot 发生了变化，对受影响的 key 进行特殊处理，保证数据的可用性，迁移完成之后，通知 router 开始正常处理请求。</p>
+<h2 id="APP-篇"><a href="#APP-篇" class="headerlink" title="APP 篇"></a>APP 篇</h2><blockquote>
+<p>同数据库和缓存，后端应用服务的架构也是随业务的发展逐步调整，不断演化</p>
+</blockquote>
+<p><strong>单点</strong></p>
+<p><img src="https://static.git-star.com/c53dd40a6f9c3119a337abf21217ecc6.png" alt></p>
+<p>压力很小的验证业务时候采用的架构模式，cache、session、nginx、DB 可能都是同一主机，配合以 crontab 完成异步任务。</p>
+<p><strong>集群</strong></p>
+<p><img src="https://static.git-star.com/15d136d8a752eb93e8b19799a3c1fc47.png" alt></p>
+<p>采用集群一方面是为了解决单点压力的问题，一方面是为了解决单点可靠性的问题，当 crontab 的任务数量成规模之后，需要采用异步任务队列来代替实现，维护成本更低，开发更高效。</p>
+<p><strong>更大规模的单体应用</strong></p>
+<p><img src="https://static.git-star.com/14dd29dda365f3da8a451b8082f06681.png" alt></p>
+<p>随着业务的复杂度的提升，在未采用微服务之前，APP 会按照功能和服务不断进行拆分，各个 APP 之间通过 MQ 进行通信，异步任务队列也可以采用 MQ 来取代，缓存使用分布式缓存，可以按照自己的需要采用 master-slave 或者一致性 hash，数据库按照业务需要可以是 master-slave，也可以是切片分库，外网通过 DNS 轮询的方式进行负载均衡，静态文件采用 CDN 进行分发。</p>
+<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p><img src="https://static.git-star.com/cf80a1d007dcbbe62e512f7b1f437670.png" alt></p>
+<p>随着单体规模的不断变大，单体应用的业务边界会越来越模糊，会有很多重复的功能出现在单体应用中，这些重复功能会导致每个单体应用都会消耗一定的基础设置资源，比如缓存、DB 资源等等，为了减少重复功能的开发和维护，合理利用基础设置资源，单体应用逐步演化成微服务架构。</p>
+<p>在微服务架构中，每个服务维护着自己的数据库，也就是说数据库的连接资源等都是每个服务自己持有，各个服务之间通过 MQ 进行数据通信，随着架构的复杂度提升，配套的需要有配置中心、服务注册与发现、日志、监控、调用链接追踪等基础设施来支持整个微服务的运行。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/02/sqlalchemy-pool-mechanism/" rel="next" title="SQLAlchemy 的连接池机制">
+                <i class="fa fa-chevron-left"></i> SQLAlchemy 的连接池机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/08/go-stand-lib-file/" rel="prev" title="Go 文件操作详解">
+                Go 文件操作详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库篇"><span class="nav-number">1.</span> <span class="nav-text">数据库篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单实例-single-instance"><span class="nav-number">1.1.</span> <span class="nav-text">单实例 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从结构-master-slave"><span class="nav-number">1.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双主多从"><span class="nav-number">1.3.</span> <span class="nav-text">双主多从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分片-sharding"><span class="nav-number">1.4.</span> <span class="nav-text">分片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分片加主从"><span class="nav-number">1.5.</span> <span class="nav-text">分片加主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动分片和自动扩容"><span class="nav-number">1.6.</span> <span class="nav-text">自动分片和自动扩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存篇"><span class="nav-number">2.</span> <span class="nav-text">缓存篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单点-single-instance"><span class="nav-number">2.1.</span> <span class="nav-text">单点 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从结构-master-slave-1"><span class="nav-number">2.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-切片-sharding"><span class="nav-number">2.3.</span> <span class="nav-text">一致性 hash 切片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-高可用"><span class="nav-number">2.4.</span> <span class="nav-text">一致性 hash 高可用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-自动伸缩"><span class="nav-number">2.5.</span> <span class="nav-text">一致性 hash 自动伸缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP-篇"><span class="nav-number">3.</span> <span class="nav-text">APP 篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务"><span class="nav-number">3.1.</span> <span class="nav-text">微服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2019/01/12/architecture-evolution-process/';
+          this.page.identifier = '2019/01/12/architecture-evolution-process/';
+          this.page.title = '互联网后端架构的演化';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

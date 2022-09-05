@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="lock,distributed,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="基本概念锁 wiki:In computer science, a lock or mutex (from mutual exclusion) is a synchronization mechanism for enforcing limits on access to a resource in an environment where there are many threads of ex">
+<meta name="keywords" content="lock,distributed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用 redis 造一把分布式锁">
+<meta property="og:url" content="http://sanyuesha.com/2016/08/20/distributed-lock-with-redis/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="基本概念锁 wiki:In computer science, a lock or mutex (from mutual exclusion) is a synchronization mechanism for enforcing limits on access to a resource in an environment where there are many threads of ex">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-03T05:49:39.943Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何用 redis 造一把分布式锁">
+<meta name="twitter:description" content="基本概念锁 wiki:In computer science, a lock or mutex (from mutual exclusion) is a synchronization mechanism for enforcing limits on access to a resource in an environment where there are many threads of ex">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2016/08/20/distributed-lock-with-redis/">
+
+
+
+
+
+  <title>如何用 redis 造一把分布式锁 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/08/20/distributed-lock-with-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">如何用 redis 造一把分布式锁</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-20T12:37:42+08:00">
+                Aug 20 2016
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Lock_(computer_science" target="_blank" rel="noopener">wiki</a>:In computer science, a lock or mutex (from mutual exclusion) is a synchronization mechanism for enforcing limits on access to a resource in an environment where there are many threads of execution. A lock is designed to enforce a mutual exclusion concurrency control policy.<br>在计算机科学中，锁或互斥量是一种同步机制，用于在多线程执行环境中，强行限制对资源访问。锁常被用于同步并发控制。</p>
+</blockquote>
+<p>简单来讲，锁是用来控制多线程执行对资源的并发访问的。比如当一个资源只允许在任意时刻只有一个执行线程对其进行写操作，那当其他线程要访问资源时，就必须要检查该该资源上是否存在<code>写操作锁</code>，如果存在，必须要等待锁的释放并获得锁之后才能对资源进行访问。</p>
+<a id="more"></a>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><p>悲观锁假设在一个完整事务发生的过程中，总是会有其他线程会更改所操作的资源，因此线程总是对资源加锁之后才会对其做更改。</p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><p>乐观锁假设在一个完整事务发生的过程中，不一定会有其他线程会更改资源，一旦发现资源被更改，则停止当前事务回滚所有操作。</p>
+<h3 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h3><p>常见的锁有多线程锁、数据库事务中的行级锁、表级锁等，这些锁的特点都是发生在单一系统环境中，如果需要在不同的进程、不同机器和系统等分布式环境中控制对资源的访问，这时候我们需要一把分布式锁。</p>
+<p>不言而喻，分布式锁就是为了解决分布式环境中对资源的访问限制而诞生的。</p>
+<h2 id="如何设计一把分布式锁"><a href="#如何设计一把分布式锁" class="headerlink" title="如何设计一把分布式锁"></a>如何设计一把分布式锁</h2><p>我们用 redis 来实现这把分布式的锁，redis 速度快、支持事务、可持久化的特点非常适合创建分布式锁。</p>
+<h3 id="分布式环境中如何消除网络延迟对锁获取的影响"><a href="#分布式环境中如何消除网络延迟对锁获取的影响" class="headerlink" title="分布式环境中如何消除网络延迟对锁获取的影响"></a>分布式环境中如何消除网络延迟对锁获取的影响</h3><p>锁，简单来说就是存于 redis 中一个唯一的 key。一般而言，redis 用 <code>set</code> 命令来完成一个 key 的设置(加锁)，使用 <code>get</code> 命令获取 key 的信息(检查锁)。由于网络延迟的存在，简单的使用 <code>set</code> 和 <code>get</code> 命令可能会带来如下问题：</p>
+<p>线程 A 检查锁是否存在(get)—&gt;否—&gt;加锁(set)，在 A 发起加锁命令但是还没有加锁成功的时候，可能线程 B 已经完成了 <code>set</code> 操作，锁被 B 获得，但是 A 也发起了加锁请求，由于 <code>set</code> 命令并不检查 key 的存在，B 的锁很可能会被 A 的 <code>set</code> 操作破坏。</p>
+<p>幸运的是，redis 提供了另一个命令 <code>setx</code> : 当指定的 key 不存在时，设置 key 的值为指定 value，如果存在，不做任何操作，成功则返回 1，失败则返回 0。也就是只要命令返回成功，线程就能正确获得锁，不需要再做类似 <code>get</code> 检查操作。</p>
+<p>使用 <code>setx</code> 可以消除网络延迟对锁设置的影响。</p>
+<h3 id="加锁的客户端发生-crash-导致锁不能被正确释放应该怎么处理？"><a href="#加锁的客户端发生-crash-导致锁不能被正确释放应该怎么处理？" class="headerlink" title="加锁的客户端发生 crash 导致锁不能被正确释放应该怎么处理？"></a>加锁的客户端发生 crash 导致锁不能被正确释放应该怎么处理？</h3><p>加锁成功并操作完成之后，就需要加锁线程对锁进行释放，以让出资源的控制权。释放锁，就是删除 redis 中这个唯一的 key，但是一定要保证删除的这个 key 是该线程创建的，因而锁创建时必须携带执行线程的唯一特征以标示创建者的身份，在这里就是这个唯一 key 对应的 value。</p>
+<p>如果加锁的线程出现异常 crash 了而不能及时删除锁，则会导致锁一直无法被正确释放，资源处于一直被占有，别的线程处于一直等待的状态。为了避免这样的情况，锁一定要在异常发生之后可以自己释放，以让出资源的控制权，可以使用 redis 的超时机制来达到这个目的。超时时间视不同的业务场景而定，一般是最大允许等待时间。需要注意的是，只有在加锁成功之后才可以对 key 设置 TTL，否则很容易导致 key 被多个线程不断设置 TTL 而无法过期。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> CONN.setnx(lockname, identifier):</span><br><span class="line">  CONN.expire(lockname, timeout)</span><br></pre></td></tr></table></figure>
+<h3 id="加锁之后如何有效监测锁是否被篡改？"><a href="#加锁之后如何有效监测锁是否被篡改？" class="headerlink" title="加锁之后如何有效监测锁是否被篡改？"></a>加锁之后如何有效监测锁是否被篡改？</h3><p>redis 提供了 pipeline 和事务操作来保证多个命令可以在一个事务内全部完成从而减少多次网络请求带来的开销，watch  命令又可以在事务开始执行之前对所要操作的 key 执行监测，从而保证了事务的完整性和一致性。因此，为了防止锁篡改，可以在加锁完成之后对锁进行 watch 操作，一旦锁发生变化，则终止事务，回滚操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pipe = CONN.pipeline(<span class="literal">True</span>)</span><br><span class="line">pipe.watch(lock)</span><br></pre></td></tr></table></figure>
+<h3 id="提供锁的宿主机-redis-服务器-crash-导致锁不能被正确建立和释放该如何处理？"><a href="#提供锁的宿主机-redis-服务器-crash-导致锁不能被正确建立和释放该如何处理？" class="headerlink" title="提供锁的宿主机( redis 服务器) crash 导致锁不能被正确建立和释放该如何处理？"></a>提供锁的宿主机( redis 服务器) crash 导致锁不能被正确建立和释放该如何处理？</h3><p>不论是通信故障或是服务器故障而导致的锁服务器无法响应，此时都会导致客户端加锁和释放锁的请求无法完成，因此一定要有相应的应急处理，以确保程序流程的完整体验，加强客户端的健壮性。比如相应的超时提示，异常告警等。</p>
+<h2 id="哪些边界需要注意"><a href="#哪些边界需要注意" class="headerlink" title="哪些边界需要注意"></a>哪些边界需要注意</h2><p>1.只有锁正确释放才算是整个事务的完整结束，如果锁释放失败，比如被篡改、锁服务器异常等，不同的业务可以根据自己的需求进行变动和调整。</p>
+<p>2.设置 TTL 一定要在加锁成功之后，否则所有获取锁的客户端都会尝试 TTL 导致锁无法过期。</p>
+<p>3.锁的过期时间也就是获取锁的客户端的最大等待时间，这个时间以执行的事务能够容忍的最长时间为限</p>
+<h2 id="一个简单的-python-实现"><a href="#一个简单的-python-实现" class="headerlink" title="一个简单的 python 实现"></a>一个简单的 python 实现</h2><script src="//gist.github.com/5e474f42c8167ab32a6627ddd837fc83.js?file=redis_lock.py"></script>
+<p>在上面这个实现中，如果锁释放(release_lock)失败，客户端可以尝试对当前的操作进行回滚或自定义处理方式。</p>
+<p>如果业务的事务是在 redis 中执行的，完全可以用 redis 的 pipeline 和事务(开始前对锁键进行 watch )来完成所有操作，执行完成之后正确删除锁即可，这样 release_lock 的操作就可以不需要单独进行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    pipe.watch(lock)</span><br><span class="line">    pipe.multi()</span><br><span class="line">    <span class="comment">#TODO transaction with redis command</span></span><br><span class="line">    pipe.delete(lock)</span><br><span class="line">    pipe.unwatch(lock)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="comment">#TODO transaction failes</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment">#TODO transaction success</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/lock/" rel="tag"># lock</a>
+          
+            <a href="/tags/distributed/" rel="tag"># distributed</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/23/why-did-i-make-turbo/" rel="next" title="python 轮子 turbo 的诞生记">
+                <i class="fa fa-chevron-left"></i> python 轮子 turbo 的诞生记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/27/mongodb-single-table-split/" rel="prev" title="mongodb 单表亿级数据的拆分方案">
+                mongodb 单表亿级数据的拆分方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-number">1.1.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#悲观锁"><span class="nav-number">1.2.</span> <span class="nav-text">悲观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乐观锁"><span class="nav-number">1.3.</span> <span class="nav-text">乐观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁"><span class="nav-number">1.4.</span> <span class="nav-text">分布式锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何设计一把分布式锁"><span class="nav-number">2.</span> <span class="nav-text">如何设计一把分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式环境中如何消除网络延迟对锁获取的影响"><span class="nav-number">2.1.</span> <span class="nav-text">分布式环境中如何消除网络延迟对锁获取的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁的客户端发生-crash-导致锁不能被正确释放应该怎么处理？"><span class="nav-number">2.2.</span> <span class="nav-text">加锁的客户端发生 crash 导致锁不能被正确释放应该怎么处理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁之后如何有效监测锁是否被篡改？"><span class="nav-number">2.3.</span> <span class="nav-text">加锁之后如何有效监测锁是否被篡改？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提供锁的宿主机-redis-服务器-crash-导致锁不能被正确建立和释放该如何处理？"><span class="nav-number">2.4.</span> <span class="nav-text">提供锁的宿主机( redis 服务器) crash 导致锁不能被正确建立和释放该如何处理？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哪些边界需要注意"><span class="nav-number">3.</span> <span class="nav-text">哪些边界需要注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个简单的-python-实现"><span class="nav-number">4.</span> <span class="nav-text">一个简单的 python 实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2016/08/20/distributed-lock-with-redis/';
+          this.page.identifier = '2016/08/20/distributed-lock-with-redis/';
+          this.page.title = '如何用 redis 造一把分布式锁';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

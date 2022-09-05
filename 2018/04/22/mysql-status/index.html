@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="status,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="MySQL 提供了一些列的状态用来帮助我们诊断服务状况，有些状态非常有用，可以帮助我们快速定位服务异常，比如最大连接数，当前连接数等等，下表详细列举了所有的状态以及他们的详细解释，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html 1show status;     Variable_name">
+<meta name="keywords" content="status">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL status 详解">
+<meta property="og:url" content="http://sanyuesha.com/2018/04/22/mysql-status/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="MySQL 提供了一些列的状态用来帮助我们诊断服务状况，有些状态非常有用，可以帮助我们快速定位服务异常，比如最大连接数，当前连接数等等，下表详细列举了所有的状态以及他们的详细解释，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html 1show status;     Variable_name">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T15:17:35.301Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL status 详解">
+<meta name="twitter:description" content="MySQL 提供了一些列的状态用来帮助我们诊断服务状况，有些状态非常有用，可以帮助我们快速定位服务异常，比如最大连接数，当前连接数等等，下表详细列举了所有的状态以及他们的详细解释，具体见官方文档： https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html 1show status;     Variable_name">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/04/22/mysql-status/">
+
+
+
+
+
+  <title>MySQL status 详解 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/04/22/mysql-status/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MySQL status 详解</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T22:45:46+08:00">
+                Apr 22 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MySQL 提供了一些列的状态用来帮助我们诊断服务状况，有些状态非常有用，可以帮助我们快速定位服务异常，比如最大连接数，当前连接数等等，下表详细列举了所有的状态以及他们的详细解释，具体见官方文档：</p>
+<p><a href="https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>value</th>
+<th>scope</th>
+<th>explained</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aborted_clients</strong></td>
+<td>16031</td>
+<td>global</td>
+<td>由于客户端没有正确关闭连接导致客户端终止而中断的连接数</td>
+</tr>
+<tr>
+<td><strong>Aborted_connects</strong></td>
+<td>2</td>
+<td>global</td>
+<td>试图连接到MySQL服务器而失败的连接数</td>
+</tr>
+<tr>
+<td><strong>Binlog_cache_disk_use</strong></td>
+<td>2</td>
+<td>global</td>
+<td>使用临时二进制日志缓存但超过binlog_cache_size值并使用临时文件来保存事务中的语句的事务数量</td>
+</tr>
+<tr>
+<td><strong>Binlog_cache_use</strong></td>
+<td>421723</td>
+<td>global</td>
+<td>使用临时二进制日志缓存的事务数量</td>
+</tr>
+<tr>
+<td><strong>Binlog_stmt_cache_disk_use</strong></td>
+<td>0</td>
+<td>Both</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Binlog_stmt_cache_use</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Bytes_received</strong></td>
+<td>1248773219</td>
+<td>Both</td>
+<td>从所有客户端接收到的字节数</td>
+</tr>
+<tr>
+<td><strong>Bytes_sent</strong></td>
+<td>3248856327</td>
+<td>both</td>
+<td>发送给所有客户端的字节数</td>
+</tr>
+<tr>
+<td><strong>Com_admin_commands</strong></td>
+<td>785</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_assign_to_keycache</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_db</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_db_upgrade</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_event</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_function</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_procedure</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_server</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_table</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_alter_tablespace</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_analyze</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_begin</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_binlog</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_call_procedure</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_change_db</strong></td>
+<td>11</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_change_master</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_check</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_checksum</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_commit</strong></td>
+<td>401261</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_db</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_event</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_function</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_index</strong></td>
+<td>7</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_procedure</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_server</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_table</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_trigger</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_udf</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_user</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_create_view</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_dealloc_sql</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_delete</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_delete_multi</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_do</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_db</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_event</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_function</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_index</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_procedure</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_server</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_table</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_trigger</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_user</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_drop_view</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_empty_query</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_execute_sql</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_flush</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_grant</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_ha_close</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_ha_open</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_ha_read</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_help</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_insert</strong></td>
+<td>1460169</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_insert_select</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_install_plugin</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_kill</strong></td>
+<td>5</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_load</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_lock_tables</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_optimize</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_preload_keys</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_prepare_sql</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_purge</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_purge_before_date</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_release_savepoint</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_rename_table</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_rename_user</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_repair</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_replace</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_replace_select</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_reset</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_resignal</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_revoke</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_revoke_all</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_rollback</strong></td>
+<td>668586</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_rollback_to_savepoint</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_savepoint</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_select</strong></td>
+<td>807572</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_set_option</strong></td>
+<td>36735</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_signal</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_authors</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_binlog_events</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_binlogs</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_charsets</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_collations</strong></td>
+<td>1301</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_contributors</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_db</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_event</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_func</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_proc</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_table</strong></td>
+<td>22</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_create_trigger</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_databases</strong></td>
+<td>202</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_engine_logs</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_engine_mutex</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_engine_status</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_events</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_errors</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_fields</strong></td>
+<td>171</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_function_status</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_grants</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_keys</strong></td>
+<td>78</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_master_status</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_open_tables</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_plugins</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_privileges</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_procedure_status</strong></td>
+<td>10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_processlist</strong></td>
+<td>17</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_profile</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_profiles</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_relaylog_events</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_slave_hosts</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_slave_status</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_status</strong></td>
+<td>1322</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_storage_engines</strong></td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_table_status</strong></td>
+<td>12</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_tables</strong></td>
+<td>41</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_triggers</strong></td>
+<td>56</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_variables</strong></td>
+<td>1424</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_show_warnings</strong></td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_slave_start</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_slave_stop</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_close</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_execute</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_fetch</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_prepare</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_reprepare</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_reset</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_stmt_send_long_data</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_truncate</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_uninstall_plugin</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_unlock_tables</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_update</strong></td>
+<td>412234</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_update_multi</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_commit</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_end</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_prepare</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_recover</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_rollback</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Com_xa_start</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Compression</strong></td>
+<td>ON</td>
+<td>Session</td>
+<td>客户端与服务器之间只否启用压缩协议</td>
+</tr>
+<tr>
+<td><strong>Connections</strong></td>
+<td>37499</td>
+<td>global</td>
+<td>试图连接到(不管是否成功)MySQL服务器的连接数</td>
+</tr>
+<tr>
+<td><strong>Created_tmp_disk_tables</strong></td>
+<td>223</td>
+<td>both</td>
+<td>服务器执行语句时在硬盘上自动创建的临时表的数量</td>
+</tr>
+<tr>
+<td><strong>Created_tmp_files</strong></td>
+<td>52</td>
+<td>both</td>
+<td>mysqld已经创建的临时文件的数量</td>
+</tr>
+<tr>
+<td><strong>Created_tmp_tables</strong></td>
+<td>4676</td>
+<td>both</td>
+<td>服务器执行语句时自动创建的内存中的临时表的数量，如果Created_tmp_disk_tables较大，你可能要增加tmp_table_size值使临时 表基于内存而不基于硬盘</td>
+</tr>
+<tr>
+<td><strong>Delayed_errors</strong></td>
+<td>0</td>
+<td>global</td>
+<td>用INSERT DELAYED写的出现错误的行数(可能为duplicate key)。</td>
+</tr>
+<tr>
+<td><strong>Delayed_insert_threads</strong></td>
+<td>0</td>
+<td>global</td>
+<td>使用的INSERT DELAYED处理器线程数。</td>
+</tr>
+<tr>
+<td><strong>Delayed_writes</strong></td>
+<td>0</td>
+<td>global</td>
+<td>写入的INSERT DELAYED行数</td>
+</tr>
+<tr>
+<td><strong>Flush_commands</strong></td>
+<td>2</td>
+<td>global</td>
+<td>执行的FLUSH语句数</td>
+</tr>
+<tr>
+<td><strong>Handler_commit</strong></td>
+<td>5291398</td>
+<td>both</td>
+<td>内部提交语句数</td>
+</tr>
+<tr>
+<td><strong>Handler_delete</strong></td>
+<td>0</td>
+<td>both</td>
+<td>行从表中删除的次数</td>
+</tr>
+<tr>
+<td><strong>Handler_discover</strong></td>
+<td>0</td>
+<td>both</td>
+<td>MySQL服务器可以问NDB CLUSTER存储引擎是否知道某一名字的表。这被称作发现。Handler_discover说明通过该方法发现的次数。</td>
+</tr>
+<tr>
+<td><strong>Handler_prepare</strong></td>
+<td>4512578</td>
+<td>both</td>
+<td>A counter for the prepare phase of two-phase commit operations.</td>
+</tr>
+<tr>
+<td><strong>Handler_read_first</strong></td>
+<td>268341</td>
+<td>both</td>
+<td>索引中第一条被读的次数。如果较高，它建议服务器正执行大量全索引扫描；例如，SELECT col1 FROM foo，假定col1有索引</td>
+</tr>
+<tr>
+<td><strong>Handler_read_key</strong></td>
+<td>1286597</td>
+<td>both</td>
+<td>根据键读一行的请求数。如果较高，说明查询和表的索引正确</td>
+</tr>
+<tr>
+<td><strong>Handler_read_last</strong></td>
+<td>59</td>
+<td>both</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Handler_read_next</strong></td>
+<td>35166067</td>
+<td>both</td>
+<td>按照键顺序读下一行的请求数。如果你用范围约束或如果执行索引扫描来查询索引列，该值增加</td>
+</tr>
+<tr>
+<td><strong>Handler_read_prev</strong></td>
+<td>1601833</td>
+<td>both</td>
+<td>按照键顺序读前一行的请求数。该读方法主要用于优化ORDER BY … DESC。</td>
+</tr>
+<tr>
+<td><strong>Handler_read_rnd</strong></td>
+<td>20124</td>
+<td>both</td>
+<td>根据固定位置读一行的请求数。如果你正执行大量查询并需要对结果进行排序该值较高。你可能使用了大量需要MySQL扫描整个表的查询或你的连接没有正确使用键</td>
+</tr>
+<tr>
+<td><strong>Handler_read_rnd_next</strong></td>
+<td>48760470858</td>
+<td>both</td>
+<td>在数据文件中读下一行的请求数。如果你正进行大量的表扫描，该值较高。通常说明你的表索引不正确或写入的查询没有利用索引</td>
+</tr>
+<tr>
+<td><strong>Handler_rollback</strong></td>
+<td>308415</td>
+<td>both</td>
+<td>内部ROLLBACK语句的数量</td>
+</tr>
+<tr>
+<td><strong>Handler_savepoint</strong></td>
+<td>0</td>
+<td>both</td>
+<td>在一个存储引擎放置一个保存点的请求数量</td>
+</tr>
+<tr>
+<td><strong>Handler_savepoint_rollback</strong></td>
+<td>0</td>
+<td>both</td>
+<td>在一个存储引擎的要求回滚到一个保存点数目</td>
+</tr>
+<tr>
+<td><strong>Handler_update</strong></td>
+<td>412202</td>
+<td>both</td>
+<td>在表内更新一行的请求数</td>
+</tr>
+<tr>
+<td><strong>Handler_write</strong></td>
+<td>1779011</td>
+<td>both</td>
+<td>在表内插入一行的请求数</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_data</strong></td>
+<td>136123</td>
+<td>global</td>
+<td>包含数据的页数(脏或干净)</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_dirty</strong></td>
+<td>90</td>
+<td>global</td>
+<td>当前的脏页数</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_flushed</strong></td>
+<td>1534140</td>
+<td>global</td>
+<td>要求清空的缓冲池页数</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_free</strong></td>
+<td>158551</td>
+<td>global</td>
+<td>空页数</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_misc</strong></td>
+<td>1006</td>
+<td>global</td>
+<td>忙的页数，因为它们已经被分配优先用作管理，例如行锁定或适用的哈希索引。该值还可以计算为Innodb_buffer_pool_pages_total - Innodb_buffer_pool_pages_free - Innodb_buffer_pool_pages_data。</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_pages_total</strong></td>
+<td>295680</td>
+<td>global</td>
+<td>缓冲池总大小（页数）</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_read_ahead_rnd</strong></td>
+<td>0</td>
+<td>global</td>
+<td>InnoDB初始化的“随机”read-aheads数。当查询以随机顺序扫描表的一大部分时发生。</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_read_ahead</strong></td>
+<td>19531</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_read_ahead_evicted</strong></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_read_requests</strong></td>
+<td>21113636240</td>
+<td>global</td>
+<td>InnoDB已经完成的逻辑读请求数</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_reads</strong></td>
+<td>88282</td>
+<td>global</td>
+<td>不能满足InnoDB必须单页读取的缓冲池中的逻辑读数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_wait_free</strong></td>
+<td>0</td>
+<td>global</td>
+<td>一般情况，通过后台向InnoDB缓冲池写。但是，如果需要读或创建页，并且没有干净的页可用，则它还需要先等待页面清空。该计数器对等待实例进行记数。如果已经适当设置缓冲池大小，该值应小</td>
+</tr>
+<tr>
+<td><strong>Innodb_buffer_pool_write_requests</strong></td>
+<td>12368792</td>
+<td>global</td>
+<td>向InnoDB缓冲池的写数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_fsyncs</strong></td>
+<td>74253</td>
+<td>global</td>
+<td>fsync()操作数</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_pending_fsyncs</strong></td>
+<td>0</td>
+<td>global</td>
+<td>当前挂起的fsync()操作数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_pending_reads</strong></td>
+<td>0</td>
+<td>global</td>
+<td>当前挂起的读数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_pending_writes</strong></td>
+<td>0</td>
+<td>global</td>
+<td>当前挂起的写数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_read</strong></td>
+<td>1768591360</td>
+<td>global</td>
+<td>至此已经读取的数据数量（字节）。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_reads</strong></td>
+<td>108048</td>
+<td>global</td>
+<td>数据读总数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_writes</strong></td>
+<td>1613970</td>
+<td>global</td>
+<td>数据写总数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_data_written</strong></td>
+<td>26343557632</td>
+<td>global</td>
+<td>至此已经写入的数据量（字节）。</td>
+</tr>
+<tr>
+<td><strong>Innodb_dblwr_pages_written</strong></td>
+<td>767070</td>
+<td>global</td>
+<td>已经执行的双写操作数量</td>
+</tr>
+<tr>
+<td><strong>Innodb_dblwr_writes</strong></td>
+<td>7475</td>
+<td>global</td>
+<td>双写操作已经写好的页数</td>
+</tr>
+<tr>
+<td><strong>Innodb_have_atomic_builtins</strong></td>
+<td>ON</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Innodb_log_waits</strong></td>
+<td>0</td>
+<td>global</td>
+<td>我们必须等待的时间，因为日志缓冲区太小，我们在继续前必须先等待对它清空</td>
+</tr>
+<tr>
+<td><strong>Innodb_log_write_requests</strong></td>
+<td>1800108</td>
+<td>global</td>
+<td>日志写请求数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_log_writes</strong></td>
+<td>830562</td>
+<td>global</td>
+<td>向日志文件的物理写数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_os_log_fsyncs</strong></td>
+<td>25144</td>
+<td>global</td>
+<td>向日志文件完成的fsync()写数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_os_log_pending_fsyncs</strong></td>
+<td>0</td>
+<td>global</td>
+<td>挂起的日志文件fsync()操作数量。</td>
+</tr>
+<tr>
+<td><strong>Innodb_os_log_pending_writes</strong></td>
+<td>0</td>
+<td>global</td>
+<td>挂起的日志文件写操作</td>
+</tr>
+<tr>
+<td><strong>Innodb_os_log_written</strong></td>
+<td>1207160320</td>
+<td>global</td>
+<td>写入日志文件的字节数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_page_size</strong></td>
+<td>16384</td>
+<td>global</td>
+<td>编译的InnoDB页大小(默认16KB)。许多值用页来记数；页的大小很容易转换为字节。</td>
+</tr>
+<tr>
+<td><strong>Innodb_pages_created</strong></td>
+<td>28311</td>
+<td>global</td>
+<td>创建的页数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_pages_read</strong></td>
+<td>107812</td>
+<td>global</td>
+<td>读取的页数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_pages_written</strong></td>
+<td>767070</td>
+<td>global</td>
+<td>写入的页数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_row_lock_current_waits</strong></td>
+<td>0</td>
+<td>global</td>
+<td>当前等待的待锁定的行数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_row_lock_time</strong></td>
+<td>3132098728</td>
+<td>global</td>
+<td>行锁定花费的总时间，单位毫秒。</td>
+</tr>
+<tr>
+<td><strong>Innodb_row_lock_time_avg</strong></td>
+<td>45551</td>
+<td>global</td>
+<td>行锁定的平均时间，单位毫秒。</td>
+</tr>
+<tr>
+<td><strong>Innodb_row_lock_time_max</strong></td>
+<td>51930</td>
+<td>global</td>
+<td>行锁定的最长时间，单位毫秒。</td>
+</tr>
+<tr>
+<td><strong>Innodb_row_lock_waits</strong></td>
+<td>68760</td>
+<td>global</td>
+<td>一行锁定必须等待的时间数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_rows_deleted</strong></td>
+<td>0</td>
+<td>global</td>
+<td>从InnoDB表删除的行数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_rows_inserted</strong></td>
+<td>5766040</td>
+<td>global</td>
+<td>插入到InnoDB表的行数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_rows_read</strong></td>
+<td>25304573020</td>
+<td>global</td>
+<td>从InnoDB表读取的行数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_rows_updated</strong></td>
+<td>412198</td>
+<td>global</td>
+<td>InnoDB表内更新的行数。</td>
+</tr>
+<tr>
+<td><strong>Innodb_truncated_status_writes</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Key_blocks_not_flushed</strong></td>
+<td>0</td>
+<td>global</td>
+<td>键缓存内已经更改但还没有清空到硬盘上的键的数据块数量。</td>
+</tr>
+<tr>
+<td><strong>Key_blocks_unused</strong></td>
+<td>26787</td>
+<td>global</td>
+<td>键缓存内未使用的块数量。你可以使用该值来确定使用了多少键缓存</td>
+</tr>
+<tr>
+<td><strong>Key_blocks_used</strong></td>
+<td>1583</td>
+<td>global</td>
+<td>键缓存内使用的块数量。该值为高水平线标记，说明已经同时最多使用了多少块。</td>
+</tr>
+<tr>
+<td><strong>Key_read_requests</strong></td>
+<td>167263</td>
+<td>global</td>
+<td>从缓存读键的数据块的请求数。</td>
+</tr>
+<tr>
+<td><strong>Key_reads</strong></td>
+<td>143381</td>
+<td>global</td>
+<td>从硬盘读取键的数据块的次数。如果Key_reads较大，则Key_buffer_size值可能太小。可以用Key_reads/Key_read_requests计算缓存损失率。</td>
+</tr>
+<tr>
+<td><strong>Key_write_requests</strong></td>
+<td>49572</td>
+<td>global</td>
+<td>将键的数据块写入缓存的请求数。</td>
+</tr>
+<tr>
+<td><strong>Key_writes</strong></td>
+<td>48333</td>
+<td>global</td>
+<td>向硬盘写入将键的数据块的物理写操作的次数。</td>
+</tr>
+<tr>
+<td><strong>Last_query_cost</strong></td>
+<td>0</td>
+<td>global</td>
+<td>用查询优化器计算的最后编译的查询的总成本。用于对比同一查询的不同查询方案的成本。默认值0表示还没有编译查询。 默认值是0。Last_query_cost具有会话范围。</td>
+</tr>
+<tr>
+<td><strong>Max_used_connections</strong></td>
+<td>2256</td>
+<td>global</td>
+<td>服务器启动后已经同时使用的连接的最大数量。</td>
+</tr>
+<tr>
+<td><strong>Not_flushed_delayed_rows</strong></td>
+<td>0</td>
+<td>global</td>
+<td>等待写入INSERT DELAY队列的行数。</td>
+</tr>
+<tr>
+<td><strong>Open_files</strong></td>
+<td>52</td>
+<td>global</td>
+<td>打开的文件的数目。</td>
+</tr>
+<tr>
+<td><strong>Open_streams</strong></td>
+<td>0</td>
+<td>global</td>
+<td>打开的流的数量(主要用于记录)。</td>
+</tr>
+<tr>
+<td><strong>Open_table_definitions</strong></td>
+<td>54</td>
+<td>global</td>
+<td>缓存的.frm文件数量</td>
+</tr>
+<tr>
+<td><strong>Open_tables</strong></td>
+<td>128</td>
+<td>global</td>
+<td>当前打开的表的数量。</td>
+</tr>
+<tr>
+<td><strong>Opened_files</strong></td>
+<td>96828</td>
+<td>global</td>
+<td>文件打开的数量。不包括诸如套接字或管道其他类型的文件。 也不包括存储引擎用来做自己的内部功能的文件。</td>
+</tr>
+<tr>
+<td><strong>Opened_table_definitions</strong></td>
+<td>94</td>
+<td>global</td>
+<td>已经缓存的.frm文件数量</td>
+</tr>
+<tr>
+<td><strong>Opened_tables</strong></td>
+<td>1525369</td>
+<td>global</td>
+<td>已经打开的表的数量。如果Opened_tables较大，table_cache 值可能太小。</td>
+</tr>
+<tr>
+<td><strong>Performance_schema_cond_classes_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_cond_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_file_classes_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_file_handles_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_file_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_locker_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_mutex_classes_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_mutex_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_rwlock_classes_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_rwlock_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_table_handles_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_table_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_thread_classes_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Performance_schema_thread_instances_lost</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Prepared_stmt_count</strong></td>
+<td>0</td>
+<td>global</td>
+<td>当前的预处理语句的数量。 (最大数为系统变量: max_prepared_stmt_count)</td>
+</tr>
+<tr>
+<td><strong>Qcache_free_blocks</strong></td>
+<td>0</td>
+<td>global</td>
+<td>查询缓存内自由内存块的数量。</td>
+</tr>
+<tr>
+<td><strong>Qcache_free_memory</strong></td>
+<td>0</td>
+<td>global</td>
+<td>用于查询缓存的自由内存的数量。</td>
+</tr>
+<tr>
+<td><strong>Qcache_hits</strong></td>
+<td>0</td>
+<td>global</td>
+<td>查询缓存被访问的次数。</td>
+</tr>
+<tr>
+<td><strong>Qcache_inserts</strong></td>
+<td>0</td>
+<td>global</td>
+<td>加入到缓存的查询数量。</td>
+</tr>
+<tr>
+<td><strong>Qcache_lowmem_prunes</strong></td>
+<td>0</td>
+<td>global</td>
+<td>由于内存较少从缓存删除的查询数量。</td>
+</tr>
+<tr>
+<td><strong>Qcache_not_cached</strong></td>
+<td>0</td>
+<td>global</td>
+<td>非缓存查询数(不可缓存，或由于query_cache_type设定值未缓存)。</td>
+</tr>
+<tr>
+<td><strong>Qcache_queries_in_cache</strong></td>
+<td>0</td>
+<td>global</td>
+<td>登记到缓存内的查询的数量。</td>
+</tr>
+<tr>
+<td><strong>Qcache_total_blocks</strong></td>
+<td>0</td>
+<td>global</td>
+<td>查询缓存内的总块数。</td>
+</tr>
+<tr>
+<td><strong>Queries</strong></td>
+<td>3812538</td>
+<td>global</td>
+<td>服务器执行的请求个数，包含存储过程中的请求。</td>
+</tr>
+<tr>
+<td><strong>Questions</strong></td>
+<td>3812538</td>
+<td>global</td>
+<td>已经发送给服务器的查询的个数。</td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_clients</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_net_avg_wait_time</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_net_wait_time</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_net_waits</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_no_times</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_no_tx</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_status</strong></td>
+<td>OFF</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_timefunc_failures</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_tx_avg_wait_time</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_tx_wait_time</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_tx_waits</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_wait_pos_backtraverse</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_wait_sessions</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_master_yes_tx</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_semi_sync_slave_status</strong></td>
+<td>OFF</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Rpl_status</strong></td>
+<td>AUTH_MASTER</td>
+<td>global</td>
+<td>失败安全复制状态(还未使用)。</td>
+</tr>
+<tr>
+<td><strong>Select_full_join</strong></td>
+<td>0</td>
+<td>global</td>
+<td>没有使用索引的联接的数量。如果该值不为0,你应仔细检查表的索引</td>
+</tr>
+<tr>
+<td><strong>Select_full_range_join</strong></td>
+<td>0</td>
+<td>global</td>
+<td>在引用的表中使用范围搜索的联接的数量。</td>
+</tr>
+<tr>
+<td><strong>Select_range</strong></td>
+<td>56149</td>
+<td>global</td>
+<td>在第一个表中使用范围的联接的数量。一般情况不是关键问题，即使该值相当大。</td>
+</tr>
+<tr>
+<td><strong>Select_range_check</strong></td>
+<td>0</td>
+<td>global</td>
+<td>在每一行数据后对键值进行检查的不带键值的联接的数量。如果不为0，你应仔细检查表的索引。</td>
+</tr>
+<tr>
+<td><strong>Select_scan</strong></td>
+<td>272978</td>
+<td>global</td>
+<td>对第一个表进行完全扫描的联接的数量。</td>
+</tr>
+<tr>
+<td><strong>Slave_heartbeat_period</strong></td>
+<td>0</td>
+<td>global</td>
+<td>复制的心跳间隔</td>
+</tr>
+<tr>
+<td><strong>Slave_open_temp_tables</strong></td>
+<td>0</td>
+<td>global</td>
+<td>从服务器打开的临时表数量</td>
+</tr>
+<tr>
+<td><strong>Slave_received_heartbeats</strong></td>
+<td>0</td>
+<td>global</td>
+<td>从服务器心跳数</td>
+</tr>
+<tr>
+<td><strong>Slave_retried_transactions</strong></td>
+<td>0</td>
+<td>global</td>
+<td>本次启动以来从服务器复制线程重试次数</td>
+</tr>
+<tr>
+<td><strong>Slave_running</strong></td>
+<td>OFF</td>
+<td>global</td>
+<td>如果该服务器是连接到主服务器的从服务器，则该值为ON。</td>
+</tr>
+<tr>
+<td><strong>Slow_launch_threads</strong></td>
+<td>0</td>
+<td>global</td>
+<td>创建时间超过slow_launch_time秒的线程数。</td>
+</tr>
+<tr>
+<td><strong>Slow_queries</strong></td>
+<td>48490</td>
+<td>global</td>
+<td>查询时间超过long_query_time秒的查询的个数。</td>
+</tr>
+<tr>
+<td><strong>Sort_merge_passes</strong></td>
+<td>56</td>
+<td>global</td>
+<td>排序算法已经执行的合并的数量。如果这个变量值较大，应考虑增加sort_buffer_size系统变量的值。</td>
+</tr>
+<tr>
+<td><strong>Sort_range</strong></td>
+<td>0</td>
+<td>global</td>
+<td>在范围内执行的排序的数量。</td>
+</tr>
+<tr>
+<td><strong>Sort_rows</strong></td>
+<td>42124</td>
+<td>global</td>
+<td>已经排序的行数。</td>
+</tr>
+<tr>
+<td><strong>Sort_scan</strong></td>
+<td>23</td>
+<td>global</td>
+<td>通过扫描表完成的排序的数量。</td>
+</tr>
+<tr>
+<td><strong>Table_locks_immediate</strong></td>
+<td>2717991</td>
+<td>global</td>
+<td>立即获得的表的锁的次数。</td>
+</tr>
+<tr>
+<td><strong>Table_locks_waited</strong></td>
+<td>1229</td>
+<td>global</td>
+<td>不能立即获得的表的锁的次数。如果该值较高，并且有性能问题，你应首先优化查询，然后拆分表或使用复制。</td>
+</tr>
+<tr>
+<td><strong>Tc_log_max_pages_used</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Tc_log_page_size</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Tc_log_page_waits</strong></td>
+<td>0</td>
+<td>global</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Threads_cached</strong></td>
+<td>39</td>
+<td>global</td>
+<td>线程缓存内的线程的数量。</td>
+</tr>
+<tr>
+<td><strong>Threads_connected</strong></td>
+<td>191</td>
+<td>global</td>
+<td>当前打开的连接的数量。</td>
+</tr>
+<tr>
+<td><strong>Threads_created</strong></td>
+<td>6070</td>
+<td>global</td>
+<td>创建用来处理连接的线程数。如果Threads_created较大，你可能要增加thread_cache_size值。缓存访问率的计算方法Threads_created/Connections。</td>
+</tr>
+<tr>
+<td><strong>Threads_running</strong></td>
+<td>3</td>
+<td>global</td>
+<td>激活的（非睡眠状态）线程数。</td>
+</tr>
+<tr>
+<td><strong>Uptime</strong></td>
+<td>21457</td>
+<td>global</td>
+<td>服务器已经运行的时间（以秒为单位）。</td>
+</tr>
+<tr>
+<td><strong>Uptime_since_flush_status</strong></td>
+<td>21457</td>
+<td>global</td>
+<td>最近一次使用FLUSH STATUS 的时间（以秒为单位）。</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/status/" rel="tag"># status</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/14/python-fasteners/" rel="next" title="提供锁机制的 Python fasteners 库">
+                <i class="fa fa-chevron-left"></i> 提供锁机制的 Python fasteners 库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/23/mysql-system-variable/" rel="prev" title="MySQL system variable 详解">
+                MySQL system variable 详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/04/22/mysql-status/';
+          this.page.identifier = '2018/04/22/mysql-status/';
+          this.page.title = 'MySQL status 详解';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

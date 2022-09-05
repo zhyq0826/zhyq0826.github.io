@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="react,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="2013 年 react 刚出来的时候，由于自己并不是前端，看着这个家伙新奇，但是并没有投入太多目光，但是工作中或多或少会用到前端，断断续续也接触了一下，直到今年实在也是迈不过去了，索性花点时间研究一下，以下就是我在写 react 的过程中的一点心得。 React 究竟是什么我是从 jQuery 时代过来的人，用过 Backbone、YahooUi 和 Dojo，也用 jQuery 自己造轮子替代">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解和学习 react">
+<meta property="og:url" content="http://sanyuesha.com/2022/08/21/understand-react/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="2013 年 react 刚出来的时候，由于自己并不是前端，看着这个家伙新奇，但是并没有投入太多目光，但是工作中或多或少会用到前端，断断续续也接触了一下，直到今年实在也是迈不过去了，索性花点时间研究一下，以下就是我在写 react 的过程中的一点心得。 React 究竟是什么我是从 jQuery 时代过来的人，用过 Backbone、YahooUi 和 Dojo，也用 jQuery 自己造轮子替代">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/WX20220821-221415@2x.png">
+<meta property="og:image" content="https://static.git-star.com/WX20220904-230229@2x.png">
+<meta property="og:updated_time" content="2022-09-05T15:17:25.159Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解和学习 react">
+<meta name="twitter:description" content="2013 年 react 刚出来的时候，由于自己并不是前端，看着这个家伙新奇，但是并没有投入太多目光，但是工作中或多或少会用到前端，断断续续也接触了一下，直到今年实在也是迈不过去了，索性花点时间研究一下，以下就是我在写 react 的过程中的一点心得。 React 究竟是什么我是从 jQuery 时代过来的人，用过 Backbone、YahooUi 和 Dojo，也用 jQuery 自己造轮子替代">
+<meta name="twitter:image" content="https://static.git-star.com/WX20220821-221415@2x.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2022/08/21/understand-react/">
+
+
+
+
+
+  <title>理解和学习 react | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2022/08/21/understand-react/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">理解和学习 react</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-08-21T20:50:53+08:00">
+                Aug 21 2022
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>2013 年 react 刚出来的时候，由于自己并不是前端，看着这个家伙新奇，但是并没有投入太多目光，但是工作中或多或少会用到前端，断断续续也接触了一下，直到今年实在也是迈不过去了，索性花点时间研究一下，以下就是我在写 react 的过程中的一点心得。</p>
+<h2 id="React-究竟是什么"><a href="#React-究竟是什么" class="headerlink" title="React 究竟是什么"></a>React 究竟是什么</h2><p>我是从 jQuery 时代过来的人，用过 Backbone、YahooUi 和 Dojo，也用 jQuery 自己造轮子替代了生产环境中的 Backbone 应用，而且跑的很好，日活百万的安卓壁纸一直跑着我造的轮子，直到原生 APP 上线很久以后才慢慢开始下线，在手机性能非常拉垮的 2011～2015，jQuery 非常够用，据说 slack 也是 jQuery 写的。</p>
+<p>在 2015 年之后，vuejs、angular、react 如火如荼，我却选择了 emberjs 作为公司前端的技术选型，很重要一个原因还是因为 jQuery 有足够大的生态，而这些新起之秀都需要从头造轮子，团队甚至连专业前端都没有，哪来精力和新框架硬杠，倒是不复杂的场景都用 react 和 vuejs 试了试水，终究没有大规模使用，直到我离开创业公司，我也没有写过一行 react 代码。</p>
+<p>今年开始断断续续写了写 react（主要后端可能写着更无聊🐶），写着写着我愈发想知道 react 到底是什么，因为这货和 emberjs 截然不同，直到看了 <a href="https://overreacted.io/react-as-a-ui-runtime/" target="_blank" rel="noopener">React as a UI Runtime</a> 我才有点明白这货和我当年用 jQuery 造的轮子思路还有点像。当时为了解决前端模板渲染效率和维护性问题，通过 JS 的简单对象动态创建出静态字符串模板，然后在根据模板在页面中的位置，通过 DOM 对象动态的替换，每个页面都是有一个或几个这样的对象组成，这个 JS 对象包含了:</p>
+<p><img src="https://static.git-star.com/WX20220821-221415@2x.png" alt></p>
+<ul>
+<li><p>静态模板 - template</p>
+</li>
+<li><p>数据加载和组装 - load</p>
+</li>
+<li><p>渲染 - render</p>
+</li>
+</ul>
+<ol>
+<li><p>静态模板包含原始的HTML和条件判断，实现了根据条件渲染不同的HTML片段</p>
+</li>
+<li><p>数据加载和组装类似 react 中的 <code>useEffect</code> 处理非 UI 逻辑以及加工 state</p>
+</li>
+<li><p>渲染类似 react 中 ListRender 和 Render，静态模板和渲染过程中都会有事件进行绑定</p>
+</li>
+</ol>
+<p>每个这样的 JS 对象都自包含着数据加载、事件处理、模板渲染等等，实现了高内聚，不同的 JS 对象通信是依靠全局的 JS 对象完成的，类似 react 中的 AppContext。</p>
+<p>闲篇扯完，回到正题，react 究竟是什么？React 从诞生之初就说自己是：</p>
+<blockquote>
+<p>A JavaScript library for building user interfaces。</p>
+</blockquote>
+<p>而 Dan Abramov 做了进一步解释：React is a ui runtime。Runtime 很准确的说明了 react 扮演的角色，也就是说 react 扮演了一个实时维持 UI 状态的运行时，这样才能在 UI 状态变化时做到高效渲染。这个运行时，react 称之为 Host Instance，也就是包含 Dom Nodes Tree 的一个环境，这个环境本身其实也是一个 Dom Node，特殊的地方在于它是 react 维护的。这个环境包含 react 维持组件运行状态的各种属性以及和宿主环境交互的各种 API，在 web browner 中就是 DOM API：appendChild、removeChild等，在 macOS React Native 中可能就是 Mac 自身的 UIKit API。在 react 中，一个 <code>ReactElement</code> 就是一个 Host Instance，也是 react 构建 UI 的最小单元。</p>
+<h2 id="React-如何渲染组件"><a href="#React-如何渲染组件" class="headerlink" title="React 如何渲染组件"></a>React 如何渲染组件</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;button className=<span class="string">"blue"</span> /&gt;,</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>一个组件 <code>&lt;button className=&quot;blue&quot; /&gt;</code> 在 react 中会表达成一个 JS 表达式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    type: <span class="string">'button'</span>,</span><br><span class="line">    props: &#123; <span class="attr">className</span>: <span class="string">'blue'</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个表达式通过 DOM 的形式描述了一个组件以及组件的状态，渲染组件的过程就是把这个表达式翻译成 DOM 加入到渲染容器的过程:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> domContainer = <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>)</span><br><span class="line"><span class="keyword">let</span> domNode = <span class="built_in">document</span>.createElement(<span class="string">'button'</span>);</span><br><span class="line">domNode.className = <span class="string">'blue'</span>;</span><br><span class="line">domContainer.appendChild(domNode)</span><br></pre></td></tr></table></figure>
+<p>当组件的状态出现变化的时候，react 会对组件的各个属性进行比较，以此来决定是否需要重新渲染:</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// className blue-&gt;red</span></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;button className=<span class="string">"red"</span> /&gt;,</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// node type button-&gt;p</span></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;p&gt;Hello world&lt;<span class="regexp">/p&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('container')</span></span><br><span class="line"><span class="regexp">);</span></span><br></pre></td></tr></table></figure>
+<p>如果比较中发现，组件前后是同类型的组件只是组件属性发生了变化，react 会直接复用之前渲染的 Host Instance，如果是不一样的组件，则重新渲染，react 这一处理过程叫 Reconciliation。</p>
+<p>React 的渲染机制大致如此，具体到条件渲染、循环渲染的具体处理逻辑可以详看 <a href="https://overreacted.io/react-as-a-ui-runtime/#lists" target="_blank" rel="noopener">https://overreacted.io/react-as-a-ui-runtime/#lists</a> 。</p>
+<h2 id="重绘给-UI-Runtime-带来的改变是什么"><a href="#重绘给-UI-Runtime-带来的改变是什么" class="headerlink" title="重绘给 UI Runtime 带来的改变是什么"></a>重绘给 UI Runtime 带来的改变是什么</h2><p>讨论这个问题，我们限定在 react 的 Function Component 中。React 作为一个 UI runtime 维护了 UI 渲染时需要的状态，而通过改变 state 和 props 会触发 react 重新渲染组件，为了保证 UI 的正确渲染以及高性能，react 需要决定什么是需要重新渲染的，什么不需要，默认情况下如果我们不做任何处理，react 会重新渲染 Function Component 中所有的内容，包括函数。也就是说只要触发了 component 重新渲染，component 内部一切都是新的。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params">props</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;&gt;</span>&#123;props.name&#125;<span class="tag">&lt;/&gt;</span></span></span><br><span class="line"><span class="xml">&#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">export default function App(props)&#123;</span></span><br><span class="line"><span class="xml">  const [name, setName] = useState('hello world');</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  const someFunc = ()=&gt;&#123;</span></span><br><span class="line"><span class="xml">    console.log("some func render")</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  someFunc()</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  return (</span></span><br><span class="line">    &lt;div className="App" onClick=&#123;()=&gt; setName(new Date().toTimeString())&#125; &gt;</span><br><span class="line">      &lt;Hello name=&#123;name&#125; &gt;&lt;/Hello&gt;</span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  );</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>上述代码在 name 发生改变时会触发组件重新渲染，可以看到 <code>someFunc</code> 也会重新执行，由于 JS 重没有办法获取变量的 ID，如果能这里看到是每次渲染都会是一个新的 ID，即便 someFunc 并没有参与UI的改变。</p>
+<p>React 的这种机制让 UI 的改变变得简单和灵活，而且开发者心智负担更轻，不像 ember 中必须要告诉 template 这是个 tracked 属性，也不像 vuejs 什么都放到 model 中，亦或者通过 compute 以及 watch 来决定什么时候要触发 UI 的改变。React 中只要 props 或者 state 发生了改变都会让组件以及子组件重新渲染，这种渲染机制让开发变得简单了，但可能会带来性能问题，而性能是 react 自身要操的心了，大部分时候一般的 App 不会涉及到。</p>
+<p>再来看看重绘制时 react 如何管理 UI 的状态。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useEffect, useState &#125; <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;&gt;</span>&#123;props.name&#125;<span class="tag">&lt;/&gt;</span></span></span><br><span class="line"><span class="xml">&#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">export default function App(props) &#123;</span></span><br><span class="line"><span class="xml">  const [name, setName] = useState(new Date().toTimeString());</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  useEffect(() =&gt; &#123;</span></span><br><span class="line"><span class="xml">    setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="xml">      console.log(name)</span></span><br><span class="line"><span class="xml">    &#125;, 3000);</span></span><br><span class="line"><span class="xml">  &#125;)</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  return (</span></span><br><span class="line">    &lt;div className="App" onClick=&#123;() =&gt; setName(new Date().toTimeString())&#125; &gt;</span><br><span class="line">      &lt;Hello name=&#123;name&#125; &gt;&lt;/Hello&gt;</span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  );</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>来看结果</p>
+<p><img src="https://static.git-star.com/WX20220904-230229@2x.png" alt></p>
+<p>当 UI 的时间已经改变时，控制台输出的时间仍然是个旧值，react 始终保证每次渲染都是渲染时的状态，react 中称这种行为为 <code>state capture</code>。React 会在渲染组件时捕获 UI 状态，也就是渲染实际上当时 UI 的快照。这样保证了状态不论改变多少次，UI 的变化总是会和状态保持着一致性。当然如果 state 频繁改变，react 还会通过 batch update 以及多次渲染合并称一次来满足 UI 渲染的性能要求，个中细节参考 <a href="https://overreacted.io/react-as-a-ui-runtime/" target="_blank" rel="noopener">React as a UI Runtime</a> 、<a href="https://overreacted.io/a-complete-guide-to-useeffect/" target="_blank" rel="noopener">A Complete Guide to useEffect</a> 。</p>
+<h2 id="React-的灵活性让开发过程愉悦"><a href="#React-的灵活性让开发过程愉悦" class="headerlink" title="React 的灵活性让开发过程愉悦"></a>React 的灵活性让开发过程愉悦</h2><p>相比其他框架，React 的有一个很大特征就是<strong>灵活</strong>，由于 react 的最小 UI 单元其实就是一个 React Element ，而且几乎没有实现成本，这就导致了可以基于 UI Element 完成任意的组合实现各种不同的 UI 单元，而且基于 props 和 state 的 UI 状态管理，让 react 的 UI 的交互模式变得非常纯粹，不需要再掌握更复杂的模式了，这些能完成 95% 的工作，心智非常简单，开发高效。</p>
+<p>灵活也带来另一个问题，就是如何才能做好组合的设计和抽象，以实现组件的维护成本更低，复用程度更高。因而不同水平的开发人员使用 react 实现相同的功能可能差异还是很大的。</p>
+<h2 id="学习-React-从哪里开始"><a href="#学习-React-从哪里开始" class="headerlink" title="学习 React 从哪里开始"></a>学习 React 从哪里开始</h2><ol>
+<li>和其他大部分开源技术一样，官网总是有最好的教程 <a href="https://reactjs.org/" target="_blank" rel="noopener">https://reactjs.org/</a> ，用 <a href="https://create-react-app.dev/" target="_blank" rel="noopener">Create React App</a> 写个小项目熟悉一下 JSX 的语法，大部分从来没接触过 JSX 的人都需要花点时间适应 JSX 语法</li>
+<li>接着拨云见雾了解 React 的本质是什么 <a href="https://overreacted.io/react-as-a-ui-runtime/" target="_blank" rel="noopener">React as a UI Runtime</a></li>
+<li>学习使用 <a href="https://reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">Hooks</a></li>
+<li>Hooks 使用一段时间之后，了解一下 hooks 的来龙去脉以及 hook 的本质 <a href="https://overreacted.io/a-complete-guide-to-useeffect/" target="_blank" rel="noopener">A Complete Guide to useEffect</a></li>
+</ol>
+<p>熟悉了解了这些大部分 React 的开发都能进行了，一边学习一边多看看官网的文档，包括历年新特性的发布介绍，慢慢会对 React 有更深入的理解。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/04/config-local-dev-https-with-spring/" rel="next" title="配置浏览器信任的 Spring boot https 开发环境">
+                <i class="fa fa-chevron-left"></i> 配置浏览器信任的 Spring boot https 开发环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-究竟是什么"><span class="nav-number">1.</span> <span class="nav-text">React 究竟是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-如何渲染组件"><span class="nav-number">2.</span> <span class="nav-text">React 如何渲染组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重绘给-UI-Runtime-带来的改变是什么"><span class="nav-number">3.</span> <span class="nav-text">重绘给 UI Runtime 带来的改变是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-的灵活性让开发过程愉悦"><span class="nav-number">4.</span> <span class="nav-text">React 的灵活性让开发过程愉悦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习-React-从哪里开始"><span class="nav-number">5.</span> <span class="nav-text">学习 React 从哪里开始</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2022/08/21/understand-react/';
+          this.page.identifier = '2022/08/21/understand-react/';
+          this.page.title = '理解和学习 react';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

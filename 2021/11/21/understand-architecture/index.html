@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="架构,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在软件的开发演进过程中，都会涉及软件的架构，那软件架构究竟是指什么？在软件的整个生命周期中又都包含什么样形式的软件架构？它们的作用又是什么？什么样的角色和团队要为这些架构负责？带着这些问题我们一起聊聊软件架构这些事。 什么是架构架构的本意是指结构以及结构之间的关系，而作为动词的架构就是指根据需求、目标、问题场景等所做出的一些列符合要求的设计决策，换句话说架构就是做设计决策，但是软件开发本身就是一个">
+<meta name="keywords" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解架构这件事">
+<meta property="og:url" content="http://sanyuesha.com/2021/11/21/understand-architecture/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="在软件的开发演进过程中，都会涉及软件的架构，那软件架构究竟是指什么？在软件的整个生命周期中又都包含什么样形式的软件架构？它们的作用又是什么？什么样的角色和团队要为这些架构负责？带着这些问题我们一起聊聊软件架构这些事。 什么是架构架构的本意是指结构以及结构之间的关系，而作为动词的架构就是指根据需求、目标、问题场景等所做出的一些列符合要求的设计决策，换句话说架构就是做设计决策，但是软件开发本身就是一个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-23T13:51:40.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解架构这件事">
+<meta name="twitter:description" content="在软件的开发演进过程中，都会涉及软件的架构，那软件架构究竟是指什么？在软件的整个生命周期中又都包含什么样形式的软件架构？它们的作用又是什么？什么样的角色和团队要为这些架构负责？带着这些问题我们一起聊聊软件架构这些事。 什么是架构架构的本意是指结构以及结构之间的关系，而作为动词的架构就是指根据需求、目标、问题场景等所做出的一些列符合要求的设计决策，换句话说架构就是做设计决策，但是软件开发本身就是一个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2021/11/21/understand-architecture/">
+
+
+
+
+
+  <title>理解架构这件事 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2021/11/21/understand-architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">理解架构这件事</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-21T15:31:59+08:00">
+                Nov 21 2021
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在软件的开发演进过程中，都会涉及软件的架构，那软件架构究竟是指什么？在软件的整个生命周期中又都包含什么样形式的软件架构？它们的作用又是什么？什么样的角色和团队要为这些架构负责？带着这些问题我们一起聊聊软件架构这些事。</p>
+<h2 id="什么是架构"><a href="#什么是架构" class="headerlink" title="什么是架构"></a>什么是架构</h2><p>架构的本意是指结构以及结构之间的关系，而作为动词的架构就是指根据需求、目标、问题场景等所做出的一些列符合要求的设计决策，换句话说<strong>架构就是做设计决策</strong>，但是软件开发本身就是一个不断设计的过程，所以才有开发一个软件其实就是在做 software design 的说法，那是不是就可以说软件设计就是软件架构？这样的说法并不正确。</p>
+<p>要解决一个问题，可能会设计出101种解决方案，但并不是设计所有这些解决方案时都可以称之为架构，因为最终你会根据多种因素比如时间、金钱、团队技术水平等只选择其中的一种方案，而你<strong>做出这种潜在选择的设计决策就是架构</strong>。</p>
+<p>不难理解，所有的架构的都是设计，但是并非所有的设计都是架构，架构反映的是让一个系统成型的重要设计决策，决策的重要性是通过改变的成本来衡量的。架构的这种定义决定了架构几乎存在于软件开发的方方方面面，比如网络架构、数据架构、解决方案架构、安全架构等等。</p>
+<h2 id="架构的种类"><a href="#架构的种类" class="headerlink" title="架构的种类"></a>架构的种类</h2><p>架构和决策有关，因而架构的种类划分会根据决策的问题场景不同而不同，按照软件开发的生命周期可以分为：业务需求架构、产品功能架构、应用系统架构、应用程序架构。</p>
+<h3 id="业务需求架构"><a href="#业务需求架构" class="headerlink" title="业务需求架构"></a>业务需求架构</h3><p>业务需求架构发生在业务需求提出的阶段，这个阶段的处于软件开发的最早期，此时开发者对于要解决的问题可能根本还不了解，甚至提出需求的人也未必真的能把问题讲清楚，说明白。因此这一阶段最重要的就是梳理业务需求和业务流程，为产品提供明确可被解决一个个业务问题。</p>
+<p><strong>业务需求架构</strong>就是在软件开发的初期，罗列业务需求，提取业务问题，梳理业务流程，明确业务价值以做出合理的业务规划。</p>
+<h3 id="产品功能架构"><a href="#产品功能架构" class="headerlink" title="产品功能架构"></a>产品功能架构</h3><p>明确了业务需求，就需要设计解决业务问题的产品，产品有什么的样的功能，各个功能之间的关系是什么，业务流程是如何通过产品提供的的功能完成的，这些都是产品功能架构要解决的问题。</p>
+<p><strong>产品功能架构</strong>就是设计产品所具有的所有功能模块以及各个模块之间的关系，将它们按照合理的层级、关系进行梳理组织，形成具有完整性的产品结构。</p>
+<h3 id="应用系统架构"><a href="#应用系统架构" class="headerlink" title="应用系统架构"></a>应用系统架构</h3><p>一般来说，应用系统架构是更大规模的应用程序的集成与架构，系统架构会横跨多个应用程序，并且应用程序之间有明显的边界和职责划分，甚至还包括硬件，系统架构关注的是应用程序之间如何集成、关联、调用，在系统架构中，不会特别关注单个应用程序的技术细节，除非这些技术细节影响了系统之间的集成。系统架构中经常会涉及非功能性需求，比如审计要求、系统的构建和发布形式、系统的可伸缩性、可用性要求、安全性要求等等。</p>
+<p><strong>应用系统架构</strong>就是具有不同能力和职责的应用程序之间的结构、层次、关系的划分和集成，系统架构要求在更高层次上描绘应用程序之间的关系，并且需要考虑很多非功能性需求。</p>
+<h3 id="应用程序架构"><a href="#应用程序架构" class="headerlink" title="应用程序架构"></a>应用程序架构</h3><p>应用程序架构是大多开发者所熟知的设计应用程序所涉及到的技术架构，因为其本身就是关于编程语言选择、代码模块划分、API 设计、框架选择、命名规范、函数设计、错误处理、设计模式、单元测试等一系列技术细节的选择、约束、规范。</p>
+<p><strong>应用程序架构</strong>就是应用程序的技术架构，这将是软件开发和软件生命周期中最细粒度的架构，应用程序的架构好坏直接决定了软件代码的质量、可维护性和可扩展性，应用程序架构几乎涉及到的技术开发的所有细节。</p>
+<h2 id="谁该为架构负责"><a href="#谁该为架构负责" class="headerlink" title="谁该为架构负责"></a>谁该为架构负责</h2><p>现在，我们知道了架构就是设计决策，软件开发又包含：业务需求架构、产品功能架构、应用系统架构、应用程序架构，那谁该为这些架构做出正确的设计决策？可能大多数读者的第一反应是该架构师上场了，是的，此时需要架构师来干活了。但是什么样的角色适合做这些架构，技术、产品、提出需求的人还是项目经理 ？</p>
+<p>绝大多数<strong>业务需求架构</strong>设计都免不了会受到技术成本、市场因素等客观条件的约束，要能设计出满足诉求人合理业务需求的架构，需要决策者对能对各种综合性因素做出考量，包括但不限于技术、市场、金钱、团队构成等，这就要求决策者必须是能理解需求、了解市场、熟悉技术、知道团队构成，这就是业务需求架构的人选要求。</p>
+<p>有了业务需求架构的输入，设计<strong>产品功能架构</strong>可以说软件开始进入落地阶段了，以笔者的理解，这就是大多数产品经理角色的能力范围。</p>
+<p>应用系统架构和应用程序架构很显然是属于技术的范畴了，这也是我们通常意义上所说的架构师所负责的领域范围，负责技术架构的人一般被称之为<strong>软件架构师</strong>。</p>
+<h2 id="架构师的角色应该如何扮演"><a href="#架构师的角色应该如何扮演" class="headerlink" title="架构师的角色应该如何扮演"></a>架构师的角色应该如何扮演</h2><p>很明确的说，架构师是一种角色而不是一个职位或是某个人，因为担当角色的可能不只是某个人，也可能是一个团队，这个角色需要扮演以下职责才能发挥他的作用。</p>
+<h3 id="理解需求，明确目标"><a href="#理解需求，明确目标" class="headerlink" title="理解需求，明确目标"></a>理解需求，明确目标</h3><p>这个角色首先需要理解需求，理解最终产品是什么，以及产品所要达成的目标是什么，除此之外，对于软件所要满足的非功能性需求，比如性能、伸缩性、可靠性、安全性等也要保持关注。</p>
+<h3 id="设计软件"><a href="#设计软件" class="headerlink" title="设计软件"></a>设计软件</h3><p>软件是设计出来的，软件的设计过程包含很多的技术细节，技术选型如何做？如何选择合适的框架和数据库？是否应该包含 ORM 框架？编码规则是什么？如何测试软件的正确性？代码质量如何保证？这些都是软件设计要关注的，但远远不止这些。</p>
+<h3 id="预估风险"><a href="#预估风险" class="headerlink" title="预估风险"></a>预估风险</h3><p>设计成功的软件可能很难，但是想要它失败却很容易。软件的设计开发过程中隐含着种种风险，尤其是在交付日期逼近，很少有人会真正关注软件是否真的会以设想的方式工作，架构师这个角色必须要承担这种风险管理职责，确保软件的交付是正确的。</p>
+<p>在做技术决策时需要审慎评估和选择，例如如果你的业务非常复杂，对灵活性要求很高，这个时候选择一个大而全的ORM框架就要三思，越大越全，也意味着灵活性的缺失，最终会导致架构的僵化，难以扩展和变动。笔者曾亲见过，有团队把引入 Django 的 ORM作为团队的主要 ORM 框架，从而最终导致公司在上市审计时候做出变动非常困难，如果系统对稳定性要求很高，引入一个未经考验的组件可能就是个风险点，笔者所在的团队就曾经历过采用 Istio 这个网关新星而失败。</p>
+<h3 id="架构演化"><a href="#架构演化" class="headerlink" title="架构演化"></a>架构演化</h3><p>没有一成不变的软件，软件生命周期的绝大部分时间都在维护和改动，同理也不应该有一劳永逸的架构，没有架构会在设计之初一下子就把将来所有的可能性都覆盖，<strong>软件架构是在软件开发的维护过程中随着需求的变化而不断演化的</strong>，问题需求决定了架构的设计，反过来架构设计又决定了软件的开发效率和质量，架构发生演化的另一个因素就是<strong>开发团队的反馈</strong>，架构师因而要根据软件需求的变化和团队的反馈应时调整，<strong>应时</strong>的含义是说<strong>不应该过早也不应该过晚</strong>进行调整。</p>
+<h3 id="参与开发"><a href="#参与开发" class="headerlink" title="参与开发"></a>参与开发</h3><p>笔者见过很多架构师从来不写代码，这和厨师从来不吃自己做的饭没有任何区别，架构师不参与开发就不能亲身检验自己的设计是否合理，完全交由开发团队很难保证最终的架构设计可以被成功塑造，架构师有义务通过主动参与开发来引导开发团队落地架构实践。</p>
+<p>既可以参与实际编码，又能够做出重要的设计决策，要求架构师能够做到在底层技术细节和架构大局之间灵活切换，做架构师真的好难，既要又要，因而不是人人都能成为架构师。</p>
+<h3 id="质量保证"><a href="#质量保证" class="headerlink" title="质量保证"></a>质量保证</h3><p>好的架构不一定会让软件最终成功交付，但是差的软件质量一定会让软件交付失败，因此架构师保证软件的质量至关重要。质量保证不仅仅是代码评审，架构师需要在架构实践中引入合适的设计原则、编码标准、测试基线等来保证架构的质量。</p>
+<h2 id="如何成为一个合格的架构师"><a href="#如何成为一个合格的架构师" class="headerlink" title="如何成为一个合格的架构师"></a>如何成为一个合格的架构师</h2><p>知道了架构师应该扮演的角色，那该如何成为可以成功扮演这些角色的架构师。毕竟有种说法是“人人都是架构师”，其背后的含义好像是说不成为一个架构师都不能称之为人了，因而成为架构师对“作为一个人真”的是至关重要。</p>
+<h3 id="平衡技术深度和广度"><a href="#平衡技术深度和广度" class="headerlink" title="平衡技术深度和广度"></a>平衡技术深度和广度</h3><p>毋庸置疑，架构师需要掌握很多的技术知识，且需横跨多个领域，这是对架构师技术能力的硬性要求。广则不深，专则难以广，架构师需要在广度和深度之间适度权衡，有的放矢，听上上是正确的废话，但是真的很管用。没有广度，很难预知架构面临的风险，风险可能来自任何地方；没有深度，无法保证在架构演化过程中可以及时做出影响全局的重要技术决策，细节往往决定成败。</p>
+<h3 id="学习领导力，建立影响力"><a href="#学习领导力，建立影响力" class="headerlink" title="学习领导力，建立影响力"></a>学习领导力，建立影响力</h3><p>领导力和影响力是架构师需要必须要具备的重要品质，而影响力的建立是一个非常长期的结果，这通常和架构师自身的技术能力过硬有关，更和架构师善于倾听他人的想法，并做出合理回应有关。架构师不仅仅是要善于处理一堆技术问题，更是一个团队的润滑剂和教练，他需要为团队创建一个共同的目标，并且积极带领团队为之付出努力。软件架构不仅关乎技术，还关乎人，有团队的地方就有情绪、政治、利益，架构师就是需要在满足大多数人利益的情况下，还能让团队成员保持着积极面对问题的热情，这就是领导力。</p>
+<h3 id="学会控制和放权"><a href="#学会控制和放权" class="headerlink" title="学会控制和放权"></a>学会控制和放权</h3><p>架构需要约束，约束就是需要控制，控制什么，什么时候控制，都是架构师要掌握的，可能架构师没有人事豁免的权力，但是技术决策上应该有决定权。控制总会让人不爽，控制是为了保证架构正确落地和质量，但是控制一定程度上也会导致开发效率降低。如果控制的范围过大，控制的数量过多，常常会适得其反，让开发团队产生抵触情绪，控制的范围太小，可能起不到促进架构演化的作用。如何决定？<strong>保留架构师的技术裁决权，适当放权给团队</strong>，划定可一定时间内执行落地的范围，和团队达成一致，比如约束命名规范，和团队协商对命名约束达并成一致，借助 IDE 工具快速让命名规则在已有代码库中保持统一，并保证可以持续在后续的编码中落地。<strong>快速让已经存在的命名保持统不仅践行了架构实践，也让团队认识到这种约束的真正意义，协商一致可以你让团队成员都遵守共同的承诺</strong>。</p>
+<p>技术的裁决权为什么重要？在很多关键时刻，<strong>独裁可能才是解决问题的最佳形式</strong>，并不是所有人都有勇气打破常规做出一些正确但是当时团队又无法理解的技术决策。</p>
+<h3 id="做好抽象，关注细节"><a href="#做好抽象，关注细节" class="headerlink" title="做好抽象，关注细节"></a>做好抽象，关注细节</h3><p>架构师需要知道在什么时候关注抽象，什么时候关注细节，过度的抽象可会导致细节藏的太深，架构无法揭示软件实际的面貌，细节太多也会让软件缺乏架构的指导，让架构失去作用。关注抽象需要有大局观，关注细节需认识抽象的局限。更多的抽象的，意为更多的理解成本，更多的细节意味着又会导致难以扩展和维护。架构师需要在二者之间做出平衡。</p>
+<hr>
+<p>成为架构师的途径看似有点虚无缥缈，还充斥着正确无比的大道理，就好像听了很多道理依然过不好生活一样，实践才是检验大道理的唯一标准，你需要在团队中做一次架构来开始架构师之路。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/29/architecture-event-pattern/" rel="next" title="架构的设计模式：事件驱动">
+                <i class="fa fa-chevron-left"></i> 架构的设计模式：事件驱动
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/04/config-local-dev-https-with-spring/" rel="prev" title="配置浏览器信任的 Spring boot https 开发环境">
+                配置浏览器信任的 Spring boot https 开发环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是架构"><span class="nav-number">1.</span> <span class="nav-text">什么是架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构的种类"><span class="nav-number">2.</span> <span class="nav-text">架构的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#业务需求架构"><span class="nav-number">2.1.</span> <span class="nav-text">业务需求架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#产品功能架构"><span class="nav-number">2.2.</span> <span class="nav-text">产品功能架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用系统架构"><span class="nav-number">2.3.</span> <span class="nav-text">应用系统架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序架构"><span class="nav-number">2.4.</span> <span class="nav-text">应用程序架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谁该为架构负责"><span class="nav-number">3.</span> <span class="nav-text">谁该为架构负责</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构师的角色应该如何扮演"><span class="nav-number">4.</span> <span class="nav-text">架构师的角色应该如何扮演</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解需求，明确目标"><span class="nav-number">4.1.</span> <span class="nav-text">理解需求，明确目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计软件"><span class="nav-number">4.2.</span> <span class="nav-text">设计软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预估风险"><span class="nav-number">4.3.</span> <span class="nav-text">预估风险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#架构演化"><span class="nav-number">4.4.</span> <span class="nav-text">架构演化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参与开发"><span class="nav-number">4.5.</span> <span class="nav-text">参与开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#质量保证"><span class="nav-number">4.6.</span> <span class="nav-text">质量保证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何成为一个合格的架构师"><span class="nav-number">5.</span> <span class="nav-text">如何成为一个合格的架构师</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平衡技术深度和广度"><span class="nav-number">5.1.</span> <span class="nav-text">平衡技术深度和广度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习领导力，建立影响力"><span class="nav-number">5.2.</span> <span class="nav-text">学习领导力，建立影响力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学会控制和放权"><span class="nav-number">5.3.</span> <span class="nav-text">学会控制和放权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做好抽象，关注细节"><span class="nav-number">5.4.</span> <span class="nav-text">做好抽象，关注细节</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2021/11/21/understand-architecture/';
+          this.page.identifier = '2021/11/21/understand-architecture/';
+          this.page.title = '理解架构这件事';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

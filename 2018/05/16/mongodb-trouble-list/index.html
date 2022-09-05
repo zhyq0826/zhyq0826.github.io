@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="故障,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
+<meta name="keywords" content="故障">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB 常见故障以及诊断和解决方案">
+<meta property="og:url" content="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-17T15:21:02.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MongoDB 常见故障以及诊断和解决方案">
+<meta name="twitter:description" content="郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。 磁盘不行早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/">
+
+
+
+
+
+  <title>MongoDB 常见故障以及诊断和解决方案 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/05/16/mongodb-trouble-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MongoDB 常见故障以及诊断和解决方案</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T23:38:19+08:00">
+                May 16 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mongodb/" itemprop="url" rel="index">
+                    <span itemprop="name">mongodb</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>郭德纲经常调侃于谦，说于谦的三大爱好是抽烟、喝酒、烫头，用了这么多年 MongoDB 碰到太多问题，即使以前和现在都不是我在运维，总结下来对百万日活级别的 MongoDB 日常使用的大部分问题都可以归纳到以下几点。</p>
+<h2 id="磁盘不行"><a href="#磁盘不行" class="headerlink" title="磁盘不行"></a>磁盘不行</h2><p>早期创业时我们用的 MongoDB 2.4，那个时候 MongoDB 出来没多久，当时的团队很早就在国内生产环境大规模上了 MongoDB，也是为了省钱 MongoDB 节点全是机械磁盘加 raid 5，硬是扛了 100 多万的日活，后期出问题最多就是磁盘，大并发写的时候磁盘 IO 吃紧无法满足性能，有时候莫名其妙卡顿，加缓存上内存优化代码各种招都试了，等到我们拿到融资把机器全换 SSD 之后，问题一下全没了。</p>
+<p><strong>有些钱省不得，省了之后总是会带来更大的麻烦，如果你生成环境用 MongoDB 建议直接 SSD，再说现在都云了，非常容易更换，不像我们当年，扛着磁盘去机房换，累死累活</strong>。</p>
+<h2 id="内存不够"><a href="#内存不够" class="headerlink" title="内存不够"></a>内存不够</h2><p>MongoDB 为了性能几乎把所有热点数据都加载到内存了，很吃内存，早期我们对 MongoDB 不了解，机器都是自建的同样也是为了省钱机器配置都是 8CPU x 16G 的，用户量大时候莫名其妙 MongoDB 进程被操作系统 kill 掉，回顾日志发现大部分原因是 MongoDB 吃了太多内存。后来我们升级到 64G 之后再也没有出现过类似的问题。</p>
+<p><strong>MongoDB 的非常吃内存，如果生产环境大量使用 MongoDB 建议对重点业务机器配置高内存</strong>。</p>
+<h2 id="索引使用不合理"><a href="#索引使用不合理" class="headerlink" title="索引使用不合理"></a>索引使用不合理</h2><p>同 MySQL 一样，如果 MongoDB 的索引使用不合理，会导致大量的慢查询，从而过快消耗完数据库连接，服务器 CPU load 非常高，数据库响应缓慢。MongoDB 的索引的最佳实践官方说的非常透彻，建议好好学习，认真实践：<a href="https://docs.mongodb.com/manual/indexes/" target="_blank" rel="noopener">https://docs.mongodb.com/manual/indexes/</a> 。</p>
+<p>除此之外，我也写过一篇关于 MongoDB 索引的文章：<a href="http://sanyuesha.com/2018/03/21/mongodb-index/">Mongodb 中的索引</a> 读者可参考借鉴。</p>
+<p><strong>什么时候使用索引？</strong></p>
+<p>最好索引在建表之初就设计好，不要等到数据量大到一定程度把问题暴露出来了再去创建索引，那个时候出问题可能就是个大问题了。</p>
+<h2 id="行记录太大"><a href="#行记录太大" class="headerlink" title="行记录太大"></a>行记录太大</h2><p>在一次定位线上应用程序莫名卡顿时，发现了 MongoDB 中一个慢查询，最后诊断下来发现由于开发人员的粗心大意，一条 MongoDB 的 record 竟然达 10m 左右，导致 MongoDB client 在查询和传输数据时都非常的慢。</p>
+<p><strong>MongoDB 单条数据最大不超过 16m，如果再大官方建议使用 gridfs 或者其他文件存储系统，显然 MongoDB 有自己不擅长的地方，在使用时要注意</strong>。</p>
+<h2 id="collection-数据量太大"><a href="#collection-数据量太大" class="headerlink" title="collection 数据量太大"></a>collection 数据量太大</h2><p>MongoDB 单节点单表数据达数亿级别时在大并发写入时会变慢，此时可以考虑拆表，如果业务数据量不是很大，可以直接在原有集群上进行。MongoDB 官方提供了 sharding 方案，但是对于一般性业务来说显得过于复杂，可以根据自身的业务特性选择合适的方案实践。</p>
+<h2 id="日常-MongoDB-的诊断"><a href="#日常-MongoDB-的诊断" class="headerlink" title="日常 MongoDB 的诊断"></a>日常 MongoDB 的诊断</h2><blockquote>
+<p><a href="https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/" target="_blank" rel="noopener">https://docs.mongodb.com/manual/tutorial/manage-the-database-profiler/</a></p>
+</blockquote>
+<p>MongoDB 提供了慢查询日志和错误日志来帮助定位和解决问题，慢查询日志可以通过 <code>db.setProfilingLevel</code> 设置，共有3个级别分别是：</p>
+<ul>
+<li>0 默认级别，不收集任何数据</li>
+<li>1 收集满足条件的慢查询</li>
+<li>2 所有操作都收集</li>
+</ul>
+<p>开启 slow log <code>db.setProfilingLevel(1, { slowms: 20 })</code> ，查询慢查询日志 <code>db.system.profile.find( { millis : { $gt : 5 } } ).pretty()</code> </p>
+<p>除了慢查询日志，<code>db.serverStatus</code> 可以查看当前服务器各种状态，包括连接数、锁信息、文档更新删除数量等等能够帮助我们迅速判断服务器的状态。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/故障/" rel="tag"># 故障</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/16/consul-health-check/" rel="next" title="Consul 健康检查">
+                <i class="fa fa-chevron-left"></i> Consul 健康检查
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/17/consul-kv/" rel="prev" title="Consul KV 存储">
+                Consul KV 存储 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">132</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#磁盘不行"><span class="nav-number">1.</span> <span class="nav-text">磁盘不行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存不够"><span class="nav-number">2.</span> <span class="nav-text">内存不够</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引使用不合理"><span class="nav-number">3.</span> <span class="nav-text">索引使用不合理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行记录太大"><span class="nav-number">4.</span> <span class="nav-text">行记录太大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#collection-数据量太大"><span class="nav-number">5.</span> <span class="nav-text">collection 数据量太大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日常-MongoDB-的诊断"><span class="nav-number">6.</span> <span class="nav-text">日常 MongoDB 的诊断</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2018/05/16/mongodb-trouble-list/';
+          this.page.identifier = '2018/05/16/mongodb-trouble-list/';
+          this.page.title = 'MongoDB 常见故障以及诊断和解决方案';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
