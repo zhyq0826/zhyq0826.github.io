@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="设计,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="虽然我不是专业前端，但是前端的专业程度应该已经超过了很多专业的前端，第一，我有扎实的计算机基础（在后端侵淫了十年），第二，良好的交互设计感以及对美好事物的追求塑造了我对前端交互的独特感受。当然前端的设计不仅仅是指交互设计，也有很重要的平面设计成分，但是作为一个前端，交互设计是首要应该掌握的，交互的好坏直接反应了前端程序的易用程度，甚至一定程度上决定了整个程序的用户体验和口碑，比如说黄渤虽然长得不帅">
+<meta name="keywords" content="设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊点交互设计">
+<meta property="og:url" content="http://sanyuesha.com/2022/10/25/talk-about-design/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="虽然我不是专业前端，但是前端的专业程度应该已经超过了很多专业的前端，第一，我有扎实的计算机基础（在后端侵淫了十年），第二，良好的交互设计感以及对美好事物的追求塑造了我对前端交互的独特感受。当然前端的设计不仅仅是指交互设计，也有很重要的平面设计成分，但是作为一个前端，交互设计是首要应该掌握的，交互的好坏直接反应了前端程序的易用程度，甚至一定程度上决定了整个程序的用户体验和口碑，比如说黄渤虽然长得不帅">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-02-02T13:54:58.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊点交互设计">
+<meta name="twitter:description" content="虽然我不是专业前端，但是前端的专业程度应该已经超过了很多专业的前端，第一，我有扎实的计算机基础（在后端侵淫了十年），第二，良好的交互设计感以及对美好事物的追求塑造了我对前端交互的独特感受。当然前端的设计不仅仅是指交互设计，也有很重要的平面设计成分，但是作为一个前端，交互设计是首要应该掌握的，交互的好坏直接反应了前端程序的易用程度，甚至一定程度上决定了整个程序的用户体验和口碑，比如说黄渤虽然长得不帅">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2022/10/25/talk-about-design/">
+
+
+
+
+
+  <title>聊点交互设计 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2022/10/25/talk-about-design/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">聊点交互设计</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-10-25T09:53:47+08:00">
+                Oct 25 2022
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>虽然我不是专业前端，但是前端的专业程度应该已经超过了很多专业的前端，第一，我有扎实的计算机基础（在后端侵淫了十年），第二，良好的交互设计感以及对美好事物的追求塑造了我对前端交互的独特感受。当然前端的设计不仅仅是指交互设计，也有很重要的平面设计成分，但是作为一个前端，交互设计是首要应该掌握的，交互的好坏直接反应了前端程序的易用程度，甚至一定程度上决定了整个程序的用户体验和口碑，比如说黄渤虽然长得不帅，但是演技超群，有修养有内涵，一样可以成为顶流明星，而前端的美感部分可以完全交给设计师，这也从侧面反应了一个事实，大部分设计师只擅长平面设计。</p>
+<h2 id="交互的基本组成结构"><a href="#交互的基本组成结构" class="headerlink" title="交互的基本组成结构"></a>交互的基本组成结构</h2><p>一个完整的交互包含触发交互的对象、交互规则、响应反馈以及以前三者为基础建立的循环模式。</p>
+<p><strong>交互对象</strong>很好理解，就是触发交互的元素，也可以称之为<strong>触发器</strong>，可以是一个虚拟按钮，一个实体按键等等。</p>
+<p><strong>交互规则</strong>就是隐式或显式指导交互发生作用的规则。</p>
+<p><strong>响应反馈</strong>是指通过某种用户能理解的方式告知交互的规则和结果。</p>
+<p><strong>循环模式</strong>就是一种或多种交互组合、循环以最终达成交互目标而形成的操作模式。</p>
+<h2 id="交互体现的是细节"><a href="#交互体现的是细节" class="headerlink" title="交互体现的是细节"></a>交互体现的是细节</h2><p>交互体现的是人与产品的互动，人和产品的互动往往又来自于各种各样的细节。</p>
+<p>细节就是在有限的条件下，利用有限的空间、时间、规则来帮助用户完成和产品的互动，好的细节就是让用户高效、愉悦得完成互动。</p>
+<p>也就是一个个细节的组合和积累整体完成了产品使用体验的表达，进而可以得出<strong>优秀的产品使用体验，必然包含无数个优秀的细节设计</strong>，细节就是本质，是评价产品使用优劣的标准。</p>
+<h2 id="设计触发器的基本原则"><a href="#设计触发器的基本原则" class="headerlink" title="设计触发器的基本原则"></a>设计触发器的基本原则</h2><p>任何交互的开始都始于一个<strong>触发器</strong>，用户要使用一个触发器必然是为了达成某种目的，因此交互设计也自然开始于对用户需求的理解：用户想要做什么、什么时候想做，有多么频繁，达成目的之后用户又要去做什么，以此往复。</p>
+<p>对用户需求的洞察就是对用户使用交互场景的洞察，场景又决定了触发器在什么时候、什么地方以什么样的形式出现，那么触发器的在场景中的辨识是交互设计首先要解决的问题。</p>
+<p>触发器设计的第一个原则：<strong>必须让用户在使用场景下能认出来</strong>。</p>
+<p>我多年的职业生涯中，经常能听到用户对使用某个产品的吐槽：这谁能看出来是个按钮。类似的吐槽反映出来就是触发器设计的辨识度是有问题的。</p>
+<p>触发器设计的第二个原则：<strong>保证相同的触发器每次都触发相同的动作</strong>。</p>
+<p>这一原则保证了用户在使用的过程中能对触发器的反馈逐渐形成准确的心智模型，如果违反了这一原则，用户可能会疑惑甚至被迫区分不同的场景才能准确完成交互的目的，难以形成习惯。</p>
+<p>触发器设计的第三个原则：<strong>提前展示触发器交互的关键数据</strong>。</p>
+<p>在触发器被启动之前应该让用户知道其包含的关键信息，提醒用户是否有必要启动触发器，因而触发器需要提前预判用户可能关注有价值信息是什么，比如打开邮件的按钮会提醒用户有多少新邮件，让用户决定是否有必要打开。对于前端设计来说，一般触发器常常会有多种状态可以用来展示关键信息：</p>
+<p><strong>默认状态</strong></p>
+<p>表示不活动的状态</p>
+<p><strong>活动状态</strong></p>
+<p>后台有活动，比如后台下载或更新</p>
+<p><strong>悬停状态</strong></p>
+<p>鼠标或手势放上去之后给出对应提示，比如图片元素的 alt 提示</p>
+<p><strong>鼠标单击进行中</strong></p>
+<p>在启动触发器的时候展示信息</p>
+<p>触发器设计的第四个原则：<strong>不要破坏视觉使用情景</strong>。</p>
+<p>这个原则是指触发器的设计应符合用户期待，如果一个触发器被设计成按钮，就应该具有按钮的形态和特征，能符合用户对按钮的基本认知。</p>
+<p>触发器设计的第五个原则：<strong>用得越多的触发器越要引人注目</strong>。</p>
+<p>多数人经常要使用的，应该最引人注目；少数人有时会用的，应该容易注意到；极少数人常用的，应该通过搜索找到。</p>
+<h2 id="设计交互规则的最佳实践"><a href="#设计交互规则的最佳实践" class="headerlink" title="设计交互规则的最佳实践"></a>设计交互规则的最佳实践</h2><p><strong>交互过程要保持概念统一</strong></p>
+<p>如果一个名字或动词多次出现在交互过程中，要始终保持它们含义的一致性，如果有相近的词出现，要把它们进行合并统一。</p>
+<p><strong>如果可能，不要让用户从零开始</strong></p>
+<p>如果技术手段不受限制，不要让用户从零开始进行操作，让用户从其结束的重新开始，充分利用收集到用户数据来辅助用户完成操作。</p>
+<p><strong>如果一个事情非常复杂，帮助用户尽可能把复杂的事情都做了，或者把绝对的控制权交给用户</strong></p>
+<p>斯勒复杂性守恒定律：所有活动都有内在的复杂性，超过了某个临界点，简化是不可能的。既然如此，唯一的问题就是如何对待复杂性。要么让系统来处理，不让用户介入；要么让用户来处理，把更多的决定权（包括控制权）交给用户。</p>
+<p><strong>如果可能，尽量提供有限的选项，如果不能，提供聪明的默认的选项</strong></p>
+<p>好的交互始终让用户尽量少做选择，如果难以避免，尽量替用户考虑，能够提供多种聪明的默认选项，此时默认选项要能够满足大部分人的需求。</p>
+<p><strong>预防错误，或者错误发生之后可以引导用户去解决</strong></p>
+<p>好的交互应该可以防止用户犯错，或者出错时可以事先预料到，并且能提供引导来帮助用户消除犯错的焦虑。</p>
+<h2 id="合理使用反馈"><a href="#合理使用反馈" class="headerlink" title="合理使用反馈"></a>合理使用反馈</h2>
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计/" rel="tag"># 设计</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/09/25/no-place-is-home/" rel="next" title="无处是故乡">
+                <i class="fa fa-chevron-left"></i> 无处是故乡
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">134</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">113</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#交互的基本组成结构"><span class="nav-number">1.</span> <span class="nav-text">交互的基本组成结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交互体现的是细节"><span class="nav-number">2.</span> <span class="nav-text">交互体现的是细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计触发器的基本原则"><span class="nav-number">3.</span> <span class="nav-text">设计触发器的基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计交互规则的最佳实践"><span class="nav-number">4.</span> <span class="nav-text">设计交互规则的最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合理使用反馈"><span class="nav-number">5.</span> <span class="nav-text">合理使用反馈</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2022/10/25/talk-about-design/';
+          this.page.identifier = '2022/10/25/talk-about-design/';
+          this.page.title = '聊点交互设计';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
