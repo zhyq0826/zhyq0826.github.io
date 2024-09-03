@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="react,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="什么是 ReactReact 是一个 UI Library，也就是用来构建用户界面的库。React 通过Javascript 完成了对 HTML DOM 的所有表达来实现UI的翻译和构建。 React 的渲染过程React 的渲染过程就是把组件翻译出来的 DOM append 到 DOM tree 并绑定对应事件的过程。当 React 的 props 或者 state 发生变化之后，React 会">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解 react 的渲染">
+<meta property="og:url" content="http://sanyuesha.com/2024/09/03/understand-react-2/index.html">
+<meta property="og:site_name" content="三月沙">
+<meta property="og:description" content="什么是 ReactReact 是一个 UI Library，也就是用来构建用户界面的库。React 通过Javascript 完成了对 HTML DOM 的所有表达来实现UI的翻译和构建。 React 的渲染过程React 的渲染过程就是把组件翻译出来的 DOM append 到 DOM tree 并绑定对应事件的过程。当 React 的 props 或者 state 发生变化之后，React 会">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://static.git-star.com/20240903231910.jpg">
+<meta property="og:image" content="https://static.git-star.com/20240903232054.jpg">
+<meta property="og:image" content="https://static.git-star.com/1725354902137-0fdaa377-65b9-4f42-b4a1-2938507db2ee.png">
+<meta property="og:image" content="https://static.git-star.com/1725354901903-49ee2feb-69ef-4ee9-8c7b-c3a3af453bf9.png">
+<meta property="og:image" content="https://static.git-star.com/1725354902261-53c1b5cf-c6d4-47dd-b66c-a9e44b65ac2a.png">
+<meta property="og:image" content="https://static.git-star.com/1725354902024-cd99a79f-4f9a-45c4-af61-e390c52e97fb.png">
+<meta property="og:image" content="https://static.git-star.com/1725354905888-d7f5e580-93b1-435f-8360-c32340b3ecb0.png">
+<meta property="og:image" content="https://static.git-star.com/1725354905700-96a48cdb-f3ce-4639-bc67-1d7b99356492.png">
+<meta property="og:image" content="https://static.git-star.com/1725354906244-1218a106-75ed-4d56-b973-83c1c62f74ba.png">
+<meta property="og:image" content="https://static.git-star.com/1725354906576-795b8ab3-efea-43f2-8a6e-1414cb93ffaf.png">
+<meta property="og:image" content="https://static.git-star.com/1725354908000-2426ad14-bf05-498d-a871-1f92c932985f.png">
+<meta property="og:image" content="https://static.git-star.com/1725354908254-f507d9ce-3c6b-40fd-a896-a5801e341cfa.png">
+<meta property="og:updated_time" content="2024-09-03T15:28:14.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解 react 的渲染">
+<meta name="twitter:description" content="什么是 ReactReact 是一个 UI Library，也就是用来构建用户界面的库。React 通过Javascript 完成了对 HTML DOM 的所有表达来实现UI的翻译和构建。 React 的渲染过程React 的渲染过程就是把组件翻译出来的 DOM append 到 DOM tree 并绑定对应事件的过程。当 React 的 props 或者 state 发生变化之后，React 会">
+<meta name="twitter:image" content="https://static.git-star.com/20240903231910.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sanyuesha.com/2024/09/03/understand-react-2/">
+
+
+
+
+
+  <title>深入理解 react 的渲染 | 三月沙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-56212296-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">三月沙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-我的书单">
+          <a href="/my-readings/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            我的书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-技术编年史">
+          <a href="/my-skills/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            技术编年史
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2024/09/03/understand-react-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="三月沙">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="三月沙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入理解 react 的渲染</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-09-03T21:48:35+08:00">
+                Sep 3 2024
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是-React"><a href="#什么是-React" class="headerlink" title="什么是 React"></a>什么是 React</h2><p>React 是一个 UI Library，也就是用来构建用户界面的库。React 通过Javascript 完成了对 HTML DOM 的所有表达来实现UI的翻译和构建。</p>
+<h2 id="React-的渲染过程"><a href="#React-的渲染过程" class="headerlink" title="React 的渲染过程"></a>React 的渲染过程</h2><p>React 的渲染过程就是把组件翻译出来的 DOM append 到 DOM tree 并绑定对应事件的过程。当 React 的 props 或者 state 发生变化之后，React 会对 props 和 state 进行 diff 比较，然后重新进行渲染，于是Render 过程会重新走一遍。</p>
+<h2 id="React-是如何保证-props-和-state-的变化始终能和UI保持一致的"><a href="#React-是如何保证-props-和-state-的变化始终能和UI保持一致的" class="headerlink" title="React 是如何保证 props 和 state 的变化始终能和UI保持一致的"></a>React 是如何保证 props 和 state 的变化始终能和UI保持一致的</h2><p>在 function component 中，props、state、以及 component 内部出现的任何函数和变量都是以<strong>快照</strong>的形式出现，一旦 props 或 state 发生变化之后，所有函数内部的状态都会被重新刷新一遍形成新的快照，渲染的过程就是把快照还原到UI的过程，每个渲染过程都有自己的快照，不同快照之间相互不影响，因此不论component渲染多少次，都能保证UI和状态的一致性。<a href="https://codesandbox.io/s/elastic-maria-h1i87w?file=/src/App.js:113-121" target="_blank" rel="noopener">通过延迟函数来理解快照</a><br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"./styles.css"</span>;</span><br><span class="line"><span class="keyword">import</span> React, &#123;useState&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleAlertClick</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      alert(<span class="string">'You clicked on: '</span> + count);</span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You clicked &#123;count&#125; times&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;</span></span><br><span class="line"><span class="regexp">        Click me</span></span><br><span class="line"><span class="regexp">      &lt;/</span>button&gt;</span><br><span class="line">      &lt;button onClick=&#123;handleAlertClick&#125;&gt;</span><br><span class="line">        Show alert</span><br><span class="line">      &lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://static.git-star.com/20240903231910.jpg" alt="img"><br>上面的代码中声明了 count 这个 state，当点击 Show Alert Button 之后再点击 Click Me 对 count 进行变更，会观察到 alert 显示的值和实际的值是不一样的。</p>
+<p><strong>为什么会是这种违反直觉的结果？</strong></p>
+<p>我们继续尝试剖析 <strong>React Component 本质上是一个数据状态的快照</strong>这句话的含义。所谓快照就是某一个时刻所有数据的状态，而在 React 中 UI 就是数据状态呈现的载体，数据状态有多少种变化，快照就会有多少个，UI 也对应呈现多少种变化，但是任意一个时刻 UI 只呈现一种数据状态。在上面的示例中，我们通过延迟函数捕获了数据变化过程中某一时刻的状态，把这一时刻的状态延迟到未来(timeout 函数中的延迟时间)呈现，可以看到虽然在 alter 出现的这一刻 B，Component 的数据状态是 B-state 但是 alert 呈现出来的数据状态却是 A-state，这个 A-state 就是 Component 在 A 的那一刻其数据状态被延迟函数捕获了，捕获之后的快照就是 A-state-snapshot。React 通过这种【捕获状态-&gt;生成快照-&gt;渲染快照】的机制保证了 UI 数据的一致性，也就是任意时刻 UI 呈现的状态和当时的数据状态始终一致。</p>
+<p><strong>Component 中的状态都包含哪些？</strong></p>
+<p>任何声明在 Component 内部顶层的变量，包含函数、state、变量、props 都是 Component 的状态，任何时候这些状态发生了变化都会触发 React 重新渲染 Component。当函数内依赖 props 或者 state 做逻辑处理时，函数会捕获对应 props 或者 state 的最新状态。<a href="https://codesandbox.io/s/984x0t?file=/App.js&amp;utm_medium=sandpack" target="_blank" rel="noopener">通过多次改变state来理解快照</a>理解了 Component 的状态是什么，我们一起继续看看这个例。<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">Counter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [number, setNumber] = useState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;&#123;number&#125;&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123;() =&gt; &#123;</span></span><br><span class="line"><span class="regexp">        setNumber(number + 1);</span></span><br><span class="line"><span class="regexp">        setNumber(number + 1);</span></span><br><span class="line"><span class="regexp">        setNumber(number + 1);</span></span><br><span class="line"><span class="regexp">      &#125;&#125;&gt;+3&lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://static.git-star.com/20240903232054.jpg" alt="img"><br>在 button 的 onClick 事件中，number 这个状态在三个 setNumber 调用中都指向的是相同的状态，它们都是某一时刻 nunber 的快照。因此原代码想要 number 自增 3 次是无法实现的，最终效果是调用三次 setNumber 和调用一次的效果是一样的。官方详细介绍 <a href="https://beta.reactjs.org/learn/state-as-a-snapshot" target="_blank" rel="noopener">https://beta.reactjs.org/learn/state-as-a-snapshot</a></p>
+<h2 id="React-如何管理组件和状态的关系"><a href="#React-如何管理组件和状态的关系" class="headerlink" title="React 如何管理组件和状态的关系"></a>React 如何管理组件和状态的关系</h2><p>React 管理的状态是由组件在UI DOM 树中的位置来决定的，UI Tree 就是组件组成的树</p>
+<p><img src="https://static.git-star.com/1725354902137-0fdaa377-65b9-4f42-b4a1-2938507db2ee.png" alt="img"></p>
+<p><a href="https://codesandbox.io/s/3f7gzd?file=%2FApp.js&amp;utm_medium=sandpack" target="_blank" rel="noopener"><strong>两个 Counter 分别在不同的位置，它们独享各自的状态互不影响</strong></a></p>
+<p><img src="https://static.git-star.com/1725354901903-49ee2feb-69ef-4ee9-8c7b-c3a3af453bf9.png" alt="img"></p>
+<p><a href="https://codesandbox.io/s/q77znv?file=%2FApp.js&amp;utm_medium=sandpack" target="_blank" rel="noopener"><strong>相同类型的组件在同一个位置，共享彼此的状态</strong></a></p>
+<p><img src="https://static.git-star.com/1725354902261-53c1b5cf-c6d4-47dd-b66c-a9e44b65ac2a.png" alt="img"></p>
+<p><a href="https://codesandbox.io/s/ti7i1q?file=%2FApp.js&amp;utm_medium=sandpack" target="_blank" rel="noopener"><strong>相同位置不同类型组件，状态各自独立</strong></a></p>
+<p><img src="https://static.git-star.com/1725354902024-cd99a79f-4f9a-45c4-af61-e390c52e97fb.png" alt="img"></p>
+<p><a href="https://codesandbox.io/s/huufo3?file=%2FApp.js&amp;utm_medium=sandpackkey" target="_blank" rel="noopener"><strong>相同位置的同类型的组件通过 key 实现状态重置</strong></a>，key的作用就是告诉 react 这是两个不同的组件，需要不同的各自独立的状态管理 <strong>使用 hook 和 reducer 来管理状态</strong>React hook 很多，最常用的就是 useState、useEffect、useCallback、useRef、useContext、useReducer，当业务变复杂时，需要管理的状态将非常多，这段代码来自琅琊阁，一个页面的状态多达 42 个</p>
+<p><img src="https://static.git-star.com/1725354905888-d7f5e580-93b1-435f-8360-c32340b3ecb0.png" alt="img"></p>
+<p>状态多带来了两个显著的问题：组件渲染性能受到影响状态之间的依赖关系复杂不明，容易制造bug复杂难以调试，开发效率降低因而又继续引申出新的疑问：需要这么多状态么？如果无法减少状态的数目，如何有效管理状态的依赖？</p>
+<h2 id="React-提供了-useEffect-和-reducer-来管理状态"><a href="#React-提供了-useEffect-和-reducer-来管理状态" class="headerlink" title="React 提供了 useEffect 和 reducer 来管理状态"></a>React 提供了 useEffect 和 reducer 来管理状态</h2><p>使用 useEffect 管理状态的依赖关系。useEffect 有三种依赖管理形式：完全不依赖，每次 render 都会执行空的依赖列表，只在第一次 render 执行依赖某个具体的state或props，只在 props 或 state 发生变更之后才执行为了让 state 之间的关系能够尽量明确化，一定要避免在 useEffect 中隐式依赖 state或props上面的代码中依赖了 a 这个state，但是当 a 发生变化时，并不会执行，因而为了避免发生这种情况，我们建议useEffect 中的函数就在 useEffect 中完成定义和使用，这样能保证后续逻辑变动时，相关的代码总是在一起的。handleThis 重构成一个 useCallback 函数<strong>使用reducer实现状态管理的高内聚</strong>在琅琊阁的迭代管理中对一个状态的增删改查出现了在代码的多处，而且随着事件的变多这样重复的逻辑依然会继续出现</p>
+<p><img src="https://static.git-star.com/1725354905700-96a48cdb-f3ce-4639-bc67-1d7b99356492.png" alt="img"></p>
+<p><img src="https://static.git-star.com/1725354906244-1218a106-75ed-4d56-b973-83c1c62f74ba.png" alt="img"></p>
+<p><img src="https://static.git-star.com/1725354906576-795b8ab3-efea-43f2-8a6e-1414cb93ffaf.png" alt="img"></p>
+<p>使用 reducer 重构之后，所有对状态的修改都集中在一起，代码的内聚性变强</p>
+<p><img src="https://static.git-star.com/1725354908000-2426ad14-bf05-498d-a871-1f92c932985f.png" alt="img"></p>
+<p>reduce的使用非常简单：定义一个 reduce 函数，第一个参数是state，第二个参数是 action把所有对state的修改放到reduce函数中在component中使用reduce<strong>组件的通信</strong>大部分情况下，我们通过props来完成组件之间的通信（props支持传递组件、函数、state等），但是可能会遇到一个参数需要传递到很多个组件中或者一个参数被传递的层次特别深</p>
+<p><img src="https://static.git-star.com/1725354908254-f507d9ce-3c6b-40fd-a896-a5801e341cfa.png" alt="img"></p>
+<p>最常见的就是用户信息，可能很多个组件都需要；如果网站有主题是动态的，主题相关的属性可能会传递的非常深。React 提供了 context 来实现多个组件之间的信息共享。Context 的使用也非常简单：定义 context</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; SprintModel &#125; <span class="keyword">from</span> <span class="string">'@/domainModel/sprint'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> React, &#123; createContext &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; UserRole &#125; <span class="keyword">from</span> <span class="string">'@/domainModel/user'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> SprintContext = createContext&lt;&#123;</span><br><span class="line"></span><br><span class="line">    currentSprint?: SprintModel;</span><br><span class="line"></span><br><span class="line">    userRole?: UserRole;</span><br><span class="line"></span><br><span class="line">    setCurrentSprint: React.Dispatch&lt;React.SetStateAction&lt;SprintModel&gt;&gt;;</span><br><span class="line"></span><br><span class="line">    setIndustryId: React.Dispatch&lt;React.SetStateAction&lt;string&gt;&gt;;</span><br><span class="line"></span><br><span class="line">&#125;&gt;(&#123;</span><br><span class="line"></span><br><span class="line">    setCurrentSprint: <span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;,</span><br><span class="line"></span><br><span class="line">    setIndustryId: <span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;,</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>使用 context</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; currentSprint, setCurrentSprint,</span><br><span class="line">userRole, setIndustryId &#125; = useContext(SprintContext);</span><br></pre></td></tr></table></figure>
+<p>为 context 提供值</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt; SprintContext.Providervalue=&#123;&#123; currentSprint, setCurrentSprint, userRole, setIndustryId &#125; &#125;&gt;</span><br><span class="line">    &lt;div className=&#123;styles[<span class="string">'sprint-operation'</span>]&#125;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;SprintHeader demandLoading=&#123;loading&#125; title=<span class="string">"排期结果"</span> type=<span class="string">"sprintResults"</span>/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;SprintAlert alertStyle=&#123;&#123; <span class="attr">margin</span>: <span class="string">'15px 20px -10px 20px'</span> &#125;&#125;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Spin spinning=&#123;loading&#125;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;div className=&#123;styles.resultsLayout&#125;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;RightMain setLoading=&#123;setLoading&#125;/&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div &gt;</span><br><span class="line">&lt;<span class="regexp">/SprintContext.Provider &gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用context时，component从距离组件最近的context获取到对应的值，如果有多个context共存，距离component近的context会覆盖较远的context。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <div>扫描关注 wecatch 的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/10/25/talk-about-design/" rel="next" title="聊点交互设计">
+                <i class="fa fa-chevron-left"></i> 聊点交互设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+      
+    
+      
+  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+    
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+          
+            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">135</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">113</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhyq0826" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-React"><span class="nav-number">1.</span> <span class="nav-text">什么是 React</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-的渲染过程"><span class="nav-number">2.</span> <span class="nav-text">React 的渲染过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-是如何保证-props-和-state-的变化始终能和UI保持一致的"><span class="nav-number">3.</span> <span class="nav-text">React 是如何保证 props 和 state 的变化始终能和UI保持一致的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-如何管理组件和状态的关系"><span class="nav-number">4.</span> <span class="nav-text">React 如何管理组件和状态的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-提供了-useEffect-和-reducer-来管理状态"><span class="nav-number">5.</span> <span class="nav-text">React 提供了 useEffect 和 reducer 来管理状态</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">三月沙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://sanyuesha.com/2024/09/03/understand-react-2/';
+          this.page.identifier = '2024/09/03/understand-react-2/';
+          this.page.title = '深入理解 react 的渲染';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sanyuesha-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
