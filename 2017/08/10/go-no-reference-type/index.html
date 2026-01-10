@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,46 +74,46 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="引用类型,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="引用类型," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
 
 
 
-<meta name="description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
-<meta name="keywords" content="引用类型">
+<meta name="description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-1 1234567&gt;&gt;&gt; dd &#x3D; dict()&gt;&gt;&gt; c &#x3D; dd&gt;&gt;&gt; id(c)4476836672&gt;&gt;&gt; id(dd)4476836672&gt;&gt;&gt;  code-1 中的 Python 代码显示 c 和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="严格来说 Go 没有引用类型">
 <meta property="og:url" content="http://sanyuesha.com/2017/08/10/go-no-reference-type/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-07T14:47:06.471Z">
+<meta property="og:description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-1 1234567&gt;&gt;&gt; dd &#x3D; dict()&gt;&gt;&gt; c &#x3D; dd&gt;&gt;&gt; id(c)4476836672&gt;&gt;&gt; id(dd)4476836672&gt;&gt;&gt;  code-1 中的 Python 代码显示 c 和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-08-10T04:50:50.000Z">
+<meta property="article:modified_time" content="2018-05-07T14:47:06.471Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="引用类型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="严格来说 Go 没有引用类型">
-<meta name="twitter:description" content="什么是引用类型简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。 code-11234567&amp;gt;&amp;gt;&amp;gt; dd = dict()&amp;gt;&amp;gt;&amp;gt; c = dd&amp;gt;&amp;gt;&amp;gt; id(c)4476836672&amp;gt;&amp;gt;&amp;gt; id(dd)4476836672&amp;gt;&amp;gt;&amp;gt; code-1 中的 Python 代码显示 c 和 dd">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +122,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/08/10/go-no-reference-type/">
+  <link rel="canonical" href="http://sanyuesha.com/2017/08/10/go-no-reference-type/"/>
 
 
 
@@ -155,22 +155,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +183,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +210,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +298,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +324,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/08/10/go-no-reference-type/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +348,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T12:50:50+08:00">
-                Aug 10 2017
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-10T12:50:50+08:00">
+                8月 10 2017
               </time>
             
 
@@ -348,7 +361,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,7 +369,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -398,18 +411,23 @@
 
       
         <h2 id="什么是引用类型"><a href="#什么是引用类型" class="headerlink" title="什么是引用类型"></a>什么是引用类型</h2><p>简单类说就是不同的变量内存地址是一样的，也就是说同一个内存地址有不同的别名。</p>
-<p><strong>code-1</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dd = dict()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(c)</span><br><span class="line"><span class="number">4476836672</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(dd)</span><br><span class="line"><span class="number">4476836672</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>code-1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dd = <span class="built_in">dict</span>()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = dd</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(c)</span><br><span class="line"><span class="number">4476836672</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(dd)</span><br><span class="line"><span class="number">4476836672</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br></pre></td></tr></table></figure>
 <p><code>code-1</code> 中的 Python 代码显示 c 和 dd 两个变量的内存地址都是一样的。</p>
 <h2 id="Immutable-type-不是引用类型"><a href="#Immutable-type-不是引用类型" class="headerlink" title="Immutable type 不是引用类型"></a>Immutable type 不是引用类型</h2><p>Int，string，bool 这些 immutable 类型不会有引用类型</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a, b, c = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    fmt.Println(&amp;a) <span class="comment">//0xc420072188</span></span><br><span class="line">    fmt.Println(&amp;b) <span class="comment">//0xc4200721b0</span></span><br><span class="line">    fmt.Println(&amp;c) <span class="comment">//0xc4200721b8</span></span><br><span class="line">    d := a</span><br><span class="line">    fmt.Println(&amp;d) <span class="comment">//0xc4200721d0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> s = <span class="string">"a"</span></span><br><span class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></span><br><span class="line">    s += <span class="string">"b"</span></span><br><span class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a, b, c = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    fmt.Println(&amp;a) <span class="comment">//0xc420072188</span></span><br><span class="line">    fmt.Println(&amp;b) <span class="comment">//0xc4200721b0</span></span><br><span class="line">    fmt.Println(&amp;c) <span class="comment">//0xc4200721b8</span></span><br><span class="line">    d := a</span><br><span class="line">    fmt.Println(&amp;d) <span class="comment">//0xc4200721d0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> s = <span class="string">&quot;a&quot;</span></span><br><span class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></span><br><span class="line">    s += <span class="string">&quot;b&quot;</span></span><br><span class="line">    fmt.Println(&amp;s) <span class="comment">//0x1040c108</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <p>变量 a 赋值给 d ，d 和 a 的地址不同，字符串 s 二次赋值之后地址没有改变，在 immutable type 中不存在两个变量内存地址是一样的。</p>
-<h2 id="Map-可以在函数内部改变，但是-map-不是引用类型"><a href="#Map-可以在函数内部改变，但是-map-不是引用类型" class="headerlink" title="Map 可以在函数内部改变，但是 map 不是引用类型"></a>Map 可以在函数内部改变，但是 map 不是引用类型</h2><p>Go 中函数传参是按值传递，在函数内部无法改变函数外部的值，但是 map 可以，是不是 map 是引用类型。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span> = <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">        <span class="number">0</span>: <span class="string">"0"</span>,</span><br><span class="line">        <span class="number">1</span>: <span class="string">"1"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    mm := m</span><br><span class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></span><br><span class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm) <span class="comment">//0xc42002a030</span></span><br><span class="line">    fmt.Println(m) <span class="comment">// map[0:0 1:1]</span></span><br><span class="line">    fmt.Println(mm) <span class="comment">//map[1:1 0:0]</span></span><br><span class="line">    changeMap(m)</span><br><span class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;m) <span class="comment">//0xc42002a028</span></span><br><span class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;mm)<span class="comment">//0xc42002a030</span></span><br><span class="line">    fmt.Println(m) <span class="comment">//map[2:2 0:0 1:1]</span></span><br><span class="line">    fmt.Println(mm) <span class="comment">//map[0:0 1:1 2:2]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeMap</span><span class="params">(mmm <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    mmm[<span class="number">2</span>] = <span class="string">"2"</span></span><br><span class="line">    fmt.Printf(<span class="string">"changeMap func %p\n"</span>, mmm) <span class="comment">//changeMap func 0xc420014150</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Map-可以在函数内部改变，但是-map-不是引用类型"><a href="#Map-可以在函数内部改变，但是-map-不是引用类型" class="headerlink" title="Map 可以在函数内部改变，但是 map 不是引用类型"></a>Map 可以在函数内部改变，但是 map 不是引用类型</h2><p>Go 中函数传参是按值传递，在函数内部无法改变函数外部的值，但是 map 可以，是不是 map 是引用类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span> = <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span>&#123;</span><br><span class="line">        <span class="number">0</span>: <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        <span class="number">1</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    mm := m</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%p\n&quot;</span>, &amp;m) <span class="comment">//0xc42002a028</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%p\n&quot;</span>, &amp;mm) <span class="comment">//0xc42002a030</span></span><br><span class="line">    fmt.Println(m) <span class="comment">// map[0:0 1:1]</span></span><br><span class="line">    fmt.Println(mm) <span class="comment">//map[1:1 0:0]</span></span><br><span class="line">    changeMap(m)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%p\n&quot;</span>, &amp;m) <span class="comment">//0xc42002a028</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%p\n&quot;</span>, &amp;mm)<span class="comment">//0xc42002a030</span></span><br><span class="line">    fmt.Println(m) <span class="comment">//map[2:2 0:0 1:1]</span></span><br><span class="line">    fmt.Println(mm) <span class="comment">//map[0:0 1:1 2:2]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeMap</span><span class="params">(mmm <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">    mmm[<span class="number">2</span>] = <span class="string">&quot;2&quot;</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;changeMap func %p\n&quot;</span>, mmm) <span class="comment">//changeMap func 0xc420014150</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>可以明确看到 main 中的 mm 和 m 地址完全不同，调用函数 changeMap 之后，它们的值都发生了改变，在函数 changeMap 内部，参数 mmm 的地址和 m 以及 mm 都不同，证实 map 并不是引用传参。</p>
-<p>再一个例子。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></span><br><span class="line">    makeMap(m)</span><br><span class="line">    fmt.Println(m == <span class="literal">nil</span>) <span class="comment">//true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeMap</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再一个例子。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span></span><br><span class="line">    makeMap(m)</span><br><span class="line">    fmt.Println(m == <span class="literal">nil</span>) <span class="comment">//true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeMap</span><span class="params">(m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">    m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>如果是引用传参 main 函数中的输出不应该是 true。</p>
-<h2 id="Channel-也是按值传参"><a href="#Channel-也是按值传参" class="headerlink" title="Channel 也是按值传参"></a>Channel 也是按值传参</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">    fmt.Printf(<span class="string">"%p\n"</span>, &amp;c1) <span class="comment">//0xc42002a038</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        changeChan(c1)</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    fmt.Println(&lt;-c1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeChan</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">"changeChan %p\n"</span>, &amp;c) <span class="comment">//0xc42002a040</span></span><br><span class="line">    c &lt;- <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Channel-也是按值传参"><a href="#Channel-也是按值传参" class="headerlink" title="Channel 也是按值传参"></a>Channel 也是按值传参</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%p\n&quot;</span>, &amp;c1) <span class="comment">//0xc42002a038</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        changeChan(c1)</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    fmt.Println(&lt;-c1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeChan</span><span class="params">(c <span class="keyword">chan</span> <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;changeChan %p\n&quot;</span>, &amp;c) <span class="comment">//0xc42002a040</span></span><br><span class="line">    c &lt;- <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>例子中的 channel 在函数内发生了值传递，但是函数内部和外部的 channel 地址不同。</p>
-<h2 id="Map-不是引用类型，为什么可以在函数内部改变"><a href="#Map-不是引用类型，为什么可以在函数内部改变" class="headerlink" title="Map 不是引用类型，为什么可以在函数内部改变"></a>Map 不是引用类型，为什么可以在函数内部改变</h2><p>Go 源代码中显示 <a href="https://golang.org/src/runtime/hashmap.go" target="_blank" rel="noopener">https://golang.org/src/runtime/hashmap.go</a> map 底层是一个指向 hmap 的指针，这就可以解释即使函数传参是按值传递，由于传递的是指针的拷贝，指针指向的底层 hmap 并没有改变，所以可以在函数内部改变 map 。</p>
+<h2 id="Map-不是引用类型，为什么可以在函数内部改变"><a href="#Map-不是引用类型，为什么可以在函数内部改变" class="headerlink" title="Map 不是引用类型，为什么可以在函数内部改变"></a>Map 不是引用类型，为什么可以在函数内部改变</h2><p>Go 源代码中显示 <a href="https://golang.org/src/runtime/hashmap.go">https://golang.org/src/runtime/hashmap.go</a> map 底层是一个指向 hmap 的指针，这就可以解释即使函数传参是按值传递，由于传递的是指针的拷贝，指针指向的底层 hmap 并没有改变，所以可以在函数内部改变 map 。</p>
 <blockquote>
 <p>Go 中没有引用类型</p>
 </blockquote>
@@ -423,7 +441,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -438,7 +456,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/引用类型/" rel="tag"># 引用类型</a>
+            <a href="/tags/%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/" rel="tag"># 引用类型</a>
           
         </div>
       
@@ -495,7 +513,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -531,11 +554,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -543,9 +566,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -554,10 +579,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -567,8 +592,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -579,7 +604,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -621,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是引用类型"><span class="nav-number">1.</span> <span class="nav-text">什么是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Immutable-type-不是引用类型"><span class="nav-number">2.</span> <span class="nav-text">Immutable type 不是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-可以在函数内部改变，但是-map-不是引用类型"><span class="nav-number">3.</span> <span class="nav-text">Map 可以在函数内部改变，但是 map 不是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel-也是按值传参"><span class="nav-number">4.</span> <span class="nav-text">Channel 也是按值传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-不是引用类型，为什么可以在函数内部改变"><span class="nav-number">5.</span> <span class="nav-text">Map 不是引用类型，为什么可以在函数内部改变</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">什么是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Immutable-type-%E4%B8%8D%E6%98%AF%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">Immutable type 不是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E6%94%B9%E5%8F%98%EF%BC%8C%E4%BD%86%E6%98%AF-map-%E4%B8%8D%E6%98%AF%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">Map 可以在函数内部改变，但是 map 不是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel-%E4%B9%9F%E6%98%AF%E6%8C%89%E5%80%BC%E4%BC%A0%E5%8F%82"><span class="nav-number">4.</span> <span class="nav-text">Channel 也是按值传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-%E4%B8%8D%E6%98%AF%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E6%94%B9%E5%8F%98"><span class="nav-number">5.</span> <span class="nav-text">Map 不是引用类型，为什么可以在函数内部改变</span></a></li></ol></div>
             
 
           </div>
@@ -641,10 +666,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -654,11 +679,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -777,24 +802,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

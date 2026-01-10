@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="架构,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="架构," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,23 +96,23 @@
 
 
 <meta name="description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
-<meta name="keywords" content="架构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="互联网后端架构的演化">
 <meta property="og:url" content="http://sanyuesha.com/2019/01/12/architecture-evolution-process/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png">
 <meta property="og:image" content="https://static.git-star.com/f5a9fb089a8d32bce76f34e619a32f9f.png">
 <meta property="og:image" content="https://static.git-star.com/c53dd40a6f9c3119a337abf21217ecc6.png">
 <meta property="og:image" content="https://static.git-star.com/15d136d8a752eb93e8b19799a3c1fc47.png">
 <meta property="og:image" content="https://static.git-star.com/14dd29dda365f3da8a451b8082f06681.png">
 <meta property="og:image" content="https://static.git-star.com/cf80a1d007dcbbe62e512f7b1f437670.png">
-<meta property="og:updated_time" content="2021-12-04T07:58:21.037Z">
+<meta property="article:published_time" content="2019-01-12T15:09:43.000Z">
+<meta property="article:modified_time" content="2021-12-04T07:58:21.037Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="架构">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="互联网后端架构的演化">
-<meta name="twitter:description" content="任何复杂技术的架构几乎都是随着需求的变化以及业务的增长逐渐演化出来的，并不是一开始就是复杂的庞然大物，互联网后端的技术架构几乎莫不是如此。 数据库篇 以 MySQL 为例说明支持事务的持久化数据库的架构演变。   单实例 single-instance在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。 优势 简单，开发调试方便，维护成本低廉 缺">
 <meta name="twitter:image" content="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png">
 
 
@@ -120,7 +120,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -129,7 +129,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -143,7 +143,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2019/01/12/architecture-evolution-process/">
+  <link rel="canonical" href="http://sanyuesha.com/2019/01/12/architecture-evolution-process/"/>
 
 
 
@@ -162,22 +162,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -186,7 +190,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -213,70 +217,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -294,6 +305,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -318,8 +331,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/01/12/architecture-evolution-process/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -342,10 +355,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T23:09:43+08:00">
-                Jan 12 2019
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-12T23:09:43+08:00">
+                1月 12 2019
               </time>
             
 
@@ -355,7 +368,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -363,11 +376,11 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -408,7 +421,7 @@
 <h2 id="数据库篇"><a href="#数据库篇" class="headerlink" title="数据库篇"></a>数据库篇</h2><blockquote>
 <p>以 MySQL 为例说明支持事务的持久化数据库的架构演变。</p>
 </blockquote>
-<p><img src="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png" alt></p>
+<p><img src="https://static.git-star.com/a47dcc86d1c35dc111df2f4c8b1f7d64.png"></p>
 <h3 id="单实例-single-instance"><a href="#单实例-single-instance" class="headerlink" title="单实例 single-instance"></a>单实例 single-instance</h3><p>在数据量很小，业务规模也很小的时候一般使用一台数据库实例即可，比如业务还处于探索阶段，用户量很少的情况。</p>
 <p><strong>优势</strong></p>
 <p>简单，开发调试方便，维护成本低廉</p>
@@ -436,7 +449,7 @@
 <h2 id="缓存篇"><a href="#缓存篇" class="headerlink" title="缓存篇"></a>缓存篇</h2><blockquote>
 <p>缓存是互联网架构中必不可少的一个组件，以 redis 为例说明缓存架构的演变。</p>
 </blockquote>
-<p><img src="https://static.git-star.com/f5a9fb089a8d32bce76f34e619a32f9f.png" alt></p>
+<p><img src="https://static.git-star.com/f5a9fb089a8d32bce76f34e619a32f9f.png"></p>
 <h3 id="单点-single-instance"><a href="#单点-single-instance" class="headerlink" title="单点 single-instance"></a>单点 single-instance</h3><p>缓存的重要作用就是缓解持久化 DB 的压力，业务发展的初期用户量少，单点足以应付</p>
 <p><strong>优势</strong></p>
 <p>配合单点 APP 使用，和 APP 部署在同一主机，部署方便，维护方便，开发方便</p>
@@ -456,15 +469,15 @@
 <p>同数据库和缓存，后端应用服务的架构也是随业务的发展逐步调整，不断演化</p>
 </blockquote>
 <p><strong>单点</strong></p>
-<p><img src="https://static.git-star.com/c53dd40a6f9c3119a337abf21217ecc6.png" alt></p>
+<p><img src="https://static.git-star.com/c53dd40a6f9c3119a337abf21217ecc6.png"></p>
 <p>压力很小的验证业务时候采用的架构模式，cache、session、nginx、DB 可能都是同一主机，配合以 crontab 完成异步任务。</p>
 <p><strong>集群</strong></p>
-<p><img src="https://static.git-star.com/15d136d8a752eb93e8b19799a3c1fc47.png" alt></p>
+<p><img src="https://static.git-star.com/15d136d8a752eb93e8b19799a3c1fc47.png"></p>
 <p>采用集群一方面是为了解决单点压力的问题，一方面是为了解决单点可靠性的问题，当 crontab 的任务数量成规模之后，需要采用异步任务队列来代替实现，维护成本更低，开发更高效。</p>
 <p><strong>更大规模的单体应用</strong></p>
-<p><img src="https://static.git-star.com/14dd29dda365f3da8a451b8082f06681.png" alt></p>
+<p><img src="https://static.git-star.com/14dd29dda365f3da8a451b8082f06681.png"></p>
 <p>随着业务的复杂度的提升，在未采用微服务之前，APP 会按照功能和服务不断进行拆分，各个 APP 之间通过 MQ 进行通信，异步任务队列也可以采用 MQ 来取代，缓存使用分布式缓存，可以按照自己的需要采用 master-slave 或者一致性 hash，数据库按照业务需要可以是 master-slave，也可以是切片分库，外网通过 DNS 轮询的方式进行负载均衡，静态文件采用 CDN 进行分发。</p>
-<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p><img src="https://static.git-star.com/cf80a1d007dcbbe62e512f7b1f437670.png" alt></p>
+<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p><img src="https://static.git-star.com/cf80a1d007dcbbe62e512f7b1f437670.png"></p>
 <p>随着单体规模的不断变大，单体应用的业务边界会越来越模糊，会有很多重复的功能出现在单体应用中，这些重复功能会导致每个单体应用都会消耗一定的基础设置资源，比如缓存、DB 资源等等，为了减少重复功能的开发和维护，合理利用基础设置资源，单体应用逐步演化成微服务架构。</p>
 <p>在微服务架构中，每个服务维护着自己的数据库，也就是说数据库的连接资源等都是每个服务自己持有，各个服务之间通过 MQ 进行数据通信，随着架构的复杂度提升，配套的需要有配置中心、服务注册与发现、日志、监控、调用链接追踪等基础设施来支持整个微服务的运行。</p>
 
@@ -477,7 +490,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -492,7 +505,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/架构/" rel="tag"># 架构</a>
+            <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
           
         </div>
       
@@ -549,7 +562,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -585,11 +603,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -597,9 +615,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -608,10 +628,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -621,8 +641,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -633,7 +653,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -675,7 +695,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库篇"><span class="nav-number">1.</span> <span class="nav-text">数据库篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单实例-single-instance"><span class="nav-number">1.1.</span> <span class="nav-text">单实例 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从结构-master-slave"><span class="nav-number">1.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双主多从"><span class="nav-number">1.3.</span> <span class="nav-text">双主多从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分片-sharding"><span class="nav-number">1.4.</span> <span class="nav-text">分片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分片加主从"><span class="nav-number">1.5.</span> <span class="nav-text">分片加主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动分片和自动扩容"><span class="nav-number">1.6.</span> <span class="nav-text">自动分片和自动扩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存篇"><span class="nav-number">2.</span> <span class="nav-text">缓存篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单点-single-instance"><span class="nav-number">2.1.</span> <span class="nav-text">单点 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从结构-master-slave-1"><span class="nav-number">2.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-切片-sharding"><span class="nav-number">2.3.</span> <span class="nav-text">一致性 hash 切片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-高可用"><span class="nav-number">2.4.</span> <span class="nav-text">一致性 hash 高可用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性-hash-自动伸缩"><span class="nav-number">2.5.</span> <span class="nav-text">一致性 hash 自动伸缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP-篇"><span class="nav-number">3.</span> <span class="nav-text">APP 篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务"><span class="nav-number">3.1.</span> <span class="nav-text">微服务</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">数据库篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%AE%9E%E4%BE%8B-single-instance"><span class="nav-number">1.1.</span> <span class="nav-text">单实例 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E7%BB%93%E6%9E%84-master-slave"><span class="nav-number">1.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E4%B8%BB%E5%A4%9A%E4%BB%8E"><span class="nav-number">1.3.</span> <span class="nav-text">双主多从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%89%87-sharding"><span class="nav-number">1.4.</span> <span class="nav-text">分片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%89%87%E5%8A%A0%E4%B8%BB%E4%BB%8E"><span class="nav-number">1.5.</span> <span class="nav-text">分片加主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%88%86%E7%89%87%E5%92%8C%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9"><span class="nav-number">1.6.</span> <span class="nav-text">自动分片和自动扩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">缓存篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%82%B9-single-instance"><span class="nav-number">2.1.</span> <span class="nav-text">单点 single-instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E7%BB%93%E6%9E%84-master-slave-1"><span class="nav-number">2.2.</span> <span class="nav-text">主从结构 master-slave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-hash-%E5%88%87%E7%89%87-sharding"><span class="nav-number">2.3.</span> <span class="nav-text">一致性 hash 切片 sharding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-hash-%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">一致性 hash 高可用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-hash-%E8%87%AA%E5%8A%A8%E4%BC%B8%E7%BC%A9"><span class="nav-number">2.5.</span> <span class="nav-text">一致性 hash 自动伸缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP-%E7%AF%87"><span class="nav-number">3.</span> <span class="nav-text">APP 篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.1.</span> <span class="nav-text">微服务</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -695,10 +715,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -708,11 +728,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -831,24 +851,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

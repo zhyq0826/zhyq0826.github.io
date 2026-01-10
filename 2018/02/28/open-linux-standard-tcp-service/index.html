@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,45 +74,45 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Python,Go,Devops,algorithm">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
 
 
 
-<meta name="description" content="TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。 安装 openbsd-inetd1sudo apt-get install openbsd-inetd 编辑 /etc/inetd.conf打开 /etc/inetd.conf">
+<meta name="description" content="TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。 安装 openbsd-inetd1sudo apt-get install openbsd-inetd   编辑 &#x2F;etc&#x2F;inetd.conf打开 &#x2F;et">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux 打开标准的 echo、discard 等 TCP 服务">
 <meta property="og:url" content="http://sanyuesha.com/2018/02/28/open-linux-standard-tcp-service/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。 安装 openbsd-inetd1sudo apt-get install openbsd-inetd 编辑 /etc/inetd.conf打开 /etc/inetd.conf">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-01T15:13:30.908Z">
+<meta property="og:description" content="TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。 安装 openbsd-inetd1sudo apt-get install openbsd-inetd   编辑 &#x2F;etc&#x2F;inetd.conf打开 &#x2F;et">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-02-28T06:00:02.000Z">
+<meta property="article:modified_time" content="2018-03-01T15:13:30.908Z">
+<meta property="article:author" content="三月沙">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux 打开标准的 echo、discard 等 TCP 服务">
-<meta name="twitter:description" content="TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。 安装 openbsd-inetd1sudo apt-get install openbsd-inetd 编辑 /etc/inetd.conf打开 /etc/inetd.conf">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -121,7 +121,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/02/28/open-linux-standard-tcp-service/">
+  <link rel="canonical" href="http://sanyuesha.com/2018/02/28/open-linux-standard-tcp-service/"/>
 
 
 
@@ -154,22 +154,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -178,7 +182,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -205,70 +209,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -286,6 +297,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -310,8 +323,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/02/28/open-linux-standard-tcp-service/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -334,10 +347,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T14:00:02+08:00">
-                Feb 28 2018
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-28T14:00:02+08:00">
+                2月 28 2018
               </time>
             
 
@@ -347,7 +360,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -355,7 +368,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -397,13 +410,17 @@
 
       
         <p>TCP 默认提供了一些标准的服务，大多数系统为了安全都关闭了这些服务，但是有时候为了了解 TCP 的内部机制需要做一些测试，这些服务能够很好的帮助我们熟悉 TCP 的原理和机制，以 Ubuntu 为例来打开这些标准的服务。</p>
-<h2 id="安装-openbsd-inetd"><a href="#安装-openbsd-inetd" class="headerlink" title="安装 openbsd-inetd"></a>安装 openbsd-inetd</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openbsd-inetd</span><br></pre></td></tr></table></figure>
-<h2 id="编辑-etc-inetd-conf"><a href="#编辑-etc-inetd-conf" class="headerlink" title="编辑 /etc/inetd.conf"></a>编辑 /etc/inetd.conf</h2><p>打开 <code>/etc/inetd.conf</code> 文件对需要启用的服务关闭其注释</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">discard     stream  tcp nowait  root    internal</span><br><span class="line">discard     dgram   udp wait    root    internal</span><br><span class="line">daytime     stream  tcp nowait  root    internal</span><br><span class="line">time        stream  tcp nowait  root    internal</span><br><span class="line">echo        stream  tcp nowait  root    internal</span><br></pre></td></tr></table></figure>
-<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/openbsd-inetd start</span><br></pre></td></tr></table></figure>
-<h2 id="检查服务"><a href="#检查服务" class="headerlink" title="检查服务"></a>检查服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">netstat -alt | grep -E &apos;time|discard|daytime&apos;</span><br><span class="line"></span><br><span class="line">(env) zhyq@zhyq:~$ netstat -alt | grep -E &apos;time|discard|daytime&apos;</span><br><span class="line">tcp        0      0 *:time                  *:*                     LISTEN     </span><br><span class="line">tcp        0      0 *:discard               *:*                     LISTEN     </span><br><span class="line">tcp        0      0 *:daytime               *:*                     LISTEN</span><br></pre></td></tr></table></figure>
-<h2 id="标准服务一览"><a href="#标准服务一览" class="headerlink" title="标准服务一览"></a>标准服务一览</h2><div class="table-container">
-<table>
+<h2 id="安装-openbsd-inetd"><a href="#安装-openbsd-inetd" class="headerlink" title="安装 openbsd-inetd"></a>安装 openbsd-inetd</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openbsd-inetd</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="编辑-etc-inetd-conf"><a href="#编辑-etc-inetd-conf" class="headerlink" title="编辑 &#x2F;etc&#x2F;inetd.conf"></a>编辑 &#x2F;etc&#x2F;inetd.conf</h2><p>打开 <code>/etc/inetd.conf</code> 文件对需要启用的服务关闭其注释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">discard     stream  tcp nowait  root    internal</span><br><span class="line">discard     dgram   udp wait    root    internal</span><br><span class="line">daytime     stream  tcp nowait  root    internal</span><br><span class="line">time        stream  tcp nowait  root    internal</span><br><span class="line">echo        stream  tcp nowait  root    internal</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/openbsd-inetd start</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="检查服务"><a href="#检查服务" class="headerlink" title="检查服务"></a>检查服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">netstat -alt | grep -E &#x27;time|discard|daytime&#x27;</span><br><span class="line"></span><br><span class="line">(env) zhyq@zhyq:~$ netstat -alt | grep -E &#x27;time|discard|daytime&#x27;</span><br><span class="line">tcp        0      0 *:time                  *:*                     LISTEN     </span><br><span class="line">tcp        0      0 *:discard               *:*                     LISTEN     </span><br><span class="line">tcp        0      0 *:daytime               *:*                     LISTEN  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="标准服务一览"><a href="#标准服务一览" class="headerlink" title="标准服务一览"></a>标准服务一览</h2><table>
 <thead>
 <tr>
 <th>名称</th>
@@ -413,8 +430,7 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>echo</td>
 <td>7</td>
 <td>7</td>
@@ -449,9 +465,7 @@
 <td>868</td>
 <td>服务器返回一个二进制形式的 32bit，表示从 UTC 时间1900.1.1 至今的秒数</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 
       
     </div>
@@ -462,7 +476,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -528,7 +542,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -564,11 +583,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -576,9 +595,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -587,10 +608,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -600,8 +621,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -612,7 +633,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -654,7 +675,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-openbsd-inetd"><span class="nav-number">1.</span> <span class="nav-text">安装 openbsd-inetd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑-etc-inetd-conf"><span class="nav-number">2.</span> <span class="nav-text">编辑 /etc/inetd.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">3.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查服务"><span class="nav-number">4.</span> <span class="nav-text">检查服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准服务一览"><span class="nav-number">5.</span> <span class="nav-text">标准服务一览</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-openbsd-inetd"><span class="nav-number">1.</span> <span class="nav-text">安装 openbsd-inetd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91-etc-inetd-conf"><span class="nav-number">2.</span> <span class="nav-text">编辑 &#x2F;etc&#x2F;inetd.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">检查服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88"><span class="nav-number">5.</span> <span class="nav-text">标准服务一览</span></a></li></ol></div>
             
 
           </div>
@@ -674,10 +695,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -687,11 +708,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -810,24 +831,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

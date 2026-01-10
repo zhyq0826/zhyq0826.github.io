@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,46 +74,46 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="style,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="style," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
 
 
 
-<meta name="description" content="此文是 Golang wiki 上 https://github.com/golang/go/wiki/CodeReviewComments 的翻译与理解。 Gofmt优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。 注释语句 Comment Sentences注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余， 12345// Requ">
-<meta name="keywords" content="style">
+<meta name="description" content="此文是 Golang wiki 上 https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;go&#x2F;wiki&#x2F;CodeReviewComments 的翻译与理解。 Gofmt优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。 注释语句 Comment Sentences注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余， 123456&#x2F;&#x2F; Req">
 <meta property="og:type" content="article">
 <meta property="og:title" content="写出 Go 风格的代码">
 <meta property="og:url" content="http://sanyuesha.com/2019/07/25/go-style/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="此文是 Golang wiki 上 https://github.com/golang/go/wiki/CodeReviewComments 的翻译与理解。 Gofmt优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。 注释语句 Comment Sentences注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余， 12345// Requ">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-03T07:28:23.460Z">
+<meta property="og:description" content="此文是 Golang wiki 上 https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;go&#x2F;wiki&#x2F;CodeReviewComments 的翻译与理解。 Gofmt优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。 注释语句 Comment Sentences注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余， 123456&#x2F;&#x2F; Req">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-25T04:04:30.000Z">
+<meta property="article:modified_time" content="2019-08-03T07:28:23.460Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="style">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="写出 Go 风格的代码">
-<meta name="twitter:description" content="此文是 Golang wiki 上 https://github.com/golang/go/wiki/CodeReviewComments 的翻译与理解。 Gofmt优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。 注释语句 Comment Sentences注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余， 12345// Requ">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +122,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2019/07/25/go-style/">
+  <link rel="canonical" href="http://sanyuesha.com/2019/07/25/go-style/"/>
 
 
 
@@ -155,22 +155,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +183,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +210,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +298,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +324,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2019/07/25/go-style/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +348,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-25T12:04:30+08:00">
-                Jul 25 2019
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-25T12:04:30+08:00">
+                7月 25 2019
               </time>
             
 
@@ -348,7 +361,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,7 +369,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -397,12 +410,15 @@
       
 
       
-        <p>此文是 Golang wiki 上 <a href="https://github.com/golang/go/wiki/CodeReviewComments" target="_blank" rel="noopener">https://github.com/golang/go/wiki/CodeReviewComments</a> 的翻译与理解。</p>
+        <p>此文是 Golang wiki 上 <a href="https://github.com/golang/go/wiki/CodeReviewComments">https://github.com/golang/go/wiki/CodeReviewComments</a> 的翻译与理解。</p>
 <h2 id="Gofmt"><a href="#Gofmt" class="headerlink" title="Gofmt"></a>Gofmt</h2><p>优先使用工具统一代码风格，避免无意义的争论，使用 gofmt 或者 goimports。</p>
 <h2 id="注释语句-Comment-Sentences"><a href="#注释语句-Comment-Sentences" class="headerlink" title="注释语句 Comment Sentences"></a>注释语句 Comment Sentences</h2><p>注释以要注释的对象开头，尽量使用完整的句子进行注释，哪怕看上去有点冗余，</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Request represents a request to run a command.</span></span><br><span class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123; ...</span><br><span class="line"></span><br><span class="line"><span class="comment">// Encode writes the JSON encoding of req to w.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Encode</span><span class="params">(w io.Writer, req *Request)</span></span> &#123; ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Request represents a request to run a command.</span></span><br><span class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123; ...</span><br><span class="line"></span><br><span class="line"><span class="comment">// Encode writes the JSON encoding of req to w.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Encode</span><span class="params">(w io.Writer, req *Request)</span></span> &#123; ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <h2 id="上下文-Contexts"><a href="#上下文-Contexts" class="headerlink" title="上下文 Contexts"></a>上下文 Contexts</h2><p>对于来自 RPC 或 HTTP 调用的请求，显示把 context 作为函数的第一个参数。</p>
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">F</span><span class="params">(ctx context.Context, /* other arguments */)</span></span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
 <p>如果函数不是 request specific 的，可以使用 <code>context.Background</code> 代替。</p>
 <p>不要把 context 作为 context 的 memeber，而是是吧 context 作为 struct method 的第一个参数，有个例外是如果 method 必须<br>要满足某个 interface 或者某个第三方 pkg 的签名。</p>
 <p>在函数签名中不要使用自定义 context 以及 context 提供之外的 interface。</p>
@@ -412,21 +428,26 @@
 <p>一般来说不要 copy T 的 method receiver 是 <code>*T</code> 的 struct。</p>
 <h2 id="声明空的-slice-Declaring-Empty-Slices"><a href="#声明空的-slice-Declaring-Empty-Slices" class="headerlink" title="声明空的 slice Declaring Empty Slices"></a>声明空的 slice Declaring Empty Slices</h2><p>优先使用 <code>var t []string</code>，而不是 <code>t := []string{}</code>，虽然二者功能上是一样的，len 都是 zero，但是前者是 nil，后者不是 nil。前者 json<br>之后是 null，后者是 []，但是前者依然是推荐写法。</p>
 <p>如果要设计 interface 避免区分 slice 的 nil 或者 not nil 以及 zero length。</p>
-<h2 id="文档注释-Doc-Comments"><a href="#文档注释-Doc-Comments" class="headerlink" title="文档注释 Doc Comments"></a>文档注释 Doc Comments</h2><p>所有顶层可导出对象都应该有文档注释，不可导出对象也应该如此，详见 <a href="https://golang.org/doc/effective_go.html#commentary" target="_blank" rel="noopener">https://golang.org/doc/effective_go.html#commentary</a> 。</p>
+<h2 id="文档注释-Doc-Comments"><a href="#文档注释-Doc-Comments" class="headerlink" title="文档注释 Doc Comments"></a>文档注释 Doc Comments</h2><p>所有顶层可导出对象都应该有文档注释，不可导出对象也应该如此，详见 <a href="https://golang.org/doc/effective_go.html#commentary">https://golang.org/doc/effective_go.html#commentary</a> 。</p>
 <h2 id="不要-panic-Don’t-Panic"><a href="#不要-panic-Don’t-Panic" class="headerlink" title="不要 panic Don’t Panic"></a>不要 panic Don’t Panic</h2><p>使用 error 和多个返回值解决 error 的问题，不要用 panic，除非你显示知道自己这么做的原因。</p>
 <h2 id="例子-Examples"><a href="#例子-Examples" class="headerlink" title="例子 Examples"></a>例子 Examples</h2><p>任何时候写一个 pkg 都要附带可以执行的例子。</p>
 <h2 id="Goroutine-的生命周期-Goroutine-Life-Time"><a href="#Goroutine-的生命周期-Goroutine-Life-Time" class="headerlink" title="Goroutine 的生命周期 Goroutine Life Time"></a>Goroutine 的生命周期 Goroutine Life Time</h2><p>每开启一个 Goroutine，一定要明确 Goroutine 何时或者是否要结束，根本原因是 Goroutine leak。</p>
 <blockquote>
 <p>Goroutines can leak by blocking on channel sends or receives: the garbage collector will not terminate a goroutine even if the channels it is blocked on are unreachable.<br>Even when goroutines do not leak, leaving them in-flight when they are no longer needed can cause other subtle and hard-to-diagnose problems. Sends on closed channels panic. Modifying still-in-use inputs “after the result isn’t needed” can still lead to data races. And leaving goroutines in-flight for arbitrarily long can lead to unpredictable memory usage.<br>Try to keep concurrent code simple enough that goroutine lifetimes are obvious. If that just isn’t feasible, document when and why the goroutines exit</p>
 </blockquote>
-<h2 id="错误处理-Handle-Errors"><a href="#错误处理-Handle-Errors" class="headerlink" title="错误处理 Handle Errors"></a>错误处理 Handle Errors</h2><p>见 <a href="https://golang.org/doc/effective_go.html#errors" target="_blank" rel="noopener">https://golang.org/doc/effective_go.html#errors</a> ，不要使用 <code>_</code> 丢弃错误，如果一个函数返回错误，校验错误确保函数的正确执行，处理错误或者返回它，哪怕是 panic 。</p>
+<h2 id="错误处理-Handle-Errors"><a href="#错误处理-Handle-Errors" class="headerlink" title="错误处理 Handle Errors"></a>错误处理 Handle Errors</h2><p>见 <a href="https://golang.org/doc/effective_go.html#errors">https://golang.org/doc/effective_go.html#errors</a> ，不要使用 <code>_</code> 丢弃错误，如果一个函数返回错误，校验错误确保函数的正确执行，处理错误或者返回它，哪怕是 panic 。</p>
 <h2 id="导入-Imports"><a href="#导入-Imports" class="headerlink" title="导入 Imports"></a>导入 Imports</h2><p>除非是为了避免名称冲突，否则不要重命名导入包，优先重命名本地或者 project-specific 的包。</p>
 <p>包以 blank line 的形式分组展示，标准包在顶层。</p>
 <p>使用 goimport 工具。</p>
 <h2 id="导入空-ImportBlank"><a href="#导入空-ImportBlank" class="headerlink" title="导入空 ImportBlank"></a>导入空 ImportBlank</h2><p>仅仅在入口函数或者测试时执行 <code>_ pkg</code> 形式的导入。</p>
 <h2 id="错误的缩进-Indent-Error-Flow"><a href="#错误的缩进-Indent-Error-Flow" class="headerlink" title="错误的缩进 Indent Error Flow"></a>错误的缩进 Indent Error Flow</h2><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 推荐写法</span></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// error handling</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// normal code</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不推荐写法</span></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// error handling</span></span><br><span class="line">	<span class="keyword">return</span> <span class="comment">// or continue, etc.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不推荐写法</span></span><br><span class="line"><span class="keyword">if</span> x, err := f(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// error handling</span></span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// use x</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐写法</span></span><br><span class="line">x, err := f()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// error handling</span></span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// use x</span></span><br></pre></td></tr></table></figure>
-<h2 id="命名返回参数-Named-Result-Parameters"><a href="#命名返回参数-Named-Result-Parameters" class="headerlink" title="命名返回参数 Named Result Parameters"></a>命名返回参数 Named Result Parameters</h2><p>如果一个函数返回多个类型相同的结果或者返回的结果上下文语义不明确，可以使用命名参数：<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 不推荐写法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *Foo)</span> <span class="title">Location</span><span class="params">()</span> <span class="params">(<span class="keyword">float64</span>, <span class="keyword">float64</span>, error)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">// 推荐写法</span></span><br><span class="line"><span class="function"><span class="title">func</span> <span class="params">(f *Foo)</span> <span class="title">Location</span><span class="params">()</span> <span class="params">(lat, long <span class="keyword">float64</span>, err error)</span></span></span><br></pre></td></tr></table></figure></p>
-<h2 id="包名-package-name"><a href="#包名-package-name" class="headerlink" title="包名 package name"></a>包名 package name</h2><p><a href="http://blog.golang.org/package-names" target="_blank" rel="noopener">http://blog.golang.org/package-names</a></p>
+
+
+<h2 id="命名返回参数-Named-Result-Parameters"><a href="#命名返回参数-Named-Result-Parameters" class="headerlink" title="命名返回参数 Named Result Parameters"></a>命名返回参数 Named Result Parameters</h2><p>如果一个函数返回多个类型相同的结果或者返回的结果上下文语义不明确，可以使用命名参数：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 不推荐写法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *Foo)</span></span> Location() (<span class="type">float64</span>, <span class="type">float64</span>, <span class="type">error</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐写法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *Foo)</span></span> Location() (lat, long <span class="type">float64</span>, err <span class="type">error</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="包名-package-name"><a href="#包名-package-name" class="headerlink" title="包名 package name"></a>包名 package name</h2><p><a href="http://blog.golang.org/package-names">http://blog.golang.org/package-names</a></p>
 <h2 id="传值-Pass-Values"><a href="#传值-Pass-Values" class="headerlink" title="传值 Pass Values"></a>传值 Pass Values</h2><p>传值而不是指针，大的 struct 以及可能会增长的 struct 除外。</p>
 
       
@@ -438,7 +459,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -510,7 +531,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -546,11 +572,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -558,9 +584,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -569,10 +597,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -582,8 +610,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -594,7 +622,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -636,7 +664,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Gofmt"><span class="nav-number">1.</span> <span class="nav-text">Gofmt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释语句-Comment-Sentences"><span class="nav-number">2.</span> <span class="nav-text">注释语句 Comment Sentences</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上下文-Contexts"><span class="nav-number">3.</span> <span class="nav-text">上下文 Contexts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝-Copy"><span class="nav-number">4.</span> <span class="nav-text">拷贝 Copy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明空的-slice-Declaring-Empty-Slices"><span class="nav-number">5.</span> <span class="nav-text">声明空的 slice Declaring Empty Slices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文档注释-Doc-Comments"><span class="nav-number">6.</span> <span class="nav-text">文档注释 Doc Comments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要-panic-Don’t-Panic"><span class="nav-number">7.</span> <span class="nav-text">不要 panic Don’t Panic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子-Examples"><span class="nav-number">8.</span> <span class="nav-text">例子 Examples</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goroutine-的生命周期-Goroutine-Life-Time"><span class="nav-number">9.</span> <span class="nav-text">Goroutine 的生命周期 Goroutine Life Time</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理-Handle-Errors"><span class="nav-number">10.</span> <span class="nav-text">错误处理 Handle Errors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入-Imports"><span class="nav-number">11.</span> <span class="nav-text">导入 Imports</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入空-ImportBlank"><span class="nav-number">12.</span> <span class="nav-text">导入空 ImportBlank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误的缩进-Indent-Error-Flow"><span class="nav-number">13.</span> <span class="nav-text">错误的缩进 Indent Error Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命名返回参数-Named-Result-Parameters"><span class="nav-number">14.</span> <span class="nav-text">命名返回参数 Named Result Parameters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包名-package-name"><span class="nav-number">15.</span> <span class="nav-text">包名 package name</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传值-Pass-Values"><span class="nav-number">16.</span> <span class="nav-text">传值 Pass Values</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Gofmt"><span class="nav-number">1.</span> <span class="nav-text">Gofmt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E8%AF%AD%E5%8F%A5-Comment-Sentences"><span class="nav-number">2.</span> <span class="nav-text">注释语句 Comment Sentences</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87-Contexts"><span class="nav-number">3.</span> <span class="nav-text">上下文 Contexts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D-Copy"><span class="nav-number">4.</span> <span class="nav-text">拷贝 Copy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E7%A9%BA%E7%9A%84-slice-Declaring-Empty-Slices"><span class="nav-number">5.</span> <span class="nav-text">声明空的 slice Declaring Empty Slices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E6%B3%A8%E9%87%8A-Doc-Comments"><span class="nav-number">6.</span> <span class="nav-text">文档注释 Doc Comments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81-panic-Don%E2%80%99t-Panic"><span class="nav-number">7.</span> <span class="nav-text">不要 panic Don’t Panic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-Examples"><span class="nav-number">8.</span> <span class="nav-text">例子 Examples</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goroutine-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-Goroutine-Life-Time"><span class="nav-number">9.</span> <span class="nav-text">Goroutine 的生命周期 Goroutine Life Time</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86-Handle-Errors"><span class="nav-number">10.</span> <span class="nav-text">错误处理 Handle Errors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5-Imports"><span class="nav-number">11.</span> <span class="nav-text">导入 Imports</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E7%A9%BA-ImportBlank"><span class="nav-number">12.</span> <span class="nav-text">导入空 ImportBlank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84%E7%BC%A9%E8%BF%9B-Indent-Error-Flow"><span class="nav-number">13.</span> <span class="nav-text">错误的缩进 Indent Error Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E8%BF%94%E5%9B%9E%E5%8F%82%E6%95%B0-Named-Result-Parameters"><span class="nav-number">14.</span> <span class="nav-text">命名返回参数 Named Result Parameters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85%E5%90%8D-package-name"><span class="nav-number">15.</span> <span class="nav-text">包名 package name</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E5%80%BC-Pass-Values"><span class="nav-number">16.</span> <span class="nav-text">传值 Pass Values</span></a></li></ol></div>
             
 
           </div>
@@ -656,10 +684,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -669,11 +697,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -792,24 +820,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

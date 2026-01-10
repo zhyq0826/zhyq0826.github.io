@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="golang,interface,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="golang,interface," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,24 +96,25 @@
 
 
 <meta name="description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Interface value 的赋值从概念上来讲，interface value 有两部分组成：type 部分是一个 concrete type，vlaue 部分是这个 concrete type 对应的 instance，它们分别称之为 interface value 的 dynamic type 和">
-<meta name="keywords" content="golang,interface">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go interface 详解 (三) ：interface 的值">
 <meta property="og:url" content="http://sanyuesha.com/2017/10/18/go-interface-3/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Interface value 的赋值从概念上来讲，interface value 有两部分组成：type 部分是一个 concrete type，vlaue 部分是这个 concrete type 对应的 instance，它们分别称之为 interface value 的 dynamic type 和">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.292Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-10-18T04:53:54.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.292Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="interface">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go interface 详解 (三) ：interface 的值">
-<meta name="twitter:description" content="本系列是阅读 “The Go Programming Language” 理解和记录。  Interface value 的赋值从概念上来讲，interface value 有两部分组成：type 部分是一个 concrete type，vlaue 部分是这个 concrete type 对应的 instance，它们分别称之为 interface value 的 dynamic type 和">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +123,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/10/18/go-interface-3/">
+  <link rel="canonical" href="http://sanyuesha.com/2017/10/18/go-interface-3/"/>
 
 
 
@@ -155,22 +156,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +184,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +211,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +299,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +325,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/10/18/go-interface-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +349,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T12:53:54+08:00">
-                Oct 18 2017
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-18T12:53:54+08:00">
+                10月 18 2017
               </time>
             
 
@@ -348,7 +362,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,11 +370,11 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Go-读书笔记/" itemprop="url" rel="index">
+                  <a href="/categories/Go-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
                     <span itemprop="name">Go 读书笔记</span>
                   </a>
                 </span>
@@ -402,22 +416,37 @@
 </blockquote>
 <h1 id="Interface-value-的赋值"><a href="#Interface-value-的赋值" class="headerlink" title="Interface value 的赋值"></a>Interface value 的赋值</h1><p>从概念上来讲，interface value 有两部分组成：type 部分是一个 concrete type，vlaue 部分是这个 concrete type 对应的 instance，它们分别称之为 interface value 的 dynamic type 和 dynamic value。</p>
 <p>由于 Go 是静态类型的语言，type 是在编译阶段已经定义好的，而 interface 存储的值是动态的，在上面这个概念模型中，type 部分更准确叫法是 type descriptors，主要是提供 concrete type 的相关信息，包括 method、name 等。</p>
-<p>下面这几个语句：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w io.Writer</span><br><span class="line">w = os.Stdout</span><br><span class="line">w = <span class="built_in">new</span>(bytes.Buffer)</span><br><span class="line">w = <span class="literal">nil</span></span><br></pre></td></tr></table></figure></p>
+<p>下面这几个语句：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w io.Writer</span><br><span class="line">w = os.Stdout</span><br><span class="line">w = <span class="built_in">new</span>(bytes.Buffer)</span><br><span class="line">w = <span class="literal">nil</span></span><br></pre></td></tr></table></figure>
 <p>变量 <code>w</code> 依次存储了三种不同的值，在此我们依次来看看每种不同的值的确切含义。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>语句 <code>var w io.Writer</code> 声明并初始化了一个 interface value <code>w</code>，其值是 <code>nil</code>，此时 type 和 value 部分都是 <code>nil</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">w:</span><br><span class="line">    type --&gt; nil</span><br><span class="line">    value --&gt; nil</span><br></pre></td></tr></table></figure>
-<p>interface value 是否是 nil 取决于其 dynamic type，在 nil 的 interface value 上调用会 panic<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// panic</span></span><br></pre></td></tr></table></figure></p>
-<p>语句 <code>w = os.Stdout</code> 赋值 <code>*os.File</code> 类型的 value 给 w，这个赋值操作包含一个隐式的类型转换，用以把 concrete type 转换成 interface type <code>io.Writer(*os.File)</code>，在这个转换过程中 dynamic type 被赋值为 <code>*os.File</code> 类型，在这里其实是它的 type descriptor，同样得，dynamic value 赋值为 os.Stdout 的一份 copy，一个指向 <code>os.File</code> 类型的指针且代表<strong>标准输出</strong>的变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">w:</span><br><span class="line">    type --&gt; *os.File</span><br><span class="line">    value -------&gt; fd int=1(stdout)</span><br></pre></td></tr></table></figure></p>
-<p>在 interface value w 上调用 <code>Write</code> method 实际上调用的是 <code>*os.File</code> 类型的 Write 方法，于是输出 “hello”。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// "hello"</span></span><br></pre></td></tr></table></figure></p>
-<p>由于在编译阶段，我们并不知道一个 interface value 的 dynamic type 是什么，所以 interface value 的调用必须进行 dynamic dispatch。为了能调用 dynamic value 的 Write method，compiler 必须生成相关代码以便在执行的时候通过 dynamic type 获取对应 method 的真实地址的 copy，在调用的形式上好像是我们直接调用了 dynamic value 的 Write method。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.Stdout.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>)) <span class="comment">// "hello"</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">w:</span><br><span class="line">    type --&gt; nil</span><br><span class="line">    value --&gt; nil</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>interface value 是否是 nil 取决于其 dynamic type，在 nil 的 interface value 上调用会 panic</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w.Write([]<span class="type">byte</span>(<span class="string">&quot;hello&quot;</span>)) <span class="comment">// panic</span></span><br></pre></td></tr></table></figure>
+
+<p>语句 <code>w = os.Stdout</code> 赋值 <code>*os.File</code> 类型的 value 给 w，这个赋值操作包含一个隐式的类型转换，用以把 concrete type 转换成 interface type <code>io.Writer(*os.File)</code>，在这个转换过程中 dynamic type 被赋值为 <code>*os.File</code> 类型，在这里其实是它的 type descriptor，同样得，dynamic value 赋值为 os.Stdout 的一份 copy，一个指向 <code>os.File</code> 类型的指针且代表<strong>标准输出</strong>的变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">w:</span><br><span class="line">    type --&gt; *os.File</span><br><span class="line">    value -------&gt; fd int=1(stdout)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在 interface value w 上调用 <code>Write</code> method 实际上调用的是 <code>*os.File</code> 类型的 Write 方法，于是输出 “hello”。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w.Write([]<span class="type">byte</span>(<span class="string">&quot;hello&quot;</span>)) <span class="comment">// &quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于在编译阶段，我们并不知道一个 interface value 的 dynamic type 是什么，所以 interface value 的调用必须进行 dynamic dispatch。为了能调用 dynamic value 的 Write method，compiler 必须生成相关代码以便在执行的时候通过 dynamic type 获取对应 method 的真实地址的 copy，在调用的形式上好像是我们直接调用了 dynamic value 的 Write method。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.Stdout.Write([]<span class="type">byte</span>(<span class="string">&quot;hello&quot;</span>)) <span class="comment">// &quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>语句 <code>w=new(bytes.Buffer)</code> 赋值 <code>*bytes.Buffer</code> 类型的 value 作为 w 的 dynamic value，对 w 的处理是也类似的，调用 Write method 将调用 <code>*bytes.Buffer</code> 的 Write method。</p>
 <p>语句 <code>w=nil</code> 和初始语句一样将 w 重置为 nil。</p>
 <h1 id="Interface-value-的比较"><a href="#Interface-value-的比较" class="headerlink" title="Interface value 的比较"></a>Interface value 的比较</h1><p>Interface value 可以使用 <code>==</code> 和 <code>!=</code> 语句进行比较的。如果两个 interface value 的 dynamic type 相同，dynamic value 根据 dynamic type 的 <code>==</code> 比较操作是相等的，那么这两个 interface value 是相等的。因而 interface value 可以用在 map 中作为key 或者 switch 语句中。</p>
-<p>虽然 interface value 本身是可以比较的，但是如果 dynamic type 不支持 compare 操作，那么对两个 dynamic type 相同的 interface value 比较将 panic，比如 slice。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125; = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">fmt.Println(x == x) <span class="comment">// panic: comparing uncomparable type []int</span></span><br></pre></td></tr></table></figure></p>
+<p>虽然 interface value 本身是可以比较的，但是如果 dynamic type 不支持 compare 操作，那么对两个 dynamic type 相同的 interface value 比较将 panic，比如 slice。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125; = []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">fmt.Println(x == x) <span class="comment">// panic: comparing uncomparable type []int</span></span><br></pre></td></tr></table></figure>
 <p>所以使用时你应该总是留意，interface value 的 dynamic 是不是可以 compare 类型，不管 interface value 单独出现还是出现在其它类型中。</p>
-<h1 id="格式化输出-interface-value"><a href="#格式化输出-interface-value" class="headerlink" title="格式化输出 interface value"></a>格式化输出 interface value</h1><p>Go 提供了格式化输出 interface value 的方法，方便在开发和调试中使用。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w io.Writer</span><br><span class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "&lt;nil&gt;"</span></span><br><span class="line"></span><br><span class="line">w=os.Stdout</span><br><span class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "*os.File"</span></span><br><span class="line"></span><br><span class="line">w=<span class="built_in">new</span>(bytes.Buffer)</span><br><span class="line">fmt.Printf(<span class="string">"%T\n"</span>, w) <span class="comment">// "*bytes.Buffer"</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="警告：dynamic-value-是-nil-的-interface-value-并不是-nil"><a href="#警告：dynamic-value-是-nil-的-interface-value-并不是-nil" class="headerlink" title="警告：dynamic value 是 nil 的 interface value 并不是 nil"></a>警告：dynamic value 是 nil 的 interface value 并不是 nil</h1><p>Interface value 是 nil 和 interface value 包含的 dynamic value 是 nil 并不是一回事，<strong>后者不是 nil</strong>，这个潜在的区别给初学 Go 的 developer 造成了一定的困扰。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debug = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> buf *bytes.Buffer</span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        buf = <span class="built_in">new</span>(bytes.Buffer) <span class="comment">// enable collection of output</span></span><br><span class="line">    &#125;</span><br><span class="line">    f(buf) <span class="comment">// <span class="doctag">NOTE:</span> subtly incorrect!</span></span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        <span class="comment">// ...use buf...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// If out is non-nil, output will be written to it.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(out io.Writer)</span></span> &#123;</span><br><span class="line">    <span class="comment">// ...do something...</span></span><br><span class="line">    <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</span><br><span class="line">        out.Write([]<span class="keyword">byte</span>(<span class="string">"done!\n"</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="格式化输出-interface-value"><a href="#格式化输出-interface-value" class="headerlink" title="格式化输出 interface value"></a>格式化输出 interface value</h1><p>Go 提供了格式化输出 interface value 的方法，方便在开发和调试中使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w io.Writer</span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, w) <span class="comment">// &quot;&lt;nil&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">w=os.Stdout</span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, w) <span class="comment">// &quot;*os.File&quot;</span></span><br><span class="line"></span><br><span class="line">w=<span class="built_in">new</span>(bytes.Buffer)</span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, w) <span class="comment">// &quot;*bytes.Buffer&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="警告：dynamic-value-是-nil-的-interface-value-并不是-nil"><a href="#警告：dynamic-value-是-nil-的-interface-value-并不是-nil" class="headerlink" title="警告：dynamic value 是 nil 的 interface value 并不是 nil"></a>警告：dynamic value 是 nil 的 interface value 并不是 nil</h1><p>Interface value 是 nil 和 interface value 包含的 dynamic value 是 nil 并不是一回事，<strong>后者不是 nil</strong>，这个潜在的区别给初学 Go 的 developer 造成了一定的困扰。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debug = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> buf *bytes.Buffer</span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        buf = <span class="built_in">new</span>(bytes.Buffer) <span class="comment">// enable collection of output</span></span><br><span class="line">    &#125;</span><br><span class="line">    f(buf) <span class="comment">// <span class="doctag">NOTE:</span> subtly incorrect!</span></span><br><span class="line">    <span class="keyword">if</span> debug &#123;</span><br><span class="line">        <span class="comment">// ...use buf...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// If out is non-nil, output will be written to it.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(out io.Writer)</span></span> &#123;</span><br><span class="line">    <span class="comment">// ...do something...</span></span><br><span class="line">    <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</span><br><span class="line">        out.Write([]<span class="type">byte</span>(<span class="string">&quot;done!\n&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在上面的代码中，函数 f 中将会出现 panic。由于对于 <code>*byte.Buffer</code> 时，当其值是 nil 时也满足 io.Writer 这个 interface，赋值给 out 之后，out 并不是 nil，但是调用 Write 方法时，Write 的 receiver 也就是 out 的 dynamic value 是 nil，因而会 panic。</p>
 <p>解决方法是改变 main 中的 buf 为 io.Writer。</p>
 
@@ -430,7 +459,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -504,7 +533,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -540,11 +574,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -552,9 +586,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -563,10 +599,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -576,8 +612,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -588,7 +624,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -630,7 +666,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface-value-的赋值"><span class="nav-number">1.</span> <span class="nav-text">Interface value 的赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface-value-的比较"><span class="nav-number">2.</span> <span class="nav-text">Interface value 的比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#格式化输出-interface-value"><span class="nav-number">3.</span> <span class="nav-text">格式化输出 interface value</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#警告：dynamic-value-是-nil-的-interface-value-并不是-nil"><span class="nav-number">4.</span> <span class="nav-text">警告：dynamic value 是 nil 的 interface value 并不是 nil</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface-value-%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="nav-number">1.</span> <span class="nav-text">Interface value 的赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface-value-%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">2.</span> <span class="nav-text">Interface value 的比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA-interface-value"><span class="nav-number">3.</span> <span class="nav-text">格式化输出 interface value</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AD%A6%E5%91%8A%EF%BC%9Adynamic-value-%E6%98%AF-nil-%E7%9A%84-interface-value-%E5%B9%B6%E4%B8%8D%E6%98%AF-nil"><span class="nav-number">4.</span> <span class="nav-text">警告：dynamic value 是 nil 的 interface value 并不是 nil</span></a></li></ol></div>
             
 
           </div>
@@ -650,10 +686,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -663,11 +699,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -786,24 +822,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

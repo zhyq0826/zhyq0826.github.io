@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Python,Go,Devops,algorithm">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -101,18 +101,18 @@
 <meta property="og:url" content="http://sanyuesha.com/2017/12/07/mysql-benchmark/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="mysql-benchmark 是做容量规划和架构设计必不可少的一环，虽说 benchmark 不是特别难，但是做好了不容易，而且受限于所选的硬件环境，想要得到一个通用的测试报告比较困难，当然我还比较懒。我找了不少资料，大部分资料做测试都不是很全，而且文档读起来有难度，本来想那些云厂家卖产品应该有个白皮书之类的，但是他们的官网介绍的都太糙了，简直不像卖产品的，很不专业。折腾一圈找到一个还算靠谱点的">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.298Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-07T09:46:31.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.298Z">
+<meta property="article:author" content="三月沙">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql-benchmark">
-<meta name="twitter:description" content="mysql-benchmark 是做容量规划和架构设计必不可少的一环，虽说 benchmark 不是特别难，但是做好了不容易，而且受限于所选的硬件环境，想要得到一个通用的测试报告比较困难，当然我还比较懒。我找了不少资料，大部分资料做测试都不是很全，而且文档读起来有难度，本来想那些云厂家卖产品应该有个白皮书之类的，但是他们的官网介绍的都太糙了，简直不像卖产品的，很不专业。折腾一圈找到一个还算靠谱点的">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -121,7 +121,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/12/07/mysql-benchmark/">
+  <link rel="canonical" href="http://sanyuesha.com/2017/12/07/mysql-benchmark/"/>
 
 
 
@@ -154,22 +154,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -178,7 +182,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -205,70 +209,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -286,6 +297,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -310,8 +323,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/12/07/mysql-benchmark/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -334,10 +347,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T17:46:31+08:00">
-                Dec 7 2017
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-07T17:46:31+08:00">
+                12月 7 2017
               </time>
             
 
@@ -347,7 +360,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -355,7 +368,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -396,12 +409,12 @@
       
 
       
-        <p>mysql-benchmark 是做容量规划和架构设计必不可少的一环，虽说 benchmark 不是特别难，但是做好了不容易，而且受限于所选的硬件环境，想要得到一个通用的测试报告比较困难，当然我还比较懒。我找了不少资料，大部分资料做测试都不是很全，而且文档读起来有难度，本来想那些云厂家卖产品应该有个白皮书之类的，但是他们的官网介绍的都太糙了，简直不像卖产品的，很不专业。折腾一圈找到一个还算靠谱点的 ucloud 自家的测试 <a href="https://docs.ucloud.cn/database/udb-mysql/test" target="_blank" rel="noopener">https://docs.ucloud.cn/database/udb-mysql/test</a> 以及 <a href="http://seanlook.com/2016/03/28/mysql-sysbench/" target="_blank" rel="noopener">http://seanlook.com/2016/03/28/mysql-sysbench/</a> 一篇写 sysbench 测试工具对 mysql 的压测还算不错，Mariadb 官方也有一篇不错 <a href="https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/" target="_blank" rel="noopener">https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/</a></p>
+        <p>mysql-benchmark 是做容量规划和架构设计必不可少的一环，虽说 benchmark 不是特别难，但是做好了不容易，而且受限于所选的硬件环境，想要得到一个通用的测试报告比较困难，当然我还比较懒。我找了不少资料，大部分资料做测试都不是很全，而且文档读起来有难度，本来想那些云厂家卖产品应该有个白皮书之类的，但是他们的官网介绍的都太糙了，简直不像卖产品的，很不专业。折腾一圈找到一个还算靠谱点的 ucloud 自家的测试 <a href="https://docs.ucloud.cn/database/udb-mysql/test">https://docs.ucloud.cn/database/udb-mysql/test</a> 以及 <a href="http://seanlook.com/2016/03/28/mysql-sysbench/">http://seanlook.com/2016/03/28/mysql-sysbench/</a> 一篇写 sysbench 测试工具对 mysql 的压测还算不错，Mariadb 官方也有一篇不错 <a href="https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/">https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/</a></p>
 <ul>
-<li><a href="https://docs.ucloud.cn/database/udb-mysql/test" target="_blank" rel="noopener">https://docs.ucloud.cn/database/udb-mysql/test</a></li>
-<li><a href="http://seanlook.com/2016/03/28/mysql-sysbench/" target="_blank" rel="noopener">http://seanlook.com/2016/03/28/mysql-sysbench/</a></li>
-<li><a href="https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/" target="_blank" rel="noopener">https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/</a></li>
-<li><a href="http://www.storagereview.com/sysbench_oltp_benchmark" target="_blank" rel="noopener">http://www.storagereview.com/sysbench_oltp_benchmark</a></li>
+<li><a href="https://docs.ucloud.cn/database/udb-mysql/test">https://docs.ucloud.cn/database/udb-mysql/test</a></li>
+<li><a href="http://seanlook.com/2016/03/28/mysql-sysbench/">http://seanlook.com/2016/03/28/mysql-sysbench/</a></li>
+<li><a href="https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/">https://mariadb.org/maria-10-1-mysql-5-7-commodity-hardware/</a></li>
+<li><a href="http://www.storagereview.com/sysbench_oltp_benchmark">http://www.storagereview.com/sysbench_oltp_benchmark</a></li>
 </ul>
 
       
@@ -413,7 +426,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -479,7 +492,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -518,9 +536,11 @@
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -529,10 +549,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -542,8 +562,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -554,7 +574,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -600,10 +620,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -613,11 +633,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -736,24 +756,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

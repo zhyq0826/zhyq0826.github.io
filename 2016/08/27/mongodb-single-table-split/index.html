@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="表拆分,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="表拆分," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,18 +96,18 @@
 
 
 <meta name="description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
-<meta name="keywords" content="表拆分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongodb 单表亿级数据的拆分方案">
 <meta property="og:url" content="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://sanyuesha.com/images/table-split.png">
-<meta property="og:updated_time" content="2017-12-03T05:52:18.518Z">
+<meta property="article:published_time" content="2016-08-27T13:38:14.000Z">
+<meta property="article:modified_time" content="2017-12-03T05:52:18.518Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="表拆分">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mongodb 单表亿级数据的拆分方案">
-<meta name="twitter:description" content="拆表是一种常见的解决单表数据库瓶颈的方案，在实际的应用场景中能够部分解决单表的写压力和读压力，但是也会带来一些更复杂的影响：  聚合查询变得困难 拆分的键一旦选定，更改会非常困难 拆表的过程要保证线上业务不受影响，操作复杂度高  因此，表的拆分一定要选在恰当的时候进行，过早，付出很大代价也并不会带来性能的提升，过晚，数据量庞大，操作难度加大。 在本次实施的拆分方案中，数据特点是:  单表过亿 业务">
 <meta name="twitter:image" content="http://sanyuesha.com/images/table-split.png">
 
 
@@ -115,7 +115,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -124,7 +124,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">
+  <link rel="canonical" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/"/>
 
 
 
@@ -157,22 +157,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -181,7 +185,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,70 +212,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -289,6 +300,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -313,8 +326,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2016/08/27/mongodb-single-table-split/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -337,10 +350,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-27T21:38:14+08:00">
-                Aug 27 2016
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-27T21:38:14+08:00">
+                8月 27 2016
               </time>
             
 
@@ -350,7 +363,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -358,7 +371,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -410,10 +423,11 @@
 <ul>
 <li>单表过亿</li>
 <li>业务数据是用户对资源的收藏，结构比较单一</li>
-<li>只做单向(用户—&gt;数据)查找，不要求反向(数据—&gt;用户)查找</li>
+<li>只做单向(用户–&gt;数据)查找，不要求反向(数据–&gt;用户)查找</li>
 <li>数据处于实时变更状态(新增、删除、查询等操作并存)</li>
 </ul>
-<a id="more"></a>
+<span id="more"></span>
+
 <h2 id="如何选择拆分键"><a href="#如何选择拆分键" class="headerlink" title="如何选择拆分键"></a>如何选择拆分键</h2><p>本例中，拆分的键就是用户 id，且每个用户关联的资源数据最大不会过万。</p>
 <h2 id="如何保证拆分的过程中不影响用户的操作？"><a href="#如何保证拆分的过程中不影响用户的操作？" class="headerlink" title="如何保证拆分的过程中不影响用户的操作？"></a>如何保证拆分的过程中不影响用户的操作？</h2><p>本例中，表中的数据基本上只有如下操作</p>
 <ul>
@@ -429,7 +443,7 @@
 <h2 id="迁移状态下如何保证用户数据的正确性？"><a href="#迁移状态下如何保证用户数据的正确性？" class="headerlink" title="迁移状态下如何保证用户数据的正确性？"></a>迁移状态下如何保证用户数据的正确性？</h2><p>当用户处于迁移状态，用户新增一条数据，则在新表、<em>on_progress</em> 、旧表中各写入新增数据，用户删除一条数据，则在新表、<em>on_progress</em>、旧表中同时删除该数据。</p>
 <p><strong>这样做的目的是什么?</strong></p>
 <p>处于迁移状态下的用户，<em>on_progress</em> 中保存了其所有数据，可以进行翻页操作，<em>on_progress</em> 中的所有数据会在离线状态下不断写入新表中，迁移完成之后，旧表中的数据将被删除，<em>on_progress</em> 中数据也将被清除，这样用户数据全部进入新表中，后续的所有操作将只在新表上进行。</p>
-<p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新—&gt;旧或由旧—&gt;新的顺序进行，在这个过程中：</p>
+<p><em>on_progress</em> 中的数据在不断写入新表的过程中，是按照由新–&gt;旧或由旧–&gt;新的顺序进行，在这个过程中：</p>
 <blockquote>
 <p>用户删除一条数据</p>
 </blockquote>
@@ -437,13 +451,14 @@
 <blockquote>
 <p>用户新增一条数据</p>
 </blockquote>
-<p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧—&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。<br>3）如果发生意外导致 <em>on_progress</em> 不可用，为维护数据的一致性，新增操作也需要在旧表中进行。</p>
+<p>1）<em>on_progress</em> 中的数据要始终和用户所有的操作同步来保证数据的正确性和一致性，因而 <em>on_progress</em> 需要写入一条数据。<br>2）在某些边界条件下，<em>on_progress</em> (假如数据由旧–&gt;新写入新表) 中的数据迁移完成但还未被删除，用户恰巧写入一条数据，此时用户仍处于迁移状态中，但是离线的迁移操作已经认为迁移停止了，因而此时新增数据需要进入新表才能保证数据最终是正确的。<br>3）如果发生意外导致 <em>on_progress</em> 不可用，为维护数据的一致性，新增操作也需要在旧表中进行。</p>
 <h2 id="on-progress-的选择"><a href="#on-progress-的选择" class="headerlink" title="on_progress 的选择"></a>on_progress 的选择</h2><p>在这个方案的实施中，<em>on_progress</em> 用了 redis 的有序集，键就是用户的 id，只要检测到用户 id 的存在就认为该用户处于迁移状态中。</p>
 <p>迁移完成之后，先删除旧表中的数据，然后再删除 <em>on_progress</em> 中有序集。</p>
 <p><strong>判断用户迁移状态</strong></p>
 <p>1.只要用户处于 redis 中，则此时一定是迁移中或迁移完成<br>2.只在旧表中找到用户数据，则该用户一定还没有开始迁移<br>3.只在新表中找到用户数据，用户已经迁移成功</p>
 <p>需要注意的是，选用 redis 可能带来的问题是 redis 宕机会导致迁移中的数据无法恢复(redis 未开持久化操作或其他原因导致数据不能恢复)，只要用户在旧表中有数据存在，则用户删除数据的操作一定也要在旧表中执行，再次恢复迁移时，清除旧表数据，直接载入旧表中的数据到 <em>on_progress</em>。</p>
-<p><img src="/images/table-split.png" alt="迁移流程图" width="800"></p>
+<img src="/images/table-split.png" alt="迁移流程图" width="800" >
+
 
       
     </div>
@@ -454,7 +469,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -469,7 +484,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/表拆分/" rel="tag"># 表拆分</a>
+            <a href="/tags/%E8%A1%A8%E6%8B%86%E5%88%86/" rel="tag"># 表拆分</a>
           
         </div>
       
@@ -526,7 +541,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -562,11 +582,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -574,9 +594,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -585,10 +607,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -598,8 +620,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -610,7 +632,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -652,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择拆分键"><span class="nav-number">1.</span> <span class="nav-text">如何选择拆分键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何保证拆分的过程中不影响用户的操作？"><span class="nav-number">2.</span> <span class="nav-text">如何保证拆分的过程中不影响用户的操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移状态如何判断"><span class="nav-number">3.</span> <span class="nav-text">迁移状态如何判断?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移状态下如何保证用户数据的正确性？"><span class="nav-number">4.</span> <span class="nav-text">迁移状态下如何保证用户数据的正确性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#on-progress-的选择"><span class="nav-number">5.</span> <span class="nav-text">on_progress 的选择</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E6%8B%86%E5%88%86%E9%94%AE"><span class="nav-number">1.</span> <span class="nav-text">如何选择拆分键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%8B%86%E5%88%86%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E4%B8%8D%E5%BD%B1%E5%93%8D%E7%94%A8%E6%88%B7%E7%9A%84%E6%93%8D%E4%BD%9C%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">如何保证拆分的过程中不影响用户的操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E7%8A%B6%E6%80%81%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD"><span class="nav-number">3.</span> <span class="nav-text">迁移状态如何判断?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E7%8A%B6%E6%80%81%E4%B8%8B%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">迁移状态下如何保证用户数据的正确性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#on-progress-%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">5.</span> <span class="nav-text">on_progress 的选择</span></a></li></ol></div>
             
 
           </div>
@@ -672,10 +694,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -685,11 +707,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -808,24 +830,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

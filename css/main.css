@@ -1836,7 +1836,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #5eb596;
+  background: #a2acba;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2374,6 +2374,216 @@ pre .javascript .function {
 .site-uv::after {
   content: "|";
   padding-left: 10px;
+}
+.projects-section {
+  width: 100%;
+  margin: 0;
+  padding: 40px 0 60px;
+  background: #fafafa;
+}
+.projects-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #555;
+}
+.projects-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+.projects-slider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.projects-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 20px;
+  padding: 10px 0;
+  will-change: transform;
+}
+.project-card {
+  flex: 0 0 calc(33.333% - 14px);
+  min-width: 280px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.project-card:hover {
+  -webkit-transform: translateY(-4px);
+  -moz-transform: translateY(-4px);
+  -ms-transform: translateY(-4px);
+  -o-transform: translateY(-4px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.project-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.project-icon i {
+  font-size: 24px;
+  color: #fff;
+}
+.project-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+  line-height: 1.4;
+}
+.project-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px 0;
+  gap: 12px;
+}
+.project-date {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+.project-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #f39c12;
+  white-space: nowrap;
+}
+.project-stars i {
+  font-size: 12px;
+  color: #f39c12;
+}
+.project-stars-count {
+  font-weight: 500;
+}
+.project-description {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+  flex-grow: 1;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4caf50;
+  text-decoration: none;
+  margin-top: auto;
+  transition: color 0.3s ease;
+}
+.project-link:hover {
+  color: #45a049;
+}
+.project-link i {
+  font-size: 12px;
+}
+.project-image-credit {
+  font-size: 11px;
+  color: #999;
+  margin: 12px 0 0 0;
+  font-style: italic;
+}
+.projects-nav {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.projects-nav:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.projects-nav:active {
+  -webkit-transform: translateY(-50%) scale(0.95);
+  -moz-transform: translateY(-50%) scale(0.95);
+  -ms-transform: translateY(-50%) scale(0.95);
+  -o-transform: translateY(-50%) scale(0.95);
+  transform: translateY(-50%) scale(0.95);
+}
+.projects-nav i {
+  color: #666;
+  font-size: 16px;
+}
+.projects-nav-prev {
+  left: -20px;
+}
+.projects-nav-next {
+  right: -20px;
+}
+@media (max-width: 768px) {
+  .projects-section {
+    padding: 30px 0 40px;
+  }
+  .projects-container {
+    padding: 0 50px;
+  }
+  .project-card {
+    flex: 0 0 calc(50% - 10px);
+    min-width: 240px;
+    padding: 20px;
+  }
+  .projects-nav {
+    width: 36px;
+    height: 36px;
+  }
+  .projects-nav-prev {
+    left: 10px;
+  }
+  .projects-nav-next {
+    right: 10px;
+  }
+}
+@media (max-width: 480px) {
+  .projects-container {
+    padding: 0 40px;
+  }
+  .project-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+  .projects-nav {
+    width: 32px;
+    height: 32px;
+  }
+  .projects-nav-prev {
+    left: 5px;
+  }
+  .projects-nav-next {
+    right: 5px;
+  }
 }
 .page-archive .archive-page-counter {
   position: relative;

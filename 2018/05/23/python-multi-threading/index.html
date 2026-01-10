@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Python,Go,Devops,algorithm">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="Python,Go,Devops,algorithm" />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -101,18 +101,18 @@
 <meta property="og:url" content="http://sanyuesha.com/2018/05/23/python-multi-threading/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="说说 Python 的多线程  为什么需要线程Python 是提供多线程支持的，但是使用多线程的场景在哪里？比如说你的程序中有一项任务需要在执行时不影响当前代码的执行，此时多线程就能用得上，也就是借助线程你可以同时并发的执行多个任务，这就是线程的在编程中提供的最重要的功能：并发。 执行一个简单的线程Python 2 中对线程的支持分别来自 thread 和 threading 模块，由于 thr">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.305Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-23T14:35:34.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.305Z">
+<meta property="article:author" content="三月沙">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python 的多线程编程：基础">
-<meta name="twitter:description" content="说说 Python 的多线程  为什么需要线程Python 是提供多线程支持的，但是使用多线程的场景在哪里？比如说你的程序中有一项任务需要在执行时不影响当前代码的执行，此时多线程就能用得上，也就是借助线程你可以同时并发的执行多个任务，这就是线程的在编程中提供的最重要的功能：并发。 执行一个简单的线程Python 2 中对线程的支持分别来自 thread 和 threading 模块，由于 thr">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -121,7 +121,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/23/python-multi-threading/">
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/23/python-multi-threading/"/>
 
 
 
@@ -154,22 +154,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -178,7 +182,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -205,70 +209,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -286,6 +297,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -310,8 +323,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/05/23/python-multi-threading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -334,10 +347,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T22:35:34+08:00">
-                May 23 2018
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-23T22:35:34+08:00">
+                5月 23 2018
               </time>
             
 
@@ -347,7 +360,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -355,7 +368,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -400,12 +413,14 @@
 <p>说说 Python 的多线程</p>
 </blockquote>
 <h2 id="为什么需要线程"><a href="#为什么需要线程" class="headerlink" title="为什么需要线程"></a>为什么需要线程</h2><p>Python 是提供多线程支持的，但是使用多线程的场景在哪里？比如说你的程序中有一项任务需要在执行时不影响当前代码的执行，此时多线程就能用得上，也就是借助线程你可以<strong>同时并发的执行多个任务</strong>，这就是线程的在编程中提供的最重要的功能：<strong>并发</strong>。</p>
-<h2 id="执行一个简单的线程"><a href="#执行一个简单的线程" class="headerlink" title="执行一个简单的线程"></a>执行一个简单的线程</h2><p>Python 2 中对线程的支持分别来自 <a href="https://docs.python.org/2/library/thread.htm" target="_blank" rel="noopener">thread</a> 和 <a href="https://docs.python.org/2/library/threading.html" target="_blank" rel="noopener">threading</a> 模块，由于 thread 在 Python 3 中已经重命名了，所以这里我们始终使用 threading:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfunc</span><span class="params">(name, sleep)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        print(name)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">"Thread No 2"</span>, <span class="number">2</span>)).start()</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="执行一个简单的线程"><a href="#执行一个简单的线程" class="headerlink" title="执行一个简单的线程"></a>执行一个简单的线程</h2><p>Python 2 中对线程的支持分别来自 <a href="https://docs.python.org/2/library/thread.htm">thread</a> 和 <a href="https://docs.python.org/2/library/threading.html">threading</a> 模块，由于 thread 在 Python 3 中已经重命名了，所以这里我们始终使用 threading:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myfunc</span>(<span class="params">name, sleep</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">print</span>(name)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 2&quot;</span>, <span class="number">2</span>)).start()</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>在上面的代码中，我们使用 Thread object 开启了一个新的线程并执行，执行代码之后可以看到 “Thread No 2” 每隔 2 秒显示一次，开启线程之后的 <code>while 1</code> 是必须的，因为主线程必须一直存在才能让子线程得以执行。</p>
 <h2 id="多线程共享资源保护"><a href="#多线程共享资源保护" class="headerlink" title="多线程共享资源保护"></a>多线程共享资源保护</h2><p>多线程执行环境下我们常常需要对共享的资源进行保护以防止多个线程操作同一内存区域而导致的数据错误，因为线程之间是<strong>共享内存的</strong>，一般通过 lock 实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">value = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfunc</span><span class="params">(name, sleep)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># entering critical section</span></span><br><span class="line">        <span class="keyword">global</span> value</span><br><span class="line">        lock.acquire()</span><br><span class="line">        <span class="keyword">print</span> (name, <span class="string">" Now Sleeping after Lock acquired for "</span>, sleep)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line">        value += <span class="number">1</span></span><br><span class="line">        print(name, <span class="string">"Now releasing lock and then sleeping again"</span>)</span><br><span class="line">        lock.release()</span><br><span class="line">        <span class="comment"># exiting critical section</span></span><br><span class="line">        time.sleep(sleep)   <span class="comment"># yield current thread cpu</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    lock = threading.Lock()</span><br><span class="line">    <span class="comment"># why run can't start thread many</span></span><br><span class="line">    <span class="comment"># threading.Thread(target=myfunc, args=("Thread No 2", 2)).run()</span></span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">"Thread No 2"</span>, <span class="number">2</span>)).start()</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">"Thread No 3"</span>, <span class="number">2</span>)).start()</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">"Thread No 4"</span>, <span class="number">2</span>)).start()</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>Python 的 lock 通过 threading 模块的 <a href="https://docs.python.org/2/library/threading.html#lock-objects" target="_blank" rel="noopener">Lock</a> 来实现，对需要共同操作的共享内存区域进行加锁保护，除了 Lock，threading 模块还提供了 Queue、Event、Condition 等机制来保证多线程条件下的同步问题，我会在后续的文章中进行详细阐述。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">value = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myfunc</span>(<span class="params">name, sleep</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># entering critical section</span></span><br><span class="line">        <span class="keyword">global</span> value</span><br><span class="line">        lock.acquire()</span><br><span class="line">        <span class="built_in">print</span> (name, <span class="string">&quot; Now Sleeping after Lock acquired for &quot;</span>, sleep)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line">        value += <span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span>(name, <span class="string">&quot;Now releasing lock and then sleeping again&quot;</span>)</span><br><span class="line">        lock.release()</span><br><span class="line">        <span class="comment"># exiting critical section</span></span><br><span class="line">        time.sleep(sleep)   <span class="comment"># yield current thread cpu</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    lock = threading.Lock()</span><br><span class="line">    <span class="comment"># why run can&#x27;t start thread many</span></span><br><span class="line">    <span class="comment"># threading.Thread(target=myfunc, args=(&quot;Thread No 2&quot;, 2)).run()</span></span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 2&quot;</span>, <span class="number">2</span>)).start()</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 3&quot;</span>, <span class="number">2</span>)).start()</span><br><span class="line">    threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 4&quot;</span>, <span class="number">2</span>)).start()</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Python 的 lock 通过 threading 模块的 <a href="https://docs.python.org/2/library/threading.html#lock-objects">Lock</a> 来实现，对需要共同操作的共享内存区域进行加锁保护，除了 Lock，threading 模块还提供了 Queue、Event、Condition 等机制来保证多线程条件下的同步问题，我会在后续的文章中进行详细阐述。</p>
 <h2 id="GIL"><a href="#GIL" class="headerlink" title="GIL"></a>GIL</h2><p>Python 解释器不是线程安全的，而 Python 线程没有优先级，没有线程组，线程不能被停止、挂起、恢复、中断，也就是 Python 提供的线程非常基础简单。实际上每次只有一个线程在执行，这是由于 GIL 的存在导致的，为了支持多线程编程，当前执行线程必须获得 global lock 用来保证共享 Python object 的数据安全，如果没有这个锁，两个线程同时增加一个对象的引用计数时，最终这个计数器可能只加了一次，因而只有获得了 GIL 的线程才能执行对 Python Object 进行操作或者调用 Python C API 函数。</p>
 <p>为了支持多线程的程序，Python 解释器必须定期释放和重新获取 GIL 锁，默认是每执行 10 bytecode 的指令之后，可以使用 sys.setcheckinterval 来改变这一行为。GIL 锁也可以在程序遇到 IO 阻塞时释放，比如读取和写入文件，这样其他线程在当前线程等待 IO 完成时执行，一般来说有以下几种情形能够释放 GIL 锁：</p>
 <ul>
@@ -414,7 +429,8 @@
 </ul>
 <p>这也是为什么使用 C 来完成 Python 程序更高效的原因所在。</p>
 <h2 id="方法-join-的作用"><a href="#方法-join-的作用" class="headerlink" title="方法 join 的作用"></a>方法 join 的作用</h2><p>上面的例子中我们在主线程中使用了一个 <code>while 1:pass</code> 语句来保证多线程可以顺利执行，除此之外线程本身提供了 <code>join</code> 方法来告诉主线程等待子线程执行结束：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">value = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfunc</span><span class="params">(name, sleep)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># entering critical section</span></span><br><span class="line">        <span class="keyword">global</span> value</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">6</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"Stop "</span>, name)</span><br><span class="line">        lock.acquire()</span><br><span class="line">        <span class="keyword">print</span> (name, <span class="string">" Now Sleeping after Lock acquired for "</span>, sleep)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line">        value += <span class="number">1</span></span><br><span class="line">        print(name, <span class="string">"Now releasing lock and then sleeping again"</span>)</span><br><span class="line">        lock.release()  <span class="comment"># release must be called after acquire lock</span></span><br><span class="line">        <span class="comment"># exiting critical section</span></span><br><span class="line">        time.sleep(sleep)   <span class="comment"># yield current thread cpu</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    lock = threading.Lock()</span><br><span class="line">    t1 = threading.Thread(target=myfunc, args=(<span class="string">"Thread No 2"</span>, <span class="number">2</span>))</span><br><span class="line">    t2 = threading.Thread(target=myfunc, args=(<span class="string">"Thread No 3"</span>, <span class="number">2</span>))</span><br><span class="line">    t3 = threading.Thread(target=myfunc, args=(<span class="string">"Thread No 4"</span>, <span class="number">2</span>))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t3.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line">    t3.join()</span><br><span class="line">    print(<span class="string">"main Thread echo done!"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">value = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myfunc</span>(<span class="params">name, sleep</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># entering critical section</span></span><br><span class="line">        <span class="keyword">global</span> value</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">6</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">&quot;Stop &quot;</span>, name)</span><br><span class="line">        lock.acquire()</span><br><span class="line">        <span class="built_in">print</span> (name, <span class="string">&quot; Now Sleeping after Lock acquired for &quot;</span>, sleep)</span><br><span class="line">        time.sleep(sleep)</span><br><span class="line">        value += <span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span>(name, <span class="string">&quot;Now releasing lock and then sleeping again&quot;</span>)</span><br><span class="line">        lock.release()  <span class="comment"># release must be called after acquire lock</span></span><br><span class="line">        <span class="comment"># exiting critical section</span></span><br><span class="line">        time.sleep(sleep)   <span class="comment"># yield current thread cpu</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    lock = threading.Lock()</span><br><span class="line">    t1 = threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 2&quot;</span>, <span class="number">2</span>))</span><br><span class="line">    t2 = threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 3&quot;</span>, <span class="number">2</span>))</span><br><span class="line">    t3 = threading.Thread(target=myfunc, args=(<span class="string">&quot;Thread No 4&quot;</span>, <span class="number">2</span>))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t3.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line">    t3.join()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;main Thread echo done!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>join 的作用和 <code>while 1</code> 类似，都是<strong>告知调用线程要等待直到线程执行结束或者异常退出</strong>，join 还可以接受参数，表示等待多久之后。</p>
 <h2 id="多线程执行你需要了解和知道的"><a href="#多线程执行你需要了解和知道的" class="headerlink" title="多线程执行你需要了解和知道的"></a>多线程执行你需要了解和知道的</h2><p>1.处理器并不保证在 start 开始之后立即运行 run<br>2.无法保证线程运行的顺序<br>3.对于任意线程来说，它保证 run 中的语句是顺序执行的<br>4.等待 io 阻塞时可以让出 CPU 以让其它线程得到执行</p>
 
@@ -427,7 +443,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -493,7 +509,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -529,11 +550,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -541,9 +562,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -552,10 +575,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -565,8 +588,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -577,7 +600,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -619,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要线程"><span class="nav-number">1.</span> <span class="nav-text">为什么需要线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行一个简单的线程"><span class="nav-number">2.</span> <span class="nav-text">执行一个简单的线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程共享资源保护"><span class="nav-number">3.</span> <span class="nav-text">多线程共享资源保护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GIL"><span class="nav-number">4.</span> <span class="nav-text">GIL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法-join-的作用"><span class="nav-number">5.</span> <span class="nav-text">方法 join 的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程执行你需要了解和知道的"><span class="nav-number">6.</span> <span class="nav-text">多线程执行你需要了解和知道的</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">为什么需要线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">执行一个简单的线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%BF%9D%E6%8A%A4"><span class="nav-number">3.</span> <span class="nav-text">多线程共享资源保护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GIL"><span class="nav-number">4.</span> <span class="nav-text">GIL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-join-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">方法 join 的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BD%A0%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E5%92%8C%E7%9F%A5%E9%81%93%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">多线程执行你需要了解和知道的</span></a></li></ol></div>
             
 
           </div>
@@ -639,10 +662,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -652,11 +675,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -775,24 +798,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

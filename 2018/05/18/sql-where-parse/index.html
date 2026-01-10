@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,40 +74,40 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="sql,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="sql," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
 
 
 
-<meta name="description" content="此文是阿里数据库内核研发专家何登成的文章 http://hedengcheng.com/?p=577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
-<meta name="keywords" content="sql">
+<meta name="description" content="此文是阿里数据库内核研发专家何登成的文章 http:&#x2F;&#x2F;hedengcheng.com&#x2F;?p&#x3D;577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL中的where条件，在数据库中提取与应用浅析">
 <meta property="og:url" content="http://sanyuesha.com/2018/05/18/sql-where-parse/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="此文是阿里数据库内核研发专家何登成的文章 http://hedengcheng.com/?p=577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="此文是阿里数据库内核研发专家何登成的文章 http:&#x2F;&#x2F;hedengcheng.com&#x2F;?p&#x3D;577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.307Z">
+<meta property="article:published_time" content="2018-05-18T08:07:56.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.307Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="sql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQL中的where条件，在数据库中提取与应用浅析">
-<meta name="twitter:description" content="此文是阿里数据库内核研发专家何登成的文章 http://hedengcheng.com/?p=577 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论  问题描述一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个">
 <meta name="twitter:image" content="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg">
 
 
@@ -115,7 +115,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -124,7 +124,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/sql-where-parse/">
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/sql-where-parse/"/>
 
 
 
@@ -157,22 +157,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -181,7 +185,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,70 +212,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -289,6 +300,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -313,8 +326,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/05/18/sql-where-parse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -337,10 +350,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T16:07:56+08:00">
-                May 18 2018
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-18T16:07:56+08:00">
+                5月 18 2018
               </time>
             
 
@@ -350,7 +363,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -358,7 +371,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -400,7 +413,7 @@
 
       
         <blockquote>
-<p> 此文是阿里数据库内核研发专家何登成的文章 <a href="http://hedengcheng.com/?p=577" target="_blank" rel="noopener">http://hedengcheng.com/?p=577</a> 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论</p>
+<p> 此文是阿里数据库内核研发专家何登成的文章 <a href="http://hedengcheng.com/?p=577">http://hedengcheng.com/?p=577</a> 比较详细的记录了 SQL 语句解析 where 的过程，对于理解 where 中的条件命中 index 有帮助，可以直接去原文，评论区有一些有价值的讨论</p>
 </blockquote>
 <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>一条SQL，在数据库中是如何执行的呢？相信很多人都会对这个问题比较感兴趣。当然，要完整描述一条SQL在数据库中的生命周期，这是一个非常巨大的问题，涵盖了SQL的词法解析、语法解析、权限检查、查询优化、SQL执行等一系列的步骤，简短的篇幅是绝对无能为力的。因此，本文挑选了其中的部分内容，也是我一直都想写的一个内容，做重点介绍：</p>
 <p><strong>给定一条SQL，如何提取其中的where条件？where条件中的每个子条件，在SQL执行的过程中有分别起着什么样的作用？</strong></p>
@@ -409,36 +422,38 @@
 <ol>
 <li>简单介绍关系型数据库中数据的组织形式；</li>
 <li>给定一条SQL，如何提取其中的where条件；</li>
-<li>最后做一个小的总结； </li>
+<li>最后做一个小的总结；</li>
 </ol>
 <h2 id="关系型数据库中的数据组织"><a href="#关系型数据库中的数据组织" class="headerlink" title="关系型数据库中的数据组织"></a>关系型数据库中的数据组织</h2><p>关系型数据库中，数据组织涉及到两个最基本的结构：表与索引。表中存储的是完整记录，一般有两种组织形式：堆表(所有的记录无序存储)，或者是聚簇索引表(所有的记录，按照记录主键进行排序存储)。索引中存储的是完整记录的一个子集，用于加速记录的查询速度，索引的组织形式，一般均为B+树结构。 </p>
-<p>有了这些基本知识之后，接下来让我们创建一张测试表，为表新增几个索引，然后插入几条记录，最后看看表的完整数据组织、存储结构式怎么样的。(注意：下面的实例，使用的表的结构为堆表形式，这也是Oracle/DB2/PostgreSQL等数据库采用的表组织形式，而不是InnoDB引擎所采用的聚簇索引表。其实，表结构采用何种形式并不重要，最重要的是理解下面章节的核心，在任何表结构中均适用) </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">create table t1 (a int primary key, b int, c int, d int, e varchar(20));</span><br><span class="line"></span><br><span class="line">create index idx_t1_bcd on t1(b, c, d); </span><br><span class="line"></span><br><span class="line">insert into t1 values (4,3,1,1,’d’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (1,1,1,1,’a’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (8,8,8,8,’h’):</span><br><span class="line"></span><br><span class="line">insert into t1 values (2,2,2,2,’b’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (5,2,3,5,’e’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (3,3,2,2,’c’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (7,4,5,5,’g’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (6,6,4,4,’f’);</span><br></pre></td></tr></table></figure>
+<p>有了这些基本知识之后，接下来让我们创建一张测试表，为表新增几个索引，然后插入几条记录，最后看看表的完整数据组织、存储结构式怎么样的。(注意：下面的实例，使用的表的结构为堆表形式，这也是Oracle&#x2F;DB2&#x2F;PostgreSQL等数据库采用的表组织形式，而不是InnoDB引擎所采用的聚簇索引表。其实，表结构采用何种形式并不重要，最重要的是理解下面章节的核心，在任何表结构中均适用) </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">create table t1 (a int primary key, b int, c int, d int, e varchar(20));</span><br><span class="line"></span><br><span class="line">create index idx_t1_bcd on t1(b, c, d); </span><br><span class="line"></span><br><span class="line">insert into t1 values (4,3,1,1,’d’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (1,1,1,1,’a’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (8,8,8,8,’h’):</span><br><span class="line"></span><br><span class="line">insert into t1 values (2,2,2,2,’b’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (5,2,3,5,’e’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (3,3,2,2,’c’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (7,4,5,5,’g’);</span><br><span class="line"></span><br><span class="line">insert into t1 values (6,6,4,4,’f’);</span><br></pre></td></tr></table></figure>
+
 <p>t1表的存储结构如下图所示(只画出了idx_t1_bcd索引与t1表结构，没有包括t1表的主键索引)：</p>
-<p><a href="http://www.yupoo.com/photos/hedengcheng/87929304/" target="_blank" rel="noopener"><img src="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg" alt="t1表的组织结构图"></a></p>
+<p><a href="http://www.yupoo.com/photos/hedengcheng/87929304/"><img src="http://pic.yupoo.com/hedengcheng/CGqS51ES/medish.jpg" alt="t1表的组织结构图"></a></p>
 <p>简单分析一下上图，idx_t1_bcd索引上有[b,c,d]三个字段(注意：若是InnoDB类的聚簇索引表，idx_t1_bcd上还会包括主键a字段)，不包括[a,e]字段。idx_t1_bcd索引，首先按照b字段排序，b字段相同，则按照c字段排序，以此类推。记录在索引中按照[b,c,d]排序，但是在堆表上是乱序的，不按照任何字段排序。</p>
 <h2 id="SQL的where条件提取"><a href="#SQL的where条件提取" class="headerlink" title="SQL的where条件提取"></a>SQL的where条件提取</h2><p>在有了以上的t1表之后，接下来就可以在此表上进行SQL查询了，获取自己想要的数据。例如，考虑以下的一条SQL：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1 where b &gt;= 2 and b &lt; 8 and c &gt; 1 and d != 4 and e != ‘a’;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1 where b &gt;= 2 and b &lt; 8 and c &gt; 1 and d != 4 and e != ‘a’; </span><br></pre></td></tr></table></figure>
+
 <p>一条比较简单的SQL，一目了然就可以发现where条件使用到了[b,c,d,e]四个字段，而t1表的idx_t1_bcd索引，恰好使用了[b,c,d]这三个字段，那么走idx_t1_bcd索引进行条件过滤，应该是一个不错的选择。接下来，让我们抛弃数据库的思想，直接思考这条SQL的几个关键性问题： </p>
-<h2 id="此SQL，覆盖索引idx-t1-bcd上的哪个范围？"><a href="#此SQL，覆盖索引idx-t1-bcd上的哪个范围？" class="headerlink" title="此SQL，覆盖索引idx_t1_bcd上的哪个范围？"></a>此SQL，覆盖索引idx_t1_bcd上的哪个范围？</h2><p>起始范围：记录[2,2,2]是第一个需要检查的索引项。索引起始查找范围由b &gt;= 2，c &gt; 1决定。</p>
+<h2 id="此SQL，覆盖索引idx-t1-bcd上的哪个范围？"><a href="#此SQL，覆盖索引idx-t1-bcd上的哪个范围？" class="headerlink" title="此SQL，覆盖索引idx_t1_bcd上的哪个范围？"></a>此SQL，覆盖索引idx_t1_bcd上的哪个范围？</h2><p>起始范围：记录[2,2,2]是第一个需要检查的索引项。索引起始查找范围由b &gt;&#x3D; 2，c &gt; 1决定。</p>
 <p>终止范围：记录[8,8,8]是第一个不需要检查的记录，而之前的记录均需要判断。索引的终止查找范围由b &lt; 8决定；</p>
-<h2 id="在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx-t1-bcd过滤？"><a href="#在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx-t1-bcd过滤？" class="headerlink" title="在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？"></a>在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？</h2><p>根据SQL，固定了索引的查询范围[(2,2,2),(8,8,8))之后，此索引范围中并不是每条记录都是满足where查询条件的。例如：(3,1,1)不满足c &gt; 1的约束；(6,4,4)不满足d != 4的约束。而c，d列，均可在索引idx_t1_bcd中过滤掉不满足条件的索引记录的。</p>
-<p>因此，SQL中还可以使用c &gt; 1 and d != 4条件进行索引记录的过滤。</p>
-<h2 id="在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？"><a href="#在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？" class="headerlink" title="在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？"></a>在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？</h2><p>此问题的答案显而易见，e != ‘a’这个查询条件，无法在索引idx_t1_bcd上进行过滤，因为索引并未包含e列。e列只在堆表上存在，为了过滤此查询条件，必须将已经满足索引查询条件的记录回表，取出表中的e列，然后使用e列的查询条件e != ‘a’进行最终的过滤。 </p>
+<h2 id="在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx-t1-bcd过滤？"><a href="#在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx-t1-bcd过滤？" class="headerlink" title="在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？"></a>在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？</h2><p>根据SQL，固定了索引的查询范围[(2,2,2),(8,8,8))之后，此索引范围中并不是每条记录都是满足where查询条件的。例如：(3,1,1)不满足c &gt; 1的约束；(6,4,4)不满足d !&#x3D; 4的约束。而c，d列，均可在索引idx_t1_bcd中过滤掉不满足条件的索引记录的。</p>
+<p>因此，SQL中还可以使用c &gt; 1 and d !&#x3D; 4条件进行索引记录的过滤。</p>
+<h2 id="在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？"><a href="#在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？" class="headerlink" title="在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？"></a>在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？</h2><p>此问题的答案显而易见，e !&#x3D; ‘a’这个查询条件，无法在索引idx_t1_bcd上进行过滤，因为索引并未包含e列。e列只在堆表上存在，为了过滤此查询条件，必须将已经满足索引查询条件的记录回表，取出表中的e列，然后使用e列的查询条件e !&#x3D; ‘a’进行最终的过滤。 </p>
 <p>在理解以上的问题解答的基础上，做一个抽象，可总结出一套放置于所有SQL语句而皆准的where查询条件的提取规则：</p>
 <p><strong>所有SQL的where条件，均可归纳为3大类：Index Key (First Key &amp; Last Key)，Index Filter，Table Filter</strong>。</p>
 <p>接下来，让我们来详细分析者3大类分别是如何定义，以及如何提取的。</p>
 <h2 id="大类分别是如何定义"><a href="#大类分别是如何定义" class="headerlink" title="大类分别是如何定义"></a>大类分别是如何定义</h2><h3 id="Index-Key"><a href="#Index-Key" class="headerlink" title="Index Key"></a>Index Key</h3><p>用于确定SQL查询在索引中的连续范围(起始范围+结束范围)的查询条件，被称之为Index Key。由于一个范围，至少包含一个起始与一个终止，因此Index Key也被拆分为Index First Key和Index Last Key，分别用于定位索引查找的起始，以及索引查询的终止条件。 </p>
-<h3 id="Index-First-Key"><a href="#Index-First-Key" class="headerlink" title="Index First Key"></a>Index First Key</h3><p>用于确定索引查询的起始范围。提取规则：从索引的第一个键值开始，检查其在where条件中是否存在，若存在并且条件是=、&gt;=，则将对应的条件加入Index First Key之中，继续读取索引的下一个键值，使用同样的提取规则；若存在并且条件是&gt;，则将对应的条件加入Index First Key中，同时终止Index First Key的提取；若不存在，同样终止Index First Key的提取。</p>
-<p>针对上面的SQL，应用这个提取规则，提取出来的Index First Key为(b &gt;= 2, c &gt; 1)。由于c的条件为 &gt;，提取结束，不包括d。</p>
-<h3 id="Index-Last-Key"><a href="#Index-Last-Key" class="headerlink" title="Index Last Key"></a>Index Last Key</h3><p>Index Last Key的功能与Index First Key正好相反，用于确定索引查询的终止范围。提取规则：从索引的第一个键值开始，检查其在where条件中是否存在，若存在并且条件是=、&lt;=，则将对应条件加入到Index Last Key中，继续提取索引的下一个键值，使用同样的提取规则；若存在并且条件是 &lt; ，则将条件加入到Index Last Key中，同时终止提取；若不存在，同样终止Index Last Key的提取。</p>
+<h3 id="Index-First-Key"><a href="#Index-First-Key" class="headerlink" title="Index First Key"></a>Index First Key</h3><p>用于确定索引查询的起始范围。提取规则：从索引的第一个键值开始，检查其在where条件中是否存在，若存在并且条件是&#x3D;、&gt;&#x3D;，则将对应的条件加入Index First Key之中，继续读取索引的下一个键值，使用同样的提取规则；若存在并且条件是&gt;，则将对应的条件加入Index First Key中，同时终止Index First Key的提取；若不存在，同样终止Index First Key的提取。</p>
+<p>针对上面的SQL，应用这个提取规则，提取出来的Index First Key为(b &gt;&#x3D; 2, c &gt; 1)。由于c的条件为 &gt;，提取结束，不包括d。</p>
+<h3 id="Index-Last-Key"><a href="#Index-Last-Key" class="headerlink" title="Index Last Key"></a>Index Last Key</h3><p>Index Last Key的功能与Index First Key正好相反，用于确定索引查询的终止范围。提取规则：从索引的第一个键值开始，检查其在where条件中是否存在，若存在并且条件是&#x3D;、&lt;&#x3D;，则将对应条件加入到Index Last Key中，继续提取索引的下一个键值，使用同样的提取规则；若存在并且条件是 &lt; ，则将条件加入到Index Last Key中，同时终止提取；若不存在，同样终止Index Last Key的提取。</p>
 <p>针对上面的SQL，应用这个提取规则，提取出来的Index Last Key为(b &lt; 8)，由于是 &lt; 符号，因此提取b之后结束。</p>
 <h3 id="Index-Filter"><a href="#Index-Filter" class="headerlink" title="Index Filter"></a>Index Filter</h3><p>在完成Index Key的提取之后，我们根据where条件固定了索引的查询范围，但是此范围中的项，并不都是满足查询条件的项。在上面的SQL用例中，(3,1,1)，(6,4,4)均属于范围中，但是又均不满足SQL的查询条件。</p>
-<p>Index Filter的提取规则：同样从索引列的第一列开始，检查其在where条件中是否存在：若存在并且where条件仅为 =，则跳过第一列继续检查索引下一列，下一索引列采取与索引第一列同样的提取规则；若where条件为 &gt;=、&gt;、&lt;、&lt;= 其中的几种，则跳过索引第一列，将其余where条件中索引相关列全部加入到Index Filter之中；若索引第一列的where条件包含 =、&gt;=、&gt;、&lt;、&lt;= 之外的条件，则将此条件以及其余where条件中索引相关列全部加入到Index Filter之中；若第一列不包含查询条件，则将所有索引相关条件均加入到Index Filter之中。</p>
-<p>针对上面的用例SQL，索引第一列只包含 &gt;=、&lt; 两个条件，因此第一列可跳过，将余下的c、d两列加入到Index Filter中。因此获得的Index Filter为 c &gt; 1 and d != 4 。</p>
+<p>Index Filter的提取规则：同样从索引列的第一列开始，检查其在where条件中是否存在：若存在并且where条件仅为 &#x3D;，则跳过第一列继续检查索引下一列，下一索引列采取与索引第一列同样的提取规则；若where条件为 &gt;&#x3D;、&gt;、&lt;、&lt;&#x3D; 其中的几种，则跳过索引第一列，将其余where条件中索引相关列全部加入到Index Filter之中；若索引第一列的where条件包含 &#x3D;、&gt;&#x3D;、&gt;、&lt;、&lt;&#x3D; 之外的条件，则将此条件以及其余where条件中索引相关列全部加入到Index Filter之中；若第一列不包含查询条件，则将所有索引相关条件均加入到Index Filter之中。</p>
+<p>针对上面的用例SQL，索引第一列只包含 &gt;&#x3D;、&lt; 两个条件，因此第一列可跳过，将余下的c、d两列加入到Index Filter中。因此获得的Index Filter为 c &gt; 1 and d !&#x3D; 4 。</p>
 <h3 id="Table-Filter"><a href="#Table-Filter" class="headerlink" title="Table Filter"></a>Table Filter</h3><p>Table Filter是最简单，最易懂，也是提取最为方便的。提取规则：所有不属于索引列的查询条件，均归为Table Filter之中。</p>
-<p>同样，针对上面的用例SQL，Table Filter就为 e != ‘a’。 </p>
-<h3 id="Index-Key-Index-Filter-Table-Filter小结"><a href="#Index-Key-Index-Filter-Table-Filter小结" class="headerlink" title="Index Key/Index Filter/Table Filter小结"></a>Index Key/Index Filter/Table Filter小结</h3><p>SQL语句中的where条件，使用以上的提取规则，最终都会被提取到Index Key (First Key &amp; Last Key)，Index Filter与Table Filter之中。 </p>
+<p>同样，针对上面的用例SQL，Table Filter就为 e !&#x3D; ‘a’。 </p>
+<h3 id="Index-Key-Index-Filter-Table-Filter小结"><a href="#Index-Key-Index-Filter-Table-Filter小结" class="headerlink" title="Index Key&#x2F;Index Filter&#x2F;Table Filter小结"></a>Index Key&#x2F;Index Filter&#x2F;Table Filter小结</h3><p>SQL语句中的where条件，使用以上的提取规则，最终都会被提取到Index Key (First Key &amp; Last Key)，Index Filter与Table Filter之中。 </p>
 <p>Index First Key，只是用来定位索引的起始范围，因此只在索引第一次Search Path(沿着索引B+树的根节点一直遍历，到索引正确的叶节点位置)时使用，一次判断即可； </p>
 <p>Index Last Key，用来定位索引的终止范围，因此对于起始范围之后读到的每一条索引记录，均需要判断是否已经超过了Index Last Key的范围，若超过，则当前查询结束；</p>
 <p>Index Filter，用于过滤索引查询范围中不满足查询条件的记录，因此对于索引范围中的每一条记录，均需要与Index Filter进行对比，若不满足Index Filter则直接丢弃，继续读取索引下一条记录； </p>
@@ -455,7 +470,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -527,7 +542,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -563,11 +583,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -575,9 +595,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -586,10 +608,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -599,8 +621,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -611,7 +633,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -653,7 +675,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系型数据库中的数据组织"><span class="nav-number">2.</span> <span class="nav-text">关系型数据库中的数据组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL的where条件提取"><span class="nav-number">3.</span> <span class="nav-text">SQL的where条件提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#此SQL，覆盖索引idx-t1-bcd上的哪个范围？"><span class="nav-number">4.</span> <span class="nav-text">此SQL，覆盖索引idx_t1_bcd上的哪个范围？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx-t1-bcd过滤？"><span class="nav-number">5.</span> <span class="nav-text">在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？"><span class="nav-number">6.</span> <span class="nav-text">在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大类分别是如何定义"><span class="nav-number">7.</span> <span class="nav-text">大类分别是如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Key"><span class="nav-number">7.1.</span> <span class="nav-text">Index Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-First-Key"><span class="nav-number">7.2.</span> <span class="nav-text">Index First Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Last-Key"><span class="nav-number">7.3.</span> <span class="nav-text">Index Last Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Filter"><span class="nav-number">7.4.</span> <span class="nav-text">Index Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Table-Filter"><span class="nav-number">7.5.</span> <span class="nav-text">Table Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Key-Index-Filter-Table-Filter小结"><span class="nav-number">7.6.</span> <span class="nav-text">Index Key/Index Filter/Table Filter小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%84%E7%BB%87"><span class="nav-number">2.</span> <span class="nav-text">关系型数据库中的数据组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E7%9A%84where%E6%9D%A1%E4%BB%B6%E6%8F%90%E5%8F%96"><span class="nav-number">3.</span> <span class="nav-text">SQL的where条件提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A4SQL%EF%BC%8C%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95idx-t1-bcd%E4%B8%8A%E7%9A%84%E5%93%AA%E4%B8%AA%E8%8C%83%E5%9B%B4%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">此SQL，覆盖索引idx_t1_bcd上的哪个范围？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%A1%AE%E5%AE%9A%E4%BA%86%E6%9F%A5%E8%AF%A2%E7%9A%84%E8%B5%B7%E5%A7%8B%E3%80%81%E7%BB%88%E6%AD%A2%E8%8C%83%E5%9B%B4%E4%B9%8B%E5%90%8E%EF%BC%8CSQL%E4%B8%AD%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95idx-t1-bcd%E8%BF%87%E6%BB%A4%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">在确定了查询的起始、终止范围之后，SQL中还有哪些条件可以使用索引idx_t1_bcd过滤？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%A1%AE%E5%AE%9A%E4%BA%86%E7%B4%A2%E5%BC%95%E4%B8%AD%E6%9C%80%E7%BB%88%E8%83%BD%E5%A4%9F%E8%BF%87%E6%BB%A4%E6%8E%89%E7%9A%84%E6%9D%A1%E4%BB%B6%E4%B9%8B%E5%90%8E%EF%BC%8C%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9D%A1%E4%BB%B6%E6%98%AF%E7%B4%A2%E5%BC%95%E6%97%A0%E6%B3%95%E8%BF%87%E6%BB%A4%E7%9A%84%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">在确定了索引中最终能够过滤掉的条件之后，还有哪些条件是索引无法过滤的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E7%B1%BB%E5%88%86%E5%88%AB%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89"><span class="nav-number">7.</span> <span class="nav-text">大类分别是如何定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Key"><span class="nav-number">7.1.</span> <span class="nav-text">Index Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-First-Key"><span class="nav-number">7.2.</span> <span class="nav-text">Index First Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Last-Key"><span class="nav-number">7.3.</span> <span class="nav-text">Index Last Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Filter"><span class="nav-number">7.4.</span> <span class="nav-text">Index Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Table-Filter"><span class="nav-number">7.5.</span> <span class="nav-text">Table Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-Key-Index-Filter-Table-Filter%E5%B0%8F%E7%BB%93"><span class="nav-number">7.6.</span> <span class="nav-text">Index Key&#x2F;Index Filter&#x2F;Table Filter小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
             
 
           </div>
@@ -673,10 +695,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -686,11 +708,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -809,24 +831,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

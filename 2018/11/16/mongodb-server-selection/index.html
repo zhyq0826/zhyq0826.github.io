@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="mongodb,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="mongodb," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,18 +96,18 @@
 
 
 <meta name="description" content="最近需要对手头的一个 rpc proxy 进行升级改造，升级之后要能做到：  自动上线下线故障节点 支持动态扩容和缩容 支持对后端的 server 进行权重分流和负载均衡  这些目标要实现的功能和 MongoDB driver client 的功能很相似，MongoDB 本身就是分布式的系统，支持 replicateSet 和 shard 模式，每个 server 除了读写限制之外还支持使用 ta">
-<meta name="keywords" content="mongodb">
 <meta property="og:type" content="article">
 <meta property="og:title" content="可容错的 server proxy 实现">
 <meta property="og:url" content="http://sanyuesha.com/2018/11/16/mongodb-server-selection/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="最近需要对手头的一个 rpc proxy 进行升级改造，升级之后要能做到：  自动上线下线故障节点 支持动态扩容和缩容 支持对后端的 server 进行权重分流和负载均衡  这些目标要实现的功能和 MongoDB driver client 的功能很相似，MongoDB 本身就是分布式的系统，支持 replicateSet 和 shard 模式，每个 server 除了读写限制之外还支持使用 ta">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://static.git-star.com/1376db068910fb75075c4e4206e8cf93.jpg">
-<meta property="og:updated_time" content="2021-12-04T07:58:21.048Z">
+<meta property="article:published_time" content="2018-11-16T04:14:44.000Z">
+<meta property="article:modified_time" content="2021-12-04T07:58:21.048Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="mongodb">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="可容错的 server proxy 实现">
-<meta name="twitter:description" content="最近需要对手头的一个 rpc proxy 进行升级改造，升级之后要能做到：  自动上线下线故障节点 支持动态扩容和缩容 支持对后端的 server 进行权重分流和负载均衡  这些目标要实现的功能和 MongoDB driver client 的功能很相似，MongoDB 本身就是分布式的系统，支持 replicateSet 和 shard 模式，每个 server 除了读写限制之外还支持使用 ta">
 <meta name="twitter:image" content="https://static.git-star.com/1376db068910fb75075c4e4206e8cf93.jpg">
 
 
@@ -115,7 +115,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -124,7 +124,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/11/16/mongodb-server-selection/">
+  <link rel="canonical" href="http://sanyuesha.com/2018/11/16/mongodb-server-selection/"/>
 
 
 
@@ -157,22 +157,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -181,7 +185,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -208,70 +212,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -289,6 +300,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -313,8 +326,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/11/16/mongodb-server-selection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -337,10 +350,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T12:14:44+08:00">
-                Nov 16 2018
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-16T12:14:44+08:00">
+                11月 16 2018
               </time>
             
 
@@ -350,7 +363,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -358,11 +371,11 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -413,7 +426,7 @@
 </ul>
 <p>而且如果 primary 故障下线了，client 可以自动侦测集群新选举的 primary 进行写操作。</p>
 <p>由此可见，MongoDB driver 的设计思路和实现都可以很好的借鉴拿来在我要改造的 rpc client 中实现，这才是开源的真正好处，站在巨人的肩膀上看得更远。</p>
-<p>我们先来看看一下 MongoDB driver client 的设计目标，详见<a href="https://www.mongodb.com/blog/post/server-selection-next-generation-mongodb-drivers" target="_blank" rel="noopener">server-selection-next-generation-mongodb-drivers</a></p>
+<p>我们先来看看一下 MongoDB driver client 的设计目标，详见<a href="https://www.mongodb.com/blog/post/server-selection-next-generation-mongodb-drivers">server-selection-next-generation-mongodb-drivers</a></p>
 <h2 id="设计-MongoDB-client-driver-的三个目标"><a href="#设计-MongoDB-client-driver-的三个目标" class="headerlink" title="设计 MongoDB client driver 的三个目标"></a>设计 MongoDB client driver 的三个目标</h2><p>MongoDB client driver 在选择 server 时有三个设计目标：</p>
 <p><strong>1. 第一个目标是可预见的</strong></p>
 <p>比如说如果一个 application 开发时是用的是单机的 MongoDB 实例，但是部署的时候可能是 replicateSet 的 MongoDB 集群，随着演变还有可能使用的是 shard 集群，但是不论 MongoDB  实例是什么模式，application 代码都应该始终都应该保持一致，只在必要的时候做出适当调整。举个例子来说，比如 application 用 driver 查询使用的是 secondary，那么不论 application 部署在单机实例上，replicateSet 实例上，还是 shard 实例上，它都能正常工作。</p>
@@ -435,13 +448,14 @@
 </ul>
 <h2 id="proxy-的升级改造"><a href="#proxy-的升级改造" class="headerlink" title="proxy 的升级改造"></a>proxy 的升级改造</h2><p>我们的 proxy 是 tornado 实现的，基于 tornado 的 TCPServer 和 TCPClient，他们都是基于 tornado 的异步 IOStream。</p>
 <p>整个升级过程可以用以下图来描述。</p>
-<p><img src="https://static.git-star.com/1376db068910fb75075c4e4206e8cf93.jpg" alt></p>
-<p>其中对故障节点健康状态监测是通过 tornado 提供的 <a href="http://www.tornadoweb.org/en/stable/ioloop.html?highlight=perio#tornado.ioloop.PeriodicCallback" target="_blank" rel="noopener">PeriodicCallback</a> 实现的，<code>PeriodicCallback</code> 提供了定时任务的启停以及状态检测，如果故障列表中有节点加入，主动触发检测任务的启动，开启周期性检测，每次检测完毕之后，更新每个节点的检测状态（包括检测次数和最后一次检测时间），用于下次检测的决策依据。</p>
+<p><img src="https://static.git-star.com/1376db068910fb75075c4e4206e8cf93.jpg"></p>
+<p>其中对故障节点健康状态监测是通过 tornado 提供的 <a href="http://www.tornadoweb.org/en/stable/ioloop.html?highlight=perio#tornado.ioloop.PeriodicCallback">PeriodicCallback</a> 实现的，<code>PeriodicCallback</code> 提供了定时任务的启停以及状态检测，如果故障列表中有节点加入，主动触发检测任务的启动，开启周期性检测，每次检测完毕之后，更新每个节点的检测状态（包括检测次数和最后一次检测时间），用于下次检测的决策依据。</p>
 <p>为了让检测尽量做到均衡，自己实现了一个有序集合来保存故障节点，一个节点在一个周期内都会有机会被检测一次。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SortedSet</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""有续集合,用来解决 upstream 检测时的顺序问题</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._q = collections.deque()</span><br><span class="line">        self._s = dict()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> key <span class="keyword">in</span> self._s</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setdefault</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self._s:</span><br><span class="line">            self._q.append((key, value))</span><br><span class="line">        <span class="keyword">return</span> self._s.setdefault(key, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">popleft</span><span class="params">(self)</span>:</span></span><br><span class="line">        key, value = self._q.popleft()</span><br><span class="line">        self._s.pop(key, <span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">return</span> key, value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        key, value = item</span><br><span class="line">        self._s[key] = value</span><br><span class="line">        self._q.append((key, value))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="string">"""线性删除</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self._s.pop(key, <span class="literal">None</span>)</span><br><span class="line">        new_q = collections.deque()</span><br><span class="line">        <span class="keyword">while</span> self._q:</span><br><span class="line">            existed_key, value = self._q.pop()</span><br><span class="line">            <span class="keyword">if</span> existed_key != key:</span><br><span class="line">                new_q.appendleft((existed_key, value))</span><br><span class="line"></span><br><span class="line">        self._q = new_q</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'set=&#123;0&#125;, queue=&#123;1&#125;'</span>.format(self._s, self._q)</span><br><span class="line"></span><br><span class="line">    __repr__ = __str__</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SortedSet</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;有续集合,用来解决 upstream 检测时的顺序问题</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._q = collections.deque()</span><br><span class="line">        <span class="variable language_">self</span>._s = <span class="built_in">dict</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__contains__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="keyword">return</span> key <span class="keyword">in</span> <span class="variable language_">self</span>._s</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">setdefault</span>(<span class="params">self, key, value</span>):</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> <span class="variable language_">self</span>._s:</span><br><span class="line">            <span class="variable language_">self</span>._q.append((key, value))</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._s.setdefault(key, value)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">popleft</span>(<span class="params">self</span>):</span><br><span class="line">        key, value = <span class="variable language_">self</span>._q.popleft()</span><br><span class="line">        <span class="variable language_">self</span>._s.pop(key, <span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">return</span> key, value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">append</span>(<span class="params">self, item</span>):</span><br><span class="line">        key, value = item</span><br><span class="line">        <span class="variable language_">self</span>._s[key] = value</span><br><span class="line">        <span class="variable language_">self</span>._q.append((key, value))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">remove</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;线性删除</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>._s.pop(key, <span class="literal">None</span>)</span><br><span class="line">        new_q = collections.deque()</span><br><span class="line">        <span class="keyword">while</span> <span class="variable language_">self</span>._q:</span><br><span class="line">            existed_key, value = <span class="variable language_">self</span>._q.pop()</span><br><span class="line">            <span class="keyword">if</span> existed_key != key:</span><br><span class="line">                new_q.appendleft((existed_key, value))</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>._q = new_q</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;set=&#123;0&#125;, queue=&#123;1&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="variable language_">self</span>._s, <span class="variable language_">self</span>._q)</span><br><span class="line"></span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>有序集合用了 <code>dqueue</code> 和 <code>dict</code> 两种结构，dict 提供 O(1) 的查找，dqueue 保证了节点的有序。</p>
 <p>得益于与 tornado 的单线程模式，由于没有开启多线程，整个代码都不需要有锁的出现，写的比较顺畅。</p>
-<p>tornado 这货是我最喜爱的框架之一，为此还造了一个基于它的另一个框架，感兴趣的可以看一下 <a href="http://github.com/wecatch/app-turbo/" target="_blank" rel="noopener">turbo</a>。</p>
+<p>tornado 这货是我最喜爱的框架之一，为此还造了一个基于它的另一个框架，感兴趣的可以看一下 <a href="http://github.com/wecatch/app-turbo/">turbo</a>。</p>
 
       
     </div>
@@ -452,7 +466,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -524,7 +538,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -560,11 +579,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -572,9 +591,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -583,10 +604,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -596,8 +617,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -608,7 +629,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -650,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计-MongoDB-client-driver-的三个目标"><span class="nav-number">1.</span> <span class="nav-text">设计 MongoDB client driver 的三个目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proxy-的升级改造"><span class="nav-number">2.</span> <span class="nav-text">proxy 的升级改造</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1-MongoDB-client-driver-%E7%9A%84%E4%B8%89%E4%B8%AA%E7%9B%AE%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">设计 MongoDB client driver 的三个目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proxy-%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E9%80%A0"><span class="nav-number">2.</span> <span class="nav-text">proxy 的升级改造</span></a></li></ol></div>
             
 
           </div>
@@ -670,10 +691,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -683,11 +704,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -806,24 +827,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

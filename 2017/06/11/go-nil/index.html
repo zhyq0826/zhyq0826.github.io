@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,46 +74,46 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="nil,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="nil," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
 
 
 
-<meta name="description" content="golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。 1. nil 是不能比较的code-1 Play  123456789package mainimport (    &quot;fmt&quot;)func main() &amp;#123;    fmt.Println(nil==nil)&amp;#125; code-1 输出 1t">
-<meta name="keywords" content="nil">
+<meta name="description" content="golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。 1. nil 是不能比较的code-1 Play  123456789package mainimport (    &quot;fmt&quot;)func main() &#123;    fmt.Println(nil&#x3D;&#x3D;nil)&#125; co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 Go nil">
 <meta property="og:url" content="http://sanyuesha.com/2017/06/11/go-nil/index.html">
 <meta property="og:site_name" content="三月沙">
-<meta property="og:description" content="golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。 1. nil 是不能比较的code-1 Play  123456789package mainimport (    &quot;fmt&quot;)func main() &amp;#123;    fmt.Println(nil==nil)&amp;#125; code-1 输出 1t">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-31T23:40:19.830Z">
+<meta property="og:description" content="golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。 1. nil 是不能比较的code-1 Play  123456789package mainimport (    &quot;fmt&quot;)func main() &#123;    fmt.Println(nil&#x3D;&#x3D;nil)&#125; co">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-11T12:01:41.000Z">
+<meta property="article:modified_time" content="2018-07-31T23:40:19.830Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="nil">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解 Go nil">
-<meta name="twitter:description" content="golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。 1. nil 是不能比较的code-1 Play  123456789package mainimport (    &quot;fmt&quot;)func main() &amp;#123;    fmt.Println(nil==nil)&amp;#125; code-1 输出 1t">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +122,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2017/06/11/go-nil/">
+  <link rel="canonical" href="http://sanyuesha.com/2017/06/11/go-nil/"/>
 
 
 
@@ -155,22 +155,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +183,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +210,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +298,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +324,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2017/06/11/go-nil/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +348,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T20:01:41+08:00">
-                Jun 11 2017
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-11T20:01:41+08:00">
+                6月 11 2017
               </time>
             
 
@@ -348,7 +361,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,7 +369,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -398,30 +411,39 @@
 
       
         <p>golang 中的 nil 是不同于其他语言的，为了更好的理解 nil，在此我将尝试一步一步揭示 nil 在 golang 中的一些操作和现象。</p>
-<h2 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h2><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU" target="_blank" rel="noopener">Play</a> </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="literal">nil</span>==<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-nil-是不能比较的"><a href="#1-nil-是不能比较的" class="headerlink" title="1. nil 是不能比较的"></a>1. nil 是不能比较的</h2><p><strong>code-1</strong> <a href="https://play.golang.org/p/FM7oW794sU">Play</a> </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="literal">nil</span>==<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>code-1 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox318449491/main.go:8: invalid operation: nil == nil (operator == not defined on nil)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox318449491/main.go:8: invalid operation: nil == nil (operator == not defined on nil)</span><br></pre></td></tr></table></figure>
+
 <p>这点和 python 等动态语言是不同的，在 python 中，两个 None 值永远相等。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">None</span> == <span class="literal">None</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">None</span> == <span class="literal">None</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br></pre></td></tr></table></figure>
+
 <p>从 go 的输出结果不难看出，<code>==</code> 对于 nil 来说是一种未定义的操作。</p>
-<h2 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h2><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs" target="_blank" rel="noopener">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"%T"</span>, <span class="literal">nil</span>) </span><br><span class="line">	<span class="built_in">print</span>(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-默认-nil-是-typed-的"><a href="#2-默认-nil-是-typed-的" class="headerlink" title="2. 默认 nil 是 typed 的"></a>2. 默认 nil 是 typed 的</h2><p><strong>code-2</strong> <a href="https://play.golang.org/p/PVGa9tCWSs">Play</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%T&quot;</span>, <span class="literal">nil</span>) </span><br><span class="line">	<span class="built_in">print</span>(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>code-2 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox379579345/main.go:9: use of untyped nil</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox379579345/main.go:9: use of untyped nil</span><br></pre></td></tr></table></figure>
+
 <p>print 的输出时未指定类型的，因而无法输出</p>
-<h2 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h2><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi" target="_blank" rel="noopener">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"%p"</span>, m)</span><br><span class="line">	fmt.Printf(<span class="string">"%p"</span>, ptr)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-不同类型-nil-的-address-是一样的"><a href="#3-不同类型-nil-的-address-是一样的" class="headerlink" title="3. 不同类型 nil 的 address 是一样的"></a>3. 不同类型 nil 的 address 是一样的</h2><p><strong>code-3</strong> <a href="https://play.golang.org/p/YQkFQx1hPi">Play</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="type">int</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;%p&quot;</span>, m)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%p&quot;</span>, ptr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>m 和 ptr 的 address 都是 0x0</p>
-<h2 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h2><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5" target="_blank" rel="noopener">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(m == ptr)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-不同类型的-nil-是不能比较的"><a href="#4-不同类型的-nil-是不能比较的" class="headerlink" title="4. 不同类型的 nil 是不能比较的"></a>4. 不同类型的 nil 是不能比较的</h2><p>   <strong>code-4</strong> <a href="https://play.golang.org/p/20q0oe2Iu5">Play</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="type">int</span></span><br><span class="line">	fmt.Printf(m == ptr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>code-4 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox618627491/main.go:10: invalid operation: m == ptr (mismatched types map[int]string and *int)</span><br></pre></td></tr></table></figure>
-<h2 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h2><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR" target="_blank" rel="noopener">Play</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> sl []<span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> f <span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	<span class="title">var</span> <span class="title">i</span> <span class="title">interface</span></span>&#123;&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, m)</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, ptr)</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, c)</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, sl)</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, f)</span><br><span class="line">	fmt.Printf(<span class="string">"%#v\n"</span>, i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tmp/sandbox618627491/main.go:10: invalid operation: m == ptr (mismatched types map[int]string and *int)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-nil-是-map，slice，pointer，channel，func，interface-的零值"><a href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值" class="headerlink" title="5. nil 是 map，slice，pointer，channel，func，interface 的零值"></a>5. nil 是 map，slice，pointer，channel，func，interface 的零值</h2><p><strong>code-5</strong> <a href="https://play.golang.org/p/VeDuWMU4QR">Play</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span></span><br><span class="line">	<span class="keyword">var</span> ptr *<span class="type">int</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">chan</span> <span class="type">int</span></span><br><span class="line">	<span class="keyword">var</span> sl []<span class="type">int</span></span><br><span class="line">	<span class="keyword">var</span> f <span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">var</span> i <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, m)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, ptr)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, c)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, sl)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, f)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>code-5 输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map[int]string(nil)</span><br><span class="line">(*int)(nil)</span><br><span class="line">(chan int)(nil)</span><br><span class="line">[]int(nil)</span><br><span class="line">(func())(nil)</span><br><span class="line">&lt;nil&gt;</span><br></pre></td></tr></table></figure>
-<p><a href="https://golang.org/ref/spec#The_zero_value" target="_blank" rel="noopener">zero value</a> 是 go 中变量在声明之后但是未初始化被赋予的该类型的一个默认值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">map[int]string(nil)</span><br><span class="line">(*int)(nil)</span><br><span class="line">(chan int)(nil)</span><br><span class="line">[]int(nil)</span><br><span class="line">(func())(nil)</span><br><span class="line">&lt;nil&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://golang.org/ref/spec#The_zero_value">zero value</a> 是 go 中变量在声明之后但是未初始化被赋予的该类型的一个默认值。</p>
 <blockquote>
 <p>正确理解 nil 是正确理解 go 中类型的重要一环，因而 nil 的任何细节在遇到之后都不要错过，要做到相应的记录。</p>
 </blockquote>
@@ -435,7 +457,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -507,7 +529,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -543,11 +570,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -555,9 +582,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -566,10 +595,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -579,8 +608,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -591,7 +620,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -633,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-nil-是不能比较的"><span class="nav-number">1.</span> <span class="nav-text">1. nil 是不能比较的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-默认-nil-是-typed-的"><span class="nav-number">2.</span> <span class="nav-text">2. 默认 nil 是 typed 的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-不同类型-nil-的-address-是一样的"><span class="nav-number">3.</span> <span class="nav-text">3. 不同类型 nil 的 address 是一样的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-不同类型的-nil-是不能比较的"><span class="nav-number">4.</span> <span class="nav-text">4. 不同类型的 nil 是不能比较的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-nil-是-map，slice，pointer，channel，func，interface-的零值"><span class="nav-number">5.</span> <span class="nav-text">5. nil 是 map，slice，pointer，channel，func，interface 的零值</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-nil-%E6%98%AF%E4%B8%8D%E8%83%BD%E6%AF%94%E8%BE%83%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">1. nil 是不能比较的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%BB%98%E8%AE%A4-nil-%E6%98%AF-typed-%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">2. 默认 nil 是 typed 的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B-nil-%E7%9A%84-address-%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84"><span class="nav-number">3.</span> <span class="nav-text">3. 不同类型 nil 的 address 是一样的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84-nil-%E6%98%AF%E4%B8%8D%E8%83%BD%E6%AF%94%E8%BE%83%E7%9A%84"><span class="nav-number">4.</span> <span class="nav-text">4. 不同类型的 nil 是不能比较的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-nil-%E6%98%AF-map%EF%BC%8Cslice%EF%BC%8Cpointer%EF%BC%8Cchannel%EF%BC%8Cfunc%EF%BC%8Cinterface-%E7%9A%84%E9%9B%B6%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">5. nil 是 map，slice，pointer，channel，func，interface 的零值</span></a></li></ol></div>
             
 
           </div>
@@ -653,10 +682,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -666,11 +695,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -789,24 +818,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

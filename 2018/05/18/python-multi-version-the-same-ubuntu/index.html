@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="多版本安装,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="多版本安装," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,24 +96,24 @@
 
 
 <meta name="description" content="app-turbo 为了支持多个 Python 版本必须要在多个版本下进行测试，以 Ubuntu 为例，默认发行版都会有一个Python 2.7 和 一个 Python 3.x 的版本，但是这远不能够满足开发和测试需要。我本人在折腾环境方面是比较懒，很想找一个工具能够自动把所有事情都考虑好，一个命令就搞定，可惜搜罗了几分钟之后，没有找到方案。   世间一切的问题，都应该从它开始的地方寻找答案。">
-<meta name="keywords" content="多版本安装">
 <meta property="og:type" content="article">
 <meta property="og:title" content="同一主机安装多个 Python 版本">
 <meta property="og:url" content="http://sanyuesha.com/2018/05/18/python-multi-version-the-same-ubuntu/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="app-turbo 为了支持多个 Python 版本必须要在多个版本下进行测试，以 Ubuntu 为例，默认发行版都会有一个Python 2.7 和 一个 Python 3.x 的版本，但是这远不能够满足开发和测试需要。我本人在折腾环境方面是比较懒，很想找一个工具能够自动把所有事情都考虑好，一个命令就搞定，可惜搜罗了几分钟之后，没有找到方案。   世间一切的问题，都应该从它开始的地方寻找答案。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.305Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-18T03:57:56.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.305Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="多版本安装">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="同一主机安装多个 Python 版本">
-<meta name="twitter:description" content="app-turbo 为了支持多个 Python 版本必须要在多个版本下进行测试，以 Ubuntu 为例，默认发行版都会有一个Python 2.7 和 一个 Python 3.x 的版本，但是这远不能够满足开发和测试需要。我本人在折腾环境方面是比较懒，很想找一个工具能够自动把所有事情都考虑好，一个命令就搞定，可惜搜罗了几分钟之后，没有找到方案。   世间一切的问题，都应该从它开始的地方寻找答案。">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +122,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/python-multi-version-the-same-ubuntu/">
+  <link rel="canonical" href="http://sanyuesha.com/2018/05/18/python-multi-version-the-same-ubuntu/"/>
 
 
 
@@ -155,22 +155,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +183,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +210,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +298,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +324,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2018/05/18/python-multi-version-the-same-ubuntu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +348,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T11:57:56+08:00">
-                May 18 2018
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-18T11:57:56+08:00">
+                5月 18 2018
               </time>
             
 
@@ -348,7 +361,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,7 +369,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -397,16 +410,19 @@
       
 
       
-        <p><a href="https://github.com/wecatch/app-turbo" target="_blank" rel="noopener">app-turbo</a> 为了支持多个 Python 版本必须要在多个版本下进行测试，以 Ubuntu 为例，默认发行版都会有一个Python 2.7 和 一个 Python 3.x 的版本，但是这远不能够满足开发和测试需要。我本人在折腾环境方面是比较懒，很想找一个工具能够自动把所有事情都考虑好，一个命令就搞定，可惜搜罗了几分钟之后，没有找到方案。</p>
+        <p><a href="https://github.com/wecatch/app-turbo">app-turbo</a> 为了支持多个 Python 版本必须要在多个版本下进行测试，以 Ubuntu 为例，默认发行版都会有一个Python 2.7 和 一个 Python 3.x 的版本，但是这远不能够满足开发和测试需要。我本人在折腾环境方面是比较懒，很想找一个工具能够自动把所有事情都考虑好，一个命令就搞定，可惜搜罗了几分钟之后，没有找到方案。</p>
 <blockquote>
 <p> 世间一切的问题，都应该从它开始的地方寻找答案。</p>
 </blockquote>
-<p>进 Python 官方网站，找到 Python 包下载源：<a href="https://www.python.org/downloads/，" target="_blank" rel="noopener">https://www.python.org/downloads/，</a> 选择一个我们需要的版本和对应平台的 package 下载。</p>
+<p>进 Python 官方网站，找到 Python 包下载源：<a href="https://www.python.org/downloads/%EF%BC%8C">https://www.python.org/downloads/，</a> 选择一个我们需要的版本和对应平台的 package 下载。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.5.5/Python-3.5.5.tgz</span><br></pre></td></tr></table></figure>
+
 <p>解压包：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xvfz Python-3.5.5.tgz</span><br></pre></td></tr></table></figure>
+
 <p>进入源码目录，查看 README 文件，仔细阅读发现 Python 官方已经提供了多版本安装的方案：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">On Unix and Mac systems if you intend to install multiple versions of Python using the same installation prefix (--prefix argument to the configure script) you must take care that your primary python executable is not overwritten by the installation of a different version. </span><br><span class="line"></span><br><span class="line">All files and directories installed  using "make altinstall" contain the major and minor version and can thus live side-by-side. "make install" also creates $&#123;prefix&#125;/bin/python3 which refers to $&#123;prefix&#125;/bin/pythonX.Y.  </span><br><span class="line"></span><br><span class="line">If you intend to install multiple versions using the same prefix you must decide which version (if any) is your "primary" version.  Install that version using "make install".  Install all other versions using "make altinstall".</span><br><span class="line"></span><br><span class="line">For example, if you want to install Python 2.6, 2.7 and 3.5 with 2.7 being the primary version, you would execute "make install" in your 2.7 build directory and "make altinstall" in the others.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">On Unix and Mac systems if you intend to install multiple versions of Python using the same installation prefix (--prefix argument to the configure script) you must take care that your primary python executable is not overwritten by the installation of a different version. </span><br><span class="line"></span><br><span class="line">All files and directories installed  using &quot;make altinstall&quot; contain the major and minor version and can thus live side-by-side. &quot;make install&quot; also creates $&#123;prefix&#125;/bin/python3 which refers to $&#123;prefix&#125;/bin/pythonX.Y.  </span><br><span class="line"></span><br><span class="line">If you intend to install multiple versions using the same prefix you must decide which version (if any) is your &quot;primary&quot; version.  Install that version using &quot;make install&quot;.  Install all other versions using &quot;make altinstall&quot;.</span><br><span class="line"></span><br><span class="line">For example, if you want to install Python 2.6, 2.7 and 3.5 with 2.7 being the primary version, you would execute &quot;make install&quot; in your 2.7 build directory and &quot;make altinstall&quot; in the others.</span><br></pre></td></tr></table></figure>
+
 <p>不难理解，Python 在 configure 阶段已经提供了 <code>—prefix</code> 来选择安装的目录。</p>
 <p>如果你使用的相同的 prefix 目录，<strong>在安装阶段使用 <code>make altinstall</code> 的方式安装会自动带上主版本号的信息</strong>，并且不会覆盖当前环境中默认的 primary Python，如果你想覆盖 primary Python，则使用 <code>make install</code> 即可。</p>
 <p>有时间了我可能会写个工具一键安装多个 Python 版本，嗯，等有时间了😑。</p>
@@ -420,7 +436,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -435,7 +451,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/多版本安装/" rel="tag"># 多版本安装</a>
+            <a href="/tags/%E5%A4%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/" rel="tag"># 多版本安装</a>
           
         </div>
       
@@ -492,7 +508,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -531,9 +552,11 @@
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -542,10 +565,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -555,8 +578,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -567,7 +590,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -613,10 +636,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -626,11 +649,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -749,24 +772,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   

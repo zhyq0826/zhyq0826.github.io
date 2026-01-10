@@ -5,11 +5,11 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,21 +74,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="团队协作,">
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
+  <meta name="keywords" content="团队协作," />
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
 
 
 
@@ -96,24 +96,24 @@
 
 
 <meta name="description" content="创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。 那该如何评估以及怎样评估">
-<meta name="keywords" content="团队协作">
 <meta property="og:type" content="article">
 <meta property="og:title" content="小团队如何准确评估项目时间和节点">
 <meta property="og:url" content="http://sanyuesha.com/2014/11/29/small-team-evaluate-project-deadline/index.html">
 <meta property="og:site_name" content="三月沙">
 <meta property="og:description" content="创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。 那该如何评估以及怎样评估">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T15:17:35.306Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-11-29T07:09:13.000Z">
+<meta property="article:modified_time" content="2019-03-01T15:17:35.306Z">
+<meta property="article:author" content="三月沙">
+<meta property="article:tag" content="团队协作">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小团队如何准确评估项目时间和节点">
-<meta name="twitter:description" content="创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。 那该如何评估以及怎样评估">
 
 
 
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Mist',
     version: '5.1.2',
     sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
@@ -122,7 +122,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
     },
     algolia: {
       applicationID: '',
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://sanyuesha.com/2014/11/29/small-team-evaluate-project-deadline/">
+  <link rel="canonical" href="http://sanyuesha.com/2014/11/29/small-team-evaluate-project-deadline/"/>
 
 
 
@@ -155,22 +155,26 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-56212296-1', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 
 
 
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -179,7 +183,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">三月沙</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,70 +210,77 @@
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
+        
+        <li class="menu-item menu-item-首页">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-about">
+        
+        <li class="menu-item menu-item-关于">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
+        
+        <li class="menu-item menu-item-标签">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-categories">
+        
+        <li class="menu-item menu-item-分类">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-archives">
+        
+        <li class="menu-item menu-item-归档">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-我的书单">
           <a href="/my-readings/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             我的书单
           </a>
         </li>
       
         
+        
         <li class="menu-item menu-item-技术编年史">
           <a href="/my-skills/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
             
             技术编年史
           </a>
@@ -287,6 +298,8 @@
 
  </div>
     </header>
+
+    
 
     <main id="main" class="main">
       <div class="main-inner">
@@ -311,8 +324,8 @@
     <link itemprop="mainEntityOfPage" href="http://sanyuesha.com/2014/11/29/small-team-evaluate-project-deadline/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="三月沙">
-      <meta itemprop="description" content>
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -335,10 +348,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-29T15:09:13+08:00">
-                Nov 29 2014
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-11-29T15:09:13+08:00">
+                11月 29 2014
               </time>
             
 
@@ -348,7 +361,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -356,11 +369,11 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">分类于</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
                     <span itemprop="name">程序人生</span>
                   </a>
                 </span>
@@ -398,15 +411,18 @@
 
       
         <p>创业公司中由于团队人手的限制，经常需要团队成员在不同的项目中进行身份切换，加之处于创业阶段，产品需求本身的变更和迭代速度都会很高，所以常常需要开发人员准确评估项目时间节点，把握开发节奏，才能不影响其他项目的正常进行。</p>
-<h2 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h2><a id="more"></a>
+<h2 id="那该如何评估以及怎样评估"><a href="#那该如何评估以及怎样评估" class="headerlink" title="那该如何评估以及怎样评估"></a>那该如何评估以及怎样评估</h2><span id="more"></span>
+
 <p>一个产品需求从提出到落地大致需要经过以下几个阶段(可能根据需求的复杂度略有不同，这里只讨论一般性需求)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">提出需求--&gt;需求评估--&gt;开发--&gt;测试--&gt;上线</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">提出需求--&gt;需求评估--&gt;开发--&gt;测试--&gt;上线</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>当开发人员面对这么<strong>粗粒度</strong>的节点划分的时候，很难真正想象出项目会遇到什么样的问题，尤其是新人对项目的难度把握不准确，以及对整个团队开发流程不熟悉，非常容易做出不恰当的预估。在此，由于粒度<strong>过粗</strong>，每个阶段在开发人员的印象中都是一个模糊的概念，只有深入到实际开发阶段，可能才会发现每个阶段都没有那么容易，处处是坑，四处碰壁。</p>
 <p>以测试为例。一般来说，开发人员日常开发使用的是一套测试环境，包括系统状态，数据库状态，环境依赖等都与线上环境有细微甚至很大的差别，而这个差别可能只有等到上线前一刻才会被发现。可能一开始预估测试时间并不会把这样的意外因素考虑在内，而这样的问题发生势必会影响项目的正常发布，甚至延期。</p>
 <p>因而，为了弥补这样的不足，把一个需求从<strong>立项</strong>到<strong>上线</strong>的过程进行更<strong>细粒度</strong>的拆分，提前对每个粒度所面临的场景进行多种可能性预测，并制定相应的解决方案，模拟出项目的真实开发流程，类似战场打仗所用到的沙盘。</p>
 <h2 id="一个真实的开发场景"><a href="#一个真实的开发场景" class="headerlink" title="一个真实的开发场景"></a>一个真实的开发场景</h2><p>APP中添加聊天通讯功能</p>
 <p>1.<strong>未拆分阶段</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">提出需求(通讯功能)----&gt;需求评估(可做)----&gt;开发(客户端,服务端,联合调试)----&gt;测试(客户端测试,服务端测试,产品测试)----&gt;上线</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">提出需求(通讯功能)----&gt;需求评估(可做)----&gt;开发(客户端,服务端,联合调试)----&gt;测试(客户端测试,服务端测试,产品测试)----&gt;上线</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>2.<strong>拆分需求和功能</strong></p>
 <p>在需求提出阶段可以按照需求的重要性进行等级划分(数字越小重要性越大)</p>
 <ul>
@@ -453,7 +469,7 @@
     
       <div>
         <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt="三月沙 wechat" style="width: 200px; max-width: 100%;">
+    <img id="wechat_subscriber_qcode" src="/images/qrcode_for_gh_c28573fbafaa_344.jpg" alt=" wechat" style="width: 200px; max-width: 100%;"/>
     <div>扫描关注 wecatch 的公众号</div>
 </div>
 
@@ -468,7 +484,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/团队协作/" rel="tag"># 团队协作</a>
+            <a href="/tags/%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/" rel="tag"># 团队协作</a>
           
         </div>
       
@@ -525,7 +541,12 @@
       
     
       
-  <script src="https://utteranc.es/client.js" repo="zhyq0826/zhyq0826.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async>
+  <script src="https://utteranc.es/client.js"
+    repo="zhyq0826/zhyq0826.github.io"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
   </script>
 
     
@@ -561,11 +582,11 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+            Overview
           </li>
         </ul>
       
@@ -573,9 +594,11 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           
-            <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="三月沙">
+            <img class="site-author-image" itemprop="image"
+              src="/images/logo.jpg"
+              alt="" />
           
-            <p class="site-author-name" itemprop="name">三月沙</p>
+            <p class="site-author-name" itemprop="name"></p>
             <p class="site-description motion-element" itemprop="description"></p>
         </div>
 
@@ -584,10 +607,10 @@
           
             <div class="site-state-item site-state-posts">
             
-              <a href="/archives/">
+              <a href="/archives">
             
                 <span class="site-state-item-count">135</span>
-                <span class="site-state-item-name">日志</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -597,8 +620,8 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">28</span>
-                <span class="site-state-item-name">分类</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">categories</span>
               </a>
             </div>
           
@@ -609,7 +632,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
                 <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">标签</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -651,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#那该如何评估以及怎样评估"><span class="nav-number">1.</span> <span class="nav-text">那该如何评估以及怎样评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个真实的开发场景"><span class="nav-number">2.</span> <span class="nav-text">一个真实的开发场景</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%A3%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AF%84%E4%BC%B0%E4%BB%A5%E5%8F%8A%E6%80%8E%E6%A0%B7%E8%AF%84%E4%BC%B0"><span class="nav-number">1.</span> <span class="nav-text">那该如何评估以及怎样评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%9C%9F%E5%AE%9E%E7%9A%84%E5%BC%80%E5%8F%91%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">一个真实的开发场景</span></a></li></ol></div>
             
 
           </div>
@@ -671,10 +694,10 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -684,11 +707,11 @@
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
         
@@ -807,24 +830,7 @@
         s.src = 'https://sanyuesha-com.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   
